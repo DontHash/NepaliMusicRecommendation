@@ -1,0 +1,81 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+pip-wheel-metadata/
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+.python-version
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Local tooling (not part of the app) ---
+graphify-out/
+.graphify_*/
+
+# --- Secrets / credentials ---
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# --- Hugging Face / torch caches (if created in-repo) ---
+.cache/
+**/huggingface/
+**/transformers_cache/
+
+# --- Large / regenerable ML weights (do not push to GitHub) ---
+# Fine-tuned muRIL (~900MB+). Rebuild via scripts/run_music_rec.py sentiment
+# or download from your own release / Kaggle export.
+music_rec_artifacts/sentiment_model/
+
+# Training logs
+music_rec_artifacts/*.log
+*.log
+
+# Optional: ignore binary matrices if you prefer a code-only repo
+# (uncomment if you want demos to rebuild embeddings/index locally)
+# music_rec_artifacts/*.npy
+# music_rec_artifacts/*.faiss
+
+# --- Archived experiments: ignore heavy vendors if re-added ---
+R_data/VectorScaling/
+R_data/**/node_modules/
+R_data/**/bin/
+R_data/**/models/
+R_data/**/*.pt
+R_data/**/*.onnx
+R_data/**/*.bin
+R_data/**/*.mp4
+R_data/**/*.zip
+R_data/**/*.7z
+R_data/**/*.tar
+R_data/**/*.gz
+
+# Jupyter checkpoints
+.ipynb_checkpoints/

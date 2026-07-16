@@ -1,0 +1,14 @@
+{
+  "total_rows": 942,
+  "empty_lyrics": 0,
+  "nfc_normalized": 0,
+  "exact_duplicates": 8,
+  "near_duplicates_same_title_artist": 0,
+  "short_songs_removed": 2,
+  "rows_after_cleaning": 932,
+  "indic_nlp_used": true,
+  "token_count_min": 21,
+  "token_count_median": 96.5,
+  "token_count_max": 916,
+  "notes": []
+}

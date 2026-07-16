@@ -1,0 +1,18 @@
+# Core ML / data
+torch
+transformers
+datasets
+accelerate
+scikit-learn
+numpy
+pandas
+
+# Embeddings + retrieval
+sentence-transformers
+faiss-cpu
+
+# Nepali / Devanagari NLP (optional; pipeline has regex fallback)
+indic-nlp-library
+
+# Progress
+tqdm

@@ -1,0 +1,7 @@
+{
+  "embedding_dim": 768,
+  "feature_dim": 772,
+  "has_sentiment": true,
+  "sentiment_weight": 0.3,
+  "metadata_weight": 0.2
+}
