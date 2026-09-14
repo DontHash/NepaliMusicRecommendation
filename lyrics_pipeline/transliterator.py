@@ -250,14 +250,14 @@ class NepaliTransliterator:
 
         checkpoint_path = self._resolve_existing(
             checkpoint_path,
-            "char_transformer_442.pt",
             "new_char_transformer_best.pt",
+            "char_transformer_442.pt",
             "char_transformer_best.pt",
         )
         vocab_path = self._resolve_existing(
             vocab_path,
-            "char_vocab.pkl",
             "new_char_vocab.pkl",
+            "char_vocab.pkl",
         )
         if checkpoint_path is None or vocab_path is None:
             return

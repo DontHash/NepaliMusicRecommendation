@@ -37,7 +37,7 @@ There is **no audio** in this version. Everything is based on **text (lyrics)** 
 ┌─────────────────────────────────────────────────────────────────────────┐
 │              LYRICS CLEANING (lyrics_pipeline/)                           │
 │  Remove: "1 Contributor", "[Chorus]", title headers, junk quotes        │
-│  Transliterate: Roman → Devanagari (char_transformer_442.pt)            │
+│  Transliterate: Roman → Devanagari (new_char_transformer_best.pt)       │
 │  Output: Lyrics_Dataset_final.csv                                       │
 └───────────────────────────────┬─────────────────────────────────────────┘
                                 │
@@ -69,7 +69,7 @@ Nepali users often type song names or moods in **Roman letters** (e.g. on phones
 
 So the project chains:
 
-- A **transliterator** (custom small Transformer, ~4M parameters, ~4.4% character error on validation).
+- A **transliterator** (custom small Transformer, ~4M parameters, ~3.5% character error on validation).
 - **Multilingual NLP models** (muRIL for mood, mpnet for meaning).
 - **Vector search** (FAISS) to find “songs that feel like this text.”
 
@@ -87,17 +87,18 @@ ProjectR/
 ├── lyrics_pipeline/                 # Cleaning + Roman→Devanagari for the CSV
 ├── music_rec/                       # Recommender (audit → embed → index → recommend)
 ├── music_rec_artifacts/             # Built model outputs (do not delete casually)
-├── scripts/                         # CLI: clean, build, demo
+├── scripts/                         # CLI: clean, build, demo, Kaggle tooling
+├── Notebooks/                       # Kaggle training notebooks
 ├── MusicAnalyzer.py                 # Analyze one lyric (edit LYRICS, run file)
-├── char_transformer_442.pt          # Transliteration weights
-├── char_vocab.pkl                   # Transliteration vocabulary
+├── new_char_transformer_best.pt     # Transliteration weights (current; ~3.5% CER)
+├── new_char_vocab.pkl               # Transliteration vocabulary (current)
+├── char_transformer_442.pt          # Previous weights (~4.42% CER; fallback/compare)
+├── char_vocab.pkl                   # Previous vocabulary (fallback/compare)
 ├── requirements.txt
 ├── PROJECT_GUIDE.md
 │
 └── R_data/                          # Archived / unused (not on the hot path)
-    ├── datasets/                    # Extra CSVs, reports, word lists
-    ├── Notebooks/                   # Kaggle / experiment notebooks
-    └── VectorScaling/               # Separate image-upscaling experiments
+    └── datasets/                    # Word-pair corpora, extra CSVs, reports
 ```
 
 ---
@@ -163,12 +164,13 @@ Further cleaning for ML:
 
 | | |
 |---|---|
-| **File** | `char_transformer_442.pt` + `char_vocab.pkl` |
-| **Trained in** | `R_data/Notebooks/FinalTransformerChar.ipynb` / `NewTransliterate.ipynb` (Kaggle GPU) |
+| **File (current)** | `new_char_transformer_best.pt` + `new_char_vocab.pkl` — the default |
+| **File (previous)** | `char_transformer_442.pt` + `char_vocab.pkl` — kept as fallback and for `scripts/compare_transliterators.py` |
+| **Trained in** | `Notebooks/NewTransliterate.ipynb` (current) / `Notebooks/FinalTransformerChar.ipynb` (first version) (Kaggle GPU) |
 | **Job** | Roman letters → Devanagari characters |
 | **Architecture** | Small encoder-decoder Transformer (~4M params) |
 | **Training data** | Aksharantar Nepali (~300k–2.4M word pairs depending on notebook) |
-| **Quality** | ~4.42% CER (character error rate) on validation |
+| **Quality** | ~3.54% CER on validation (current); ~4.42% CER (previous) |
 | **Used when** | User types `maya lagcha`; query encoding; cleaning romanized CSV rows |
 
 **Why character-level?** Nepali transliteration is mostly spelling mapping. Words are short. A char model is small, fast, and works well.
@@ -327,7 +329,7 @@ ANN gives top **50** by similarity. Reranking picks final **10** using:
 
 ## 10. Notebooks — what each one is for
 
-Archived under `R_data/Notebooks/` (not required for day-to-day runs).
+Kept at `Notebooks/` (not required for day-to-day runs).
 
 | Notebook | Run where | Purpose |
 |----------|-----------|---------|
@@ -360,8 +362,8 @@ $env:USE_TF = "0"
 
 ```bash
 python scripts/clean_lyrics_dataset.py \
-  --checkpoint char_transformer_442.pt \
-  --vocab char_vocab.pkl \
+  --checkpoint new_char_transformer_best.pt \
+  --vocab new_char_vocab.pkl \
   --output "CSVs Dataset/Lyrics_Dataset_final.csv"
 ```
 
@@ -401,7 +403,7 @@ python MusicAnalyzer.py
 | Decision | Why |
 |----------|-----|
 | Content-based (lyrics only) | No audio labels yet; lyrics are what we have |
-| Char transliterator vs big LLM | Small, fast, 4.4% CER; fits phone/edge deployment |
+| Char transliterator vs big LLM | Small, fast, 3.5% CER; fits phone/edge deployment |
 | mpnet without fine-tune | Good multilingual baseline; saves training time for POC |
 | FAISS instead of ChromaDB | Simpler dependencies; pandas handles metadata filters |
 | Tail truncation for sentiment | Song endings carry emotion |
@@ -445,7 +447,7 @@ Read in this order to understand the flow without getting lost:
 4. **`music_rec/data_audit.py`** — how `cleaned_lyrics.csv` is produced.
 5. **`music_rec/recommender.py`** — the main user-facing recommendation logic.
 6. **`MusicAnalyzer.py`** — single-lyric analysis entry point.
-7. **`R_data/Notebooks/FinalTransformerChar.ipynb`** — only if you care how transliteration was trained.
+7. **`Notebooks/NewTransliterate.ipynb`** — only if you care how transliteration was trained.
 
 **If you want to change behavior:**
 
@@ -455,7 +457,7 @@ Read in this order to understand the flow without getting lost:
 | Stronger mood influence | `config.py` → `sentiment_weight` |
 | More diverse results | `config.py` → lower `mmr_lambda` |
 | New raw data | Re-run `clean_lyrics_dataset.py`, then `run_music_rec.py all` |
-| Better transliteration | Retrain via `R_data/Notebooks/NewTransliterate.ipynb`, replace `.pt` file |
+| Better transliteration | Retrain via `Notebooks/NewTransliterate.ipynb`, then replace `new_char_transformer_best.pt` + `new_char_vocab.pkl` |
 
 
 ---

@@ -13,8 +13,8 @@ class Config:
     project_root: Path = PROJECT_ROOT
 
     raw_lyrics_csv: Path = PROJECT_ROOT / "CSVs Dataset" / "Lyrics_Dataset_final.csv"
-    transliterator_checkpoint: Path = PROJECT_ROOT / "char_transformer_442.pt"
-    transliterator_vocab: Path = PROJECT_ROOT / "char_vocab.pkl"
+    transliterator_checkpoint: Path = PROJECT_ROOT / "new_char_transformer_best.pt"
+    transliterator_vocab: Path = PROJECT_ROOT / "new_char_vocab.pkl"
     artifacts_dir: Path = PROJECT_ROOT / "music_rec_artifacts"
 
     cleaned_lyrics_csv: Path = field(init=False)

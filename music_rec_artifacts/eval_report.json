@@ -1,8 +1,8 @@
 {
   "queries_evaluated": 30,
-  "mean_intra_list_diversity": 0.2519,
-  "mean_sentiment_coherence": 0.9403,
-  "catalog_coverage": 0.2468,
-  "unique_songs_recommended": 230,
+  "mean_intra_list_diversity": 0.2511,
+  "mean_sentiment_coherence": 0.9368,
+  "catalog_coverage": 0.2489,
+  "unique_songs_recommended": 232,
   "catalog_size": 932
 }

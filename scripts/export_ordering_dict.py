@@ -9,7 +9,7 @@ still letting us update it whenever the transliterator checkpoint improves.
 
 Usage:
   python scripts/export_ordering_dict.py \\
-    --checkpoint char_transformer_442.pt --vocab char_vocab.pkl \\
+    --checkpoint new_char_transformer_best.pt --vocab new_char_vocab.pkl \\
     --output nepali_ordering_dict.json
   # Optional: fold in the romanized names of a real menu as extra keys
   python scripts/export_ordering_dict.py --menu menu.json --output out.json
@@ -151,8 +151,8 @@ def load_menu_words(menu_path: Path | None) -> list[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    default_checkpoint = ROOT / "char_transformer_442.pt"
-    default_vocab = ROOT / "char_vocab.pkl"
+    default_checkpoint = ROOT / "new_char_transformer_best.pt"
+    default_vocab = ROOT / "new_char_vocab.pkl"
     parser.add_argument("--checkpoint", type=Path, default=default_checkpoint,
                         help="Transliteration checkpoint (.pt)")
     parser.add_argument("--vocab", type=Path, default=default_vocab,
