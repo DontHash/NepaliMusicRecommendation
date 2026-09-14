@@ -133,6 +133,16 @@ class MusicRecommender:
         query_vec = self.index_vectors[row_idx]
         return self._rank(query_vec, self._sent_score(song_id), song_id, artist, category)
 
+    def _maybe_artist_filter(self, text: str) -> str | None:
+        query = text.strip().casefold()
+        if not query:
+            return None
+        artists = self.songs["artist"].fillna("").str.casefold()
+        matches = self.songs.loc[artists == query, "artist"]
+        if len(matches) >= 2:
+            return str(matches.iloc[0])
+        return None
+
     def recommend_by_text(
         self,
         text: str,
@@ -141,9 +151,14 @@ class MusicRecommender:
         target_sentiment: float | None = None,
     ) -> list[Recommendation]:
         emb = self.query_encoder.encode_text(text)
+        norm = np.linalg.norm(emb)
+        if norm:
+            emb = emb / norm
+        if artist is None:
+            artist = self._maybe_artist_filter(text)
         if self.index_vectors.shape[1] != emb.shape[0]:
             padded = np.zeros(self.index_vectors.shape[1], dtype=np.float32)
-            padded[: emb.shape[0]] = emb / (np.linalg.norm(emb) or 1.0)
+            padded[: emb.shape[0]] = emb
             query_vec = padded
         else:
             query_vec = emb

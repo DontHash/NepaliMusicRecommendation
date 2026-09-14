@@ -61,6 +61,12 @@ CREATE TABLE IF NOT EXISTS pages (
     discovered_at TEXT NOT NULL DEFAULT (datetime('now')),
     fetched_at TEXT
 );
+CREATE TABLE IF NOT EXISTS harvested_artists (
+    name TEXT PRIMARY KEY,
+    records INTEGER NOT NULL DEFAULT 0,
+    lyrics_saved INTEGER NOT NULL DEFAULT 0,
+    fetched_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 CREATE INDEX IF NOT EXISTS idx_candidates_status ON candidates(status);
 CREATE INDEX IF NOT EXISTS idx_pages_domain_status ON pages(domain, status);
 CREATE INDEX IF NOT EXISTS idx_lyrics_sha ON lyrics(lyrics_sha256);
@@ -353,3 +359,32 @@ def page_stats(conn: sqlite3.Connection) -> dict:
     for row in rows:
         out.setdefault(row["domain"], {})[row["status"]] = row["n"]
     return out
+
+
+def mark_harvested(conn: sqlite3.Connection, name: str, records: int = 0, lyrics_saved: int = 0) -> None:
+    conn.execute(
+        """
+        INSERT INTO harvested_artists(name, records, lyrics_saved) VALUES (?, ?, ?)
+        ON CONFLICT(name) DO UPDATE SET
+            records=excluded.records,
+            lyrics_saved=excluded.lyrics_saved,
+            fetched_at=datetime('now')
+        """,
+        (name, records, lyrics_saved),
+    )
+    conn.commit()
+
+
+def harvested_names(conn: sqlite3.Connection) -> set[str]:
+    return {row["name"] for row in conn.execute("SELECT name FROM harvested_artists")}
+
+
+def harvested_stats(conn: sqlite3.Connection) -> dict:
+    row = conn.execute(
+        "SELECT COUNT(*) AS artists, SUM(records) AS records, SUM(lyrics_saved) AS lyrics FROM harvested_artists"
+    ).fetchone()
+    return {
+        "artists": row["artists"] or 0,
+        "records": row["records"] or 0,
+        "lyrics_saved": row["lyrics"] or 0,
+    }

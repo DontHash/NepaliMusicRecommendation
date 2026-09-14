@@ -22,12 +22,39 @@ from .normalize import detect_script, lyrics_sha
 from .sources import lrclib
 
 EXCLUDED_ARTISTS = {"genius romanizations", "genius translations", "genius nepali translations", "various artists"}
+GENUINE_SOURCES = ("legacy_932", "rupesh_aryal", "kaggle_genius", "site_paankopat.com", "site_songsdiary.com")
+DEFAULT_SEEDS = Path(__file__).resolve().parent / "seeds" / "nepali_artists.txt"
 
 
-def harvester_artist_list(conn) -> list[str]:
-    rows = conn.execute("SELECT DISTINCT artist FROM candidates ORDER BY artist").fetchall()
-    artists = [str(row["artist"]).strip() for row in rows]
-    return [a for a in artists if a and a.casefold() not in EXCLUDED_ARTISTS]
+def harvester_artist_list(conn, *, all_artists: bool = False, seeds_path: Path | None = None) -> list[str]:
+    if all_artists:
+        rows = conn.execute("SELECT DISTINCT artist FROM candidates ORDER BY artist").fetchall()
+    else:
+        placeholders = ",".join("?" for _ in GENUINE_SOURCES)
+        rows = conn.execute(
+            f"SELECT DISTINCT artist FROM candidates WHERE source IN ({placeholders}) ORDER BY artist",
+            GENUINE_SOURCES,
+        ).fetchall()
+    ordered: list[str] = []
+    seen: set[str] = set()
+    for row in rows:
+        name = str(row["artist"]).strip()
+        folded = name.casefold()
+        if not name or folded in EXCLUDED_ARTISTS or folded in seen:
+            continue
+        seen.add(folded)
+        ordered.append(name)
+    seeds_path = seeds_path if seeds_path is not None else DEFAULT_SEEDS
+    if seeds_path.exists():
+        for line in seeds_path.read_text(encoding="utf-8").splitlines():
+            name = line.strip()
+            folded = name.casefold()
+            if not name or name.startswith("#") or folded in seen:
+                continue
+            seen.add(folded)
+            ordered.append(name)
+    harvested = {name.casefold() for name in state.harvested_names(conn)}
+    return [name for name in ordered if name.casefold() not in harvested]
 
 
 def harvest_artist(conn, client: CachedHttp, artist: str) -> dict:
@@ -84,6 +111,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--limit", type=int, default=0, help="Max artists this run")
     parser.add_argument("--artist", type=str, default=None)
     parser.add_argument("--delay", type=float, default=0.0)
+    parser.add_argument(
+        "--all-artists",
+        action="store_true",
+        help="Use every distinct artist in the store (default: genuine sources + seeds)",
+    )
     return parser.parse_args()
 
 
@@ -92,7 +124,10 @@ def main() -> None:
     conn = state.open_db(args.db)
     state.init_db(conn)
     client = CachedHttp()
-    artists = [args.artist] if args.artist else harvester_artist_list(conn)
+    if args.artist:
+        artists = [args.artist]
+    else:
+        artists = harvester_artist_list(conn, all_artists=args.all_artists)
     if args.limit:
         artists = artists[: args.limit]
     print(f"artists to harvest: {len(artists)}")
@@ -104,6 +139,8 @@ def main() -> None:
         except Exception as exc:
             stats = {"artist": artist, "error": f"{type(exc).__name__}: {exc}", "records": 0, "new_candidates": 0, "lyrics_saved": 0, "rejected": 0, "duplicates": 0}
         state.set_meta(conn, "harvest_lrclib:last_artist", artist)
+        if "error" not in stats:
+            state.mark_harvested(conn, artist, stats.get("records", 0), stats.get("lyrics_saved", 0))
         for key in totals:
             totals[key] += stats.get(key, 0)
         per_artist.append(stats)
@@ -117,6 +154,7 @@ def main() -> None:
     path = write_report(report)
     print(json.dumps(totals, ensure_ascii=False, indent=2))
     print(f"report -> {path}")
+    print(json.dumps(state.harvested_stats(conn), ensure_ascii=False, indent=2))
     print(json.dumps(state.stats(conn), ensure_ascii=False, indent=2))
 
 
