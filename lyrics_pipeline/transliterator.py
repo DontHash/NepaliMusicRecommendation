@@ -1,10 +1,16 @@
-"""Optional char-transformer transliteration for romanized Nepali tokens."""
+"""Optional char-transformer transliteration for romanized Nepali tokens.
+
+Decoding is batched across words (and across beam hypotheses) so a whole
+song can be transliterated in a handful of model calls instead of one
+model call per word.
+"""
 
 from __future__ import annotations
 
 import pickle
 import re
 import unicodedata
+from collections import OrderedDict
 from pathlib import Path
 
 from .patterns import DEVANAGARI_RE, ROMAN_TOKEN_RE
@@ -13,6 +19,7 @@ try:
     import torch
     import torch.nn as nn
     import torch.nn.functional as F
+    from torch.nn.utils.rnn import pad_sequence
 
     TORCH_AVAILABLE = True
 except ImportError:  # pragma: no cover - optional dependency
@@ -70,14 +77,32 @@ class CharTransformer(nn.Module):
         self.positional_encoding = PositionalEncoding(
             embed_dim, dropout=dropout, max_len=max(src_max_len, tgt_max_len) + 16
         )
-        self.transformer = nn.Transformer(
+        encoder_layer = nn.TransformerEncoderLayer(
             d_model=embed_dim,
             nhead=num_heads,
-            num_encoder_layers=num_encoder_layers,
-            num_decoder_layers=num_decoder_layers,
             dim_feedforward=ff_dim,
             dropout=dropout,
             batch_first=True,
+        )
+        decoder_layer = nn.TransformerDecoderLayer(
+            d_model=embed_dim,
+            nhead=num_heads,
+            dim_feedforward=ff_dim,
+            dropout=dropout,
+            batch_first=True,
+        )
+        # Container keeps the ``transformer.encoder/decoder`` state-dict keys
+        # of the trained checkpoints. Nested tensors are disabled: the
+        # prototype ragged path is slow on CPU and adds nothing here.
+        self.transformer = nn.Module()
+        self.transformer.encoder = nn.TransformerEncoder(
+            encoder_layer,
+            num_encoder_layers,
+            norm=nn.LayerNorm(embed_dim),
+            enable_nested_tensor=False,
+        )
+        self.transformer.decoder = nn.TransformerDecoder(
+            decoder_layer, num_decoder_layers, norm=nn.LayerNorm(embed_dim)
         )
         self.output_layer = nn.Linear(embed_dim, vocab_size)
 
@@ -93,71 +118,107 @@ class CharTransformer(nn.Module):
         memory = self.transformer.encoder(src_emb, src_key_padding_mask=src_padding_mask)
         return memory, src_padding_mask
 
-    def decode_step(self, tgt, memory, memory_padding_mask):
+    def decode_step(self, tgt, memory, memory_padding_mask=None):
         tgt_emb = self.positional_encoding(self.embedding(tgt))
         tgt_mask = self.make_causal_mask(tgt.size(1), tgt.device)
-        tgt_padding_mask = self.make_padding_mask(tgt)
         decoded = self.transformer.decoder(
             tgt=tgt_emb,
             memory=memory,
             tgt_mask=tgt_mask,
-            tgt_key_padding_mask=tgt_padding_mask,
             memory_key_padding_mask=memory_padding_mask,
         )
         return self.output_layer(decoded)
 
-    def beam_search_decode(self, src, beam_size=5, max_len=None):
-        max_len = max_len or self.tgt_max_len
-        memory, src_padding_mask = self.encode(src)
-        beams = [(torch.tensor([[self.sos_id]], device=src.device), 0.0, False)]
-        completed = []
+    def greedy_decode_batch(self, src, max_len=None):
+        """Greedy decode a batch of sources with one decoder pass per step.
 
-        for _ in range(max_len - 1):
-            candidates = []
-            for sequence, score, done in beams:
-                if done:
-                    candidates.append((sequence, score, True))
-                    continue
-                logits = self.decode_step(sequence, memory, src_padding_mask)
-                log_probs = F.log_softmax(logits[:, -1], dim=-1)
-                topk_log_probs, topk_ids = torch.topk(log_probs, beam_size, dim=-1)
-                for rank in range(beam_size):
-                    token_id = topk_ids[0, rank].item()
-                    token_score = topk_log_probs[0, rank].item()
-                    new_sequence = torch.cat(
-                        [sequence, torch.tensor([[token_id]], device=src.device)], dim=1
-                    )
-                    candidates.append((new_sequence, score + token_score, token_id == self.eos_id))
-
-            candidates.sort(key=lambda item: item[1], reverse=True)
-            beams = []
-            for sequence, score, done in candidates:
-                if done:
-                    completed.append((sequence, score))
-                else:
-                    beams.append((sequence, score, False))
-                if len(beams) >= beam_size:
+        Rows that hit <eos> are frozen (padded) so the batch always advances
+        in lock-step; the frozen tail is never emitted.
+        """
+        max_len = max(max_len or self.tgt_max_len, 2)
+        batch = src.size(0)
+        with torch.inference_mode():
+            memory, src_padding_mask = self.encode(src)
+            gen = torch.full((batch, 1), self.sos_id, dtype=torch.long, device=src.device)
+            done = torch.zeros(batch, 1, dtype=torch.bool, device=src.device)
+            for _ in range(max_len - 1):
+                logits = self.decode_step(gen, memory, src_padding_mask)
+                next_token = logits[:, -1].argmax(dim=-1, keepdim=True)
+                done = done | (next_token == self.eos_id)
+                next_token = torch.where(
+                    done, torch.full_like(next_token, self.pad_id), next_token
+                )
+                gen = torch.cat([gen, next_token], dim=1)
+                if bool(done.all()):
                     break
-            if not beams:
-                break
+            return gen
 
-        if completed:
-            completed.sort(key=lambda item: item[1] / max(item[0].size(1), 1), reverse=True)
-            return completed[0][0]
-        beams.sort(key=lambda item: item[1] / max(item[0].size(1), 1), reverse=True)
-        return beams[0][0]
+    def beam_search_decode_batch(self, src, beam_size=5, max_len=None):
+        """Vectorized beam search over a batch of sources.
+
+        All beam hypotheses of all batch rows are decoded in a single
+        decoder pass per step. Finished beams are parked with frozen
+        scores (like a ``completed`` list) and never expanded again; the
+        final choice is the best length-normalized score across all
+        parked and live beams.
+        """
+        max_len = max(max_len or self.tgt_max_len, 2)
+        batch = src.size(0)
+        vocab_size = None
+        with torch.inference_mode():
+            memory, src_padding_mask = self.encode(src)  # (B, S, d), (B, S)
+            memory = memory.repeat_interleave(beam_size, dim=0)
+            src_padding_mask = src_padding_mask.repeat_interleave(beam_size, dim=0)
+
+            device = src.device
+            seqs = torch.full((batch, beam_size, 1), self.sos_id, dtype=torch.long, device=device)
+            scores = torch.zeros(batch, beam_size, device=device)
+            done = torch.zeros(batch, beam_size, dtype=torch.bool, device=device)
+            lengths = torch.ones(batch, beam_size, device=device)
+
+            for step in range(max_len - 1):
+                flat = seqs.reshape(batch * beam_size, seqs.size(-1))
+                logits = self.decode_step(flat, memory, src_padding_mask)
+                lp = F.log_softmax(logits[:, -1], dim=-1)
+                vocab_size = lp.size(-1)
+                lp = lp.reshape(batch, beam_size, vocab_size)
+
+                # Finished beams are parked: they never win slots again.
+                cand = scores.unsqueeze(-1) + lp
+                cand = torch.where(
+                    done.unsqueeze(-1),
+                    torch.full_like(cand, float("-inf")),
+                    cand,
+                )
+                flat_scores = cand.reshape(batch, beam_size * vocab_size)
+                top_scores, top_idx = torch.topk(flat_scores, beam_size, dim=1)
+                prev = top_idx // vocab_size
+                tok = top_idx % vocab_size
+
+                chosen = seqs.gather(1, prev.unsqueeze(-1).expand(-1, -1, seqs.size(-1)))
+                seqs = torch.cat([chosen, tok.unsqueeze(-1)], dim=-1)
+                scores = top_scores
+
+                newly_done = tok == self.eos_id
+                lengths = torch.where(newly_done, torch.full_like(lengths, float(seqs.size(-1))), lengths)
+                done = done | newly_done
+                if bool(done.all()):
+                    break
+
+            # Non-finished beams normalize by their actual length.
+            lengths = torch.where(done, lengths, torch.full_like(lengths, float(seqs.size(-1))))
+            norm = scores / lengths
+            best = norm.argmax(dim=1)
+            out = seqs.gather(
+                1, best.unsqueeze(-1).unsqueeze(-1).expand(-1, -1, seqs.size(-1))
+            ).squeeze(1)
+            return out
 
     def greedy_decode(self, src, max_len=None):
-        max_len = max_len or self.tgt_max_len
-        memory, src_padding_mask = self.encode(src)
-        generated = torch.full((src.size(0), 1), self.sos_id, dtype=torch.long, device=src.device)
-        for _ in range(max_len - 1):
-            logits = self.decode_step(generated, memory, src_padding_mask)
-            next_token = logits[:, -1].argmax(dim=-1, keepdim=True)
-            generated = torch.cat([generated, next_token], dim=1)
-            if torch.all(next_token.squeeze(1) == self.eos_id):
-                break
-        return generated
+        return self.greedy_decode_batch(src, max_len=max_len)[0:1]
+
+    def beam_search_decode(self, src, beam_size=5, max_len=None):
+        return self.beam_search_decode_batch(src, beam_size=beam_size, max_len=max_len)[0:1]
 
 
 class NepaliTransliterator:
@@ -170,15 +231,19 @@ class NepaliTransliterator:
         beam_size: int = 5,
         device: str | None = None,
         decode: str = "greedy",
+        batch_size: int = 256,
+        cache_size: int = 200_000,
     ):
         self.beam_size = beam_size
         self.decode = decode
+        self.batch_size = max(batch_size, 1)
         self.model = None
         self.char_to_id = None
         self.id_to_char = None
         self.special_tokens = None
         self.device = None
-        self._word_cache: dict[str, str] = {}
+        self._word_cache: OrderedDict[str, tuple[list[int], str]] = OrderedDict()
+        self._cache_size = max(cache_size, 1)
 
         if not TORCH_AVAILABLE:
             return
@@ -268,34 +333,106 @@ class NepaliTransliterator:
 
     def _ids_to_text(self, ids) -> str:
         chars = []
+        table = self.id_to_char
+        is_list = isinstance(table, list)
         for idx in ids:
-            token = self.id_to_char[int(idx)]
-            if token == "<eos>":
+            idx = int(idx)
+            if idx == self._pad_id or idx == self._eos_id:
                 break
-            if token in self.special_tokens:
+            if is_list:
+                token = table[idx] if 0 <= idx < len(table) else ""
+            else:
+                token = table.get(idx, "")
+            if not token or token in self.special_tokens:
                 continue
             chars.append(token)
         return "".join(chars)
+
+    def _cache_get(self, key: str) -> tuple[list[int], str] | None:
+        hit = self._word_cache.get(key)
+        if hit is not None:
+            self._word_cache.move_to_end(key)
+        return hit
+
+    def _cache_put(self, key: str, value: tuple[list[int], str]) -> None:
+        self._word_cache[key] = value
+        self._word_cache.move_to_end(key)
+        while len(self._word_cache) > self._cache_size:
+            self._word_cache.popitem(last=False)
+
+    def _decode_batch(self, id_lists: list[list[int]]) -> list[str]:
+        """Decode id-lists in dense length-sorted batches.
+
+        Words are sorted by source length and chunked so each batch only
+        pads to its own chunk maximum (bounded padding). Nested tensors are
+        disabled at construction, so the boolean padding masks run through
+        the plain dense path and results stay bit-identical to per-word
+        decoding while amortizing per-call overhead across ~batch_size words.
+        """
+        results: list[str] = [""] * len(id_lists)
+        order = sorted(range(len(id_lists)), key=lambda i: len(id_lists[i]))
+
+        for start in range(0, len(order), self.batch_size):
+            chunk = order[start : start + self.batch_size]
+            src = pad_sequence(
+                [torch.tensor(id_lists[i], dtype=torch.long) for i in chunk],
+                batch_first=True,
+                padding_value=self._pad_id,
+            ).to(self.device)
+            with torch.inference_mode():
+                if self.decode == "beam":
+                    decoded = self.model.beam_search_decode_batch(src, beam_size=self.beam_size)
+                else:
+                    decoded = self.model.greedy_decode_batch(src)
+            for rank, i in enumerate(chunk):
+                results[i] = self._ids_to_text(decoded[rank].tolist())
+        return results
+
+    def transliterate_tokens(self, tokens: list[str]) -> list[str]:
+        """Transliterate a list of tokens, batching unknown words together.
+
+        Non-roman tokens (Devanagari, digits, punctuation) are returned
+        unchanged. Cached words never touch the model.
+        """
+        tokens = list(tokens)
+        out: list[str] = [""] * len(tokens)
+        fresh: list[tuple[int, str]] = []
+        for i, tok in enumerate(tokens):
+            if not tok or not ROMAN_TOKEN_RE.fullmatch(tok):
+                out[i] = tok
+                continue
+            key = tok.lower()
+            hit = self._cache_get(key)
+            if hit is not None:
+                out[i] = hit[1]
+            else:
+                fresh.append((i, key))
+
+        if not fresh:
+            return out
+        if not self.available:
+            for i, _ in fresh:
+                out[i] = tokens[i]
+            return out
+
+        seen: dict[str, list[int]] = {}
+        for i, key in fresh:
+            seen.setdefault(key, []).append(i)
+        keys = list(seen)
+        id_lists = [self._text_to_ids(key) for key in keys]
+        decoded = self._decode_batch(id_lists)
+        for rank, key in enumerate(keys):
+            self._cache_put(key, (id_lists[rank], decoded[rank]))
+            for i in seen[key]:
+                out[i] = decoded[rank]
+        return out
 
     def transliterate_word(self, word: str) -> str:
         if not word or not ROMAN_TOKEN_RE.search(word):
             return word
         if not self.available:
             return word
-
-        key = word.lower()
-        if key in self._word_cache:
-            return self._word_cache[key]
-
-        src_ids = torch.tensor(self._text_to_ids(word), dtype=torch.long).unsqueeze(0).to(self.device)
-        with torch.no_grad():
-            if self.decode == "beam":
-                output_ids = self.model.beam_search_decode(src_ids, beam_size=self.beam_size)[0].tolist()
-            else:
-                output_ids = self.model.greedy_decode(src_ids)[0].tolist()
-        result = self._ids_to_text(output_ids)
-        self._word_cache[key] = result
-        return result
+        return self.transliterate_tokens([word])[0]
 
     def transliterate_line(self, line: str) -> str:
         if not line:
@@ -304,13 +441,31 @@ class NepaliTransliterator:
             return line
 
         parts = re.findall(r"[A-Za-z]+|[^A-Za-z]+", line)
-        converted = []
-        for part in parts:
-            if ROMAN_TOKEN_RE.fullmatch(part):
-                converted.append(self.transliterate_word(part))
-            else:
-                converted.append(part)
-        return "".join(converted)
+        roman_positions = [i for i, part in enumerate(parts) if ROMAN_TOKEN_RE.fullmatch(part)]
+        if not roman_positions:
+            return line
+        converted = self.transliterate_tokens([parts[i] for i in roman_positions])
+        for pos, result in zip(roman_positions, converted):
+            parts[pos] = result
+        return "".join(parts)
 
     def transliterate_text(self, text: str) -> str:
-        return "\n".join(self.transliterate_line(line) for line in text.splitlines())
+        """Transliterate multi-line text with one shared batch per call."""
+        if not text:
+            return text
+        lines = text.splitlines()
+        parts_per_line: list[list[str]] = []
+        roman_jobs: list[tuple[int, int, str]] = []
+        for line_index, line in enumerate(lines):
+            parts = re.findall(r"[A-Za-z]+|[^A-Za-z]+", line)
+            parts_per_line.append(parts)
+            for part_index, part in enumerate(parts):
+                if ROMAN_TOKEN_RE.fullmatch(part):
+                    roman_jobs.append((line_index, part_index, part))
+        if not roman_jobs:
+            return text
+
+        converted = self.transliterate_tokens([job[2] for job in roman_jobs])
+        for (line_index, part_index, _), result in zip(roman_jobs, converted):
+            parts_per_line[line_index][part_index] = result
+        return "\n".join("".join(parts) for parts in parts_per_line)

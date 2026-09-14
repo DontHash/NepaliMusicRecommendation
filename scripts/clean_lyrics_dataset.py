@@ -32,6 +32,12 @@ def parse_args() -> argparse.Namespace:
         help="Only clean metadata/noise; do not romanize to Devanagari",
     )
     parser.add_argument("--beam-size", type=int, default=5, help="Beam size for transliteration")
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=256,
+        help="Words per model call when transliterating (higher = faster, more memory)",
+    )
     return parser.parse_args()
 
 
@@ -41,6 +47,7 @@ def main() -> None:
         checkpoint_path=args.checkpoint,
         vocab_path=args.vocab,
         beam_size=args.beam_size,
+        batch_size=args.batch_size,
     )
 
     pipeline = LyricsCleaningPipeline(

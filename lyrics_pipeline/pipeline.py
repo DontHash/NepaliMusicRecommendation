@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
@@ -98,7 +99,8 @@ class LyricsCleaningPipeline:
     ) -> dict:
         input_csv = Path(input_csv)
         output_csv = Path(output_csv)
-        rows = list(csv.DictReader(open(input_csv, encoding="utf-8", newline="")))
+        with open(input_csv, encoding="utf-8", newline="") as f:
+            rows = list(csv.DictReader(f))
 
         results = []
         for row in tqdm(rows, desc="Processing lyrics", unit="song"):
@@ -117,7 +119,10 @@ class LyricsCleaningPipeline:
             "transliterated",
         ]
 
-        with open(output_csv, "w", encoding="utf-8", newline="") as f:
+        # Write to a temp file and atomically replace so a crash mid-write
+        # never leaves a truncated/corrupt output CSV.
+        tmp_output = output_csv.with_name(output_csv.name + ".tmp")
+        with open(tmp_output, "w", encoding="utf-8", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             for result in results:
@@ -134,6 +139,7 @@ class LyricsCleaningPipeline:
                         "transliterated": int(result.transliterated),
                     }
                 )
+        os.replace(tmp_output, output_csv)
 
         summary = self._build_report(results)
         if report_json:

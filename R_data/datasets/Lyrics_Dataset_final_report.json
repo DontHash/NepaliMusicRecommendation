@@ -1,0 +1,49 @@
+{
+  "total_rows": 942,
+  "empty_after_cleaning": 0,
+  "transliterated_rows": 483,
+  "rows_still_with_roman_letters": 0,
+  "transliterator_loaded": true,
+  "noise_actions": {
+    "removed_noise": 5217,
+    "transliterated_roman_tokens": 483
+  },
+  "samples": [
+    {
+      "title_clean": "Euta Mancheko",
+      "artist_clean": "Narayan Gopal",
+      "first_lines": [
+        "एउटा मान्छेको मायाले",
+        "कति",
+        "फरक पर्दछ जिन्दगीमा",
+        "एउटा मान्छेको मायाले",
+        "कति",
+        "फरक पर्दछ जिन्दगीमा"
+      ]
+    },
+    {
+      "title_clean": "गाउँछ गीत नेपाली (Gaucha Geet Nepali)",
+      "artist_clean": "Madhav prasad ghimire",
+      "first_lines": [
+        "जय, जय, जय नेपाल, सुन्दर, शान्त, बिशाल",
+        "सुन्दर, शान्त, बिशाल",
+        "जय, जय, जय नेपाल, सुन्दर, शान्त, बिशाल",
+        "सुन्दर, शान्त, बिशाल",
+        "गण्डकी, कोसी, कर्णाली, मेची, र महाकाली",
+        "लेक र बेसी बिउझाउँछन्, लहर लाखौँ उचाली"
+      ]
+    },
+    {
+      "title_clean": "KT Nepali",
+      "artist_clean": "SACAR aka Lil Buddha & Chintu",
+      "first_lines": [
+        "मलाई मान पर्चा केटी नेपाली",
+        "गाउ गोरी काली उसको ओठ मा लाली",
+        "अली अली नख्र उसको चाला बिराली",
+        "घुम्टो त्यो हाली आहा केटी नेपाली",
+        "हाम्रो घर चेउ को घर मा बस्ने केटी सराई पोट",
+        "साझ जोगिङ अनि जिएम चाई ब्याना को साधे दास"
+      ]
+    }
+  ]
+}
