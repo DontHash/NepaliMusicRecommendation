@@ -16,3 +16,15 @@ indic-nlp-library
 
 # Progress
 tqdm
+
+# --- Phase A: corpus collection ---
+requests
+scrapling[fetchers]==0.4.15
+syncedlyrics==1.0.1
+lyricsgenius>=3.12.2
+pylast>=7.1.0
+rapidfuzz>=3.14
+datasketch>=2.0
+
+# Tests
+pytest>=8

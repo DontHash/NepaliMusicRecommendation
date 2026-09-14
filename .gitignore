@@ -79,3 +79,8 @@ R_data/**/*.gz
 
 # Jupyter checkpoints
 .ipynb_checkpoints/
+
+# --- Phase A data collection (large / generated) ---
+R_data/raw/
+R_data/state/
+R_data/corpus/
