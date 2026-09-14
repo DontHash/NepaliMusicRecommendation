@@ -88,9 +88,33 @@ class CachedHttp:
             self._write_cache(cache_file, result.data, url)
         return result
 
-    def _request(self, url: str, params: dict | None, timeout) -> HttpResult:
+    def get_text(self, source: str, url: str, params: dict | None = None, refresh: bool = False, timeout=None) -> str | None:
+        if params:
+            result = self._request(url, params, timeout, parse="text")
+            return result.data if result.ok and isinstance(result.data, str) else None
+        cache_file = self.cache_path(source, url).with_suffix(".txt")
+        if cache_file.exists() and not refresh:
+            try:
+                return cache_file.read_text(encoding="utf-8")
+            except OSError:
+                pass
+        try:
+            result = self._request(url, params, timeout, parse="text")
+        except CircuitOpenError:
+            return None
+        if result.ok and result.status == 200 and isinstance(result.data, str):
+            cache_file.parent.mkdir(parents=True, exist_ok=True)
+            tmp = cache_file.with_suffix(".txt.tmp")
+            tmp.write_text(result.data, encoding="utf-8")
+            tmp.replace(cache_file)
+            self._append_index({"kind": "text", "url": url, "path": str(cache_file)})
+            return result.data
+        return None
+
+    def _request(self, url: str, params: dict | None, timeout, parse: str = "json") -> HttpResult:
         host = _host_of(url)
         self._check_circuit(host)
+        accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" if parse == "text" else "application/json"
         last_error = "request_failed"
         for attempt in range(1, cfg.MAX_RETRIES + 1):
             self._wait_for_slot(host)
@@ -98,7 +122,7 @@ class CachedHttp:
                 response = self.session.get(
                     url,
                     params=params,
-                    headers={"User-Agent": cfg.USER_AGENT, "Accept": "application/json"},
+                    headers={"User-Agent": cfg.USER_AGENT, "Accept": accept},
                     timeout=timeout or (cfg.CONNECT_TIMEOUT, cfg.READ_TIMEOUT),
                 )
             except requests.RequestException as exc:
@@ -120,6 +144,8 @@ class CachedHttp:
                 self._note_failure(host)
                 return HttpResult(ok=False, status=response.status_code, error=f"http_{response.status_code}", url=url)
             self._note_success(host)
+            if parse == "text":
+                return HttpResult(ok=True, status=response.status_code, data=response.text, url=url)
             try:
                 return HttpResult(ok=True, status=response.status_code, data=response.json(), url=url)
             except ValueError as exc:

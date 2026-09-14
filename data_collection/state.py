@@ -50,7 +50,18 @@ CREATE TABLE IF NOT EXISTS meta (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS pages (
+    url TEXT PRIMARY KEY,
+    domain TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'new',
+    title TEXT,
+    artist TEXT,
+    candidate_id INTEGER,
+    discovered_at TEXT NOT NULL DEFAULT (datetime('now')),
+    fetched_at TEXT
+);
 CREATE INDEX IF NOT EXISTS idx_candidates_status ON candidates(status);
+CREATE INDEX IF NOT EXISTS idx_pages_domain_status ON pages(domain, status);
 CREATE INDEX IF NOT EXISTS idx_lyrics_sha ON lyrics(lyrics_sha256);
 """
 
@@ -264,3 +275,55 @@ def candidate_has_lyrics(conn: sqlite3.Connection, candidate_id: int) -> bool:
 
 def existing_dedupe_keys(conn: sqlite3.Connection) -> set[str]:
     return {row["dedupe_key"] for row in conn.execute("SELECT dedupe_key FROM candidates")}
+
+
+def register_pages(conn: sqlite3.Connection, urls: list[str], domain: str) -> int:
+    before = conn.total_changes
+    conn.executemany(
+        "INSERT OR IGNORE INTO pages(url, domain) VALUES (?, ?)",
+        [(url, domain) for url in urls],
+    )
+    conn.commit()
+    return conn.total_changes - before
+
+
+def next_pages(conn: sqlite3.Connection, domain: str | None = None, limit: int | None = None, status: str = "new") -> list[sqlite3.Row]:
+    query = "SELECT * FROM pages WHERE status=?"
+    params: list = [status]
+    if domain:
+        query += " AND domain=?"
+        params.append(domain)
+    query += " ORDER BY url"
+    if limit:
+        query += " LIMIT ?"
+        params.append(limit)
+    return conn.execute(query, params).fetchall()
+
+
+def mark_page(
+    conn: sqlite3.Connection,
+    url: str,
+    status: str,
+    *,
+    candidate_id: int | None = None,
+    title: str | None = None,
+    artist: str | None = None,
+) -> None:
+    conn.execute(
+        """
+        UPDATE pages SET status=?, candidate_id=COALESCE(?, candidate_id),
+               title=COALESCE(?, title), artist=COALESCE(?, artist),
+               fetched_at=datetime('now')
+        WHERE url=?
+        """,
+        (status, candidate_id, title, artist, url),
+    )
+    conn.commit()
+
+
+def page_stats(conn: sqlite3.Connection) -> dict:
+    rows = conn.execute("SELECT domain, status, COUNT(*) AS n FROM pages GROUP BY domain, status").fetchall()
+    out: dict[str, dict[str, int]] = {}
+    for row in rows:
+        out.setdefault(row["domain"], {})[row["status"]] = row["n"]
+    return out
