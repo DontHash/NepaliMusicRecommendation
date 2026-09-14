@@ -25,6 +25,10 @@ RATE_LIMITS: dict[str, float] = {
     "api.genius.com": 1.0,
     "ws.audioscrobbler.com": 4.0,
     "musicbrainz.org": 1.0,
+    "nepalilyrics.net": 0.4,
+    "nepaligeetlyrics.com": 0.5,
+    "blogspot.com": 0.5,
+    "nepali-songslyrics.com": 0.5,
     "default": 0.5,
 }
 

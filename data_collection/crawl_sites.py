@@ -14,11 +14,26 @@ from .fetch import acceptable
 from .http import CachedHttp
 from .models import Candidate, LyricsHit
 from .normalize import detect_script, lyrics_sha
-from .sites import paankopat, songsdiary
+from .sites import blogger_atom, nepalilyrics, paankopat, songsdiary, wordpress_api
 
 SITES = {
     "songsdiary": songsdiary,
     "paankopat": paankopat,
+    "nepalilyrics": nepalilyrics,
+    "nepaligeetlyrics": wordpress_api.make_adapter(
+        domain="nepaligeetlyrics.com",
+        base="https://nepaligeetlyrics.com",
+    ),
+    "geetishabda": blogger_atom.make_adapter(
+        domain="geetishabda.blogspot.com",
+        base="https://geetishabda.blogspot.com",
+        style="devanagari_marker",
+    ),
+    "nepali-songslyrics": blogger_atom.make_adapter(
+        domain="nepali-songslyrics.com",
+        base="https://www.nepali-songslyrics.com",
+        style="credit_block",
+    ),
 }
 
 
@@ -43,14 +58,21 @@ def crawl_site(
         "parse_failed": 0,
         "fetch_failed": 0,
     }
-    urls = module.discover(client, max_pages=max_pages)
+    if hasattr(module, "iter_pages"):
+        prefetched = dict(module.iter_pages(client, max_pages=max_pages))
+        urls = sorted(prefetched)
+    else:
+        prefetched = {}
+        urls = module.discover(client, max_pages=max_pages)
     stats["discovered"] = len(urls)
     stats["new_pages"] = state.register_pages(conn, urls, domain=domain)
     rows = state.next_pages(conn, domain=domain, limit=limit or None, status="new")
     print(f"[{domain}] discovered={len(urls)} new_pages={stats['new_pages']} to_process={len(rows)}")
     for index, row in enumerate(rows, start=1):
         url = row["url"]
-        html = client.get_text(f"site_{domain}", url)
+        html = prefetched.get(url)
+        if not html:
+            html = client.get_text(f"site_{domain}", url)
         if not html:
             state.mark_page(conn, url, "fetch_failed")
             stats["fetch_failed"] += 1
