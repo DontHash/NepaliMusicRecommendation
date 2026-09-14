@@ -163,7 +163,7 @@ def test_bootstrap_import_filters_and_dedupes(tmp_path):
     conn = state.open_db(paths.db)
     state.init_db(conn)
     rows = [
-        {"Artist": "A", "Song Title": "One", "Lyrics": "माया लाग्छ " * 30},
+        {"Artist": "A", "Song Title": "One", "Lyrics": "माया लाग्छ " * 30, "Year": "2005"},
         {"Artist": "A", "Song Title": "Two", "Lyrics": ""},
         {"Artist": "B", "Song Title": "Three", "Lyrics": "hello world " * 30},
         {"Artist": "A", "Song Title": "One", "Lyrics": "माया लाग्छ " * 30},
@@ -175,6 +175,8 @@ def test_bootstrap_import_filters_and_dedupes(tmp_path):
     assert report["skipped_other_script"] == 1
     assert report["skipped_duplicate_sha"] == 1
     assert state.stats(conn)["lyrics_total"] == 1
+    extra = conn.execute("SELECT extra_json FROM candidates").fetchone()["extra_json"]
+    assert "2005" in extra
 
 
 def test_bootstrap_import_treated_as_nepali_keeps_romanized(tmp_path):

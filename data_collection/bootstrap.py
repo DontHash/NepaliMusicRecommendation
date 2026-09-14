@@ -21,6 +21,7 @@ ARTIST_KEYS = ("artist", "artist_clean")
 TITLE_KEYS = ("title", "song title", "title_clean", "name")
 LYRICS_KEYS = ("lyrics", "lyrics_devanagari", "text")
 CATEGORY_KEYS = ("category",)
+EXTRA_KEYS = ("year", "views", "tag", "language", "language_2", "id", "album")
 
 
 def _pick(row: dict, keys: tuple[str, ...]) -> str:
@@ -95,11 +96,14 @@ def import_rows(
         seen_sha.add(sha)
 
         category = _pick(row, CATEGORY_KEYS)
+        extra = {key: value for key in EXTRA_KEYS if (value := _pick(row, (key,)))}
+        if category:
+            extra["category"] = category
         candidate = Candidate(
             source=source,
             artist=artist,
             title=title,
-            extra={"category": category} if category else {},
+            extra=extra,
         )
         added, _dupes = state.enqueue(conn, [candidate])
         if added:
@@ -144,11 +148,20 @@ def run_legacy(conn, csv_path: Path, limit: int | None = None) -> dict:
     return report
 
 
+def run_kaggle(conn, csv_path: Path, limit: int | None = None) -> dict:
+    rows = read_rows(csv_path, limit=limit)
+    report = import_rows(conn, rows, source="kaggle_genius", stage="kaggle_genius")
+    report["input"] = str(csv_path)
+    report["input_sha256"] = _sha256_file(csv_path)
+    return report
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Import bootstrap corpora into the work queue.")
-    parser.add_argument("target", choices=["rupesh", "legacy", "all"])
+    parser.add_argument("target", choices=["rupesh", "legacy", "kaggle", "all"])
     parser.add_argument("--rupesh-csv", type=Path, default=cfg.DEFAULT_PATHS.raw / "bootstrap" / "rupesh_aryal_cleaned.csv")
     parser.add_argument("--legacy-csv", type=Path, default=cfg.PROJECT_ROOT / "music_rec_artifacts" / "cleaned_lyrics.csv")
+    parser.add_argument("--kaggle-csv", type=Path, default=cfg.DEFAULT_PATHS.raw / "kaggle" / "genius_ne.csv")
     parser.add_argument("--db", type=Path, default=cfg.DEFAULT_PATHS.db)
     parser.add_argument("--limit", type=int, default=0)
     return parser.parse_args()
@@ -168,6 +181,10 @@ def main() -> None:
         if not args.legacy_csv.exists():
             raise SystemExit(f"missing input: {args.legacy_csv}")
         reports.append(("legacy", run_legacy(conn, args.legacy_csv, limit)))
+    if args.target in {"kaggle", "all"}:
+        if not args.kaggle_csv.exists():
+            raise SystemExit(f"missing input: {args.kaggle_csv}")
+        reports.append(("kaggle", run_kaggle(conn, args.kaggle_csv, limit)))
     for name, report in reports:
         path = write_report(report, name=f"bootstrap_{name}")
         print(json.dumps(report, ensure_ascii=False, indent=2))
