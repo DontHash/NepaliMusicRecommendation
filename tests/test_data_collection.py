@@ -5,7 +5,7 @@ from __future__ import annotations
 import random
 
 from data_collection import config as dc_config
-from data_collection import normalize, state
+from data_collection import bootstrap, normalize, state
 from data_collection.http import CachedHttp
 from data_collection.models import Candidate, LyricsHit
 
@@ -156,3 +156,32 @@ def test_meta_roundtrip(tmp_path):
     state.set_meta(conn, "run_id", "abc")
     assert state.get_meta(conn, "run_id") == "abc"
     assert state.get_meta(conn, "missing", "fallback") == "fallback"
+
+
+def test_bootstrap_import_filters_and_dedupes(tmp_path):
+    paths = make_paths(tmp_path)
+    conn = state.open_db(paths.db)
+    state.init_db(conn)
+    rows = [
+        {"Artist": "A", "Song Title": "One", "Lyrics": "माया लाग्छ " * 30},
+        {"Artist": "A", "Song Title": "Two", "Lyrics": ""},
+        {"Artist": "B", "Song Title": "Three", "Lyrics": "hello world " * 30},
+        {"Artist": "A", "Song Title": "One", "Lyrics": "माया लाग्छ " * 30},
+    ]
+    report = bootstrap.import_rows(conn, rows, source="test", stage="test_stage")
+    assert report["added_candidates"] == 1
+    assert report["lyrics_saved"] == 1
+    assert report["skipped_empty"] == 1
+    assert report["skipped_other_script"] == 1
+    assert report["skipped_duplicate_sha"] == 1
+    assert state.stats(conn)["lyrics_total"] == 1
+
+
+def test_bootstrap_import_treated_as_nepali_keeps_romanized(tmp_path):
+    paths = make_paths(tmp_path)
+    conn = state.open_db(paths.db)
+    state.init_db(conn)
+    rows = [{"Artist": "B", "Song Title": "Three", "Lyrics": "maya lagcha " * 30}]
+    report = bootstrap.import_rows(conn, rows, source="test", stage="test_stage", treated_as_nepali=True)
+    assert report["lyrics_saved"] == 1
+    assert state.stats(conn)["by_script"] == {"romanized": 1}

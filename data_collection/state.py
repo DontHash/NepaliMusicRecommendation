@@ -246,5 +246,14 @@ def find_by_lyrics_sha(conn: sqlite3.Connection, sha: str) -> int | None:
     return row["candidate_id"] if row else None
 
 
+def get_by_dedupe_key(conn: sqlite3.Connection, key: str) -> sqlite3.Row | None:
+    return conn.execute("SELECT * FROM candidates WHERE dedupe_key=?", (key,)).fetchone()
+
+
+def candidate_has_lyrics(conn: sqlite3.Connection, candidate_id: int) -> bool:
+    row = conn.execute("SELECT 1 FROM lyrics WHERE candidate_id=?", (candidate_id,)).fetchone()
+    return row is not None
+
+
 def existing_dedupe_keys(conn: sqlite3.Connection) -> set[str]:
     return {row["dedupe_key"] for row in conn.execute("SELECT dedupe_key FROM candidates")}
