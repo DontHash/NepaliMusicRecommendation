@@ -481,9 +481,45 @@ Read in this order to understand the flow without getting lost:
 
 ## 17. Summary
 
-ProjectR turns **messy Nepali song lyrics** into a **searchable, mood-aware catalogue**. Users can type in **Roman or Devanagari**, get **similar songs**, or **analyze** a lyric’s mood and keywords. Three model families power it: a **custom transliterator**, a **fine-tuned mood classifier**, and **off-the-shelf embeddings** with **FAISS** search and **MMR** reranking.
+ProjectR turns **messy Nepali song lyrics** into a **searchable, mood-aware catalogue**. Users can type in **Roman or Devanagari**, get **similar songs**, or **analyze** a lyric's mood and keywords. Three model families power it: a **custom transliterator**, a **fine-tuned mood classifier**, and **off-the-shelf embeddings** with **FAISS** search and **MMR** reranking.
 
 The system is **working end-to-end** on 932 songs. Growing the dataset, fixing sentiment for song domain, and adding audio are the natural next steps.
+
+---
+
+## 18. Phase A corpus expansion (data_collection/)
+
+A resumable, API-first collector now lives in `data_collection/` (SQLite WAL work
+queue, cached HTTP with retries/rate limits/circuit breaker, snapshot compaction).
+
+**Commands**
+
+```bash
+python -m data_collection.bootstrap all          # offline bootstrap corpora
+python -m data_collection.enumerate              # Deezer/iTunes candidates for seed artists
+python -m data_collection.crawl_sites            # lyric-site crawlers (sitemap/pagination)
+python -m data_collection.harvest_lrclib         # LRCLIB per-artist harvest (best-effort)
+python -m data_collection.fetch --limit 1000     # per-candidate lyrics fetch (LRCLIB)
+python -m data_collection.prune                  # drop duplicate candidates
+python -m data_collection.compact                # store -> R_data/corpus/corpus_raw.csv + snapshots
+python -m data_collection.report --samples 5     # queue stats + random samples
+```
+
+**Result (2026-09): 932 -> 2,132 clean songs** (devanagari/mixed scripts only),
+sources: RupeshAryal bootstrap (369), legacy 932 (735 unique), Kaggle Genius
+dump filter (373), paankopat.com (567), songsdiary.com (17), LRCLIB (95);
+duplicates/near-duplicates removed at compaction.
+
+**Known limits at this stage**
+
+- LRCLIB's artist-only search is unreliable (503/empty); per-candidate
+  track+artist search is the working path (resumable via `fetch --retry-missed`).
+- songsdiary.com listings are JS-driven with a robots-disallowed data endpoint:
+  needs the Scrapling browser tier (planned, not enabled).
+- The Kaggle Genius dump only contains ~1,530 Nepali-labelled rows.
+- `music_rec_artifacts/eval_v2_report.json` records the retrieval baseline
+  (artist nDCG@10 0.025, lyric 0.0, seed 0.277) - lyric-query weakness is the
+  target for the planned embedding upgrade.
 
 ---
 
