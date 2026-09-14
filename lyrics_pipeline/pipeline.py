@@ -39,6 +39,7 @@ class PipelineResult:
     char_count: int
     transliterated: bool
     cleaning_actions: list[str] = field(default_factory=list)
+    extras: dict[str, str] = field(default_factory=dict)
 
 
 class LyricsCleaningPipeline:
@@ -50,7 +51,7 @@ class LyricsCleaningPipeline:
         self.transliterator = transliterator or NepaliTransliterator()
         self.transliterate = transliterate
 
-    def process_row(self, row: dict[str, str]) -> PipelineResult:
+    def process_row(self, row: dict[str, str], extras: dict[str, str] | None = None) -> PipelineResult:
         category = (row.get("Category") or "").strip()
         title = row.get("Title") or ""
         artist = row.get("Artist") or ""
@@ -89,6 +90,7 @@ class LyricsCleaningPipeline:
             char_count=char_count,
             transliterated=did_transliterate,
             cleaning_actions=actions,
+            extras=extras or {},
         )
 
     def process_file(
@@ -96,6 +98,7 @@ class LyricsCleaningPipeline:
         input_csv: Path | str,
         output_csv: Path | str,
         report_json: Path | str | None = None,
+        extra_columns: tuple[str, ...] = (),
     ) -> dict:
         input_csv = Path(input_csv)
         output_csv = Path(output_csv)
@@ -104,7 +107,8 @@ class LyricsCleaningPipeline:
 
         results = []
         for row in tqdm(rows, desc="Processing lyrics", unit="song"):
-            results.append(self.process_row(row))
+            extras = {key: row.get(key, "") for key in extra_columns} if extra_columns else {}
+            results.append(self.process_row(row, extras))
         output_csv.parent.mkdir(parents=True, exist_ok=True)
 
         fieldnames = [
@@ -117,7 +121,7 @@ class LyricsCleaningPipeline:
             "script_style_original",
             "script_style_cleaned",
             "transliterated",
-        ]
+        ] + [key for key in extra_columns if key not in {"category", "lyrics_devanagari"}]
 
         # Write to a temp file and atomically replace so a crash mid-write
         # never leaves a truncated/corrupt output CSV.
@@ -126,19 +130,21 @@ class LyricsCleaningPipeline:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             for result in results:
-                writer.writerow(
-                    {
-                        "category": result.category,
-                        "title_clean": result.title_clean,
-                        "artist_clean": result.artist_clean,
-                        "lyrics_devanagari": result.lyrics_devanagari,
-                        "line_count": result.line_count,
-                        "char_count": result.char_count,
-                        "script_style_original": result.script_style_original,
-                        "script_style_cleaned": result.script_style_cleaned,
-                        "transliterated": int(result.transliterated),
-                    }
-                )
+                row_out = {
+                    "category": result.category,
+                    "title_clean": result.title_clean,
+                    "artist_clean": result.artist_clean,
+                    "lyrics_devanagari": result.lyrics_devanagari,
+                    "line_count": result.line_count,
+                    "char_count": result.char_count,
+                    "script_style_original": result.script_style_original,
+                    "script_style_cleaned": result.script_style_cleaned,
+                    "transliterated": int(result.transliterated),
+                }
+                for key in extra_columns:
+                    if key not in row_out:
+                        row_out[key] = result.extras.get(key, "")
+                writer.writerow(row_out)
         os.replace(tmp_output, output_csv)
 
         summary = self._build_report(results)

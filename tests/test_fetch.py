@@ -66,12 +66,22 @@ def test_acceptable_rules():
     assert acceptable(short)[1] == "too_short"
 
 
-def test_fetch_candidate_lrclib_get_hit():
+def test_fetch_candidate_lrclib_search_hit():
+    lyrics = "माया लाग्छ तिम्रो मन " * 20
+    client = FakeClient({"lrclib.net/api/search": [make_record(lyrics)]})
+    row = {"artist": "Narayan Gopal", "title": "Euta Mancheko", "duration_s": 245, "album": None}
+    hit, attempts, _ = fetch_candidate(client, row)
+    assert hit is not None and hit.stage == "lrclib"
+    assert ("lrclib_search", "hit") in attempts
+
+
+def test_fetch_candidate_lrclib_get_fallback():
     lyrics = "माया लाग्छ तिम्रो मन " * 20
     client = FakeClient({"lrclib.net/api/get": make_record(lyrics)})
     row = {"artist": "Narayan Gopal", "title": "Euta Mancheko", "duration_s": 245, "album": None}
     hit, attempts, _ = fetch_candidate(client, row)
     assert hit is not None and hit.stage == "lrclib"
+    assert ("lrclib_search", "miss") in attempts
     assert ("lrclib_get", "hit") in attempts
 
 

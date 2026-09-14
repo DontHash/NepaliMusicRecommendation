@@ -19,7 +19,7 @@ CIRCUIT_COOLDOWN_SECONDS = 300.0
 RETRY_STATUSES = frozenset({429, 500, 502, 503, 504})
 
 RATE_LIMITS: dict[str, float] = {
-    "lrclib.net": 1.0,
+    "lrclib.net": 1.5,
     "api.deezer.com": 4.0,
     "itunes.apple.com": 0.33,
     "api.genius.com": 1.0,

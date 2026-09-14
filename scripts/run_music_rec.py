@@ -21,8 +21,11 @@ def main():
         choices=["audit", "embed", "sentiment", "features", "index", "eval", "all"],
     )
     parser.add_argument("--with-sentiment", action="store_true", help="Include sentiment in 'all'")
+    parser.add_argument("--input", type=Path, default=None, help="Override raw lyrics CSV for this run")
     args = parser.parse_args()
     cfg = Config()
+    if args.input is not None:
+        cfg.raw_lyrics_csv = Path(args.input)
 
     def do_audit():
         from music_rec.data_audit import run_audit
