@@ -38,6 +38,12 @@ def parse_args() -> argparse.Namespace:
         default=256,
         help="Words per model call when transliterating (higher = faster, more memory)",
     )
+    parser.add_argument(
+        "--extra-columns",
+        nargs="+",
+        default=["source", "stage", "source_url"],
+        help="Provenance columns passed through to the output CSV",
+    )
     return parser.parse_args()
 
 
@@ -54,7 +60,12 @@ def main() -> None:
         transliterator=transliterator,
         transliterate=not args.skip_transliteration,
     )
-    summary = pipeline.process_file(args.input, args.output, args.report)
+    summary = pipeline.process_file(
+        args.input,
+        args.output,
+        args.report,
+        extra_columns=tuple(args.extra_columns),
+    )
 
     print(f"Wrote cleaned dataset: {args.output}")
     print(f"Wrote report: {args.report}")

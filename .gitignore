@@ -84,3 +84,4 @@ R_data/**/*.gz
 R_data/raw/
 R_data/state/
 R_data/corpus/
+music_rec_artifacts/backup_*/
