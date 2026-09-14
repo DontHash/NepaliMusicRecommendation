@@ -40,7 +40,7 @@ def fetch_candidate(client: CachedHttp, candidate, stages: tuple[str, ...] = ALL
     if "lrclib" in stages:
         record = None
         elapsed = 0
-        records = lrclib.search_lyrics(client, artist=artist, title=title)
+        records = lrclib.search_lyrics(client, artist=artist, title=title) or []
         attempts.append(("lrclib_search", "hit" if records else "miss"))
         record = lrclib.pick_best(records, duration=duration, artist=artist, title=title)
         if record is None and duration:

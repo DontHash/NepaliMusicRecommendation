@@ -34,7 +34,7 @@ def get_lyrics(client: CachedHttp, *, artist: str, title: str, album: str | None
     return None
 
 
-def search_lyrics(client: CachedHttp, *, artist: str | None = None, title: str | None = None, query: str | None = None) -> list[dict]:
+def search_lyrics(client: CachedHttp, *, artist: str | None = None, title: str | None = None, query: str | None = None) -> list[dict] | None:
     params: dict = {}
     if query:
         params["q"] = query
@@ -46,9 +46,11 @@ def search_lyrics(client: CachedHttp, *, artist: str | None = None, title: str |
     if not params:
         return []
     result = client.get_json(SOURCE, f"{BASE}/search", params)
-    if result.ok and isinstance(result.data, list):
-        return result.data
-    return []
+    if result.not_found:
+        return []
+    if not result.ok or not isinstance(result.data, list):
+        return None
+    return result.data
 
 
 def pick_best(records: list[dict], *, duration: int | None = None, artist: str | None = None, title: str | None = None) -> dict | None:

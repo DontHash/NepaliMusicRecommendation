@@ -60,6 +60,9 @@ def harvester_artist_list(conn, *, all_artists: bool = False, seeds_path: Path |
 def harvest_artist(conn, client: CachedHttp, artist: str) -> dict:
     stats = {"artist": artist, "records": 0, "new_candidates": 0, "lyrics_saved": 0, "rejected": 0, "duplicates": 0}
     records = lrclib.search_lyrics(client, artist=artist)
+    if records is None:
+        stats["error"] = "lrclib_unavailable"
+        return stats
     stats["records"] = len(records)
     for record in records:
         hit = lrclib.record_to_hit(record)

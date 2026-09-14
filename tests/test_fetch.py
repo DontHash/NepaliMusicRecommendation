@@ -103,6 +103,19 @@ def test_fetch_candidate_full_miss():
     assert [a[0] for a in attempts] == ["lrclib_search"]
 
 
+def test_lrclib_search_none_on_failure_empty_on_404():
+    class FailingClient:
+        def get_json(self, *args, **kwargs):
+            return HttpResult(ok=False, status=None, error="circuit_open", url="")
+
+    class NotFoundClient:
+        def get_json(self, *args, **kwargs):
+            return HttpResult(ok=False, status=404, error="not_found", url="")
+
+    assert lrclib.search_lyrics(FailingClient(), artist="X") is None
+    assert lrclib.search_lyrics(NotFoundClient(), artist="X") == []
+
+
 def test_syncedlyrics_provider_isolation(monkeypatch):
     import sys as _sys
 

@@ -22,10 +22,11 @@ SOURCE_PRIORITY = {
     "legacy_932": 0,
     "rupesh_aryal": 1,
     "kaggle_genius": 2,
-    "site_paankopat.com": 3,
-    "site_songsdiary.com": 3,
-    "deezer": 4,
-    "itunes": 5,
+    "lrclib": 3,
+    "site_paankopat.com": 4,
+    "site_songsdiary.com": 4,
+    "deezer": 5,
+    "itunes": 6,
 }
 
 
