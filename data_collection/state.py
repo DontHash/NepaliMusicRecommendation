@@ -175,6 +175,13 @@ def mark_status(conn: sqlite3.Connection, candidate_id: int, status: str, error:
     conn.commit()
 
 
+def requeue(conn: sqlite3.Connection, status: str = "missed", reset_attempts: bool = False) -> int:
+    clause = "status='new', attempt_count=0" if reset_attempts else "status='new'"
+    cur = conn.execute(f"UPDATE candidates SET {clause}, updated_at=datetime('now') WHERE status=?", (status,))
+    conn.commit()
+    return cur.rowcount
+
+
 def save_lyrics(conn: sqlite3.Connection, candidate_id: int, hit: LyricsHit) -> None:
     conn.execute(
         """
