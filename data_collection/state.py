@@ -7,6 +7,7 @@ import sqlite3
 from pathlib import Path
 
 from .models import Candidate, LyricsHit
+from .normalize import make_dedupe_key
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS candidates (
@@ -319,6 +320,31 @@ def mark_page(
         (status, candidate_id, title, artist, url),
     )
     conn.commit()
+
+
+def update_candidate_meta(conn: sqlite3.Connection, candidate_id: int, *, artist: str | None = None, title: str | None = None) -> bool:
+    row = conn.execute(
+        "SELECT artist, title, duration_s FROM candidates WHERE id=?", (candidate_id,)
+    ).fetchone()
+    if row is None:
+        return False
+    new_artist = artist or row["artist"]
+    new_title = title or row["title"]
+    new_key = make_dedupe_key(new_artist, new_title, row["duration_s"])
+    try:
+        conn.execute(
+            "UPDATE candidates SET artist=?, title=?, dedupe_key=?, updated_at=datetime('now') WHERE id=?",
+            (new_artist, new_title, new_key, candidate_id),
+        )
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError:
+        conn.execute(
+            "UPDATE candidates SET artist=?, title=?, updated_at=datetime('now') WHERE id=?",
+            (new_artist, new_title, candidate_id),
+        )
+        conn.commit()
+        return False
 
 
 def page_stats(conn: sqlite3.Connection) -> dict:

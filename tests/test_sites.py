@@ -60,6 +60,26 @@ Jaba samma sansar rahanchha</p>
     assert "Scale" not in page.lyrics
 
 
+def test_paankopat_pipeline_title_without_pipes_and_category_artist():
+    html = """
+    <html><head>
+      <meta property="og:title" content="5:55 : Maya (High Sessions) Lyrics and Chords - Paan Ko Pat" />
+    </head><body>
+      <article class="spnc-post">
+        <a href="https://paankopat.com/topi-studios/">Topi Studios</a>
+        <a href="https://paankopat.com/pop-song/">POP SONG</a>
+        <a href="https://paankopat.com/the-uglyz/">The Uglyz</a>
+        <a href="https://paankopat.com/author/paankopat-com/">पागल प्रेमी</a>
+        <div class="spnc-entry-content"><p>maya ko dori le bhandhai</p></div>
+      </article>
+    </body></html>
+    """
+    page = paankopat.parse(html, "https://paankopat.com/2024/02/15/555-maya-high-sessions-lyrics/")
+    assert page is not None
+    assert page.title == "5:55 : Maya (High Sessions)"
+    assert page.artist == "The Uglyz"
+
+
 def test_strip_chord_lines_keeps_lyrics():
     text = "G D. C\ntimro nyano angalo ko maya\nEm G\nsadhai rahirahos\nC  Am  F  G\n"
     out = strip_chord_lines(text)

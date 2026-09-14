@@ -102,6 +102,40 @@ def crawl_site(
     return stats
 
 
+def reparse_pages(conn, client: CachedHttp, module, *, limit: int = 0) -> dict:
+    domain = module.DOMAIN
+    rows = conn.execute(
+        """
+        SELECT p.url, p.candidate_id
+        FROM pages p JOIN candidates c ON c.id = p.candidate_id
+        WHERE p.domain = ? AND (c.artist IS NULL OR c.artist = '')
+        """,
+        (domain,),
+    ).fetchall()
+    if limit:
+        rows = rows[:limit]
+    stats = {"site": domain, "candidates": len(rows), "updated": 0, "parse_failed": 0, "no_artist": 0}
+    print(f"[{domain}] reparse candidates with empty artist: {len(rows)}")
+    for index, row in enumerate(rows, start=1):
+        html = client.get_text(f"site_{domain}", row["url"])
+        if not html:
+            stats["parse_failed"] += 1
+            continue
+        page = module.parse(html, row["url"])
+        if page is None or not page.title:
+            stats["parse_failed"] += 1
+            continue
+        if not page.artist:
+            stats["no_artist"] += 1
+            continue
+        state.update_candidate_meta(conn, row["candidate_id"], artist=page.artist, title=page.title)
+        state.mark_page(conn, row["url"], "done", candidate_id=row["candidate_id"], title=page.title, artist=page.artist)
+        stats["updated"] += 1
+        if index % 50 == 0 or index == len(rows):
+            print(f"[{domain} reparse {index}/{len(rows)}] updated={stats['updated']} no_artist={stats['no_artist']}")
+    return stats
+
+
 def write_report(report: dict, paths=None) -> Path:
     paths = (paths or cfg.DEFAULT_PATHS).ensure()
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -117,6 +151,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--limit", type=int, default=0, help="Max pages to process per site")
     parser.add_argument("--max-pages", type=int, default=40, help="Listing pages to scan for links")
     parser.add_argument("--delay", type=float, default=2.0, help="Seconds between page fetches")
+    parser.add_argument("--reparse", action="store_true", help="Re-parse cached pages to enrich metadata (no network)")
     return parser.parse_args()
 
 
@@ -127,14 +162,17 @@ def main() -> None:
     client = CachedHttp()
     report = {"sites": {}}
     for name in args.sites:
-        stats = crawl_site(
-            conn,
-            client,
-            SITES[name],
-            limit=args.limit,
-            max_pages=args.max_pages,
-            delay=args.delay,
-        )
+        if args.reparse:
+            stats = reparse_pages(conn, client, SITES[name], limit=args.limit)
+        else:
+            stats = crawl_site(
+                conn,
+                client,
+                SITES[name],
+                limit=args.limit,
+                max_pages=args.max_pages,
+                delay=args.delay,
+            )
         report["sites"][name] = stats
     path = write_report(report)
     print(json.dumps(report, ensure_ascii=False, indent=2))
