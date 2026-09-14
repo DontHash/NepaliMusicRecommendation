@@ -1,0 +1,77 @@
+# Curated Nepali artists/bands for catalog enumeration.
+# One name per line; '#' comments allowed. Extend freely.
+# --- Classics / adhunik ---
+Narayan Gopal
+Aruna Lama
+Gopal Yonjan
+Bhaktaraj Acharya
+Deep Shrestha
+Ram Krishna Dhakal
+Anju Panta
+Karna Das
+Sanjeev Singh
+Sundar Shrestha
+Rajesh Payal Rai
+Yam Baral
+Phatteman Rajbhandari
+Koili Devi
+Nati Kaji
+Prem Dhoj Pradhan
+Meera Rana
+# --- Modern / pop ---
+Deepak Bajracharya
+Sabin Rai
+Nabin K Bhattarai
+Sugam Pokharel
+Almoda Rana Uprety
+Rohit John Chettri
+Bipul Chettri
+Sajjan Raj Vaidya
+Sushant KC
+Trishna Gurung
+Ashma KC
+Bartika Eam Rai
+Purna Rai
+Swoopna Suman
+Yabesh Thapa
+Oasis Thapa
+John Rai
+Chirag Khadka
+Rachana Dahal
+Dixita Karki
+Melina Rai
+Astha Raut
+Shreya Sotang
+Prajina
+Wangden Sherpa
+Diwas Gurung
+# --- Bands ---
+Nepathya
+1974 A.D
+Monkey Temple Nepal
+Pahenlo Batti Muni
+Pariwartan
+Mantra Band
+The Edge Band
+Albatross
+Cobweb
+Mukti and Revival
+Kandara
+Robin Tamang
+AXIX
+Outsiders Nepal
+Phiroj Shyangden
+Joint Family International
+# --- Rap / hip-hop ---
+Yama Buddha
+VTEN
+Jptrockerz
+MC Flo
+GXSOUL
+Uniq Poet
+Sacar
+Lil Buddha
+# --- Folk / others ---
+Kulendra Bishwakarma
+Bishnu Majhi
+Shanti Shree Pariyar
