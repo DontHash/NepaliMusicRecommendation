@@ -505,12 +505,15 @@ python -m data_collection.compact                # store -> R_data/corpus/corpus
 python -m data_collection.report --samples 5     # queue stats + random samples
 ```
 
-**Result (2026-09): 932 -> 4,185 clean songs** (devanagari/mixed scripts only,
-4,180 after the recommender audit), sources: nepalilyrics.net (1,510), legacy
-932 (735 unique), paankopat.com (561), Kaggle Genius dump filter (373),
-RupeshAryal bootstrap (369), nepali-songslyrics.com (215), nepaligeetlyrics.com
-(179), geetishabda.blogspot.com (151), iTunes (71), songsdiary.com (17), Deezer
-(4); duplicates/near-duplicates removed at compaction and audit.
+**Result (2026-09): 932 -> 4,185 clean songs -> 4,160 after audit**, sources:
+nepalilyrics.net (1,510), legacy 932 (735 unique), paankopat.com (561), Kaggle
+Genius dump filter (373), RupeshAryal bootstrap (369), nepali-songslyrics.com
+(215), nepaligeetlyrics.com (179), geetishabda.blogspot.com (151), iTunes (71),
+songsdiary.com (17), Deezer (4). Duplicates/near-duplicates are removed at
+compaction and audit; the cleaner now also strips crawler credit lines
+("Lyrics:", "Cast :", "शब्द र संगीत:", ...) and title junk ("X lyrics / Artist",
+"Lyrics and Chords", "[Chords] - SiteName"), which merged 21 same-song variants
+at the audit step.
 
 **Corpus pipeline after compaction**
 
@@ -520,30 +523,57 @@ python scripts/clean_lyrics_dataset.py --input R_data/corpus/corpus_raw.csv \
   --report R_data/corpus/reports/cleaning_corpus_final.json   # clean + transliterate
 python scripts/run_music_rec.py audit --input "CSVs Dataset/corpus_final.csv"
 python eval/queries.py                                        # rebuild query set (song_ids change)
-python scripts/kaggle_embeddings.py run                       # chunked embeddings on Kaggle GPU
+python scripts/kaggle_embeddings.py run                       # chunked embeddings + windows on Kaggle GPU
+python scripts/kaggle_sentiment.py run                        # song-mood pseudo-labels + student (see below)
+python scripts/train_mood_probe.py                            # mood probe -> sentiment_scores.csv
 python scripts/run_music_rec.py features
 python scripts/run_music_rec.py index
 python -m eval.run_eval
 ```
 
-**Retrieval eval (2026-09, 4,180 songs, `eval_v2_report.json`)**
+**Retrieval eval (2026-09, 4,160 songs, `eval_v2_report.json`)**
 
 | Query type | nDCG@10 | Recall@10 | MRR | Notes |
 |------------|---------|-----------|-----|-------|
-| artist | 0.877 | 0.761 | 0.888 | via exact artist-name detection + metadata filter |
-| lyric | 0.102 | 0.150 | 0.092 | single-line -> source song; ~60x random |
-| seed | 0.203 | 0.064 | 0.228 | same-artist relevance, empty-artist rows excluded |
+| artist | 0.876 | 0.782 | 0.890 | exact artist-name detection + filter-first ranking |
+| lyric | 0.305 | 0.375 | 0.289 | single-line -> source song; window max-sim retrieval |
+| seed | 0.111 | 0.022 | 0.149 | same-artist relevance; noisiest metric (30 queries) |
 
-The earlier baseline (artist 0.025, lyric 0.0, seed 0.277) was measured with a
-broken harness (lyric source filtered out of rankings; seed relevance polluted
-by ~445 empty-artist songs) and single-pass truncated embeddings. Both were
-fixed: `eval/run_eval.py` no longer removes the lyric source; `eval/queries.py`
-restricts seed/artist relevance to real artists; `music_rec/embeddings.py` +
-`scripts/kaggle_jobs/lyric_embeddings.py` now embed the whole song with chunked
-mean pooling (128-token windows, stride 64); and `music_rec/recommender.py`
-ranks filtered queries against all matching songs instead of only ANN
-candidates (previously an artist query returned whichever songs happened to be
-in the vector-search top-600).
+History: the original baseline (artist 0.025, lyric 0.0, seed 0.277) was
+measured with a broken harness (lyric source filtered out of rankings; seed
+relevance polluted by empty-artist songs) and single-pass truncated
+embeddings. Fixes, in order: `eval/run_eval.py` no longer removes the lyric
+source; `eval/queries.py` restricts relevance to real artists;
+`music_rec/recommender.py` ranks filtered queries against all matching songs;
+chunked mean-pooling replaced single-pass truncation (lyric 0.0 -> 0.10); and
+finally **48-token windows with max-similarity aggregation**
+(`music_rec/window_search.py`, 65k windows) took lyric nDCG@10 to 0.305, since
+a query line is ~60% of a 48-token window versus ~23% of a 128-token one.
+
+**Song-mood sentiment (Phase C3)**
+
+`eval/mood_gold.csv` holds 60 hand-reviewed songs (5 binary emotions +
+polarity). Measured on it (`mood_probe_report.json`):
+
+| Model | Accuracy | Macro-F1 |
+|-------|----------|----------|
+| Always-negative baseline | 0.450 | 0.207 |
+| Original muRIL, tweet-trained | 0.400 | 0.242 |
+| muRIL distilled from Qwen labels (v2) | 0.417 | 0.214 |
+| **Linear probe on mpnet embeddings** | **0.533** | **0.353** |
+
+The current `sentiment_scores.csv` comes from `scripts/train_mood_probe.py`:
+Qwen2.5-7B-Instruct (4-bit, on Kaggle) pseudo-labeled ~1,900 songs with the
+five-emotion schema; logistic regressions were then fit per label on the
+chunked mpnet embeddings (the retrieval space). The muRIL student collapsed
+onto label priors twice (constant outputs; see `mood_gold_report_muril_v2.json`)
+— documented negative result. The probe's strongest emotion is sadness
+(gold F1 0.71); positive/joy/anger remain weak, largely because the teacher
+over-labels sadness/depression relative to the gold set. NepEMO and NEmoSen
+(public Nepali emotion corpora) are currently unreleased / request-only; a
+relabel or a request for access is the natural next step. `MusicAnalyzer.py`
+still uses the old tweet muRIL model at runtime; probe integration is a
+follow-up.
 
 **Known limits at this stage**
 
@@ -554,13 +584,12 @@ in the vector-search top-600).
 - songsdiary.com listings are JS-driven with a robots-disallowed data endpoint:
   needs the Scrapling browser tier (planned, not enabled).
 - The Kaggle Genius dump only contains ~1,530 Nepali-labelled rows.
-- New-site lyrics can still carry credit lines ("एक्टर्स:", "शब्द", "संगीत",
-  ~180 songs) and titles with junk suffixes ("- lyrics / Artist",
-  "Lyrics and Chords"). Titles are not embedded, so retrieval is unaffected;
-  cleaner patterns for both are a follow-up (requires a re-clean + re-embed
-  cycle, which `scripts/kaggle_embeddings.py` now makes cheap).
-- Local GPU embedding is avoided (thermal); the Kaggle wrapper is the supported
-  path, with `music_rec/embeddings.py` retaining a CPU chunked fallback.
+- Sentiment is negative-skewed (probe: 82% negative) and anger/fear labels are
+  too sparse to learn (teacher labeled 44 anger songs in 1,934). Non-Nepali
+  (Hindi) content also slips into the corpus via artist catalogues.
+- Window artifacts (`window_vectors.npy`, ~200MB) are gitignored; regenerate via
+  `scripts/kaggle_embeddings.py run`. Embedding is Kaggle-first (local GPU
+  avoided for thermals); `music_rec/embeddings.py` keeps a CPU chunked fallback.
 
 ---
 
