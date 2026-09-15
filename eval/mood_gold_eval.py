@@ -83,15 +83,22 @@ def classify(score: float, threshold: float = 0.15) -> str:
 
 
 def main() -> None:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--scores", type=Path, default=SCORES, help="Candidate sentiment scores CSV")
+    parser.add_argument("--report", type=Path, default=PROJECT_ROOT / "music_rec_artifacts" / "mood_gold_report.json")
+    args = parser.parse_args()
+
     gold = pd.read_csv(GOLD, encoding="utf-8")
     cleaned = pd.read_csv(CLEANED, encoding="utf-8")
-    report: dict = {"gold_size": len(gold)}
+    report: dict = {"gold_size": len(gold), "scores_path": str(args.scores)}
 
     gold = gold.merge(cleaned[["song_id", "lyrics"]], on="song_id", how="left")
     y_true = gold["sentiment"].to_numpy()
 
-    if SCORES.exists():
-        distilled = pd.read_csv(SCORES, encoding="utf-8")
+    if args.scores.exists():
+        distilled = pd.read_csv(args.scores, encoding="utf-8")
         distilled = distilled.rename(columns={e: f"{e}_prob" for e in EMOTIONS})
         merged = gold.merge(distilled, on="song_id", how="inner")
         y_pred = merged["sentiment_label"].str.lower().to_numpy()
@@ -130,7 +137,7 @@ def main() -> None:
             "per_class": f1_scores(y_true, y_pred_existing, SENTIMENTS),
         }
 
-    out_path = PROJECT_ROOT / "music_rec_artifacts" / "mood_gold_report.json"
+    out_path = args.report
     out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
     print(f"report -> {out_path}")

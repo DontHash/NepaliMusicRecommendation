@@ -30,9 +30,9 @@ GOLD_SEED = 42
 SAMPLE_SEED = 7
 MAX_NEW_TOKENS = 60
 TRAIN_MAX_LEN = 256
-TRAIN_EPOCHS = 2
-TRAIN_BATCH = 8
-TRAIN_LR = 2e-5
+TRAIN_EPOCHS = 3
+TRAIN_BATCH = 16
+TRAIN_LR = 3e-5
 INFER_BATCH = 32
 CHECKPOINT_EVERY = 200
 INPUT_ROOT = Path("/kaggle/input")
@@ -40,11 +40,14 @@ OUT_DIR = Path("/kaggle/working")
 
 SYSTEM_PROMPT = (
     "तपाईं नेपाली गीतका बोल विश्लेषण गर्ने विशेषज्ञ हुनुहुन्छ। "
-    "प्रयोगकर्ताले गीतको बोल दिनेछन्। तपाईंले मात्र JSON फर्काउनुहोस्।"
+    "प्रयोगकर्ताले गीतको बोल दिनेछन्। तपाईंले मात्र एक-लाइन JSON फर्काउनुहोस्।"
 )
 USER_TEMPLATE = (
     "गीतको बोल:\n{lyrics}\n\n"
-    "माथिको बोलमा तलका भावनाहरू छन्/छैनन् (1=छ, 0=छैन) र समग्र sentiment के हो? "
+    "माथिको बोल पढेर: (१) यी पाँच भावनामध्ये कुन-कुन स्पष्ट रूपमा छन्? "
+    "(joy=खुशी, sadness=दुःख, anger=रिस, fear=डर, depression=निराशा) — १ देखि ३ वटा छान्नुहोस्, "
+    "(२) समग्र sentiment (positive/negative/neutral) भन्नुहोस्।\n"
+    'उदाहरण: {{"joy":1,"sadness":0,"anger":0,"fear":0,"depression":0,"sentiment":"positive"}}\n'
     'JSON ढाँचा: {{"joy":0,"sadness":0,"anger":0,"fear":0,"depression":0,"sentiment":"positive|negative|neutral"}}'
 )
 
@@ -87,28 +90,37 @@ def parse_label_json(raw: str) -> dict | None:
     return out
 
 
+def _ensure_bitsandbytes() -> None:
+    import subprocess
+
+    try:
+        import bitsandbytes  # noqa: F401
+    except Exception:
+        print("[distill] installing bitsandbytes for 4-bit inference")
+        subprocess.run([sys.executable, "-m", "pip", "install", "-q", "bitsandbytes"], check=False)
+
+
 def load_llm():
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    def _load(name: str):
-        tokenizer = AutoTokenizer.from_pretrained(name)
-        model = AutoModelForCausalLM.from_pretrained(
-            name, quantization_config=bnb_config, device_map="auto"
-        )
-        model.eval()
-        return model, tokenizer
-
-    try:
+    def _load_4bit(name: str):
         from transformers import BitsAndBytesConfig
 
-        bnb_config = BitsAndBytesConfig(
+        bnb = BitsAndBytesConfig(
             load_in_4bit=True,
             bnb_4bit_compute_dtype=torch.float16,
             bnb_4bit_quant_type="nf4",
         )
+        tokenizer = AutoTokenizer.from_pretrained(name)
+        model = AutoModelForCausalLM.from_pretrained(name, quantization_config=bnb, device_map="auto")
+        model.eval()
+        return model, tokenizer
+
+    _ensure_bitsandbytes()
+    try:
         print(f"[distill] loading {LLM_NAME} in 4-bit")
-        return *_load(LLM_NAME), LLM_NAME
+        return *_load_4bit(LLM_NAME), LLM_NAME
     except Exception as exc:  # pragma: no cover - environment dependent
         print(f"[distill] 4-bit load failed ({exc}); falling back to Qwen2.5-3B fp16")
         fallback = "Qwen/Qwen2.5-3B-Instruct"
@@ -199,7 +211,7 @@ class LyricsMoodDataset:
 
 
 def train_muril(df: pd.DataFrame, labeled: pd.DataFrame):
-    import torch
+    import numpy as np
     from transformers import AutoModelForSequenceClassification, AutoTokenizer, Trainer, TrainingArguments
 
     merged = df.merge(labeled, on="song_id", how="inner")
@@ -221,17 +233,37 @@ def train_muril(df: pd.DataFrame, labeled: pd.DataFrame):
     train_ds = LyricsMoodDataset(train_df["lyrics"].tolist(), train_df[label_cols].to_numpy(), tokenizer)
     eval_ds = LyricsMoodDataset(eval_df["lyrics"].tolist(), eval_df[label_cols].to_numpy(), tokenizer)
 
+    def compute_metrics(eval_pred):
+        logits, labels = eval_pred
+        probs = 1.0 / (1.0 + np.exp(-logits))
+        preds = (probs >= 0.5).astype(int)
+        labels = labels.astype(int)
+        out = {}
+        f1s = []
+        for i, name in enumerate(LABELS):
+            tp = int(((preds[:, i] == 1) & (labels[:, i] == 1)).sum())
+            fp = int(((preds[:, i] == 1) & (labels[:, i] == 0)).sum())
+            fn = int(((preds[:, i] == 0) & (labels[:, i] == 1)).sum())
+            precision = tp / (tp + fp) if tp + fp else 0.0
+            recall = tp / (tp + fn) if tp + fn else 0.0
+            f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+            out[f"f1_{name}"] = round(f1, 4)
+            f1s.append(f1)
+        out["macro_f1"] = round(float(np.mean(f1s)), 4)
+        return out
+
     base_args = dict(
         output_dir=str(OUT_DIR / "muril_ckpt"),
         num_train_epochs=TRAIN_EPOCHS,
         per_device_train_batch_size=TRAIN_BATCH,
         per_device_eval_batch_size=16,
         learning_rate=TRAIN_LR,
+        warmup_ratio=0.1,
         weight_decay=0.01,
-        logging_steps=50,
+        logging_steps=25,
         save_strategy="no",
         report_to=[],
-        fp16=torch.cuda.is_available(),
+        fp16=False,
     )
     try:
         args = TrainingArguments(eval_strategy="epoch", **base_args)
@@ -243,10 +275,11 @@ def train_muril(df: pd.DataFrame, labeled: pd.DataFrame):
         train_dataset=train_ds,
         eval_dataset=eval_ds,
         data_collator=train_ds.collate,
+        compute_metrics=compute_metrics,
     )
     trainer.train()
     metrics = trainer.evaluate()
-    return model, tokenizer, {k: float(v) for k, v in metrics.items()}
+    return model, tokenizer, {k: float(v) for k, v in metrics.items() if isinstance(v, (int, float))}
 
 
 def infer_all(model, tokenizer, df: pd.DataFrame) -> pd.DataFrame:
@@ -312,6 +345,7 @@ def main() -> None:
     scores = infer_all(model, muril_tokenizer, df)
     scores.to_csv(OUT_DIR / "sentiment_scores_v2.csv", index=False, encoding="utf-8")
 
+    prob_stds = {name: float(scores[name].std()) for name in LABELS}
     report = {
         "llm": llm_name,
         "songs": int(len(df)),
@@ -323,6 +357,8 @@ def main() -> None:
         },
         "sentiment_distribution": scores["sentiment_label"].value_counts().to_dict(),
         "score_mean": float(scores["sentiment_score"].mean()),
+        "prob_std": {k: round(v, 5) for k, v in prob_stds.items()},
+        "collapsed": int(all(v < 0.01 for v in prob_stds.values())),
     }
     (OUT_DIR / "sentiment_distill_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"

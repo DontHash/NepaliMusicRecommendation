@@ -1,0 +1,66 @@
+{
+  "songs_in_train_pool": 1934,
+  "labels": {},
+  "holdout_emotion_f1": {
+    "joy": 0.4639,
+    "sadness": 0.9102,
+    "anger": 0.0,
+    "fear": 0.5353,
+    "depression": 0.8653
+  },
+  "holdout_f1": {
+    "joy": 0.4639,
+    "sadness": 0.9102,
+    "anger": 0.0,
+    "fear": 0.5353,
+    "depression": 0.8653,
+    "positive": 0.1978,
+    "negative": 0.8227
+  },
+  "holdout_macro_f1": 0.5422,
+  "sentiment_distribution": {
+    "negative": 3403,
+    "positive": 526,
+    "neutral": 231
+  },
+  "gold": {
+    "accuracy": 0.5333,
+    "macro_f1": 0.3526,
+    "per_class": {
+      "positive": {
+        "f1": 0.4,
+        "support": 26
+      },
+      "negative": {
+        "f1": 0.6579,
+        "support": 27
+      },
+      "neutral": {
+        "f1": 0.0,
+        "support": 7
+      }
+    }
+  },
+  "gold_emotions": {
+    "joy": {
+      "f1": 0.4,
+      "support": 18
+    },
+    "sadness": {
+      "f1": 0.7126,
+      "support": 31
+    },
+    "anger": {
+      "f1": 0.0,
+      "support": 7
+    },
+    "fear": {
+      "f1": 0.0,
+      "support": 1
+    },
+    "depression": {
+      "f1": 0.0755,
+      "support": 2
+    }
+  }
+}

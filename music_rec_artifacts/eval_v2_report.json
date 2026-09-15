@@ -1,11 +1,11 @@
 {
   "summary": {
     "artist": {
-      "ndcg@10": 0.8259,
-      "recall@10": 0.7317,
-      "ndcg@50": 0.8683,
-      "recall@50": 0.9486,
-      "mrr": 0.8396,
+      "ndcg@10": 0.8759,
+      "recall@10": 0.7817,
+      "ndcg@50": 0.9183,
+      "recall@50": 0.9986,
+      "mrr": 0.8896,
       "queries": 40
     },
     "lyric": {
@@ -17,11 +17,11 @@
       "queries": 40
     },
     "seed": {
-      "ndcg@10": 0.1212,
-      "recall@10": 0.0204,
-      "ndcg@50": 0.2198,
-      "recall@50": 0.0998,
-      "mrr": 0.1761,
+      "ndcg@10": 0.1107,
+      "recall@10": 0.0219,
+      "ndcg@50": 0.2082,
+      "recall@50": 0.0899,
+      "mrr": 0.1491,
       "queries": 30
     }
   },
@@ -290,11 +290,11 @@
       "query_id": "artist_026",
       "type": "artist",
       "relevant": 10,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
     },
     {
       "query_id": "artist_027",
@@ -320,11 +320,11 @@
       "query_id": "artist_029",
       "type": "artist",
       "relevant": 4,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
     },
     {
       "query_id": "artist_030",
@@ -830,19 +830,19 @@
       "query_id": "seed_000",
       "type": "seed",
       "relevant": 25,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.2292,
+      "ndcg@10": 0.1772,
+      "recall@10": 0.04,
+      "ndcg@50": 0.3048,
       "recall@50": 0.08,
-      "mrr": 0.0303
+      "mrr": 0.1
     },
     {
       "query_id": "seed_001",
       "type": "seed",
       "relevant": 50,
-      "ndcg@10": 0.6257,
-      "recall@10": 0.04,
-      "ndcg@50": 0.7213,
+      "ndcg@10": 0.4693,
+      "recall@10": 0.02,
+      "ndcg@50": 0.7042,
       "recall@50": 0.06,
       "mrr": 1.0
     },
@@ -852,19 +852,19 @@
       "relevant": 25,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.3373,
+      "ndcg@50": 0.291,
       "recall@50": 0.12,
-      "mrr": 0.0714
+      "mrr": 0.05
     },
     {
       "query_id": "seed_003",
       "type": "seed",
       "relevant": 41,
-      "ndcg@10": 0.4693,
+      "ndcg@10": 0.3066,
       "recall@10": 0.0244,
-      "ndcg@50": 0.6754,
-      "recall@50": 0.0732,
-      "mrr": 1.0
+      "ndcg@50": 0.4252,
+      "recall@50": 0.0488,
+      "mrr": 0.3333
     },
     {
       "query_id": "seed_004",
@@ -880,11 +880,11 @@
       "query_id": "seed_005",
       "type": "seed",
       "relevant": 27,
-      "ndcg@10": 0.3152,
+      "ndcg@10": 0.2901,
       "recall@10": 0.0741,
-      "ndcg@50": 0.4189,
-      "recall@50": 0.1111,
-      "mrr": 0.1667
+      "ndcg@50": 0.4523,
+      "recall@50": 0.1481,
+      "mrr": 0.2
     },
     {
       "query_id": "seed_006",
@@ -892,9 +892,9 @@
       "relevant": 8,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.1821,
-      "recall@50": 0.125,
-      "mrr": 0.0227
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "seed_007",
@@ -910,10 +910,10 @@
       "query_id": "seed_008",
       "type": "seed",
       "relevant": 106,
-      "ndcg@10": 0.6173,
-      "recall@10": 0.0189,
-      "ndcg@50": 0.7242,
-      "recall@50": 0.0283,
+      "ndcg@10": 0.6714,
+      "recall@10": 0.0283,
+      "ndcg@50": 0.7502,
+      "recall@50": 0.0377,
       "mrr": 1.0
     },
     {
@@ -930,11 +930,11 @@
       "query_id": "seed_010",
       "type": "seed",
       "relevant": 25,
-      "ndcg@10": 0.3066,
-      "recall@10": 0.04,
-      "ndcg@50": 0.4281,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2523,
       "recall@50": 0.08,
-      "mrr": 0.3333
+      "mrr": 0.0526
     },
     {
       "query_id": "seed_011",
@@ -962,19 +962,19 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.1832,
+      "ndcg@50": 0.256,
       "recall@50": 1.0,
-      "mrr": 0.0233
+      "mrr": 0.0714
     },
     {
       "query_id": "seed_014",
       "type": "seed",
       "relevant": 6,
-      "ndcg@10": 0.3155,
+      "ndcg@10": 0.4307,
       "recall@10": 0.1667,
-      "ndcg@50": 0.3155,
+      "ndcg@50": 0.4307,
       "recall@50": 0.1667,
-      "mrr": 0.125
+      "mrr": 0.25
     },
     {
       "query_id": "seed_015",
@@ -992,9 +992,9 @@
       "relevant": 52,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.2314,
+      "ndcg@50": 0.181,
       "recall@50": 0.0192,
-      "mrr": 0.0526
+      "mrr": 0.0222
     },
     {
       "query_id": "seed_017",
@@ -1010,11 +1010,11 @@
       "query_id": "seed_018",
       "type": "seed",
       "relevant": 9,
-      "ndcg@10": 0.1021,
-      "recall@10": 0.1111,
-      "ndcg@50": 0.4266,
-      "recall@50": 0.5556,
-      "mrr": 0.1111
+      "ndcg@10": 0.3236,
+      "recall@10": 0.2222,
+      "ndcg@50": 0.4361,
+      "recall@50": 0.3333,
+      "mrr": 0.1667
     },
     {
       "query_id": "seed_019",
@@ -1040,11 +1040,11 @@
       "query_id": "seed_021",
       "type": "seed",
       "relevant": 53,
-      "ndcg@10": 0.2582,
-      "recall@10": 0.0566,
-      "ndcg@50": 0.5551,
-      "recall@50": 0.1509,
-      "mrr": 0.25
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.3054,
+      "recall@50": 0.0566,
+      "mrr": 0.0588
     },
     {
       "query_id": "seed_022",
@@ -1072,9 +1072,9 @@
       "relevant": 4,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.1879,
+      "ndcg@50": 0.256,
       "recall@50": 0.25,
-      "mrr": 0.0256
+      "mrr": 0.0714
     },
     {
       "query_id": "seed_025",
@@ -1090,9 +1090,9 @@
       "query_id": "seed_026",
       "type": "seed",
       "relevant": 25,
-      "ndcg@10": 0.6257,
+      "ndcg@10": 0.6508,
       "recall@10": 0.08,
-      "ndcg@50": 0.7213,
+      "ndcg@50": 0.7613,
       "recall@50": 0.12,
       "mrr": 1.0
     },
@@ -1122,9 +1122,9 @@
       "relevant": 8,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@50": 0.1843,
+      "recall@50": 0.125,
+      "mrr": 0.0238
     }
   ],
   "meta": {
@@ -1132,6 +1132,6 @@
     "corpus_size": 4160,
     "ann_top_k": 200,
     "top_k": 50,
-    "generated_at": "2026-09-15T07:06:22.663202+00:00"
+    "generated_at": "2026-09-15T11:58:04.549739+00:00"
   }
 }

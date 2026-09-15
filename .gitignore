@@ -58,6 +58,9 @@ music_rec_artifacts/sentiment_model/
 music_rec_artifacts/window_vectors.npy
 music_rec_artifacts/window_owners.npy
 
+# Regenerable probe candidate (canonical copy is sentiment_scores.csv)
+music_rec_artifacts/sentiment_scores_probe.csv
+
 # Training logs
 music_rec_artifacts/*.log
 *.log
