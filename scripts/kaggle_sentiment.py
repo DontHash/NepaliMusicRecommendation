@@ -29,6 +29,10 @@ DATASET_SLUG = "projectr-cleaned-lyrics"
 KERNEL_SLUG = "projectr-sentiment-distill"
 KERNEL_TITLE = "ProjectR Sentiment Distill"
 KERNEL_SCRIPT = Path(__file__).resolve().parent / "kaggle_jobs" / "sentiment_distill.py"
+CHECK_SLUG = "projectr-mood-teacher-check"
+CHECK_TITLE = "ProjectR Mood Teacher Check"
+CHECK_SCRIPT = Path(__file__).resolve().parent / "kaggle_jobs" / "mood_teacher_check.py"
+CHECK_DEST = PROJECT_ROOT / "R_data" / "raw" / "kaggle" / "mood_teacher_check"
 CLEANED_CSV = PROJECT_ROOT / "music_rec_artifacts" / "cleaned_lyrics.csv"
 DEFAULT_DEST = PROJECT_ROOT / "R_data" / "raw" / "kaggle" / "sentiment_distill"
 ARTIFACTS_DIR = PROJECT_ROOT / "music_rec_artifacts"
@@ -51,6 +55,10 @@ def parse_args() -> argparse.Namespace:
     pull.add_argument("--kernel", type=str, default=None)
     pull.add_argument("--dest", type=Path, default=DEFAULT_DEST)
     pull.add_argument("--no-install", action="store_true")
+    check = sub.add_parser("check")
+    check.add_argument("--user", type=str, default=None)
+    check.add_argument("--interval", type=int, default=60)
+    check.add_argument("--timeout", type=int, default=7200)
     return parser.parse_args()
 
 
@@ -64,14 +72,19 @@ def _run(cmd: list[str]) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, capture_output=True, text=True)
 
 
-def push_kernel(user: str | None) -> str:
+def push_kernel(
+    user: str | None,
+    slug: str = KERNEL_SLUG,
+    title: str = KERNEL_TITLE,
+    script: Path = KERNEL_SCRIPT,
+) -> str:
     kt.require_kaggle()
     username = kt.detect_username(user)
     dataset = f"{username}/{DATASET_SLUG}"
     metadata = {
-        "id": f"{username}/{KERNEL_SLUG}",
-        "title": KERNEL_TITLE,
-        "code_file": "sentiment_distill.py",
+        "id": f"{username}/{slug}",
+        "title": title,
+        "code_file": script.name,
         "language": "python",
         "kernel_type": "script",
         "is_private": True,
@@ -83,9 +96,7 @@ def push_kernel(user: str | None) -> str:
     }
     with tempfile.TemporaryDirectory(prefix="kaggle_sentiment_") as tmp:
         staging = Path(tmp)
-        (staging / "sentiment_distill.py").write_text(
-            KERNEL_SCRIPT.read_text(encoding="utf-8"), encoding="utf-8"
-        )
+        (staging / script.name).write_text(script.read_text(encoding="utf-8"), encoding="utf-8")
         (staging / "kernel-metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
         pushed = _run(["kaggle", "kernels", "push", "-p", str(staging)])
         if pushed.returncode != 0:
@@ -93,7 +104,7 @@ def push_kernel(user: str | None) -> str:
             print(pushed.stderr)
             sys.exit(1)
         print((pushed.stdout or pushed.stderr).strip())
-    return f"{username}/{KERNEL_SLUG}"
+    return f"{username}/{slug}"
 
 
 def kernel_status(kernel: str) -> str:
@@ -171,6 +182,13 @@ def main() -> None:
         if status != "complete":
             sys.exit(f"kernel finished with status: {status}")
         pull_output(kernel, DEFAULT_DEST)
+    elif args.command == "check":
+        kernel = push_kernel(args.user, CHECK_SLUG, CHECK_TITLE, CHECK_SCRIPT)
+        print(f"kernel: https://www.kaggle.com/code/{kernel}")
+        status = wait_for_completion(kernel, args.interval, args.timeout)
+        if status != "complete":
+            sys.exit(f"kernel finished with status: {status}")
+        pull_output(kernel, CHECK_DEST, install=False)
 
 
 if __name__ == "__main__":

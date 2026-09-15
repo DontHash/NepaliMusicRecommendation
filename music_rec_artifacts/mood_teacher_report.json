@@ -1,0 +1,70 @@
+{
+  "gold_size": 60,
+  "matched": 60,
+  "teacher_production_prompt": {
+    "accuracy": 0.5769,
+    "macro_f1": 0.4538,
+    "per_class_f1": {
+      "positive": 0.4516,
+      "negative": 0.6875,
+      "neutral": 0.2222
+    },
+    "evaluated": 52,
+    "emotion_f1": {
+      "joy": 0.5,
+      "sadness": 0.7429,
+      "anger": 0.25,
+      "fear": 0.0,
+      "depression": 0.0952
+    },
+    "emotion_supports": {
+      "joy": 14,
+      "sadness": 29,
+      "anger": 7,
+      "fear": 1,
+      "depression": 2
+    }
+  },
+  "teacher_strict_prompt": {
+    "accuracy": 0.4833,
+    "macro_f1": 0.3775,
+    "per_class_f1": {
+      "positive": 0.375,
+      "negative": 0.6667,
+      "neutral": 0.0909
+    },
+    "evaluated": 60,
+    "emotion_f1": {
+      "joy": 0.3846,
+      "sadness": 0.7381,
+      "anger": 0.25,
+      "fear": 0.0,
+      "depression": 0.1379
+    },
+    "emotion_supports": {
+      "joy": 18,
+      "sadness": 31,
+      "anger": 7,
+      "fear": 1,
+      "depression": 2
+    }
+  },
+  "always_negative": {
+    "accuracy": 0.45,
+    "macro_f1": 0.2069,
+    "per_class_f1": {
+      "positive": 0.0,
+      "negative": 0.6207,
+      "neutral": 0.0
+    }
+  },
+  "probe_installed": {
+    "accuracy": 0.5333,
+    "macro_f1": 0.3526,
+    "per_class_f1": {
+      "positive": 0.4,
+      "negative": 0.6579,
+      "neutral": 0.0
+    }
+  }
+}

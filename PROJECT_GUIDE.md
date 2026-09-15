@@ -560,7 +560,19 @@ polarity). Measured on it (`mood_probe_report.json`):
 | Always-negative baseline | 0.450 | 0.207 |
 | Original muRIL, tweet-trained | 0.400 | 0.242 |
 | muRIL distilled from Qwen labels (v2) | 0.417 | 0.214 |
-| **Linear probe on mpnet embeddings** | **0.533** | **0.353** |
+| **Qwen2.5-7B teacher, production prompt** | **0.577** | **0.454** |
+| Qwen2.5-7B teacher, strict prompt | 0.483 | 0.378 |
+| Linear probe on mpnet embeddings (installed) | 0.533 | 0.353 |
+
+The teacher-on-gold diagnostic (`eval/mood_teacher_eval.py` +
+`scripts/kaggle_jobs/mood_teacher_check.py`) labeled the 60 gold songs with the
+two prompts: the production teacher turned out to be the strongest sentiment
+model (0.577), the student loses ~0.04 accuracy / 0.10 macro-F1 in
+distillation, and the "strict" prompt was worse (over-predicts neutral). Emotion
+heads disagree most on fear/depression/anger, but the gold supports (1/2/7
+songs) are too small to measure those reliably — growing the gold set is the
+prerequisite for further emotion work. Note ±6.5% noise on 60 songs, so the
+teacher-vs-probe gap (1.2σ) is suggestive, not settled.
 
 The current `sentiment_scores.csv` comes from `scripts/train_mood_probe.py`:
 Qwen2.5-7B-Instruct (4-bit, on Kaggle) pseudo-labeled ~1,900 songs with the

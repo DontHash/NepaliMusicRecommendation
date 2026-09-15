@@ -69,10 +69,12 @@ NEmoSen, which are currently unreleased / request-only).
 | --- | --- | --- |
 | `scripts/kaggle_jobs/lyric_embeddings.py` | `embeddings.npy` + `embedding_ids.json` + window artifacts | `sentence-transformers/paraphrase-multilingual-mpnet-base-v2` |
 | `scripts/kaggle_jobs/sentiment_distill.py` | `mood_pseudo_labels.csv` + `sentiment_scores_v2.csv` | `Qwen/Qwen2.5-7B-Instruct` + `google/muril-base-cased` |
+| `scripts/kaggle_jobs/mood_teacher_check.py` | `teacher_gold_labels.csv` (teacher vs the 60-song gold set, two prompts) | `Qwen/Qwen2.5-7B-Instruct` |
 | `KaggleSentimentTrain.ipynb` | legacy tweet-trained `sentiment_model/` (MusicAnalyzer runtime) | `google/muril-base-cased` |
 
-The two active jobs are Kaggle script kernels pushed from `scripts/kaggle_jobs/`;
-the notebook is legacy (kept for the tweet-trained baseline model).
+The active jobs are Kaggle script kernels pushed from `scripts/kaggle_jobs/`;
+the notebook is legacy. Run the teacher diagnostic with
+`python scripts/kaggle_sentiment.py check` (push + wait + pull).
 
 ## Download + placement
 
