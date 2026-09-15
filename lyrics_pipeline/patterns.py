@@ -52,6 +52,37 @@ METADATA_LINE_PATTERNS = (
     re.compile(r"^Read More$", re.IGNORECASE),
 )
 
+# Credit/metadata lines seen on the crawler sites ("Lyrics: X", "Cast: ...",
+# "शब्द र संगीत: ..."). The ambiguous labels require a separator, so lyric
+# lines like "शब्द केलाउ" or "संगीत अमर कर दो" survive.
+CREDIT_LINE_PATTERNS = (
+    re.compile(
+        r"^(?:Lyrics?|Singers?|Cast|Casts?|Actors?|Actress|Music|Composer|Composed|Composition|"
+        r"Director|Producer|Starring|Vocals?|Songwriter|"
+        r"शब्द|संगीत|संगीतकार|गायक|गायिका|कलाकार|एक्टर्स|निर्देशक|निर्माता|लिरिक्स)"
+        r"\s*[:：\-–].*$",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"^(?:Lyrics?|Singers?|शब्द)\s*(?:/|,|&|\band\b|\sर\s)\s*"
+        r"(?:Music|Songwriter|Composer|Composition|संगीत)\s*[:：\-–]?",
+        re.IGNORECASE,
+    ),
+    re.compile(r"^(?:Singers?|Starring|Cast|Casts?|Actors?|Actress)\s+\S", re.IGNORECASE),
+    re.compile(r"^(?:Singers?|Casts?|Actors?|Music|Lyrics?|Starring)$", re.IGNORECASE),
+)
+
+# Crawler-site title junk ("X lyrics / Artist", "X Lyrics and Chords",
+# "X [Chords] - SiteName"). Everything from the first lyrics/chords marker on
+# is metadata; the prefix is kept.
+TITLE_JUNK_RE = re.compile(
+    r"\s*[\(\[/\-–—,]*\s*\b(?:official\s+)?"
+    r"(?:lyric\s*video|lyrics?(?:\s*(?:and|&|/|,)?\s*(?:chords?|music|video))?|chords?)"
+    r"\b.*$",
+    re.IGNORECASE,
+)
+LYRICS_OF_RE = re.compile(r"^\s*lyrics?\s+of\s+(.+?)(?:\s+(?:from|by|in)\b.*)?$", re.IGNORECASE)
+
 # Scraped title suffixes frequently repeated inside lyrics bodies.
 TITLE_NOISE_SUFFIXES = (
     " lyrics",

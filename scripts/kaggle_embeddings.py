@@ -93,17 +93,21 @@ def push_dataset(user: str | None) -> str:
         metadata = {"title": DATASET_TITLE, "id": dataset, "licenses": [{"name": "other"}]}
         (staging / "dataset-metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
         created = _run(["kaggle", "datasets", "create", "-p", str(staging)])
-        if created.returncode != 0:
+        created_out = ((created.stdout or "") + (created.stderr or "")).strip()
+        # The Kaggle CLI exits 0 even when create fails with "title already in use",
+        # so detect the conflict from the output instead of the return code.
+        if created.returncode != 0 or "already in use" in created_out.lower():
             versioned = _run(
                 ["kaggle", "datasets", "version", "-p", str(staging), "-m", f"cleaned lyrics ({rows} songs)"]
             )
-            if versioned.returncode != 0:
-                print(created.stdout, created.stderr)
-                print(versioned.stdout, versioned.stderr)
+            versioned_out = ((versioned.stdout or "") + (versioned.stderr or "")).strip()
+            if versioned.returncode != 0 or "error" in versioned_out.lower():
+                print(created_out)
+                print(versioned_out)
                 sys.exit("dataset create/version failed")
-            print(versioned.stdout.strip() or versioned.stderr.strip())
+            print(versioned_out)
         else:
-            print(created.stdout.strip() or created.stderr.strip())
+            print(created_out)
     wait_dataset_ready(dataset)
     return dataset
 
@@ -170,6 +174,8 @@ def install_artifacts(dest: Path) -> None:
 
     emb_path = dest / "embeddings.npy"
     ids_path = dest / "embedding_ids.json"
+    window_path = dest / "window_vectors.npy"
+    owners_path = dest / "window_owners.npy"
     report_path = dest / "embed_report.json"
     if not emb_path.exists() or not ids_path.exists():
         sys.exit(f"missing embeddings.npy / embedding_ids.json in {dest}")
@@ -186,6 +192,21 @@ def install_artifacts(dest: Path) -> None:
     if not np.isfinite(matrix).all():
         sys.exit("embeddings contain non-finite values")
 
+    if window_path.exists() and owners_path.exists():
+        window_vectors = np.load(window_path)
+        owners = np.load(owners_path)
+        if window_vectors.shape[0] != owners.shape[0]:
+            sys.exit(f"window mismatch: vectors {window_vectors.shape[0]} vs owners {owners.shape[0]}")
+        if owners.size and (int(owners.min()) < 0 or int(owners.max()) >= len(expected)):
+            sys.exit("window owners out of song range")
+        if not np.isfinite(window_vectors).all():
+            sys.exit("window vectors contain non-finite values")
+        shutil.copy2(window_path, ARTIFACTS_DIR / "window_vectors.npy")
+        shutil.copy2(owners_path, ARTIFACTS_DIR / "window_owners.npy")
+        print(f"[install] window_vectors.npy {window_vectors.shape} + window_owners.npy -> {ARTIFACTS_DIR}")
+    else:
+        print("[install] window artifacts missing; recommender will fall back to song-level ANN")
+
     shutil.copy2(emb_path, ARTIFACTS_DIR / "embeddings.npy")
     shutil.copy2(ids_path, ARTIFACTS_DIR / "embedding_ids.json")
     print(f"[install] embeddings.npy {matrix.shape} + embedding_ids.json ({len(ids)} ids) -> {ARTIFACTS_DIR}")
@@ -194,7 +215,7 @@ def install_artifacts(dest: Path) -> None:
 def pull_output(kernel: str, dest: Path, install: bool = True) -> None:
     dest.mkdir(parents=True, exist_ok=True)
     subprocess.run(["kaggle", "kernels", "output", kernel, "-p", str(dest)], check=True)
-    for name in ("embeddings.npy", "embedding_ids.json", "embed_report.json"):
+    for name in ("embeddings.npy", "embedding_ids.json", "window_vectors.npy", "window_owners.npy", "embed_report.json"):
         path = dest / name
         print(f"{name}: {'ok' if path.exists() else 'MISSING'} ({path.stat().st_size if path.exists() else 0} bytes)")
     if install:

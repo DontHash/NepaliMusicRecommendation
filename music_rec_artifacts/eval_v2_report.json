@@ -1,27 +1,27 @@
 {
   "summary": {
     "artist": {
-      "ndcg@10": 0.8767,
-      "recall@10": 0.7605,
-      "ndcg@50": 0.9305,
-      "recall@50": 0.9986,
-      "mrr": 0.8875,
+      "ndcg@10": 0.8259,
+      "recall@10": 0.7317,
+      "ndcg@50": 0.8683,
+      "recall@50": 0.9486,
+      "mrr": 0.8396,
       "queries": 40
     },
     "lyric": {
-      "ndcg@10": 0.1023,
-      "recall@10": 0.15,
-      "ndcg@50": 0.1187,
-      "recall@50": 0.225,
-      "mrr": 0.092,
+      "ndcg@10": 0.3051,
+      "recall@10": 0.375,
+      "ndcg@50": 0.3325,
+      "recall@50": 0.5,
+      "mrr": 0.2889,
       "queries": 40
     },
     "seed": {
-      "ndcg@10": 0.2029,
-      "recall@10": 0.064,
-      "ndcg@50": 0.2616,
-      "recall@50": 0.0969,
-      "mrr": 0.2279,
+      "ndcg@10": 0.1212,
+      "recall@10": 0.0204,
+      "ndcg@50": 0.2198,
+      "recall@50": 0.0998,
+      "mrr": 0.1761,
       "queries": 30
     }
   },
@@ -30,9 +30,9 @@
       "query_id": "artist_000",
       "type": "artist",
       "relevant": 14,
-      "ndcg@10": 1.0,
-      "recall@10": 0.7143,
-      "ndcg@50": 1.0,
+      "ndcg@10": 0.5712,
+      "recall@10": 0.4286,
+      "ndcg@50": 0.8256,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -40,11 +40,11 @@
       "query_id": "artist_001",
       "type": "artist",
       "relevant": 32,
-      "ndcg@10": 0.9306,
+      "ndcg@10": 0.7799,
       "recall@10": 0.2812,
-      "ndcg@50": 0.9772,
+      "ndcg@50": 0.916,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.5
     },
     {
       "query_id": "artist_002",
@@ -60,19 +60,19 @@
       "query_id": "artist_003",
       "type": "artist",
       "relevant": 7,
-      "ndcg@10": 0.3417,
-      "recall@10": 0.4286,
-      "ndcg@50": 0.6222,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
       "recall@50": 1.0,
-      "mrr": 0.3333
+      "mrr": 1.0
     },
     {
       "query_id": "artist_004",
       "type": "artist",
       "relevant": 8,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.986,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.986,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -80,9 +80,9 @@
       "query_id": "artist_005",
       "type": "artist",
       "relevant": 12,
-      "ndcg@10": 0.7097,
-      "recall@10": 0.5833,
-      "ndcg@50": 0.892,
+      "ndcg@10": 0.7949,
+      "recall@10": 0.6667,
+      "ndcg@50": 0.9149,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -90,9 +90,9 @@
       "query_id": "artist_006",
       "type": "artist",
       "relevant": 15,
-      "ndcg@10": 1.0,
-      "recall@10": 0.6667,
-      "ndcg@50": 0.9969,
+      "ndcg@10": 0.7952,
+      "recall@10": 0.5333,
+      "ndcg@50": 0.906,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -100,26 +100,6 @@
       "query_id": "artist_007",
       "type": "artist",
       "relevant": 3,
-      "ndcg@10": 0.6508,
-      "recall@10": 0.6667,
-      "ndcg@50": 0.7634,
-      "recall@50": 1.0,
-      "mrr": 1.0
-    },
-    {
-      "query_id": "artist_008",
-      "type": "artist",
-      "relevant": 16,
-      "ndcg@10": 0.9052,
-      "recall@10": 0.5625,
-      "ndcg@50": 0.9687,
-      "recall@50": 1.0,
-      "mrr": 1.0
-    },
-    {
-      "query_id": "artist_009",
-      "type": "artist",
-      "relevant": 4,
       "ndcg@10": 1.0,
       "recall@10": 1.0,
       "ndcg@50": 1.0,
@@ -127,22 +107,42 @@
       "mrr": 1.0
     },
     {
+      "query_id": "artist_008",
+      "type": "artist",
+      "relevant": 16,
+      "ndcg@10": 0.9266,
+      "recall@10": 0.5625,
+      "ndcg@50": 0.9847,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_009",
+      "type": "artist",
+      "relevant": 4,
+      "ndcg@10": 0.8486,
+      "recall@10": 1.0,
+      "ndcg@50": 0.8486,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
       "query_id": "artist_010",
       "type": "artist",
       "relevant": 30,
-      "ndcg@10": 0.7065,
-      "recall@10": 0.2667,
-      "ndcg@50": 0.8869,
+      "ndcg@10": 0.9306,
+      "recall@10": 0.3,
+      "ndcg@50": 0.9784,
       "recall@50": 1.0,
-      "mrr": 0.5
+      "mrr": 1.0
     },
     {
       "query_id": "artist_011",
       "type": "artist",
       "relevant": 30,
-      "ndcg@10": 0.573,
+      "ndcg@10": 0.4928,
       "recall@10": 0.1667,
-      "ndcg@50": 0.8603,
+      "ndcg@50": 0.8202,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -150,29 +150,29 @@
       "query_id": "artist_012",
       "type": "artist",
       "relevant": 15,
-      "ndcg@10": 0.7137,
-      "recall@10": 0.5333,
-      "ndcg@50": 0.8607,
+      "ndcg@10": 1.0,
+      "recall@10": 0.6667,
+      "ndcg@50": 1.0,
       "recall@50": 1.0,
-      "mrr": 0.5
+      "mrr": 1.0
     },
     {
       "query_id": "artist_013",
       "type": "artist",
       "relevant": 8,
-      "ndcg@10": 0.5299,
+      "ndcg@10": 0.6241,
       "recall@10": 0.75,
-      "ndcg@50": 0.6689,
+      "ndcg@50": 0.7588,
       "recall@50": 1.0,
-      "mrr": 0.3333
+      "mrr": 0.5
     },
     {
       "query_id": "artist_014",
       "type": "artist",
       "relevant": 8,
-      "ndcg@10": 0.9497,
+      "ndcg@10": 1.0,
       "recall@10": 1.0,
-      "ndcg@50": 0.9497,
+      "ndcg@50": 1.0,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -190,9 +190,9 @@
       "query_id": "artist_016",
       "type": "artist",
       "relevant": 32,
-      "ndcg@10": 1.0,
-      "recall@10": 0.3125,
-      "ndcg@50": 0.9964,
+      "ndcg@10": 0.9306,
+      "recall@10": 0.2812,
+      "ndcg@50": 0.9781,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -200,19 +200,19 @@
       "query_id": "artist_017",
       "type": "artist",
       "relevant": 3,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.7123,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.7123,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.5
     },
     {
       "query_id": "artist_018",
       "type": "artist",
       "relevant": 9,
-      "ndcg@10": 0.9504,
+      "ndcg@10": 1.0,
       "recall@10": 1.0,
-      "ndcg@50": 0.9504,
+      "ndcg@50": 1.0,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -220,11 +220,11 @@
       "query_id": "artist_019",
       "type": "artist",
       "relevant": 4,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@10": 0.5274,
+      "recall@10": 0.75,
+      "ndcg@50": 0.6105,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.5
     },
     {
       "query_id": "artist_020",
@@ -240,21 +240,21 @@
       "query_id": "artist_021",
       "type": "artist",
       "relevant": 3,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.5257,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.5257,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.25
     },
     {
       "query_id": "artist_022",
       "type": "artist",
       "relevant": 7,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.8118,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.8118,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.5
     },
     {
       "query_id": "artist_023",
@@ -270,16 +270,6 @@
       "query_id": "artist_024",
       "type": "artist",
       "relevant": 10,
-      "ndcg@10": 0.4923,
-      "recall@10": 0.6,
-      "ndcg@50": 0.7273,
-      "recall@50": 1.0,
-      "mrr": 0.3333
-    },
-    {
-      "query_id": "artist_025",
-      "type": "artist",
-      "relevant": 5,
       "ndcg@10": 1.0,
       "recall@10": 1.0,
       "ndcg@50": 1.0,
@@ -287,22 +277,32 @@
       "mrr": 1.0
     },
     {
+      "query_id": "artist_025",
+      "type": "artist",
+      "relevant": 5,
+      "ndcg@10": 0.6807,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6807,
+      "recall@50": 1.0,
+      "mrr": 0.3333
+    },
+    {
       "query_id": "artist_026",
       "type": "artist",
       "relevant": 10,
-      "ndcg@10": 0.9266,
-      "recall@10": 0.9,
-      "ndcg@50": 0.988,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "artist_027",
       "type": "artist",
       "relevant": 8,
-      "ndcg@10": 0.5848,
-      "recall@10": 0.75,
-      "ndcg@50": 0.7237,
+      "ndcg@10": 0.8165,
+      "recall@10": 1.0,
+      "ndcg@50": 0.8165,
       "recall@50": 1.0,
       "mrr": 0.5
     },
@@ -310,9 +310,9 @@
       "query_id": "artist_028",
       "type": "artist",
       "relevant": 5,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@10": 0.46,
+      "recall@10": 0.4,
+      "ndcg@50": 0.7232,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -320,19 +320,19 @@
       "query_id": "artist_029",
       "type": "artist",
       "relevant": 4,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "artist_030",
       "type": "artist",
       "relevant": 15,
-      "ndcg@10": 1.0,
-      "recall@10": 0.6667,
-      "ndcg@50": 1.0,
+      "ndcg@10": 0.8205,
+      "recall@10": 0.5333,
+      "ndcg@50": 0.9435,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -350,11 +350,11 @@
       "query_id": "artist_032",
       "type": "artist",
       "relevant": 5,
-      "ndcg@10": 0.7486,
+      "ndcg@10": 1.0,
       "recall@10": 1.0,
-      "ndcg@50": 0.7486,
+      "ndcg@50": 1.0,
       "recall@50": 1.0,
-      "mrr": 0.5
+      "mrr": 1.0
     },
     {
       "query_id": "artist_033",
@@ -372,7 +372,7 @@
       "relevant": 25,
       "ndcg@10": 1.0,
       "recall@10": 0.4,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.9944,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -380,11 +380,11 @@
       "query_id": "artist_035",
       "type": "artist",
       "relevant": 3,
-      "ndcg@10": 0.7328,
+      "ndcg@10": 1.0,
       "recall@10": 1.0,
-      "ndcg@50": 0.7328,
+      "ndcg@50": 1.0,
       "recall@50": 1.0,
-      "mrr": 0.5
+      "mrr": 1.0
     },
     {
       "query_id": "artist_036",
@@ -400,9 +400,9 @@
       "query_id": "artist_037",
       "type": "artist",
       "relevant": 13,
-      "ndcg@10": 0.7601,
-      "recall@10": 0.5385,
-      "ndcg@50": 0.9357,
+      "ndcg@10": 1.0,
+      "recall@10": 0.7692,
+      "ndcg@50": 0.9957,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -419,10 +419,10 @@
     {
       "query_id": "artist_039",
       "type": "artist",
-      "relevant": 18,
-      "ndcg@10": 0.863,
-      "recall@10": 0.4444,
-      "ndcg@50": 0.9684,
+      "relevant": 17,
+      "ndcg@10": 1.0,
+      "recall@10": 0.5882,
+      "ndcg@50": 1.0,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -430,11 +430,11 @@
       "query_id": "lyric_000",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.25,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
       "recall@50": 1.0,
-      "mrr": 0.0667
+      "mrr": 1.0
     },
     {
       "query_id": "lyric_001",
@@ -450,21 +450,21 @@
       "query_id": "lyric_002",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.1934,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
       "recall@50": 1.0,
-      "mrr": 0.0286
+      "mrr": 0.5
     },
     {
       "query_id": "lyric_003",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.2891,
-      "recall@10": 1.0,
-      "ndcg@50": 0.2891,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.25,
       "recall@50": 1.0,
-      "mrr": 0.1
+      "mrr": 0.0667
     },
     {
       "query_id": "lyric_004",
@@ -472,9 +472,9 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@50": 0.208,
+      "recall@50": 1.0,
+      "mrr": 0.037
     },
     {
       "query_id": "lyric_005",
@@ -490,11 +490,11 @@
       "query_id": "lyric_006",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.301,
+      "ndcg@10": 1.0,
       "recall@10": 1.0,
-      "ndcg@50": 0.301,
+      "ndcg@50": 1.0,
       "recall@50": 1.0,
-      "mrr": 0.1111
+      "mrr": 1.0
     },
     {
       "query_id": "lyric_007",
@@ -512,9 +512,9 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@50": 0.2181,
+      "recall@50": 1.0,
+      "mrr": 0.0435
     },
     {
       "query_id": "lyric_009",
@@ -532,19 +532,19 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.2153,
-      "recall@50": 1.0,
-      "mrr": 0.0417
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_011",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 0.3562,
+      "recall@10": 1.0,
+      "ndcg@50": 0.3562,
+      "recall@50": 1.0,
+      "mrr": 0.1667
     },
     {
       "query_id": "lyric_012",
@@ -552,19 +552,19 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@50": 0.2242,
+      "recall@50": 1.0,
+      "mrr": 0.0476
     },
     {
       "query_id": "lyric_013",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
     },
     {
       "query_id": "lyric_014",
@@ -580,21 +580,21 @@
       "query_id": "lyric_015",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.5,
-      "recall@10": 1.0,
-      "ndcg@50": 0.5,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.195,
       "recall@50": 1.0,
-      "mrr": 0.3333
+      "mrr": 0.0294
     },
     {
       "query_id": "lyric_016",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
     },
     {
       "query_id": "lyric_017",
@@ -650,11 +650,11 @@
       "query_id": "lyric_022",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
     },
     {
       "query_id": "lyric_023",
@@ -670,11 +670,11 @@
       "query_id": "lyric_024",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 0.3562,
+      "recall@10": 1.0,
+      "ndcg@50": 0.3562,
+      "recall@50": 1.0,
+      "mrr": 0.1667
     },
     {
       "query_id": "lyric_025",
@@ -700,11 +700,11 @@
       "query_id": "lyric_027",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
     },
     {
       "query_id": "lyric_028",
@@ -720,11 +720,11 @@
       "query_id": "lyric_029",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
     },
     {
       "query_id": "lyric_030",
@@ -740,21 +740,21 @@
       "query_id": "lyric_031",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 0.4307,
+      "recall@10": 1.0,
+      "ndcg@50": 0.4307,
+      "recall@50": 1.0,
+      "mrr": 0.25
     },
     {
       "query_id": "lyric_032",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
     },
     {
       "query_id": "lyric_033",
@@ -770,16 +770,6 @@
       "query_id": "lyric_034",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
-    },
-    {
-      "query_id": "lyric_035",
-      "type": "lyric",
-      "relevant": 1,
       "ndcg@10": 1.0,
       "recall@10": 1.0,
       "ndcg@50": 1.0,
@@ -787,7 +777,7 @@
       "mrr": 1.0
     },
     {
-      "query_id": "lyric_036",
+      "query_id": "lyric_035",
       "type": "lyric",
       "relevant": 1,
       "ndcg@10": 0.0,
@@ -795,6 +785,16 @@
       "ndcg@50": 0.0,
       "recall@50": 0.0,
       "mrr": 0.0
+    },
+    {
+      "query_id": "lyric_036",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 0.4307,
+      "recall@10": 1.0,
+      "ndcg@50": 0.4307,
+      "recall@50": 1.0,
+      "mrr": 0.25
     },
     {
       "query_id": "lyric_037",
@@ -820,16 +820,6 @@
       "query_id": "lyric_039",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
-    },
-    {
-      "query_id": "seed_000",
-      "type": "seed",
-      "relevant": 33,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
       "ndcg@50": 0.0,
@@ -837,39 +827,49 @@
       "mrr": 0.0
     },
     {
-      "query_id": "seed_001",
+      "query_id": "seed_000",
       "type": "seed",
       "relevant": 25,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2292,
+      "recall@50": 0.08,
+      "mrr": 0.0303
+    },
+    {
+      "query_id": "seed_001",
+      "type": "seed",
+      "relevant": 50,
+      "ndcg@10": 0.6257,
       "recall@10": 0.04,
-      "ndcg@50": 1.0,
-      "recall@50": 0.04,
+      "ndcg@50": 0.7213,
+      "recall@50": 0.06,
       "mrr": 1.0
     },
     {
       "query_id": "seed_002",
       "type": "seed",
-      "relevant": 18,
-      "ndcg@10": 0.2961,
-      "recall@10": 0.0556,
-      "ndcg@50": 0.4936,
-      "recall@50": 0.1667,
-      "mrr": 0.5
+      "relevant": 25,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.3373,
+      "recall@50": 0.12,
+      "mrr": 0.0714
     },
     {
       "query_id": "seed_003",
       "type": "seed",
-      "relevant": 2,
-      "ndcg@10": 1.0,
-      "recall@10": 0.5,
-      "ndcg@50": 1.0,
-      "recall@50": 0.5,
+      "relevant": 41,
+      "ndcg@10": 0.4693,
+      "recall@10": 0.0244,
+      "ndcg@50": 0.6754,
+      "recall@50": 0.0732,
       "mrr": 1.0
     },
     {
       "query_id": "seed_004",
       "type": "seed",
-      "relevant": 1,
+      "relevant": 2,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
       "ndcg@50": 0.0,
@@ -879,22 +879,22 @@
     {
       "query_id": "seed_005",
       "type": "seed",
-      "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "relevant": 27,
+      "ndcg@10": 0.3152,
+      "recall@10": 0.0741,
+      "ndcg@50": 0.4189,
+      "recall@50": 0.1111,
+      "mrr": 0.1667
     },
     {
       "query_id": "seed_006",
       "type": "seed",
-      "relevant": 6,
+      "relevant": 8,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.2038,
-      "recall@50": 0.1667,
-      "mrr": 0.0345
+      "ndcg@50": 0.1821,
+      "recall@50": 0.125,
+      "mrr": 0.0227
     },
     {
       "query_id": "seed_007",
@@ -909,17 +909,17 @@
     {
       "query_id": "seed_008",
       "type": "seed",
-      "relevant": 33,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "relevant": 106,
+      "ndcg@10": 0.6173,
+      "recall@10": 0.0189,
+      "ndcg@50": 0.7242,
+      "recall@50": 0.0283,
+      "mrr": 1.0
     },
     {
       "query_id": "seed_009",
       "type": "seed",
-      "relevant": 15,
+      "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
       "ndcg@50": 0.0,
@@ -929,65 +929,15 @@
     {
       "query_id": "seed_010",
       "type": "seed",
-      "relevant": 2,
-      "ndcg@10": 0.8175,
-      "recall@10": 1.0,
-      "ndcg@50": 0.8175,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "relevant": 25,
+      "ndcg@10": 0.3066,
+      "recall@10": 0.04,
+      "ndcg@50": 0.4281,
+      "recall@50": 0.08,
+      "mrr": 0.3333
     },
     {
       "query_id": "seed_011",
-      "type": "seed",
-      "relevant": 18,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
-    },
-    {
-      "query_id": "seed_012",
-      "type": "seed",
-      "relevant": 25,
-      "ndcg@10": 0.4144,
-      "recall@10": 0.08,
-      "ndcg@50": 0.5722,
-      "recall@50": 0.16,
-      "mrr": 0.5
-    },
-    {
-      "query_id": "seed_013",
-      "type": "seed",
-      "relevant": 4,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
-    },
-    {
-      "query_id": "seed_014",
-      "type": "seed",
-      "relevant": 27,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
-    },
-    {
-      "query_id": "seed_015",
-      "type": "seed",
-      "relevant": 7,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.1892,
-      "recall@50": 0.1429,
-      "mrr": 0.0263
-    },
-    {
-      "query_id": "seed_016",
       "type": "seed",
       "relevant": 9,
       "ndcg@10": 0.0,
@@ -997,39 +947,89 @@
       "mrr": 0.0
     },
     {
+      "query_id": "seed_012",
+      "type": "seed",
+      "relevant": 12,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_013",
+      "type": "seed",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.1832,
+      "recall@50": 1.0,
+      "mrr": 0.0233
+    },
+    {
+      "query_id": "seed_014",
+      "type": "seed",
+      "relevant": 6,
+      "ndcg@10": 0.3155,
+      "recall@10": 0.1667,
+      "ndcg@50": 0.3155,
+      "recall@50": 0.1667,
+      "mrr": 0.125
+    },
+    {
+      "query_id": "seed_015",
+      "type": "seed",
+      "relevant": 7,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_016",
+      "type": "seed",
+      "relevant": 52,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2314,
+      "recall@50": 0.0192,
+      "mrr": 0.0526
+    },
+    {
       "query_id": "seed_017",
       "type": "seed",
-      "relevant": 18,
-      "ndcg@10": 0.3155,
-      "recall@10": 0.0556,
-      "ndcg@50": 0.3155,
-      "recall@50": 0.0556,
-      "mrr": 0.125
+      "relevant": 22,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "seed_018",
       "type": "seed",
-      "relevant": 45,
-      "ndcg@10": 1.0,
-      "recall@10": 0.0222,
-      "ndcg@50": 1.0,
-      "recall@50": 0.0222,
-      "mrr": 1.0
+      "relevant": 9,
+      "ndcg@10": 0.1021,
+      "recall@10": 0.1111,
+      "ndcg@50": 0.4266,
+      "recall@50": 0.5556,
+      "mrr": 0.1111
     },
     {
       "query_id": "seed_019",
       "type": "seed",
-      "relevant": 23,
+      "relevant": 3,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.2,
-      "recall@50": 0.0435,
-      "mrr": 0.0323
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "seed_020",
       "type": "seed",
-      "relevant": 3,
+      "relevant": 6,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
       "ndcg@50": 0.0,
@@ -1039,62 +1039,62 @@
     {
       "query_id": "seed_021",
       "type": "seed",
-      "relevant": 7,
-      "ndcg@10": 0.6131,
-      "recall@10": 0.1429,
-      "ndcg@50": 0.7452,
-      "recall@50": 0.2857,
-      "mrr": 1.0
+      "relevant": 53,
+      "ndcg@10": 0.2582,
+      "recall@10": 0.0566,
+      "ndcg@50": 0.5551,
+      "recall@50": 0.1509,
+      "mrr": 0.25
     },
     {
       "query_id": "seed_022",
       "type": "seed",
-      "relevant": 41,
-      "ndcg@10": 0.6309,
-      "recall@10": 0.0244,
-      "ndcg@50": 0.6309,
-      "recall@50": 0.0244,
-      "mrr": 0.5
+      "relevant": 33,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "seed_023",
       "type": "seed",
-      "relevant": 15,
+      "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.1854,
-      "recall@50": 0.0667,
-      "mrr": 0.0244
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "seed_024",
       "type": "seed",
-      "relevant": 33,
+      "relevant": 4,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.3105,
-      "recall@50": 0.1212,
-      "mrr": 0.0714
+      "ndcg@50": 0.1879,
+      "recall@50": 0.25,
+      "mrr": 0.0256
     },
     {
       "query_id": "seed_025",
       "type": "seed",
-      "relevant": 14,
+      "relevant": 19,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@50": 0.256,
+      "recall@50": 0.0526,
+      "mrr": 0.0714
     },
     {
       "query_id": "seed_026",
       "type": "seed",
-      "relevant": 3,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "relevant": 25,
+      "ndcg@10": 0.6257,
+      "recall@10": 0.08,
+      "ndcg@50": 0.7213,
+      "recall@50": 0.12,
+      "mrr": 1.0
     },
     {
       "query_id": "seed_027",
@@ -1109,17 +1109,17 @@
     {
       "query_id": "seed_028",
       "type": "seed",
-      "relevant": 9,
+      "relevant": 2,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.1843,
-      "recall@50": 0.1111,
-      "mrr": 0.0238
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "seed_029",
       "type": "seed",
-      "relevant": 35,
+      "relevant": 8,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
       "ndcg@50": 0.0,
@@ -1129,9 +1129,9 @@
   ],
   "meta": {
     "queries_path": "D:\\Code\\ProjectR\\R_data\\corpus\\eval\\queries.jsonl",
-    "corpus_size": 4180,
+    "corpus_size": 4160,
     "ann_top_k": 200,
     "top_k": 50,
-    "generated_at": "2026-09-15T06:02:06.852332+00:00"
+    "generated_at": "2026-09-15T07:06:22.663202+00:00"
   }
 }

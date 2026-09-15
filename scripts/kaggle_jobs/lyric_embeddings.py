@@ -17,8 +17,8 @@ import numpy as np
 import pandas as pd
 
 MODEL_NAME = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
-WINDOW_TOKENS = 128
-WINDOW_STRIDE = 64
+WINDOW_TOKENS = 48
+WINDOW_STRIDE = 24
 BATCH_SIZE = 256
 INPUT_ROOT = Path("/kaggle/input")
 OUT_DIR = Path("/kaggle/working")
@@ -51,7 +51,7 @@ def embedding_dim(model) -> int:
     return int(getter())
 
 
-def encode_chunked(model, texts: list[str]) -> tuple[np.ndarray, int]:
+def encode_chunked(model, texts: list[str]) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     import torch
 
     tokenizer = model.tokenizer
@@ -82,6 +82,7 @@ def encode_chunked(model, texts: list[str]) -> tuple[np.ndarray, int]:
     hidden_size = embedding_dim(model)
     sums = np.zeros((len(texts), hidden_size), dtype=np.float32)
     counts = np.zeros(len(texts), dtype=np.int32)
+    all_vectors: list[np.ndarray] = []
 
     with torch.no_grad():
         for start in range(0, len(window_ids), BATCH_SIZE):
@@ -100,6 +101,7 @@ def encode_chunked(model, texts: list[str]) -> tuple[np.ndarray, int]:
             }
             output = model(features)
             vectors = output["sentence_embedding"].detach().cpu().numpy().astype(np.float32)
+            all_vectors.append(vectors)
             np.add.at(sums, batch_owners, vectors)
             np.add.at(counts, batch_owners, 1)
             done = min(start + BATCH_SIZE, len(window_ids))
@@ -107,18 +109,22 @@ def encode_chunked(model, texts: list[str]) -> tuple[np.ndarray, int]:
                 print(f"[kaggle] encoded {done}/{len(window_ids)} windows")
 
     counts[counts == 0] = 1
-    return (sums / counts[:, None]).astype(np.float32), len(window_ids)
+    matrix = (sums / counts[:, None]).astype(np.float32)
+    window_vectors = np.vstack(all_vectors).astype(np.float32)
+    window_owners = np.asarray(owners, dtype=np.int32)
+    return matrix, window_vectors, window_owners
 
 
-def encode_simple(model, texts: list[str]) -> tuple[np.ndarray, int]:
+def encode_simple(model, texts: list[str]) -> tuple[np.ndarray, np.ndarray]:
     vectors = model.encode(
         texts,
         batch_size=BATCH_SIZE,
         convert_to_numpy=True,
         normalize_embeddings=False,
         show_progress_bar=False,
-    )
-    return vectors.astype(np.float32), len(texts)
+    ).astype(np.float32)
+    owners = np.arange(len(texts), dtype=np.int32)
+    return vectors, owners
 
 
 def main() -> None:
@@ -133,21 +139,24 @@ def main() -> None:
     model, device, gpu_name = load_model()
     if getattr(model.tokenizer, "is_fast", False):
         print(f"[kaggle] chunked pooling: window={WINDOW_TOKENS} stride={WINDOW_STRIDE} batch={BATCH_SIZE}")
-        matrix, windows = encode_chunked(model, texts)
+        matrix, window_vectors, window_owners = encode_chunked(model, texts)
         mode = "chunked"
     else:
         print("[kaggle] tokenizer is not fast; using single-pass encoding")
-        matrix, windows = encode_simple(model, texts)
+        window_vectors, window_owners = encode_simple(model, texts)
+        matrix = window_vectors
         mode = "single-pass"
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     np.save(OUT_DIR / "embeddings.npy", matrix)
+    np.save(OUT_DIR / "window_vectors.npy", window_vectors)
+    np.save(OUT_DIR / "window_owners.npy", window_owners)
     (OUT_DIR / "embedding_ids.json").write_text(json.dumps(song_ids), encoding="utf-8")
     report = {
         "model": MODEL_NAME,
         "mode": mode,
         "songs": len(song_ids),
-        "windows": int(windows),
+        "windows": int(window_vectors.shape[0]),
         "window_tokens": WINDOW_TOKENS,
         "window_stride": WINDOW_STRIDE,
         "batch_size": BATCH_SIZE,
@@ -155,7 +164,7 @@ def main() -> None:
         "device": device,
         "gpu": gpu_name,
         "norms_mean": round(float(np.linalg.norm(matrix, axis=1).mean()), 4),
-        "finite": bool(np.isfinite(matrix).all()),
+        "finite": bool(np.isfinite(matrix).all() and np.isfinite(window_vectors).all()),
     }
     (OUT_DIR / "embed_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"

@@ -30,7 +30,9 @@ def _load_model(model_name: str):
     return SentenceTransformer(model_name, device=device)
 
 
-def _encode_simple(model, texts: list[str], batch_size: int, log_every: int) -> np.ndarray:
+def _encode_simple(
+    model, texts: list[str], batch_size: int, log_every: int
+) -> tuple[np.ndarray, np.ndarray]:
     embeddings: list[np.ndarray] = []
     for start in range(0, len(texts), batch_size):
         batch = texts[start : start + batch_size]
@@ -45,7 +47,8 @@ def _encode_simple(model, texts: list[str], batch_size: int, log_every: int) -> 
         done = min(start + batch_size, len(texts))
         if done % log_every < batch_size or done == len(texts):
             print(f"[embeddings] {done}/{len(texts)} songs encoded")
-    return np.vstack(embeddings).astype(np.float32)
+    matrix = np.vstack(embeddings).astype(np.float32)
+    return matrix, np.arange(len(texts), dtype=np.int32)
 
 
 def _tokenize_windows(
@@ -76,7 +79,7 @@ def _encode_chunked(
     max_len: int,
     stride: int,
     log_every: int,
-) -> np.ndarray:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     import torch
 
     tokenizer = model.tokenizer
@@ -98,6 +101,7 @@ def _encode_chunked(
     hidden_size = _embedding_dim(model)
     sums = np.zeros((len(texts), hidden_size), dtype=np.float32)
     counts = np.zeros(len(texts), dtype=np.int32)
+    all_vectors: list[np.ndarray] = []
 
     with torch.no_grad():
         for start in range(0, len(window_ids), batch_size):
@@ -116,6 +120,7 @@ def _encode_chunked(
             }
             output = model(features)
             vectors = output["sentence_embedding"].detach().cpu().numpy().astype(np.float32)
+            all_vectors.append(vectors)
             np.add.at(sums, batch_owners, vectors)
             np.add.at(counts, batch_owners, 1)
             done = min(start + batch_size, len(window_ids))
@@ -123,8 +128,10 @@ def _encode_chunked(
                 print(f"[embeddings] encoded {done}/{len(window_ids)} windows")
 
     counts[counts == 0] = 1
-    matrix = sums / counts[:, None]
-    return matrix.astype(np.float32)
+    matrix = (sums / counts[:, None]).astype(np.float32)
+    window_vectors = np.vstack(all_vectors).astype(np.float32)
+    window_owners = np.asarray(owners, dtype=np.int32)
+    return matrix, window_vectors, window_owners
 
 
 def compute_embeddings(config: Config | None = None, log_every: int = 500) -> np.ndarray:
@@ -141,15 +148,21 @@ def compute_embeddings(config: Config | None = None, log_every: int = 500) -> np
         max_len = min(config.embed_window_tokens, model.max_seq_length)
         stride = max(1, min(config.embed_window_stride, max_len - 1))
         print(f"[embeddings] chunked pooling: window={max_len} stride={stride} batch={batch_size}")
-        matrix = _encode_chunked(model, texts, batch_size, max_len, stride, log_every)
+        matrix, window_vectors, window_owners = _encode_chunked(
+            model, texts, batch_size, max_len, stride, log_every
+        )
     else:
         if config.embed_chunking:
             print("[embeddings] tokenizer is not fast; falling back to single-pass encoding")
-        matrix = _encode_simple(model, texts, batch_size, log_every)
+        matrix, window_owners = _encode_simple(model, texts, batch_size, log_every)
+        window_vectors = matrix
 
     np.save(config.embeddings_npy, matrix)
+    np.save(config.window_vectors_npy, window_vectors)
+    np.save(config.window_owners_npy, window_owners)
     config.embedding_ids_json.write_text(json.dumps(song_ids), encoding="utf-8")
     print(f"[embeddings] saved {matrix.shape} -> {config.embeddings_npy.name}")
+    print(f"[embeddings] saved {window_vectors.shape} windows -> {config.window_vectors_npy.name}")
     return matrix
 
 

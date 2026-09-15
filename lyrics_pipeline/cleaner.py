@@ -8,15 +8,18 @@ from typing import Iterable
 
 from .patterns import (
     CONTRIBUTOR_LINE_RE,
+    CREDIT_LINE_PATTERNS,
     DEVANAGARI_RE,
     GENIUS_ARTIST_MARKERS,
     INVISIBLE_CHARS_RE,
+    LYRICS_OF_RE,
     METADATA_LINE_PATTERNS,
     PAREN_ENGLISH_TRANSLATION_RE,
     QUOTE_MAP,
     ROMAN_RE,
     SECTION_BRACKET_RE,
     SECTION_WORD_RE,
+    TITLE_JUNK_RE,
     TITLE_SUFFIX_RE,
     TRANSLATIONS_HEADER_RE,
 )
@@ -32,6 +35,12 @@ def normalize_unicode(text: str) -> str:
 
 def clean_title(title: str) -> str:
     title = normalize_unicode(title)
+    match = LYRICS_OF_RE.match(title)
+    if match:
+        title = match.group(1).strip(" ,-–—")
+    stripped = TITLE_JUNK_RE.sub("", title).strip(" ,-–—")
+    if stripped:
+        title = stripped
     title = TITLE_SUFFIX_RE.sub("", title).strip(" ,-–—")
     return title
 
@@ -113,6 +122,10 @@ def is_noise_line(line: str, title: str, artist: str) -> bool:
         return True
 
     for pattern in METADATA_LINE_PATTERNS:
+        if pattern.match(stripped):
+            return True
+
+    for pattern in CREDIT_LINE_PATTERNS:
         if pattern.match(stripped):
             return True
 

@@ -12,6 +12,7 @@ from .config import Config
 from .index import build_index, load_index, normalize, search
 from .query import QueryEncoder
 from .rerank import mmr_rerank, sentiment_alignment
+from .window_search import WindowIndex
 
 
 @dataclass
@@ -42,6 +43,16 @@ class MusicRecommender:
         else:
             self.index = build_index(self.index_vectors.copy(), self.config.faiss_index_path)
 
+        self.window_index = None
+        if (
+            self.config.use_window_search
+            and self.config.window_vectors_npy.exists()
+            and self.config.window_owners_npy.exists()
+        ):
+            self.window_index = WindowIndex.load(
+                self.config.window_vectors_npy, self.config.window_owners_npy, len(self.songs)
+            )
+
         self.sentiment = None
         if self.config.sentiment_scores_csv.exists():
             self.sentiment = pd.read_csv(self.config.sentiment_scores_csv).set_index("song_id")
@@ -69,7 +80,7 @@ class MusicRecommender:
     def _filter_mask(self, artist: str | None, category: str | None) -> np.ndarray:
         mask = np.ones(len(self.songs), dtype=bool)
         if artist:
-            mask &= self.songs["artist"].fillna("").str.contains(artist, case=False).to_numpy()
+            mask &= self.songs["artist"].fillna("").str.contains(artist, case=False, regex=False).to_numpy()
         if category:
             mask &= (self.songs["category"].fillna("") == category).to_numpy()
         return mask
@@ -81,6 +92,7 @@ class MusicRecommender:
         exclude_id: int | None,
         artist: str | None,
         category: str | None,
+        window_scores: np.ndarray | None = None,
     ) -> list[Recommendation]:
         cfg = self.config
         keep_mask = self._filter_mask(artist, category)
@@ -91,11 +103,19 @@ class MusicRecommender:
                 mask_rows = mask_rows[mask_rows != exclude_id]
             if len(mask_rows) == 0:
                 return []
-            query_emb = query_vec_index[: self.embeddings.shape[1]]
-            sims = self.embeddings[mask_rows] @ query_emb
+            if window_scores is not None:
+                sims = window_scores[mask_rows]
+            else:
+                query_emb = query_vec_index[: self.embeddings.shape[1]]
+                sims = self.embeddings[mask_rows] @ query_emb
             order = np.argsort(-sims)[: cfg.ann_top_k]
             cand_ids = mask_rows[order].astype(int)
             cand_rel = sims[order].astype(np.float64)
+        elif window_scores is not None:
+            order = np.argsort(-window_scores)[: cfg.ann_top_k]
+            order = [row for row in order if np.isfinite(window_scores[row])]
+            cand_ids = np.asarray(order, dtype=int)
+            cand_rel = window_scores[order].astype(np.float64)
         else:
             scores, ids = search(self.index, query_vec_index, min(cfg.ann_top_k * 3, len(self.songs)))
             cand_ids, cand_rel = [], []
@@ -174,7 +194,8 @@ class MusicRecommender:
             query_vec = padded
         else:
             query_vec = emb
-        return self._rank(query_vec, target_sentiment, None, artist, category)
+        window_scores = self.window_index.song_scores(emb) if self.window_index is not None else None
+        return self._rank(query_vec, target_sentiment, None, artist, category, window_scores=window_scores)
 
     def normalized_query(self, text: str) -> str:
         return self.query_encoder.normalize_query(text)

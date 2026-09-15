@@ -54,6 +54,10 @@ service-account*.json
 # or download from your own release / Kaggle export.
 music_rec_artifacts/sentiment_model/
 
+# Window-level embedding artifacts (~200MB; regenerate via scripts/kaggle_embeddings.py)
+music_rec_artifacts/window_vectors.npy
+music_rec_artifacts/window_owners.npy
+
 # Training logs
 music_rec_artifacts/*.log
 *.log

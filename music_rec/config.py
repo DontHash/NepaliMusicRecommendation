@@ -21,6 +21,8 @@ class Config:
     audit_report_json: Path = field(init=False)
     embeddings_npy: Path = field(init=False)
     embedding_ids_json: Path = field(init=False)
+    window_vectors_npy: Path = field(init=False)
+    window_owners_npy: Path = field(init=False)
     sentiment_scores_csv: Path = field(init=False)
     sentiment_model_dir: Path = field(init=False)
     feature_matrix_npy: Path = field(init=False)
@@ -34,8 +36,8 @@ class Config:
     embed_batch_size: int = 32
     embed_batch_size_gpu: int = 128
     embed_chunking: bool = True
-    embed_window_tokens: int = 128
-    embed_window_stride: int = 64
+    embed_window_tokens: int = 48
+    embed_window_stride: int = 24
     sentiment_max_len: int = 256
     sentiment_epochs: int = 2
     sentiment_labels: tuple[str, ...] = ("negative", "neutral", "positive")
@@ -44,6 +46,7 @@ class Config:
     final_top_k: int = 10
     mmr_lambda: float = 0.7
     sentiment_weight: float = 0.15
+    use_window_search: bool = True
 
     def __post_init__(self):
         self.artifacts_dir.mkdir(parents=True, exist_ok=True)
@@ -51,6 +54,8 @@ class Config:
         self.audit_report_json = self.artifacts_dir / "audit_report.json"
         self.embeddings_npy = self.artifacts_dir / "embeddings.npy"
         self.embedding_ids_json = self.artifacts_dir / "embedding_ids.json"
+        self.window_vectors_npy = self.artifacts_dir / "window_vectors.npy"
+        self.window_owners_npy = self.artifacts_dir / "window_owners.npy"
         self.sentiment_scores_csv = self.artifacts_dir / "sentiment_scores.csv"
         self.sentiment_model_dir = self.artifacts_dir / "sentiment_model"
         self.feature_matrix_npy = self.artifacts_dir / "feature_matrix.npy"
