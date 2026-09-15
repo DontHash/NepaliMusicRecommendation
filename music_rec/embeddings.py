@@ -1,4 +1,12 @@
-"""Compute multilingual lyric embeddings into embeddings.npy."""
+"""Compute multilingual lyric embeddings into embeddings.npy.
+
+Long songs exceed the transformer's max sequence length (128 word pieces for
+mpnet), so a full song cannot be represented by a single forward pass. The
+chunked path (default) tokenizes each lyric into overlapping windows of
+``embed_window_tokens`` pieces, encodes every window, and mean-pools the window
+vectors into one vector per song. Without this, only the first ~128 pieces of
+every song were embedded and lyric-snippet queries could not match.
+"""
 
 from __future__ import annotations
 
@@ -11,9 +19,112 @@ from .config import Config
 
 
 def _load_model(model_name: str):
+    import torch
     from sentence_transformers import SentenceTransformer
 
-    return SentenceTransformer(model_name)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    if device == "cuda":
+        print(f"[embeddings] using GPU: {torch.cuda.get_device_name(0)}")
+    else:
+        print("[embeddings] using CPU")
+    return SentenceTransformer(model_name, device=device)
+
+
+def _encode_simple(model, texts: list[str], batch_size: int, log_every: int) -> np.ndarray:
+    embeddings: list[np.ndarray] = []
+    for start in range(0, len(texts), batch_size):
+        batch = texts[start : start + batch_size]
+        vecs = model.encode(
+            batch,
+            batch_size=batch_size,
+            convert_to_numpy=True,
+            normalize_embeddings=False,  # normalization happens at index build
+            show_progress_bar=False,
+        )
+        embeddings.append(vecs.astype(np.float32))
+        done = min(start + batch_size, len(texts))
+        if done % log_every < batch_size or done == len(texts):
+            print(f"[embeddings] {done}/{len(texts)} songs encoded")
+    return np.vstack(embeddings).astype(np.float32)
+
+
+def _tokenize_windows(
+    tokenizer, text: str, max_len: int, stride: int
+) -> tuple[list[list[int]], list[list[int]]]:
+    encoded = tokenizer(
+        text,
+        max_length=max_len,
+        stride=stride,
+        truncation=True,
+        return_overflowing_tokens=True,
+        padding=False,
+    )
+    return encoded["input_ids"], encoded["attention_mask"]
+
+
+def _embedding_dim(model) -> int:
+    getter = getattr(model, "get_embedding_dimension", None) or getattr(
+        model, "get_sentence_embedding_dimension"
+    )
+    return int(getter())
+
+
+def _encode_chunked(
+    model,
+    texts: list[str],
+    batch_size: int,
+    max_len: int,
+    stride: int,
+    log_every: int,
+) -> np.ndarray:
+    import torch
+
+    tokenizer = model.tokenizer
+    device = model.device
+    pad_token_id = tokenizer.pad_token_id
+
+    window_ids: list[list[int]] = []
+    window_masks: list[list[int]] = []
+    owners: list[int] = []
+    for index, text in enumerate(texts):
+        ids_list, mask_list = _tokenize_windows(tokenizer, text, max_len, stride)
+        window_ids.extend(ids_list)
+        window_masks.extend(mask_list)
+        owners.extend([index] * len(ids_list))
+        done = index + 1
+        if done % log_every == 0 or done == len(texts):
+            print(f"[embeddings] tokenized {done}/{len(texts)} songs into {len(window_ids)} windows")
+
+    hidden_size = _embedding_dim(model)
+    sums = np.zeros((len(texts), hidden_size), dtype=np.float32)
+    counts = np.zeros(len(texts), dtype=np.int32)
+
+    with torch.no_grad():
+        for start in range(0, len(window_ids), batch_size):
+            batch_ids = window_ids[start : start + batch_size]
+            batch_masks = window_masks[start : start + batch_size]
+            batch_owners = owners[start : start + batch_size]
+            width = max(len(ids) for ids in batch_ids)
+            padded_ids = np.full((len(batch_ids), width), pad_token_id, dtype=np.int64)
+            padded_masks = np.zeros((len(batch_ids), width), dtype=np.int64)
+            for row, (ids, mask) in enumerate(zip(batch_ids, batch_masks)):
+                padded_ids[row, : len(ids)] = ids
+                padded_masks[row, : len(mask)] = mask
+            features = {
+                "input_ids": torch.tensor(padded_ids, device=device),
+                "attention_mask": torch.tensor(padded_masks, device=device),
+            }
+            output = model(features)
+            vectors = output["sentence_embedding"].detach().cpu().numpy().astype(np.float32)
+            np.add.at(sums, batch_owners, vectors)
+            np.add.at(counts, batch_owners, 1)
+            done = min(start + batch_size, len(window_ids))
+            if done % (log_every * batch_size) < batch_size or done == len(window_ids):
+                print(f"[embeddings] encoded {done}/{len(window_ids)} windows")
+
+    counts[counts == 0] = 1
+    matrix = sums / counts[:, None]
+    return matrix.astype(np.float32)
 
 
 def compute_embeddings(config: Config | None = None, log_every: int = 500) -> np.ndarray:
@@ -23,24 +134,19 @@ def compute_embeddings(config: Config | None = None, log_every: int = 500) -> np
     song_ids = df["song_id"].tolist()
 
     model = _load_model(config.embedding_model)
+    batch_size = (
+        config.embed_batch_size_gpu if str(model.device).startswith("cuda") else config.embed_batch_size
+    )
+    if config.embed_chunking and getattr(model.tokenizer, "is_fast", False):
+        max_len = min(config.embed_window_tokens, model.max_seq_length)
+        stride = max(1, min(config.embed_window_stride, max_len - 1))
+        print(f"[embeddings] chunked pooling: window={max_len} stride={stride} batch={batch_size}")
+        matrix = _encode_chunked(model, texts, batch_size, max_len, stride, log_every)
+    else:
+        if config.embed_chunking:
+            print("[embeddings] tokenizer is not fast; falling back to single-pass encoding")
+        matrix = _encode_simple(model, texts, batch_size, log_every)
 
-    embeddings: list[np.ndarray] = []
-    bs = config.embed_batch_size
-    for start in range(0, len(texts), bs):
-        batch = texts[start : start + bs]
-        vecs = model.encode(
-            batch,
-            batch_size=bs,
-            convert_to_numpy=True,
-            normalize_embeddings=False,  # normalization happens at index build
-            show_progress_bar=False,
-        )
-        embeddings.append(vecs.astype(np.float32))
-        done = min(start + bs, len(texts))
-        if done % log_every < bs or done == len(texts):
-            print(f"[embeddings] {done}/{len(texts)} songs encoded")
-
-    matrix = np.vstack(embeddings).astype(np.float32)
     np.save(config.embeddings_npy, matrix)
     config.embedding_ids_json.write_text(json.dumps(song_ids), encoding="utf-8")
     print(f"[embeddings] saved {matrix.shape} -> {config.embeddings_npy.name}")

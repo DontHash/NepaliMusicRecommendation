@@ -38,9 +38,6 @@ def run_eval(queries_path: Path, report_path: Path, *, ann_top_k: int = 200, top
         else:
             results = recommender.recommend_by_text(str(query["text"]))
         ids = [rec.song_id for rec in results]
-        if qtype == "lyric":
-            source = set(int(x) for x in query["relevant"])
-            ids = [sid for sid in ids if sid not in source]
         rankings[query["query_id"]] = ids
 
     objective = [query for query in queries if query["type"] in {"artist", "lyric", "seed"}]

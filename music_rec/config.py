@@ -32,6 +32,10 @@ class Config:
 
     min_tokens: int = 10
     embed_batch_size: int = 32
+    embed_batch_size_gpu: int = 128
+    embed_chunking: bool = True
+    embed_window_tokens: int = 128
+    embed_window_stride: int = 64
     sentiment_max_len: int = 256
     sentiment_epochs: int = 2
     sentiment_labels: tuple[str, ...] = ("negative", "neutral", "positive")

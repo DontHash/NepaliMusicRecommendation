@@ -25,6 +25,10 @@ SOURCE_PRIORITY = {
     "lrclib": 3,
     "site_paankopat.com": 4,
     "site_songsdiary.com": 4,
+    "site_nepalilyrics.net": 4,
+    "site_nepali-songslyrics.com": 4,
+    "site_nepaligeetlyrics.com": 4,
+    "site_geetishabda.blogspot.com": 4,
     "deezer": 5,
     "itunes": 6,
 }

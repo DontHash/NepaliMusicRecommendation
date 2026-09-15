@@ -83,21 +83,33 @@ class MusicRecommender:
         category: str | None,
     ) -> list[Recommendation]:
         cfg = self.config
-        scores, ids = search(self.index, query_vec_index, min(cfg.ann_top_k * 3, len(self.songs)))
-
         keep_mask = self._filter_mask(artist, category)
-        cand_ids, cand_rel = [], []
-        for sid, sc in zip(ids, scores):
-            if sid < 0 or sid == exclude_id:
-                continue
-            if not keep_mask[sid]:
-                continue
-            cand_ids.append(int(sid))
-            cand_rel.append(float(sc))
-            if len(cand_ids) >= cfg.ann_top_k:
-                break
 
-        if not cand_ids:
+        if artist or category:
+            mask_rows = np.nonzero(keep_mask)[0]
+            if exclude_id is not None:
+                mask_rows = mask_rows[mask_rows != exclude_id]
+            if len(mask_rows) == 0:
+                return []
+            query_emb = query_vec_index[: self.embeddings.shape[1]]
+            sims = self.embeddings[mask_rows] @ query_emb
+            order = np.argsort(-sims)[: cfg.ann_top_k]
+            cand_ids = mask_rows[order].astype(int)
+            cand_rel = sims[order].astype(np.float64)
+        else:
+            scores, ids = search(self.index, query_vec_index, min(cfg.ann_top_k * 3, len(self.songs)))
+            cand_ids, cand_rel = [], []
+            for sid, sc in zip(ids, scores):
+                if sid < 0 or sid == exclude_id:
+                    continue
+                if not keep_mask[sid]:
+                    continue
+                cand_ids.append(int(sid))
+                cand_rel.append(float(sc))
+                if len(cand_ids) >= cfg.ann_top_k:
+                    break
+
+        if len(cand_ids) == 0:
             return []
 
         cand_ids = np.array(cand_ids)

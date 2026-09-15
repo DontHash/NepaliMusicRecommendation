@@ -85,7 +85,11 @@ def build_queries(
             }
         )
 
-    seed_pool = df.sample(min(n_seed, len(df)), random_state=seed + 1)
+    eligible_seed_artists = [
+        a for a, n in artist_counts.items() if n >= 2 and str(a).strip()
+    ]
+    seed_rows = df[df["artist"].isin(eligible_seed_artists)]
+    seed_pool = seed_rows.sample(min(n_seed, len(seed_rows)), random_state=seed + 1)
     for index, row in enumerate(seed_pool.itertuples(index=False)):
         same_artist = df.loc[df["artist"] == row.artist, "song_id"].astype(int).tolist()
         same_artist = [sid for sid in same_artist if sid != int(row.song_id)]
