@@ -505,22 +505,63 @@ python -m data_collection.compact                # store -> R_data/corpus/corpus
 python -m data_collection.report --samples 5     # queue stats + random samples
 ```
 
-**Result (2026-09): 932 -> 2,132 clean songs** (devanagari/mixed scripts only),
-sources: RupeshAryal bootstrap (369), legacy 932 (735 unique), Kaggle Genius
-dump filter (373), paankopat.com (567), songsdiary.com (17), LRCLIB (95);
-duplicates/near-duplicates removed at compaction.
+**Result (2026-09): 932 -> 4,185 clean songs** (devanagari/mixed scripts only,
+4,180 after the recommender audit), sources: nepalilyrics.net (1,510), legacy
+932 (735 unique), paankopat.com (561), Kaggle Genius dump filter (373),
+RupeshAryal bootstrap (369), nepali-songslyrics.com (215), nepaligeetlyrics.com
+(179), geetishabda.blogspot.com (151), iTunes (71), songsdiary.com (17), Deezer
+(4); duplicates/near-duplicates removed at compaction and audit.
+
+**Corpus pipeline after compaction**
+
+```bash
+python scripts/clean_lyrics_dataset.py --input R_data/corpus/corpus_raw.csv \
+  --output "CSVs Dataset/corpus_final.csv" \
+  --report R_data/corpus/reports/cleaning_corpus_final.json   # clean + transliterate
+python scripts/run_music_rec.py audit --input "CSVs Dataset/corpus_final.csv"
+python eval/queries.py                                        # rebuild query set (song_ids change)
+python scripts/kaggle_embeddings.py run                       # chunked embeddings on Kaggle GPU
+python scripts/run_music_rec.py features
+python scripts/run_music_rec.py index
+python -m eval.run_eval
+```
+
+**Retrieval eval (2026-09, 4,180 songs, `eval_v2_report.json`)**
+
+| Query type | nDCG@10 | Recall@10 | MRR | Notes |
+|------------|---------|-----------|-----|-------|
+| artist | 0.877 | 0.761 | 0.888 | via exact artist-name detection + metadata filter |
+| lyric | 0.102 | 0.150 | 0.092 | single-line -> source song; ~60x random |
+| seed | 0.203 | 0.064 | 0.228 | same-artist relevance, empty-artist rows excluded |
+
+The earlier baseline (artist 0.025, lyric 0.0, seed 0.277) was measured with a
+broken harness (lyric source filtered out of rankings; seed relevance polluted
+by ~445 empty-artist songs) and single-pass truncated embeddings. Both were
+fixed: `eval/run_eval.py` no longer removes the lyric source; `eval/queries.py`
+restricts seed/artist relevance to real artists; `music_rec/embeddings.py` +
+`scripts/kaggle_jobs/lyric_embeddings.py` now embed the whole song with chunked
+mean pooling (128-token windows, stride 64); and `music_rec/recommender.py`
+ranks filtered queries against all matching songs instead of only ANN
+candidates (previously an artist query returned whichever songs happened to be
+in the vector-search top-600).
 
 **Known limits at this stage**
 
 - LRCLIB's artist-only search is unreliable (503/empty); per-candidate
   track+artist search is the working path (resumable via `fetch --retry-missed`).
+  ~26.9k enumerated iTunes/Deezer candidates remain unfetched (deferred; low
+  LRCLIB yield for Nepali).
 - songsdiary.com listings are JS-driven with a robots-disallowed data endpoint:
   needs the Scrapling browser tier (planned, not enabled).
 - The Kaggle Genius dump only contains ~1,530 Nepali-labelled rows.
-- `music_rec_artifacts/eval_v2_report.json` records the retrieval baseline
-  (artist nDCG@10 0.025, lyric 0.0, seed 0.277) - lyric-query weakness is the
-  target for the planned embedding upgrade.
+- New-site lyrics can still carry credit lines ("एक्टर्स:", "शब्द", "संगीत",
+  ~180 songs) and titles with junk suffixes ("- lyrics / Artist",
+  "Lyrics and Chords"). Titles are not embedded, so retrieval is unaffected;
+  cleaner patterns for both are a follow-up (requires a re-clean + re-embed
+  cycle, which `scripts/kaggle_embeddings.py` now makes cheap).
+- Local GPU embedding is avoided (thermal); the Kaggle wrapper is the supported
+  path, with `music_rec/embeddings.py` retaining a CPU chunked fallback.
 
 ---
 
-*Last updated to reflect project state: 942 raw songs → 932 cleaned → full pipeline + MusicAnalyzer.*
+*Last updated to reflect project state: 942 raw songs → 4,180-song corpus → chunked embeddings + full pipeline + retrieval eval + MusicAnalyzer.*
