@@ -1,0 +1,61 @@
+song_id,title,artist,joy,sadness,anger,fear,depression,sentiment,confidence,notes
+182,Na Aau Feri,Akash khadka,0,1,0,0,0,negative,high,heartbreak and lost trust
+263,Aakashma Lekhe,Anil Singh,0,0,0,0,0,positive,medium,romantic devotion (name written in sky)
+281,Haina Aamai Haina Ma Royeki Chhaina,"Anjita Bishwokarma, Rajesh Adhikari",0,1,0,0,0,negative,high,repeated denial of crying (dialogue song)
+352,Kathmandu Saharmaa,Ankit Shrestha,0,1,0,0,0,neutral,low,city hardship with hopeful ending (asha ko sahara)
+366,Hanuman Chalisa,Ankit Tiwari,0,0,0,0,0,positive,high,devotional hymn
+380,Tere Jaane Se,Ankit Tiwari,0,1,0,0,0,negative,high,Hindi sad song (note: non-Nepali lyrics in corpus)
+387,Dil Dariyan,"Ankit Tiwari & Deepali Sathe",0,0,0,0,0,positive,medium,Hindi romantic bliss
+527,Naugedi नौगेडी,Ashutosh KC,0,1,0,0,0,negative,high,longing and waiting unreturned
+641,Oh Makka,Barsha Karmacharya,1,0,0,0,0,positive,medium,playful teasing courtship
+684,Nabola Masanga - bekcha Official,Bekcha,0,1,0,0,0,negative,high,heartbreak and separation
+752,Timi,Binit Shrestha,0,1,0,0,0,negative,high,absent lover haunts every day
+808,Way To my Heart Nepali poetry,Birendra Ghimire,0,1,0,0,0,neutral,medium,struggle then self-encouragement (ekdin sabai thik hunchha)
+827,Yestai Rahechha Maya,"Bishnu Majhi, Yam Chhetri",0,1,0,0,0,negative,medium,reflective disillusionment with love
+938,Astitwa,Cobweb,0,1,1,0,0,negative,medium,protest against poverty and oppression
+1145,Timro Mero Sambandhako,Dipak Limbu,0,0,0,0,0,positive,low,defiant in love despite gossip
+1469,Lekali Hey Choyako Doko,Harish Mathema,1,0,0,0,0,positive,medium,playful folk flirtation
+1511,Mero Man Ma Aago,Himal Sagar,0,1,1,0,0,negative,high,betrayal burns the heart
+1528,Kaslai Sacheko,Indira Joshi,1,0,0,0,0,positive,medium,playful youthful teasing
+1660,Nira Jahile Risaune,Kaliparsad Baskota,1,0,0,0,0,positive,low,affectionate teasing about a sulking lover
+1777,maya basyo mutuma,komal oli and yam baral,1,0,0,0,0,positive,medium,sweet love (contains junk line: Found an error report)
+1801,Dadai Furke Sallo,Kulendra Bishwakarma & Bishnu Majhi,0,1,0,0,0,negative,low,searching for love's home lost in the woods
+1831,Phuleki Thiye,Kunti Moktan,0,1,0,0,0,neutral,medium,nostalgic flower-bee metaphor
+1848,Sathi Ho,Laure,0,1,1,0,0,negative,medium,street hustle hardship and defiance
+1855,Aakashbandi,LEGITHIPHOP,0,0,0,0,0,neutral,low,rap about dreams and plans (English-mixed)
+1860,Katha,Lijal Shrestha,0,1,0,0,1,negative,medium,tragic story of ruin and grief
+1938,Aama,Mantra Band,1,0,0,0,0,positive,high,gratitude and warmth toward mother
+2061,Dherai Dherai,Mingma Sherpa,0,0,0,0,0,neutral,low,questioning whose love has bloomed
+2068,Shiva Arati (Radio Nepal Early Bhajan),"Mira Rana, Dwarika Lal Joshi",0,0,0,0,0,positive,high,devotional arati
+2112,Kagajko Not,Mr D,0,1,1,0,0,negative,low,grind and frustration about money
+2164,Aja bholi hareko saajh,Narayan Gopal,0,1,0,0,0,negative,high,drinking to forget sorrow
+2252,Timile Pani Ma Jastai,Narayan Gopal,0,1,0,0,0,negative,high,melancholic devotion losing oneself in memory
+2272,Manchhe Ko Maya,"Narayan Gopal, Gyanu Rana",0,1,0,0,0,negative,medium,philosophical on love's fleeting nature
+2292,Vanna Aaudaina,Naren Limbu,0,1,0,0,0,neutral,low,yearning that cannot be put into words
+2615,Dhokebaj Ko Rajya,Pramod Kharel.,0,1,1,0,0,negative,high,betrayal and bitter indictment
+2656,Are Kyanam,Prashant Tamang,1,0,0,0,0,positive,medium,playful courtship folk
+2685,Call Me Didi,Prativa Rani,1,0,0,0,0,positive,medium,sassy self-assured fun track
+2812,Sayau Juni,"Rajina Rimal, Jagdish Samal",1,0,0,0,0,positive,medium,devoted love across lifetimes
+2841,Yo Junima,Raju Lama,0,0,0,0,0,positive,medium,prayer to meet in every lifetime
+2864,Hamro Sundar Sansar thiyo,Ram Krishna Dhakal,0,1,0,0,0,negative,high,love destroyed by storm
+2902,Kati Baschau Maiti Kai Kausima,Ram Thapa,0,1,0,0,0,negative,medium,desperation over marriage uncertainty
+2952,Ma Mauntama,"Rocken Music, Om Bikram Bista",0,1,0,0,1,negative,medium,life in darkness and loneliness
+3026,Samarpan,Sabin Rai,1,0,0,0,0,positive,medium,devoted romantic surrender
+3091,Mellow : Rohit Shakya X Sajjan Raj Vaidya Official,Sajjan Raj Vaidya,0,0,0,0,0,positive,medium,cautious romantic hope
+3131,भाबिलेनि मेरै भाग्य लेख्दा कलम फेर्यो,Samikshya Adhikari,0,1,1,0,0,negative,medium,lament of betrayal and unfair fate
+3139,Sirma Sirbandi,"Samikshya Adhikari, Subash Khattri",1,0,0,0,0,positive,medium,playful market-courtship folk
+3154,Mayalu Sunana,Samir Shrestha,1,0,0,0,0,positive,medium,reassuring love song
+3174,Ma Chahi Nepali,Samriddhi Rai,0,0,1,0,0,negative,medium,protest against caste division and violence
+3223,Kina Hajur Naboleko,Sapana Shree,0,1,0,1,0,negative,low,anxious worry over partner's silence
+3230,Sangai,Sareen Deoja,1,0,0,0,0,positive,medium,togetherness and fun
+3235,Ooth Dekhi Ooth Samma,Saroj Dutta,1,0,0,0,0,positive,high,joyous romance blessing
+3396,Dashain Aayo,Sugam Pokharel,1,0,0,0,0,positive,high,festival celebration
+3424,Bhamara Fulko Rasaima,Sugam Pokharel,0,1,0,0,0,negative,low,waiting lover with melancholy folk imagery
+3458,Dui Din Ko Jindagi ma by Rachana Rimal; Sujan Babu Gurung,Sujan Babu Gurung,1,0,0,0,0,positive,low,romantic togetherness pledge
+3525,Tal Tal Tal Talakkai,Suresh Lama and Anju Panta,1,0,0,0,0,positive,medium,playful praise of beloved
+3550,Kya Kardiya,Sushant KC,0,1,0,0,0,negative,high,Hindi heartbreak
+3671,Relli Mai,Tanka Budhathoki,0,1,0,0,0,negative,low,dramatic longing (fire of love)
+3704,Euta Chittiko,The Axe,0,0,0,0,0,positive,medium,love is not paper (dignified romance)
+3821,Aghumai Saalai Ta,Trishna Gurung,0,1,0,0,0,neutral,low,hopeful waiting for a meeting
+4011,Pagal Pagal,Wangden Sherpa & Sushant Ghimire ft. Mel,1,0,0,0,0,positive,medium,crazy-in-love energy
+4024,Ekkasi,Yabesh Thapa,0,1,0,0,0,negative,high,plea not to leave mid-heartbreak
