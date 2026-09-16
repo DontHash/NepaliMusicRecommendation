@@ -1,151 +1,150 @@
-song_id,title,artist,joy,sadness,anger,fear,depression,positive,negative,confidence,notes,source
-182,Na Aau Feri,Akash khadka,0,1,0,0,0,0,1,high,heartbreak and lost trust,v1
-263,Aakashma Lekhe,Anil Singh,0,0,0,0,0,1,0,medium,romantic devotion (name written in sky),v1
-281,Haina Aamai Haina Ma Royeki Chhaina,"Anjita Bishwokarma, Rajesh Adhikari",0,1,0,0,0,0,1,high,repeated denial of crying (dialogue song),v1
-352,Kathmandu Saharmaa,Ankit Shrestha,0,1,0,0,0,1,1,low,hardship and hope; mixed,v1
-366,Hanuman Chalisa,Ankit Tiwari,0,0,0,0,0,1,0,high,devotional hymn,v1
-380,Tere Jaane Se,Ankit Tiwari,0,1,0,0,0,0,1,high,Hindi sad song (note: non-Nepali lyrics in corpus),v1
-387,Dil Dariyan,Ankit Tiwari & Deepali Sathe,0,0,0,0,0,1,0,medium,Hindi romantic bliss,v1
-527,Naugedi नौगेडी,Ashutosh KC,0,1,0,0,0,0,1,high,longing and waiting unreturned,v1
-641,Oh Makka,Barsha Karmacharya,1,0,0,0,0,1,0,medium,playful teasing courtship,v1
-684,Nabola Masanga - bekcha Official,Bekcha,0,1,0,0,0,0,1,high,heartbreak and separation,v1
-752,Timi,Binit Shrestha,0,1,0,0,0,0,1,high,absent lover haunts every day,v1
-808,Way To my Heart Nepali poetry,Birendra Ghimire,0,1,0,0,0,1,1,medium,struggle then hope; mixed,v1
-827,Yestai Rahechha Maya,"Bishnu Majhi, Yam Chhetri",0,1,0,0,0,0,1,medium,reflective disillusionment with love,v1
-938,Astitwa,Cobweb,0,1,1,0,0,0,1,medium,protest against poverty and oppression,v1
-1145,Timro Mero Sambandhako,Dipak Limbu,0,0,0,0,0,1,0,low,defiant in love despite gossip,v1
-1469,Lekali Hey Choyako Doko,Harish Mathema,1,0,0,0,0,1,0,medium,playful folk flirtation,v1
-1511,Mero Man Ma Aago,Himal Sagar,0,1,1,0,0,0,1,high,betrayal burns the heart,v1
-1528,Kaslai Sacheko,Indira Joshi,1,0,0,0,0,1,0,medium,playful youthful teasing,v1
-1660,Nira Jahile Risaune,Kaliparsad Baskota,1,0,0,0,0,1,0,low,affectionate teasing about a sulking lover,v1
-1777,maya basyo mutuma,komal oli and yam baral,1,0,0,0,0,1,0,medium,sweet love (contains junk line: Found an error report),v1
-1801,Dadai Furke Sallo,Kulendra Bishwakarma & Bishnu Majhi,0,1,0,0,0,0,1,low,searching for love's home lost in the woods,v1
-1831,Phuleki Thiye,Kunti Moktan,0,1,0,0,0,0,1,medium,nostalgic loss,v1
-1848,Sathi Ho,Laure,0,1,1,0,0,0,1,medium,street hustle hardship and defiance,v1
-1855,Aakashbandi,LEGITHIPHOP,0,0,0,0,0,0,0,low,rap about dreams and plans (English-mixed),v1
-1860,Katha,Lijal Shrestha,0,1,0,0,1,0,1,medium,tragic story of ruin and grief,v1
-1938,Aama,Mantra Band,1,0,0,0,0,1,0,high,gratitude and warmth toward mother,v1
-2061,Dherai Dherai,Mingma Sherpa,0,0,0,0,0,0,0,low,questioning whose love has bloomed,v1
-2068,Shiva Arati (Radio Nepal Early Bhajan),"Mira Rana, Dwarika Lal Joshi",0,0,0,0,0,1,0,high,devotional arati,v1
-2112,Kagajko Not,Mr D,0,1,1,0,0,0,1,low,grind and frustration about money,v1
-2164,Aja bholi hareko saajh,Narayan Gopal,0,1,0,0,0,0,1,high,drinking to forget sorrow,v1
-2252,Timile Pani Ma Jastai,Narayan Gopal,0,1,0,0,0,1,1,high,melancholic devotion; mixed,v1
-2272,Manchhe Ko Maya,"Narayan Gopal, Gyanu Rana",0,1,0,0,0,0,1,medium,philosophical on love's fleeting nature,v1
-2292,Vanna Aaudaina,Naren Limbu,0,1,0,0,0,1,0,low,yearning love,v1
-2615,Dhokebaj Ko Rajya,Pramod Kharel.,0,1,1,0,0,0,1,high,betrayal and bitter indictment,v1
-2656,Are Kyanam,Prashant Tamang,1,0,0,0,0,1,0,medium,playful courtship folk,v1
-2685,Call Me Didi,Prativa Rani,1,0,0,0,0,1,0,medium,sassy self-assured fun track,v1
-2812,Sayau Juni,"Rajina Rimal, Jagdish Samal",1,0,0,0,0,1,0,medium,devoted love across lifetimes,v1
-2841,Yo Junima,Raju Lama,0,0,0,0,0,1,0,medium,prayer to meet in every lifetime,v1
-2864,Hamro Sundar Sansar thiyo,Ram Krishna Dhakal,0,1,0,0,0,0,1,high,love destroyed by storm,v1
-2902,Kati Baschau Maiti Kai Kausima,Ram Thapa,0,1,0,0,0,0,1,medium,desperation over marriage uncertainty,v1
-2952,Ma Mauntama,"Rocken Music, Om Bikram Bista",0,1,0,0,1,0,1,medium,life in darkness and loneliness,v1
-3026,Samarpan,Sabin Rai,1,0,0,0,0,1,0,medium,devoted romantic surrender,v1
-3091,Mellow : Rohit Shakya X Sajjan Raj Vaidya Official,Sajjan Raj Vaidya,0,0,0,0,0,1,0,medium,cautious romantic hope,v1
-3131,भाबिलेनि मेरै भाग्य लेख्दा कलम फेर्यो,Samikshya Adhikari,0,1,1,0,0,0,1,medium,lament of betrayal and unfair fate,v1
-3139,Sirma Sirbandi,"Samikshya Adhikari, Subash Khattri",1,0,0,0,0,1,0,medium,playful market-courtship folk,v1
-3154,Mayalu Sunana,Samir Shrestha,1,0,0,0,0,1,0,medium,reassuring love song,v1
-3174,Ma Chahi Nepali,Samriddhi Rai,0,0,1,0,0,0,1,medium,protest against caste division and violence,v1
-3223,Kina Hajur Naboleko,Sapana Shree,0,1,0,1,0,0,1,low,anxious worry over partner's silence,v1
-3230,Sangai,Sareen Deoja,1,0,0,0,0,1,0,medium,togetherness and fun,v1
-3235,Ooth Dekhi Ooth Samma,Saroj Dutta,1,0,0,0,0,1,0,high,joyous romance blessing,v1
-3396,Dashain Aayo,Sugam Pokharel,1,0,0,0,0,1,0,high,festival celebration,v1
-3424,Bhamara Fulko Rasaima,Sugam Pokharel,0,1,0,0,0,0,1,low,waiting lover with melancholy folk imagery,v1
-3458,Dui Din Ko Jindagi ma by Rachana Rimal; Sujan Babu Gurung,Sujan Babu Gurung,1,0,0,0,0,1,0,low,romantic togetherness pledge,v1
-3525,Tal Tal Tal Talakkai,Suresh Lama and Anju Panta,1,0,0,0,0,1,0,medium,playful praise of beloved,v1
-3550,Kya Kardiya,Sushant KC,0,1,0,0,0,0,1,high,Hindi heartbreak,v1
-3671,Relli Mai,Tanka Budhathoki,0,1,0,0,0,0,1,low,dramatic longing (fire of love),v1
-3704,Euta Chittiko,The Axe,0,0,0,0,0,1,0,medium,love is not paper (dignified romance),v1
-3821,Aghumai Saalai Ta,Trishna Gurung,0,1,0,0,0,0,0,low,hopeful waiting for a meeting,v1
-4011,Pagal Pagal,Wangden Sherpa & Sushant Ghimire ft. Mel,1,0,0,0,0,1,0,medium,crazy-in-love energy,v1
-4024,Ekkasi,Yabesh Thapa,0,1,0,0,0,0,1,high,plea not to leave mid-heartbreak,v1
-2794,Darshan Namaste 3,Rajesh Payal Rai,1,0,0,0,0,1,0,medium,,v2_random
-2598,Ma Pani Ta Kunai Aasma,Prakash Shrestha,0,1,0,0,0,1,1,medium,yearning in hope; mixed,v2_random
-687,Timi Sanga Mero Nata,Benup Chhetri,0,1,0,0,0,0,1,medium,,v2_random
-60,Mutu Bhari Bhari,1974 AD,1,0,0,0,0,1,0,medium,,v2_random
-1009,Badal Haruho,Deep Shrestha,0,1,0,0,0,0,1,low,,v2_random
-3822,Gainey Dajai,Trishna Gurung,1,0,0,0,0,1,0,medium,,v2_random
-2597,Gahiraima Dubdai Naduba,Prakash Shrestha,0,0,0,0,0,0,0,low,"rescue metaphor, resolve",v2_random
-882,Ojhel,Catch 22,0,1,0,0,0,0,1,high,,v2_random
-218,Farkeara na aau,Alish Nepking,0,1,0,0,0,0,1,high,,v2_random
-1807,A Mai Re,Kuma Sagar Hawa Ko Lahar Sangai,1,0,0,0,0,1,0,medium,,v2_random
-1719,Eutai Thiyo Mutu,Karna Das,0,1,0,0,0,0,1,high,,v2_random
-757,Asaar,Bipul Chettri,1,1,0,0,0,1,1,medium,rain joy + fleeting life; mixed,v2_random
-2415,Lakhau Hajarau (Remix),Nepz Flo',1,1,0,0,0,1,1,low,adoring obsession; mixed,v2_random
-1135,Ma Jalera Kharani,Dipak Limbu,0,1,0,0,0,0,1,high,,v2_random
-994,Hui Bhanda Chiso,Danny Denzongpa,1,0,0,0,0,1,0,medium,,v2_random
-1046,Hridaya Bhitra,Deepak Gurung,1,0,0,0,0,1,0,medium,,v2_random
-3376,Chamkina De Pt.2 Remix,Sudhan Gurung,1,0,0,0,0,1,0,medium,,v2_random
-3734,Har Saanjh,The edge band,0,1,0,0,0,0,1,high,lonely waiting,v2_random
-31,Aaja Kaha,1974 AD,0,0,0,0,0,0,0,medium,philosophical journey,v2_random
-3250,Curly Curly Kapal Captain Movie Song,SD Yogi & Melina Rai,1,0,0,0,0,1,0,medium,,v2_random
-1685,Lekaki Hey Maya,Kandara,1,0,0,0,0,1,0,medium,,v2_random
-66,Pinjada Ko Suga,1974 AD,0,1,0,0,0,0,1,medium,caged bird,v2_random
-705,Na Bhuli Deu Timi - Bhram Band,Bhram Band,0,1,0,0,0,0,1,medium,,v2_random
-3054,No Peace in Love,SACAR aka Lil Buddha,0,1,0,0,0,0,1,low,"English rap, distrust",v2_random
-1066,Hiu Jastai Kanchan,Deepak Limbu and Prabisha Adhikari from ,1,0,0,0,0,1,0,medium,,v2_random
-3553,Muskurayera,Sushant KC,1,0,0,0,0,1,0,medium,,v2_random
-62,"Nepali Ho (feat. Subani Moktan, Kutumba, Aid Ray & Mukti)",1974 AD,1,0,0,0,0,1,0,high,patriotic pride,v2_random
-1013,Har Raat Sapanima,Deep Shrestha,0,1,0,1,0,0,1,high,landslide dread,v2_random
-722,Khali Chhaina Mero Mutu,Bihe Pass,1,0,0,0,0,1,0,medium,heart full of love,v2_random
-594,Lau Hida,B-8eight,0,1,1,0,0,1,1,low,societal pressure + defiant dreams; mixed,v2_random
-904,Sarara,Chhewang Lama,1,0,0,0,0,1,0,medium,,v2_random
-3059,Timro Najar Bhulauna,Sadhana Saragam from Album Pachheuri.,1,0,0,0,0,1,0,medium,,v2_random
-3023,Maya Timilai,Sabin Rai,0,1,0,0,0,0,1,high,,v2_random
-3456,Sunyou Ki Sunenau Timile,"Sugam Pokhrel, Swechhya Thakuri",0,1,0,0,0,1,1,medium,longing love; mixed,v2_random
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,1,0,0,0,0,1,0,medium,,v2_random
-3836,Bhumo,Tsujil Karmacharya,0,1,0,0,0,0,1,low,17 years alone,v2_random
-2143,Saayed Timinai Hau,Nabin K Bhattarai,0,1,0,0,0,0,1,medium,,v2_random
-1844,Haude,Laure,0,1,0,0,0,0,1,low,street life grievance,v2_random
-2430,Aauna Sangai Naachau,Nima Rumba,1,0,0,0,0,1,0,high,,v2_random
-3290,BATASH,Shashwot Khadka,0,1,0,0,0,0,1,medium,hidden feelings,v2_random
-2111,Gobarlyath 2,Mr D,0,1,0,0,0,0,1,medium,unemployment grind,v2_random
-1103,Himal Najhuke Samma,Dhiraj Rai,1,0,0,0,0,1,0,medium,,v2_random
-1852,Ho Piya Rajai,Laxmi Neupane,1,0,0,0,0,1,0,medium,,v2_random
-4141,Black And White,ZEROO,0,1,0,0,0,1,1,low,breakup + well-wishes; mixed,v2_random
-881,Kina Dukhi Chau,Catch 22,0,0,0,0,0,1,0,low,consoling cheer,v2_random
-101,Diyo Bali Sanjhako,Aasha Bhosle,0,0,0,0,0,1,0,high,devotional,v2_random
-1496,Sikka Ko Dui Pato,Hemanta Rana,0,1,0,0,0,1,1,medium,two sides of the coin; mixed,v2_random
-3667,Rupai Mohani Official,Tanka Budathoki,1,0,0,0,0,1,0,medium,,v2_random
-3800,Chinta,Tribal Rain,0,1,0,0,0,0,1,high,nobody understood me,v2_random
-3271,Calculator,"Shankar Thapa 'Smile', Bijayeta Adhikari",1,0,0,0,0,1,0,medium,,v2_random
-3308,Abhinaya,ShreeGo,0,1,0,0,0,1,1,low,love hidden behind acting; mixed,v2_random
-1954,Samaya,Mantra Band,0,1,0,0,0,0,1,medium,time takes people,v2_random
-2059,Bhumarima,Mingma Sherpa,0,1,0,0,0,0,1,high,betrayal,v2_random
-1423,Baneko cha paharale,Gopal Yonzan,0,1,0,0,0,1,1,low,mountain pride + poverty; mixed,v2_random
-3340,Timro Gharko Woripari,"Soman Topden,",1,0,0,0,0,1,0,medium,,v2_random
-3402,Kasari Bhanu Timilai,Sugam Pokharel,0,1,0,0,0,0,1,medium,,v2_random
-764,Deorali Darah,Bipul Chettri,0,1,0,0,0,0,1,high,"leaving, how to live",v2_random
-959,Bhana K Garu,COD,0,1,0,0,0,0,1,medium,,v2_random
-319,Parkhai,Anju Panta,0,1,0,0,0,0,1,high,waiting on false hope,v2_random
-611,Bato Pharakilo Thiyo,Babu Bogati,0,1,0,0,0,0,1,high,regret,v2_random
-885,Gatibidhi,Chakachak,0,1,1,0,0,0,1,high,corruption critique,v2_anger
-3987,MA PA SE,VTEN,0,0,1,0,0,0,1,high,street violence,v2_anger
-3044,Ecstasy In The Palace,SACAR aka Lil Buddha,0,0,1,0,0,0,1,medium,aggressive flex,v2_anger
-4071,Ma Futchu Tara Jhukdina,Yama Buddha,0,0,1,0,0,1,0,low,defiant national pride,v2_anger
-3980,Galli Sadak,VTEN,0,0,1,0,0,0,1,high,"street life, jail",v2_anger
-1330,Bizen - Hasta Namestey,Genius Romanizations,0,0,1,0,0,0,1,medium,diss track,v2_anger
-2877,Maya Basnu Bhanda Aaghi,Ram Krishna Dhakal,0,1,0,0,0,0,1,medium,gossip before love; judged sadness,v2_anger
-3049,King of NEPHOP 2,SACAR aka Lil Buddha,0,0,1,0,0,0,1,medium,battle rap,v2_anger
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",0,1,1,0,0,0,1,high,betrayed by own people,v2_anger
-937,Attitude,Clu Pokhrel,0,0,1,0,0,0,1,medium,ego flex,v2_anger
-2947,Swatantra Jeevan,Robin Tamang,0,0,1,0,0,1,1,high,protest + free life; mixed,v2_anger
-3978,CYPHER,VTEN,0,0,1,0,0,0,1,medium,cypher diss,v2_anger
-3477,Dhoka Diyou Timile,Sukmit Gurung,0,1,1,0,0,0,1,high,betrayal wound,v2_anger
-2327,Kantipur Nagari,Neetesh Jung Kunwar,0,1,0,0,0,1,1,low,old Kathmandu nostalgia; mixed,v2_anger
-3116,Tara Ma Dalit,Sakshat pant,0,0,1,0,0,0,1,high,caste injustice,v2_anger
-2816,Beautiful Girls,Raju Gurung,1,0,0,0,0,1,0,low,"playful, judged not fear",v2_fear
-4010,Jun Heri Timilai Heraula,"Wangden Sherpa, Sushant Ghimire",1,0,0,0,0,1,0,medium,romantic admiration,v2_fear
-539,Meso Milayera,Asmita Adhikari and Nishan Bhattarai,1,0,0,0,0,1,0,medium,rendezvous planning,v2_fear
-2832,Natanu Ta Tanu Lagne,Raju Lama,0,1,0,0,0,0,1,medium,alcohol drained life,v2_fear
-1153,Mai Runchu,Diwas Gurung,0,1,0,0,0,0,1,medium,pervasive crying,v2_fear
-2028,Hukum Baksiyos,Melina Rai And Bishal Rai From Nepali Mo,1,0,0,0,0,1,0,medium,playful tease,v2_fear
-614,Sannani,Babu Bogati,1,0,0,0,0,1,0,low,playful scolding,v2_fear
-618,Sirupate Jungama,Babul Giri,1,0,0,0,0,1,0,medium,flirty folk,v2_fear
-347,Rahar Chha Sangai,"Anju Panta, Sugam Pokharel",1,0,0,0,0,1,0,low,world is mine with you; judged joy,v2_depression
-32,Aru Kaalo,1974 AD,0,1,0,0,0,0,1,medium,love lost,v2_depression
-3845,Hola Nahola,Tunna Bell Thapa,0,1,0,0,0,1,1,medium,uncertain tomorrow + devoted; mixed,v2_depression
-2728,Bara Chhoro Tera Naati,Pushpan Pradhan,0,0,1,0,0,0,1,low,satirical accusation,v2_depression
-247,Yi Halla Haru Hun,Ananda Karki,0,1,0,0,0,0,1,medium,"heart was true, not believed",v2_depression
-1216,Mero Prayash,Edge Band,0,1,0,0,0,0,1,medium,forgetting the past,v2_depression
-3383,Kasko Yadharu,Sudip Giri,0,1,0,0,0,0,1,high,aching memories,v2_depression
+song_id,title,artist,joy,sadness,anger,fear,depression,positive,negative,polarity,primary_emotion,confidence,notes,source
+182,Na Aau Feri,Akash khadka,0,1,0,0,0,0,1,negative,sadness,high,heartbreak and lost trust,v1
+263,Aakashma Lekhe,Anil Singh,0,0,0,0,0,1,0,positive,none,medium,romantic devotion (name written in sky),v1
+281,Haina Aamai Haina Ma Royeki Chhaina,"Anjita Bishwokarma, Rajesh Adhikari",0,1,0,0,0,0,1,negative,sadness,high,repeated denial of crying (dialogue song),v1
+352,Kathmandu Saharmaa,Ankit Shrestha,0,1,0,0,0,1,1,mixed,sadness,low,hardship and hope; mixed,v1
+366,Hanuman Chalisa,Ankit Tiwari,0,0,0,0,0,1,0,positive,none,high,devotional hymn,v1
+380,Tere Jaane Se,Ankit Tiwari,0,1,0,0,0,0,1,negative,sadness,high,Hindi sad song (note: non-Nepali lyrics in corpus),v1
+387,Dil Dariyan,Ankit Tiwari & Deepali Sathe,0,0,0,0,0,1,0,positive,none,medium,Hindi romantic bliss,v1
+527,Naugedi नौगेडी,Ashutosh KC,0,1,0,0,0,0,1,negative,sadness,high,longing and waiting unreturned,v1
+641,Oh Makka,Barsha Karmacharya,1,0,0,0,0,1,0,positive,joy,medium,playful teasing courtship,v1
+684,Nabola Masanga - bekcha Official,Bekcha,0,1,0,0,0,0,1,negative,sadness,high,heartbreak and separation,v1
+752,Timi,Binit Shrestha,0,1,0,0,0,0,1,negative,sadness,high,absent lover haunts every day,v1
+808,Way To my Heart Nepali poetry,Birendra Ghimire,0,1,0,0,0,1,1,mixed,sadness,medium,struggle then hope; mixed,v1
+827,Yestai Rahechha Maya,"Bishnu Majhi, Yam Chhetri",0,1,0,0,0,0,1,negative,sadness,medium,reflective disillusionment with love,v1
+938,Astitwa,Cobweb,0,1,1,0,0,0,1,negative,anger,medium,protest against poverty and oppression,v1
+1145,Timro Mero Sambandhako,Dipak Limbu,0,0,0,0,0,1,0,positive,none,low,defiant love despite gossip (audit claim rejected: lyrics show no loss),v1
+1469,Lekali Hey Choyako Doko,Harish Mathema,1,0,0,0,0,1,0,positive,joy,medium,playful folk flirtation,v1
+1511,Mero Man Ma Aago,Himal Sagar,0,1,1,0,0,0,1,negative,anger,high,betrayal burns the heart,v1
+1528,Kaslai Sacheko,Indira Joshi,1,0,0,0,0,1,0,positive,joy,medium,playful youthful teasing,v1
+1660,Nira Jahile Risaune,Kaliparsad Baskota,1,0,0,0,0,1,0,positive,joy,low,affectionate teasing about a sulking lover,v1
+1777,maya basyo mutuma,komal oli and yam baral,1,0,0,0,0,1,0,positive,joy,medium,sweet love (contains junk line: Found an error report),v1
+1801,Dadai Furke Sallo,Kulendra Bishwakarma & Bishnu Majhi,1,0,0,0,0,1,0,positive,joy,low,playful courtship duet (audited),v1
+1831,Phuleki Thiye,Kunti Moktan,0,1,0,0,0,0,1,negative,sadness,medium,nostalgic loss,v1
+1848,Sathi Ho,Laure,0,1,1,0,0,0,1,negative,anger,medium,street hustle hardship and defiance,v1
+1855,Aakashbandi,LEGITHIPHOP,0,0,0,0,0,0,0,neutral,none,low,rap about dreams and plans (English-mixed),v1
+1860,Katha,Lijal Shrestha,0,1,0,0,1,0,1,negative,sadness,medium,tragic story of ruin and grief,v1
+1938,Aama,Mantra Band,1,0,0,0,0,1,0,positive,joy,high,gratitude and warmth toward mother,v1
+2061,Dherai Dherai,Mingma Sherpa,0,0,0,0,0,0,0,neutral,none,low,questioning whose love has bloomed,v1
+2068,Shiva Arati (Radio Nepal Early Bhajan),"Mira Rana, Dwarika Lal Joshi",0,0,0,0,0,1,0,positive,none,high,devotional arati,v1
+2112,Kagajko Not,Mr D,0,1,1,0,0,0,1,negative,anger,low,grind and frustration about money,v1
+2164,Aja bholi hareko saajh,Narayan Gopal,0,1,0,0,0,0,1,negative,sadness,high,drinking to forget sorrow,v1
+2252,Timile Pani Ma Jastai,Narayan Gopal,0,1,0,0,0,1,1,mixed,sadness,high,melancholic devotion; mixed,v1
+2272,Manchhe Ko Maya,"Narayan Gopal, Gyanu Rana",0,1,0,0,0,0,1,negative,sadness,medium,philosophical on love's fleeting nature,v1
+2292,Vanna Aaudaina,Naren Limbu,0,0,0,0,0,1,0,positive,none,low,"shy romantic infatuation, not sadness (audited)",v1
+2615,Dhokebaj Ko Rajya,Pramod Kharel.,0,1,1,0,0,0,1,negative,anger,high,betrayal and bitter indictment,v1
+2656,Are Kyanam,Prashant Tamang,1,0,0,0,0,1,0,positive,joy,medium,playful courtship folk,v1
+2685,Call Me Didi,Prativa Rani,1,0,0,0,0,1,0,positive,joy,medium,sassy self-assured fun track,v1
+2812,Sayau Juni,"Rajina Rimal, Jagdish Samal",1,0,0,0,0,1,0,positive,joy,medium,devoted love across lifetimes,v1
+2841,Yo Junima,Raju Lama,0,0,0,0,0,1,0,positive,none,medium,prayer to meet in every lifetime,v1
+2864,Hamro Sundar Sansar thiyo,Ram Krishna Dhakal,0,1,0,0,0,0,1,negative,sadness,high,love destroyed by storm,v1
+2902,Kati Baschau Maiti Kai Kausima,Ram Thapa,0,1,0,0,0,0,1,negative,sadness,medium,desperation over marriage uncertainty,v1
+2952,Ma Mauntama,"Rocken Music, Om Bikram Bista",0,1,0,0,0,0,1,negative,sadness,medium,"life in darkness and loneliness (audited: sadness, below depression threshold)",v1
+3026,Samarpan,Sabin Rai,1,0,0,0,0,1,0,positive,joy,medium,devoted romantic surrender,v1
+3091,Mellow : Rohit Shakya X Sajjan Raj Vaidya Official,Sajjan Raj Vaidya,0,0,0,0,0,1,0,positive,none,medium,cautious romantic hope,v1
+3131,भाबिलेनि मेरै भाग्य लेख्दा कलम फेर्यो,Samikshya Adhikari,0,1,1,0,0,0,1,negative,sadness,medium,lament of betrayal and unfair fate,v1
+3139,Sirma Sirbandi,"Samikshya Adhikari, Subash Khattri",1,0,0,0,0,1,0,positive,joy,medium,playful market-courtship folk,v1
+3154,Mayalu Sunana,Samir Shrestha,1,0,0,0,0,1,0,positive,joy,medium,reassuring love song,v1
+3174,Ma Chahi Nepali,Samriddhi Rai,0,0,1,0,0,0,1,negative,anger,medium,protest against caste division and violence,v1
+3223,Kina Hajur Naboleko,Sapana Shree,0,1,0,1,0,0,1,negative,fear,low,anxious worry over partner's silence,v1
+3230,Sangai,Sareen Deoja,1,0,0,0,0,1,0,positive,joy,medium,togetherness and fun,v1
+3235,Ooth Dekhi Ooth Samma,Saroj Dutta,1,0,0,0,0,1,0,positive,joy,high,joyous romance blessing,v1
+3396,Dashain Aayo,Sugam Pokharel,1,0,0,0,0,1,0,positive,joy,high,festival celebration,v1
+3424,Bhamara Fulko Rasaima,Sugam Pokharel,0,1,0,0,0,0,1,negative,sadness,low,waiting lover with melancholy folk imagery,v1
+3458,Dui Din Ko Jindagi ma by Rachana Rimal; Sujan Babu Gurung,Sujan Babu Gurung,1,0,0,0,0,1,0,positive,joy,low,romantic togetherness pledge,v1
+3525,Tal Tal Tal Talakkai,Suresh Lama and Anju Panta,1,0,0,0,0,1,0,positive,joy,medium,playful praise of beloved,v1
+3550,Kya Kardiya,Sushant KC,0,1,0,0,0,0,1,negative,sadness,high,Hindi heartbreak,v1
+3671,Relli Mai,Tanka Budhathoki,0,1,0,0,0,0,1,negative,sadness,low,dramatic longing (fire of love),v1
+3704,Euta Chittiko,The Axe,0,0,0,0,0,1,0,positive,none,medium,love is not paper (dignified romance),v1
+3821,Aghumai Saalai Ta,Trishna Gurung,0,1,0,0,0,1,0,positive,sadness,low,hopeful waiting for a meeting,v1
+4011,Pagal Pagal,Wangden Sherpa & Sushant Ghimire ft. Mel,1,0,0,0,0,1,0,positive,joy,medium,crazy-in-love energy,v1
+4024,Ekkasi,Yabesh Thapa,0,1,0,0,0,0,1,negative,sadness,high,plea not to leave mid-heartbreak,v1
+2794,Darshan Namaste 3,Rajesh Payal Rai,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+2598,Ma Pani Ta Kunai Aasma,Prakash Shrestha,0,1,0,0,0,1,1,mixed,sadness,medium,yearning in hope; mixed,v2_random
+687,Timi Sanga Mero Nata,Benup Chhetri,0,1,0,0,0,0,1,negative,sadness,medium,,v2_random
+60,Mutu Bhari Bhari,1974 AD,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+1009,Badal Haruho,Deep Shrestha,0,1,0,0,0,0,1,negative,sadness,low,,v2_random
+3822,Gainey Dajai,Trishna Gurung,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+2597,Gahiraima Dubdai Naduba,Prakash Shrestha,0,0,0,0,0,1,0,positive,none,low,"rescue metaphor, resolve",v2_random
+882,Ojhel,Catch 22,0,1,0,0,0,0,1,negative,sadness,high,,v2_random
+218,Farkeara na aau,Alish Nepking,0,1,0,0,0,0,1,negative,sadness,high,,v2_random
+1807,A Mai Re,Kuma Sagar Hawa Ko Lahar Sangai,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+1719,Eutai Thiyo Mutu,Karna Das,0,1,0,0,0,0,1,negative,sadness,high,,v2_random
+757,Asaar,Bipul Chettri,1,1,0,0,0,1,1,mixed,joy,medium,rain joy + fleeting life; mixed,v2_random
+2415,Lakhau Hajarau (Remix),Nepz Flo',1,1,0,0,0,1,1,mixed,joy,low,adoring obsession; mixed,v2_random
+1135,Ma Jalera Kharani,Dipak Limbu,0,1,0,0,0,0,1,negative,sadness,high,,v2_random
+994,Hui Bhanda Chiso,Danny Denzongpa,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+1046,Hridaya Bhitra,Deepak Gurung,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+3376,Chamkina De Pt.2 Remix,Sudhan Gurung,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+3734,Har Saanjh,The edge band,0,1,0,0,0,0,1,negative,sadness,high,lonely waiting,v2_random
+31,Aaja Kaha,1974 AD,0,0,0,0,0,0,0,neutral,none,medium,philosophical journey,v2_random
+3250,Curly Curly Kapal Captain Movie Song,SD Yogi & Melina Rai,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+1685,Lekaki Hey Maya,Kandara,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+66,Pinjada Ko Suga,1974 AD,0,1,0,0,0,0,1,negative,sadness,medium,caged bird,v2_random
+705,Na Bhuli Deu Timi - Bhram Band,Bhram Band,0,1,0,0,0,0,1,negative,sadness,medium,,v2_random
+1066,Hiu Jastai Kanchan,Deepak Limbu and Prabisha Adhikari from ,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+3553,Muskurayera,Sushant KC,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+62,"Nepali Ho (feat. Subani Moktan, Kutumba, Aid Ray & Mukti)",1974 AD,1,0,0,0,0,1,0,positive,joy,high,patriotic pride,v2_random
+1013,Har Raat Sapanima,Deep Shrestha,0,1,0,1,0,0,1,negative,fear,high,landslide dread,v2_random
+722,Khali Chhaina Mero Mutu,Bihe Pass,1,0,0,0,0,1,0,positive,joy,medium,heart full of love,v2_random
+594,Lau Hida,B-8eight,0,1,1,0,0,1,1,mixed,anger,low,societal pressure + defiant dreams; mixed,v2_random
+904,Sarara,Chhewang Lama,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+3059,Timro Najar Bhulauna,Sadhana Saragam from Album Pachheuri.,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+3023,Maya Timilai,Sabin Rai,0,1,0,0,0,0,1,negative,sadness,high,,v2_random
+3456,Sunyou Ki Sunenau Timile,"Sugam Pokhrel, Swechhya Thakuri",0,1,0,0,0,1,1,mixed,sadness,medium,longing love; mixed,v2_random
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+3836,Bhumo,Tsujil Karmacharya,0,1,0,0,0,0,1,negative,sadness,low,17 years alone,v2_random
+2143,Saayed Timinai Hau,Nabin K Bhattarai,0,1,0,0,0,0,1,negative,sadness,medium,,v2_random
+1844,Haude,Laure,0,1,0,0,0,0,1,negative,sadness,low,street life grievance,v2_random
+2430,Aauna Sangai Naachau,Nima Rumba,1,0,0,0,0,1,0,positive,joy,high,,v2_random
+3290,BATASH,Shashwot Khadka,0,1,0,0,0,0,1,negative,sadness,medium,hidden feelings,v2_random
+2111,Gobarlyath 2,Mr D,0,1,0,0,0,0,1,negative,sadness,medium,unemployment grind,v2_random
+1103,Himal Najhuke Samma,Dhiraj Rai,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+1852,Ho Piya Rajai,Laxmi Neupane,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+4141,Black And White,ZEROO,0,1,0,0,0,1,1,mixed,sadness,low,breakup + well-wishes; mixed,v2_random
+881,Kina Dukhi Chau,Catch 22,0,0,0,0,0,1,0,positive,none,low,consoling cheer,v2_random
+101,Diyo Bali Sanjhako,Aasha Bhosle,0,0,0,0,0,1,0,positive,none,high,devotional,v2_random
+1496,Sikka Ko Dui Pato,Hemanta Rana,0,1,0,0,0,1,1,mixed,sadness,medium,two sides of the coin; mixed,v2_random
+3667,Rupai Mohani Official,Tanka Budathoki,1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+3800,Chinta,Tribal Rain,0,1,0,0,0,0,1,negative,sadness,high,nobody understood me,v2_random
+3271,Calculator,"Shankar Thapa 'Smile', Bijayeta Adhikari",1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+3308,Abhinaya,ShreeGo,0,1,0,0,0,1,1,mixed,sadness,low,love hidden behind acting; mixed,v2_random
+1954,Samaya,Mantra Band,0,1,0,0,0,0,1,negative,sadness,medium,time takes people,v2_random
+2059,Bhumarima,Mingma Sherpa,0,1,0,0,0,0,1,negative,sadness,high,betrayal,v2_random
+1423,Baneko cha paharale,Gopal Yonzan,0,1,0,0,0,1,1,mixed,sadness,low,mountain pride + poverty; mixed,v2_random
+3340,Timro Gharko Woripari,"Soman Topden,",1,0,0,0,0,1,0,positive,joy,medium,,v2_random
+3402,Kasari Bhanu Timilai,Sugam Pokharel,0,1,0,0,0,0,1,negative,sadness,medium,,v2_random
+764,Deorali Darah,Bipul Chettri,0,1,0,0,0,0,1,negative,sadness,high,"leaving, how to live",v2_random
+959,Bhana K Garu,COD,0,1,0,0,0,0,1,negative,sadness,medium,,v2_random
+319,Parkhai,Anju Panta,0,1,0,0,0,0,1,negative,sadness,high,waiting on false hope,v2_random
+611,Bato Pharakilo Thiyo,Babu Bogati,0,1,0,0,0,0,1,negative,sadness,high,regret,v2_random
+885,Gatibidhi,Chakachak,0,1,1,0,0,0,1,negative,anger,high,corruption critique,v2_anger
+3987,MA PA SE,VTEN,0,0,1,0,0,0,1,negative,anger,high,street violence,v2_anger
+3044,Ecstasy In The Palace,SACAR aka Lil Buddha,0,0,1,0,0,0,1,negative,anger,medium,aggressive flex,v2_anger
+4071,Ma Futchu Tara Jhukdina,Yama Buddha,0,0,1,0,0,1,0,positive,anger,low,defiant national pride,v2_anger
+3980,Galli Sadak,VTEN,0,0,1,0,0,0,1,negative,anger,high,"street life, jail",v2_anger
+1330,Bizen - Hasta Namestey,Genius Romanizations,0,0,1,0,0,0,1,negative,anger,medium,diss track,v2_anger
+2877,Maya Basnu Bhanda Aaghi,Ram Krishna Dhakal,0,1,0,0,0,0,1,negative,sadness,medium,gossip before love; judged sadness,v2_anger
+3049,King of NEPHOP 2,SACAR aka Lil Buddha,0,0,1,0,0,0,1,negative,anger,medium,battle rap,v2_anger
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",0,1,1,0,0,0,1,negative,anger,high,betrayed by own people,v2_anger
+937,Attitude,Clu Pokhrel,0,0,1,0,0,0,1,negative,anger,medium,ego flex,v2_anger
+2947,Swatantra Jeevan,Robin Tamang,0,0,1,0,0,1,1,mixed,anger,high,protest + free life; mixed,v2_anger
+3978,CYPHER,VTEN,0,0,1,0,0,0,1,negative,anger,medium,cypher diss,v2_anger
+3477,Dhoka Diyou Timile,Sukmit Gurung,0,1,1,0,0,0,1,negative,anger,high,betrayal wound,v2_anger
+2327,Kantipur Nagari,Neetesh Jung Kunwar,0,1,0,0,0,1,1,mixed,sadness,low,old Kathmandu nostalgia; mixed,v2_anger
+3116,Tara Ma Dalit,Sakshat pant,0,0,1,0,0,0,1,negative,anger,high,caste injustice,v2_anger
+2816,Beautiful Girls,Raju Gurung,1,0,0,0,0,1,0,positive,joy,low,"playful, judged not fear",v2_fear
+4010,Jun Heri Timilai Heraula,"Wangden Sherpa, Sushant Ghimire",1,0,0,0,0,1,0,positive,joy,medium,romantic admiration,v2_fear
+539,Meso Milayera,Asmita Adhikari and Nishan Bhattarai,1,0,0,0,0,1,0,positive,joy,medium,rendezvous planning,v2_fear
+2832,Natanu Ta Tanu Lagne,Raju Lama,0,1,0,0,0,0,1,negative,sadness,medium,alcohol drained life,v2_fear
+1153,Mai Runchu,Diwas Gurung,0,1,0,0,0,0,1,negative,sadness,medium,pervasive crying,v2_fear
+2028,Hukum Baksiyos,Melina Rai And Bishal Rai From Nepali Mo,1,0,0,0,0,1,0,positive,joy,medium,playful tease,v2_fear
+614,Sannani,Babu Bogati,1,0,0,0,0,1,0,positive,joy,low,playful scolding,v2_fear
+618,Sirupate Jungama,Babul Giri,1,0,0,0,0,1,0,positive,joy,medium,flirty folk,v2_fear
+347,Rahar Chha Sangai,"Anju Panta, Sugam Pokharel",1,0,0,0,0,1,0,positive,joy,low,world is mine with you; judged joy,v2_depression
+32,Aru Kaalo,1974 AD,0,1,0,0,0,0,1,negative,sadness,medium,love lost,v2_depression
+3845,Hola Nahola,Tunna Bell Thapa,0,1,0,0,0,1,1,mixed,sadness,medium,uncertain tomorrow + devoted; mixed,v2_depression
+2728,Bara Chhoro Tera Naati,Pushpan Pradhan,0,0,1,0,0,0,1,negative,anger,low,satirical accusation,v2_depression
+247,Yi Halla Haru Hun,Ananda Karki,0,1,0,0,0,0,1,negative,sadness,medium,"heart was true, not believed",v2_depression
+1216,Mero Prayash,Edge Band,0,1,0,0,0,0,1,negative,sadness,medium,forgetting the past,v2_depression
+3383,Kasko Yadharu,Sudip Giri,0,1,0,0,0,0,1,negative,sadness,high,aching memories,v2_depression

@@ -552,44 +552,46 @@ a query line is ~60% of a 48-token window versus ~23% of a 128-token one.
 
 **Song-mood sentiment (Phase C3)**
 
-`eval/mood_gold.csv` holds 150 hand-reviewed songs. Sentiment is stored as two
-binaries (`positive`, `negative`; both = mixed, neither = neutral) so
-bittersweet songs are represented correctly, and the five emotions are
-multi-label (16 songs carry more than one). Metrics (`mood_gold_report.json`,
-`mood_teacher_report.json`): per-class binary F1 plus a relaxed accuracy where
-mixed gold songs accept a positive OR negative prediction.
+`eval/mood_gold.csv` holds 149 hand-reviewed songs (3054 excluded — its corpus
+lyrics belong to another track; see `eval/gold_exclusions.csv`). Sentiment is
+stored as two binaries (`positive`, `negative`; both = mixed, neither = neutral)
+plus an explicit `polarity` column; the five emotions are multi-label, with
+`primary_emotion` marking the dominant one (`none` when no core emotion
+applies). Metrics (`mood_gold_report.json`, `mood_teacher_report.json`):
+per-class binary F1 plus a relaxed accuracy where mixed gold songs accept a
+positive OR negative prediction.
 
 | Model | Relaxed acc | F1(pos) | F1(neg) |
 |-------|-------------|---------|---------|
-| Always-negative baseline (150) | 0.573 | 0.000 | 0.729 |
-| Original muRIL, tweet-trained (150) | 0.467 | 0.000 | 0.734 |
-| Linear probe on mpnet embeddings (150, installed) | 0.567 | 0.214 | 0.764 |
+| Always-negative baseline | 0.564 | 0.000 | 0.721 |
+| Original muRIL, tweet-trained | 0.456 | 0.000 | 0.724 |
+| Linear probe on mpnet embeddings (installed) | 0.557 | 0.207 | 0.755 |
 | Qwen2.5-7B teacher, production prompt (v1 60 only) | 0.596 | 0.400 | 0.716 |
 | Qwen2.5-7B teacher, strict prompt (v1 60 only) | 0.500 | 0.333 | 0.696 |
 
+Annotation policy (from the 2026-09 semantic audit): label the emotion the song
+expresses, not its topic (romance is not automatically joy; breakup is not
+automatically sadness); `depression` requires sustained hopelessness, not mere
+sadness; for mixed sadness/anger songs pick the primary by stance — pain/loss
+maps to sadness, accusation/confrontation to anger.
+
 The teacher remains the strongest model where measured; the probe (distilled
 from ~1,900 teacher labels) is close but conservative on positives. Probe
-emotion F1 on the 150: joy 0.51, sadness 0.72, anger 0.00 (the teacher labeled
-only 2% anger), fear 0.05, depression 0.03 — rare emotions are not learnable
-from the current teacher labels, which is what the expanded gold set now
-measures. Next step: few-shot the teacher with gold examples, emit
-positive/negative binaries, relabel, and re-run the comparison on all 150
-(the teacher-check kernel currently covers the v1 60). `MusicAnalyzer.py`
-still uses the old tweet muRIL model at runtime; probe integration is a
-follow-up.
+emotion F1 on gold: joy 0.51, sadness 0.71, anger 0.00 (the teacher labeled only
+2% anger), fear 0.05, depression 0.02 — rare emotions are not learnable from the
+current teacher labels, which is what the expanded gold set now measures. Next
+step: a stronger teacher (Gemini free-tier gate) with few-shot gold examples and
+positive/negative binary output, then relabel the corpus and re-run the
+comparison. `MusicAnalyzer.py` still uses the old tweet muRIL model at runtime;
+probe integration is a follow-up.
 
-The current `sentiment_scores.csv` comes from `scripts/train_mood_probe.py`:
-Qwen2.5-7B-Instruct (4-bit, on Kaggle) pseudo-labeled ~1,900 songs with the
-five-emotion schema; logistic regressions were then fit per label on the
-chunked mpnet embeddings (the retrieval space). The muRIL student collapsed
-onto label priors twice (constant outputs; see `mood_gold_report_muril_v2.json`)
-— documented negative result. The probe's strongest emotion is sadness
-(gold F1 0.71); positive/joy/anger remain weak, largely because the teacher
-over-labels sadness/depression relative to the gold set. NepEMO and NEmoSen
-(public Nepali emotion corpora) are currently unreleased / request-only; a
-relabel or a request for access is the natural next step. `MusicAnalyzer.py`
-still uses the old tweet muRIL model at runtime; probe integration is a
-follow-up.
+The installed `sentiment_scores.csv` comes from `scripts/train_mood_probe.py`:
+Qwen2.5-7B-Instruct (4-bit, Kaggle) pseudo-labeled ~1,900 songs with the
+five-emotion schema; logistic regressions were fit per label on the chunked
+mpnet embeddings (the retrieval space). The muRIL student collapsed onto label
+priors twice (constant outputs; see `mood_gold_report_muril_v2.json`) —
+documented negative result. NepEMO and NEmoSen (public Nepali emotion corpora)
+are unreleased / request-only; a stronger-teacher relabel is the next step.
 
 **Known limits at this stage**
 

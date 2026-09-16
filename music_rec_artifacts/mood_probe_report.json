@@ -24,28 +24,28 @@
     "neutral": 231
   },
   "gold": {
-    "relaxed_accuracy": 0.5667,
+    "relaxed_accuracy": 0.557,
     "positive": {
-      "f1": 0.2143,
+      "f1": 0.2069,
       "precision": 0.9,
-      "recall": 0.1216,
-      "support": 74
+      "recall": 0.1169,
+      "support": 77
     },
     "negative": {
-      "f1": 0.7638,
-      "precision": 0.6726,
-      "recall": 0.8837,
-      "support": 86
+      "f1": 0.7551,
+      "precision": 0.6607,
+      "recall": 0.881,
+      "support": 84
     }
   },
   "gold_emotions": {
     "joy": {
-      "f1": 0.5122,
-      "support": 49
+      "f1": 0.506,
+      "support": 50
     },
     "sadness": {
-      "f1": 0.7204,
-      "support": 77
+      "f1": 0.7053,
+      "support": 74
     },
     "anger": {
       "f1": 0.0,
@@ -56,8 +56,8 @@
       "support": 2
     },
     "depression": {
-      "f1": 0.0312,
-      "support": 2
+      "f1": 0.0159,
+      "support": 1
     }
   }
 }
