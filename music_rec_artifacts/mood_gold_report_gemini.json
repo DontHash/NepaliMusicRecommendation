@@ -1,0 +1,86 @@
+{
+  "gold_size": 149,
+  "scores_path": "R_data\\raw\\gemini\\gate_v1\\labels.csv",
+  "models": [
+    {
+      "model": "always_negative",
+      "positive": {
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "support": 77
+      },
+      "negative": {
+        "f1": 0.721,
+        "precision": 0.5638,
+        "recall": 1.0,
+        "support": 84
+      },
+      "relaxed_accuracy": 0.5638
+    },
+    {
+      "model": "labels.csv",
+      "positive": {
+        "f1": 0.8121,
+        "precision": 0.7053,
+        "recall": 0.9571,
+        "support": 70
+      },
+      "negative": {
+        "f1": 0.8235,
+        "precision": 0.918,
+        "recall": 0.7467,
+        "support": 75
+      },
+      "relaxed_accuracy": 0.8815,
+      "emotions": {
+        "joy": {
+          "f1": 0.7188,
+          "precision": 0.561,
+          "recall": 1.0,
+          "support": 46
+        },
+        "sadness": {
+          "f1": 0.7967,
+          "precision": 0.8909,
+          "recall": 0.7206,
+          "support": 68
+        },
+        "anger": {
+          "f1": 0.5,
+          "precision": 0.7,
+          "recall": 0.3889,
+          "support": 18
+        },
+        "fear": {
+          "f1": 0.2,
+          "precision": 0.1111,
+          "recall": 1.0,
+          "support": 1
+        },
+        "depression": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 0
+        }
+      }
+    },
+    {
+      "model": "existing_muril_tweet",
+      "positive": {
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "support": 77
+      },
+      "negative": {
+        "f1": 0.7243,
+        "precision": 0.6634,
+        "recall": 0.7976,
+        "support": 84
+      },
+      "relaxed_accuracy": 0.4564
+    }
+  ]
+}
