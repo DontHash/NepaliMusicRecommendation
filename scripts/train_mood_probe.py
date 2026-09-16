@@ -155,15 +155,27 @@ def main() -> None:
     )
 
     if args.gold.exists():
+        from eval.mood_gold_eval import f1_binary, relaxed_accuracy
+
         gold = pd.read_csv(args.gold, encoding="utf-8")
-        scores_renamed = scores.rename(columns={e: f"{e}_prob" for e in EMOTIONS})
-        merged = gold.merge(scores_renamed, on="song_id", how="inner")
-        report["gold"] = sentiment_metrics(merged["sentiment"].to_numpy(), merged["sentiment_label"].to_numpy())
+        renamed = scores.rename(
+            columns={**{e: f"{e}_prob" for e in EMOTIONS}, "positive": "prob_positive", "negative": "prob_negative"}
+        )
+        merged = gold.merge(renamed, on="song_id", how="inner")
+        gold_pos = merged["positive"].to_numpy()
+        gold_neg = merged["negative"].to_numpy()
+        model_pos = (merged["prob_positive"].to_numpy() >= 0.5).astype(int)
+        model_neg = (merged["prob_negative"].to_numpy() >= 0.5).astype(int)
+        report["gold"] = {
+            "relaxed_accuracy": relaxed_accuracy(gold_pos, gold_neg, model_pos, model_neg),
+            "positive": f1_binary(gold_pos, model_pos),
+            "negative": f1_binary(gold_neg, model_neg),
+        }
         gold_emotion = {}
         for emotion in EMOTIONS:
             truth = merged[emotion].to_numpy().astype(int)
             pred = (merged[f"{emotion}_prob"].to_numpy() >= 0.5).astype(int)
-            gold_emotion[emotion] = {"f1": round(f1_binary(truth, pred), 4), "support": int(truth.sum())}
+            gold_emotion[emotion] = {"f1": f1_binary(truth, pred)["f1"], "support": int(truth.sum())}
         report["gold_emotions"] = gold_emotion
 
     print(json.dumps(report, ensure_ascii=False, indent=2))

@@ -1,74 +1,86 @@
 {
-  "gold_size": 60,
-  "scores_path": "music_rec_artifacts\\sentiment_scores.csv",
-  "distilled": {
-    "accuracy": 0.5333,
-    "macro_f1": 0.3526,
-    "per_class": {
+  "gold_size": 150,
+  "scores_path": "D:\\Code\\ProjectR\\music_rec_artifacts\\sentiment_scores.csv",
+  "models": [
+    {
+      "model": "always_negative",
       "positive": {
-        "f1": 0.4,
-        "precision": 0.7778,
-        "recall": 0.2692,
-        "support": 26
-      },
-      "negative": {
-        "f1": 0.6579,
-        "precision": 0.5102,
-        "recall": 0.9259,
-        "support": 27
-      },
-      "neutral": {
         "f1": 0.0,
         "precision": 0.0,
         "recall": 0.0,
-        "support": 7
+        "support": 74
+      },
+      "negative": {
+        "f1": 0.7288,
+        "precision": 0.5733,
+        "recall": 1.0,
+        "support": 86
+      },
+      "relaxed_accuracy": 0.5733
+    },
+    {
+      "model": "sentiment_scores.csv",
+      "positive": {
+        "f1": 0.2143,
+        "precision": 0.9,
+        "recall": 0.1216,
+        "support": 74
+      },
+      "negative": {
+        "f1": 0.7638,
+        "precision": 0.6726,
+        "recall": 0.8837,
+        "support": 86
+      },
+      "relaxed_accuracy": 0.5667,
+      "emotions": {
+        "joy": {
+          "f1": 0.5122,
+          "precision": 0.6364,
+          "recall": 0.4286,
+          "support": 49
+        },
+        "sadness": {
+          "f1": 0.7204,
+          "precision": 0.5672,
+          "recall": 0.987,
+          "support": 77
+        },
+        "anger": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 22
+        },
+        "fear": {
+          "f1": 0.0455,
+          "precision": 0.0238,
+          "recall": 0.5,
+          "support": 2
+        },
+        "depression": {
+          "f1": 0.0312,
+          "precision": 0.0159,
+          "recall": 1.0,
+          "support": 2
+        }
       }
     },
-    "emotions": {
-      "joy": {
-        "f1": 0.4,
-        "support": 18
-      },
-      "sadness": {
-        "f1": 0.7126,
-        "support": 31
-      },
-      "anger": {
-        "f1": 0.0,
-        "support": 7
-      },
-      "fear": {
-        "f1": 0.0,
-        "support": 1
-      },
-      "depression": {
-        "f1": 0.0755,
-        "support": 2
-      }
-    }
-  },
-  "existing_muril": {
-    "accuracy": 0.4,
-    "macro_f1": 0.2418,
-    "per_class": {
+    {
+      "model": "existing_muril_tweet",
       "positive": {
         "f1": 0.0,
         "precision": 0.0,
         "recall": 0.0,
-        "support": 26
+        "support": 74
       },
       "negative": {
-        "f1": 0.6301,
-        "precision": 0.5,
-        "recall": 0.8519,
-        "support": 27
+        "f1": 0.734,
+        "precision": 0.6765,
+        "recall": 0.8023,
+        "support": 86
       },
-      "neutral": {
-        "f1": 0.0952,
-        "precision": 0.0714,
-        "recall": 0.1429,
-        "support": 7
-      }
+      "relaxed_accuracy": 0.4667
     }
-  }
+  ]
 }

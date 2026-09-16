@@ -552,27 +552,31 @@ a query line is ~60% of a 48-token window versus ~23% of a 128-token one.
 
 **Song-mood sentiment (Phase C3)**
 
-`eval/mood_gold.csv` holds 60 hand-reviewed songs (5 binary emotions +
-polarity). Measured on it (`mood_probe_report.json`):
+`eval/mood_gold.csv` holds 150 hand-reviewed songs. Sentiment is stored as two
+binaries (`positive`, `negative`; both = mixed, neither = neutral) so
+bittersweet songs are represented correctly, and the five emotions are
+multi-label (16 songs carry more than one). Metrics (`mood_gold_report.json`,
+`mood_teacher_report.json`): per-class binary F1 plus a relaxed accuracy where
+mixed gold songs accept a positive OR negative prediction.
 
-| Model | Accuracy | Macro-F1 |
-|-------|----------|----------|
-| Always-negative baseline | 0.450 | 0.207 |
-| Original muRIL, tweet-trained | 0.400 | 0.242 |
-| muRIL distilled from Qwen labels (v2) | 0.417 | 0.214 |
-| **Qwen2.5-7B teacher, production prompt** | **0.577** | **0.454** |
-| Qwen2.5-7B teacher, strict prompt | 0.483 | 0.378 |
-| Linear probe on mpnet embeddings (installed) | 0.533 | 0.353 |
+| Model | Relaxed acc | F1(pos) | F1(neg) |
+|-------|-------------|---------|---------|
+| Always-negative baseline (150) | 0.573 | 0.000 | 0.729 |
+| Original muRIL, tweet-trained (150) | 0.467 | 0.000 | 0.734 |
+| Linear probe on mpnet embeddings (150, installed) | 0.567 | 0.214 | 0.764 |
+| Qwen2.5-7B teacher, production prompt (v1 60 only) | 0.596 | 0.400 | 0.716 |
+| Qwen2.5-7B teacher, strict prompt (v1 60 only) | 0.500 | 0.333 | 0.696 |
 
-The teacher-on-gold diagnostic (`eval/mood_teacher_eval.py` +
-`scripts/kaggle_jobs/mood_teacher_check.py`) labeled the 60 gold songs with the
-two prompts: the production teacher turned out to be the strongest sentiment
-model (0.577), the student loses ~0.04 accuracy / 0.10 macro-F1 in
-distillation, and the "strict" prompt was worse (over-predicts neutral). Emotion
-heads disagree most on fear/depression/anger, but the gold supports (1/2/7
-songs) are too small to measure those reliably — growing the gold set is the
-prerequisite for further emotion work. Note ±6.5% noise on 60 songs, so the
-teacher-vs-probe gap (1.2σ) is suggestive, not settled.
+The teacher remains the strongest model where measured; the probe (distilled
+from ~1,900 teacher labels) is close but conservative on positives. Probe
+emotion F1 on the 150: joy 0.51, sadness 0.72, anger 0.00 (the teacher labeled
+only 2% anger), fear 0.05, depression 0.03 — rare emotions are not learnable
+from the current teacher labels, which is what the expanded gold set now
+measures. Next step: few-shot the teacher with gold examples, emit
+positive/negative binaries, relabel, and re-run the comparison on all 150
+(the teacher-check kernel currently covers the v1 60). `MusicAnalyzer.py`
+still uses the old tweet muRIL model at runtime; probe integration is a
+follow-up.
 
 The current `sentiment_scores.csv` comes from `scripts/train_mood_probe.py`:
 Qwen2.5-7B-Instruct (4-bit, on Kaggle) pseudo-labeled ~1,900 songs with the
