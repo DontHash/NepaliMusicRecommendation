@@ -587,8 +587,11 @@ sentiment_scores.csv`) is retrained on those labels; emotion F1 on gold: joy
 are out of scope for now — too sparse to learn; joy still over-flags
 romance/devotion). Mood phrases
 are stored in `music_rec_artifacts/mood_phrases.csv` for a future semantic
-mood-search feature. `MusicAnalyzer.py` still uses the old tweet muRIL model at
-runtime; probe integration is a follow-up.
+mood-search feature. `MusicAnalyzer.py` now runs this probe at runtime (same
+chunked-encoder recipe; verified by `scripts/check_probe_parity.py` — 25/25
+label agreement, cosine 1.0 vs stored embeddings) and reports the in-scope
+emotions joy/sadness/anger; the muRIL path (`music_rec/sentiment.py` +
+`sentiment_model_dir`) is legacy and kept for reference only.
 
 The previous probe was trained on Qwen2.5-7B-Instruct (4-bit, Kaggle)
 pseudo-labels (~1,900 songs); it was replaced because the Qwen teacher
