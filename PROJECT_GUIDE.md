@@ -680,9 +680,17 @@ vendored three.js, no build step) at http://127.0.0.1:8000:
   the deliberately mixed joy/sadness song Asaar), and text-mode attribution is
   identical to corpus mode (max share delta 0.0000). Window-level probing is
   an approximation of the song-level probe; the gold validation bounds it.
-- API: `GET /api/search`, `GET /api/song/{id}`, `POST /api/analyze`
-  (`web_app/server.py`); tests in `tests/test_web_app.py` skip when the
-  gitignored window artifacts are absent.
+- Mood-aware browsing: `scripts/build_mood_vectors.py` derives per-song
+  joy/sadness/anger vectors (`music_rec_artifacts/mood_vectors.csv`) from the
+  probe scores, and `music_rec/mood_neighbors.py` serves nearest-mood
+  neighbours (`GET /api/song/{id}/neighbors?k=`, Euclidean in joy/sadness/anger
+  space) plus per-emotion top lists (`GET /api/mood/top?emotion=&k=`) over all
+  4,157 songs. The Studio shows a
+  glass neighbours card with joy/sadness/anger chips — clicking a row loads
+  that song, chips switch the card to the emotion's top chart.
+- API: `GET /api/search`, `GET /api/song/{id}`, `GET /api/song/{id}/neighbors`,
+  `GET /api/mood/top`, `POST /api/analyze` (`web_app/server.py`); tests in
+  `tests/test_web_app.py` skip when the gitignored window artifacts are absent.
 
 **Known limits at this stage**
 

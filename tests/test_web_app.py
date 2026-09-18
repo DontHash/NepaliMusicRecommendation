@@ -48,6 +48,38 @@ def test_song_missing_404():
     assert response.status_code == 404
 
 
+def test_song_neighbors_shape():
+    response = client.get("/api/song/4024/neighbors", params={"k": 5})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["song_id"] == 4024
+    assert len(data["neighbors"]) == 5
+    assert all(item["song_id"] != 4024 for item in data["neighbors"])
+    scores = [item["score"] for item in data["neighbors"]]
+    assert scores == sorted(scores, reverse=True)
+    assert all({"song_id", "title", "artist", "score", "mood"} <= set(item) for item in data["neighbors"])
+
+
+def test_song_neighbors_missing_404():
+    response = client.get("/api/song/999999/neighbors")
+    assert response.status_code == 404
+
+
+def test_mood_top_shape():
+    response = client.get("/api/mood/top", params={"emotion": "sadness", "k": 4})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["emotion"] == "sadness"
+    assert len(data["top"]) == 4
+    scores = [item["score"] for item in data["top"]]
+    assert scores == sorted(scores, reverse=True)
+
+
+def test_mood_top_bad_emotion_400():
+    response = client.get("/api/mood/top", params={"emotion": "fear"})
+    assert response.status_code == 400
+
+
 @pytest.mark.skipif(
     os.environ.get("PROJECTR_SLOW_TESTS") != "1", reason="loads the embedding model"
 )

@@ -274,9 +274,16 @@ function renderPayload(payload) {
 
   buildDonut(payload.composition);
   renderLegend(payload);
-  renderPolarity(payload.polarity);
+  renderPolarity(payload);
   renderLyrics(payload.lines);
   selectEmotion(null);
+
+  if (payload.song_id) {
+    loadNeighbors(payload.song_id);
+  } else {
+    $('neighbors').classList.add('hidden');
+    setChipActive(null);
+  }
 }
 
 function renderLegend(payload) {
@@ -337,6 +344,67 @@ function renderLyrics(lines) {
     container.appendChild(div);
   });
 }
+
+// ---------- mood neighbours ----------
+function setChipActive(emotion) {
+  document.querySelectorAll('.mood-chip').forEach((chip) => {
+    chip.classList.toggle('active', chip.dataset.emotion === emotion);
+  });
+}
+
+function neighborBadge(item, mode, heading) {
+  if (mode === 'top') {
+    const emotion = heading.replace('top ', '');
+    return { text: `${(item.score * 100).toFixed(0)}%`, color: CSS_COLORS[emotion] || CSS_COLORS.neutral };
+  }
+  const [emotion, prob] = Object.entries(item.mood).sort((a, b) => b[1] - a[1])[0];
+  return { text: `${emotion} ${(prob * 100).toFixed(0)}%`, color: CSS_COLORS[emotion] || CSS_COLORS.neutral };
+}
+
+function renderNeighbors(items, heading, mode) {
+  $('neighbors-title').textContent = heading;
+  const list = $('neighbors-list');
+  list.innerHTML = '';
+  for (const item of items) {
+    const row = document.createElement('div');
+    row.className = 'neighbor';
+    const badge = neighborBadge(item, mode, heading);
+    row.innerHTML = `<span><span class="neighbor-title">${item.title || `song ${item.song_id}`}</span><br><span class="artist">${item.artist || 'unknown artist'}</span></span><span class="score" style="color:${badge.color}">${badge.text}</span>`;
+    row.addEventListener('click', () => {
+      searchInput.value = item.title || '';
+      loadSong(item.song_id);
+    });
+    list.appendChild(row);
+  }
+  $('neighbors').classList.remove('hidden');
+}
+
+async function loadNeighbors(songId) {
+  try {
+    const response = await fetch(`/api/song/${songId}/neighbors?k=8`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    setChipActive(null);
+    renderNeighbors(data.neighbors, 'mood neighbours', 'sim');
+  } catch {
+    $('neighbors').classList.add('hidden');
+  }
+}
+
+document.querySelectorAll('.mood-chip').forEach((chip) => {
+  chip.addEventListener('click', async () => {
+    const emotion = chip.dataset.emotion;
+    setChipActive(emotion);
+    try {
+      const response = await fetch(`/api/mood/top?emotion=${emotion}&k=8`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      renderNeighbors(data.top, `top ${emotion}`, 'top');
+    } catch {
+      $('neighbors').classList.add('hidden');
+    }
+  });
+});
 
 // ---------- data loading ----------
 async function loadSong(songId) {

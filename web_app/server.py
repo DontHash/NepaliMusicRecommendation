@@ -17,6 +17,7 @@ from pydantic import BaseModel
 
 from music_rec.config import Config
 from music_rec.mood_attribution import MoodAttributor, get_attributor
+from music_rec.mood_neighbors import get_mood_neighbors
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -75,6 +76,30 @@ def song(song_id: int):
         raise HTTPException(status_code=404, detail=f"song {song_id} not found")
     _payload_cache[song_id] = payload
     return payload
+
+
+@app.get("/api/song/{song_id}/neighbors")
+def neighbors(song_id: int, k: int = 8):
+    k = max(1, min(k, 25))
+    try:
+        items = get_mood_neighbors().neighbors(song_id, k)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"song {song_id} not found")
+    except FileNotFoundError as error:
+        raise HTTPException(status_code=503, detail=str(error))
+    return {"song_id": song_id, "neighbors": items}
+
+
+@app.get("/api/mood/top")
+def mood_top(emotion: str = "sadness", k: int = 10):
+    k = max(1, min(k, 50))
+    try:
+        items = get_mood_neighbors().top(emotion, k)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="emotion must be joy, sadness or anger")
+    except FileNotFoundError as error:
+        raise HTTPException(status_code=503, detail=str(error))
+    return {"emotion": emotion, "top": items}
 
 
 @app.post("/api/analyze")
