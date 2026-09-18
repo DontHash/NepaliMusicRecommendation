@@ -5,6 +5,7 @@ from __future__ import annotations
 import numpy as np
 
 from music_rec.mood_attribution import (
+    LINE_BIAS,
     aggregate_lines,
     composition_from_lines,
     dominant_label,
@@ -54,3 +55,13 @@ def test_composition_normalizes_and_handles_empty():
 def test_dominant_label_respects_floor():
     assert dominant_label(np.array([0.1, 0.8, 0.1], dtype=np.float32)) == "sadness"
     assert dominant_label(np.array([0.3, 0.3, 0.2], dtype=np.float32)) == "neutral"
+
+
+def test_line_bias_calibration_shifts_labels():
+    bias = np.asarray(LINE_BIAS, dtype=np.float32)
+    promoted = np.array([0.30, 0.30, 0.44], dtype=np.float32)
+    assert dominant_label(promoted) == "neutral"
+    assert dominant_label(promoted + bias) == "anger"
+    demoted = np.array([0.10, 0.60, 0.05], dtype=np.float32)
+    assert dominant_label(demoted) == "sadness"
+    assert dominant_label(demoted + bias) == "neutral"

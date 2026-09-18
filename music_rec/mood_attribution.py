@@ -9,6 +9,11 @@ per-line joy/sadness/anger probabilities plus a normalized song composition.
 Corpus mode needs ``window_vectors.npy`` / ``window_owners.npy`` (rebuild via
 ``scripts/kaggle_embeddings.py``); text mode needs only the local embedding
 model.
+
+Line labels are floored at ``LINE_FLOOR`` and biased by ``LINE_BIAS``, the
+per-emotion calibration selected by leave-one-song-out search over
+``eval/line_mood_gold.csv`` in ``scripts/check_line_attribution.py``; the
+returned probabilities stay uncalibrated.
 """
 
 from __future__ import annotations
@@ -22,7 +27,8 @@ import pandas as pd
 from .config import Config
 
 EMOTIONS = ("joy", "sadness", "anger")
-LINE_FLOOR = 0.45
+LINE_FLOOR = 0.55
+LINE_BIAS = (-0.08, -0.12, 0.12)
 
 
 def line_spans(text: str) -> list[tuple[int, int]]:
@@ -231,14 +237,17 @@ class MoodAttributor:
         emo_probs = probs_all[:, emo_idx]
         spans = line_spans(text)
         line_probs = aggregate_lines(window_spans, emo_probs, spans)
+        label_probs = line_probs + np.asarray(LINE_BIAS, dtype=np.float32)
         lines = []
-        for index, ((start, end), probs) in enumerate(zip(spans, line_probs)):
+        for index, ((start, end), probs, calibrated) in enumerate(
+            zip(spans, line_probs, label_probs)
+        ):
             lines.append(
                 {
                     "index": index,
                     "text": text[start:end],
                     "probs": {e: round(float(p), 4) for e, p in zip(EMOTIONS, probs)},
-                    "dominant": dominant_label(probs),
+                    "dominant": dominant_label(calibrated),
                 }
             )
         payload = {

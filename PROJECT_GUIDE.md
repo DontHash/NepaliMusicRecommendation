@@ -631,21 +631,34 @@ student collapsed onto label priors twice (constant outputs; see
 `mood_gold_report_muril_v2.json`) — documented negative result. NepEMO and
 NEmoSen (public Nepali emotion corpora) are unreleased / request-only.
 
-**Line-level mood gold (v2)**
+**Line-level mood gold (v3)**
 
 `eval/line_mood_gold.csv` labels distinct non-empty lyric lines (249 lines across
-16 songs; joy 48 / sadness 57 / anger 44 / neutral 100) with per-line
+16 songs; joy 46 / sadness 57 / anger 44 / neutral 102) with per-line
 emotion/polarity, a cue taxonomy, difficulty, and a one-line justification; the
-rubric is written in `eval/line_mood_policy.md`. v2 applies to the rebuilt corpus:
-artifact lines are excluded rather than labeled, and the quarantined songs
-(1855, 1860) are dropped. `scripts/build_line_mood_gold.py` rebuilds the CSV from
-the hand-authored `LABELS` dict positionally against `cleaned_lyrics.csv` (so
-script-only edits such as हे -> Hey keep their labels) and validates line counts
-per song; `tests/test_line_mood_gold.py` checks vocabulary, text drift,
-occurrence counts, and coverage. `scripts/build_line_review.py` writes the human
-review kit (`eval/line_mood_review.csv` + `.md`) with the probe's current per-line
-pick next to each label and empty `user_emotion`/`user_note` columns; the current
-probe agrees with 89/249 labeled lines (0.357).
+rubric is written in `eval/line_mood_policy.md`. v2 applied the rebuilt corpus
+(artifact lines excluded rather than labeled, quarantined songs 1855/1860
+dropped); v3 folds the gold-standard review
+(`eval/line_mood_review_gold_standard_check.md`) — six corrections accepted
+(263:15, 757:2, 1469:0, 1469:13, 1511:19, 3174:14), policy rules 1 and 4
+amended, `source` bumped to `user_v2`. `scripts/build_line_mood_gold.py` rebuilds
+the CSV from the hand-authored `LABELS` dict positionally against
+`cleaned_lyrics.csv` (so script-only edits such as हे -> Hey keep their labels)
+and validates line counts per song; `tests/test_line_mood_gold.py` checks
+vocabulary, text drift, occurrence counts, and coverage.
+`scripts/build_line_review.py` writes the human review kit
+(`eval/line_mood_review.csv` + `.md`) with the probe's current per-line pick next
+to each label and empty `user_emotion`/`user_note` columns.
+
+`scripts/check_line_attribution.py` sweeps aggregation modes (overlap mean,
+squared-overlap, per-window hard votes, elementwise max) against neutral floors
+and runs leave-one-song-out per-emotion bias calibration; the report is
+`music_rec_artifacts/line_attribution_tuning.json`. The sweep picked overlap-mean
+at floor 0.55 (macro-F1 0.410 vs 0.345 at the old 0.45) and a stable bias vector
+`(-0.08, -0.12, +0.12)` (15/16 folds), both adopted in
+`music_rec/mood_attribution.py` as `LINE_FLOOR` / `LINE_BIAS`. Calibrated line
+labels agree with the gold on 127/249 lines (0.510) versus 89/249 (0.357)
+before; the probabilities shown in the UI stay uncalibrated.
 
 **Mood Studio web app (Phase C4)**
 
