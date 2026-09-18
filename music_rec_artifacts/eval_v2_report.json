@@ -1,27 +1,27 @@
 {
   "summary": {
     "artist": {
-      "ndcg@10": 0.8759,
-      "recall@10": 0.7817,
-      "ndcg@50": 0.9183,
+      "ndcg@10": 0.8788,
+      "recall@10": 0.783,
+      "ndcg@50": 0.9195,
       "recall@50": 0.9986,
-      "mrr": 0.8896,
+      "mrr": 0.8792,
       "queries": 40
     },
     "lyric": {
-      "ndcg@10": 0.3051,
-      "recall@10": 0.375,
-      "ndcg@50": 0.3325,
-      "recall@50": 0.5,
-      "mrr": 0.2889,
+      "ndcg@10": 0.2575,
+      "recall@10": 0.35,
+      "ndcg@50": 0.2858,
+      "recall@50": 0.475,
+      "mrr": 0.2353,
       "queries": 40
     },
     "seed": {
-      "ndcg@10": 0.1107,
-      "recall@10": 0.0219,
-      "ndcg@50": 0.2082,
-      "recall@50": 0.0899,
-      "mrr": 0.1491,
+      "ndcg@10": 0.1718,
+      "recall@10": 0.0234,
+      "ndcg@50": 0.2395,
+      "recall@50": 0.0509,
+      "mrr": 0.2058,
       "queries": 30
     }
   },
@@ -30,21 +30,21 @@
       "query_id": "artist_000",
       "type": "artist",
       "relevant": 14,
-      "ndcg@10": 0.5712,
-      "recall@10": 0.4286,
-      "ndcg@50": 0.8256,
+      "ndcg@10": 0.5626,
+      "recall@10": 0.5,
+      "ndcg@50": 0.7719,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.3333
     },
     {
       "query_id": "artist_001",
       "type": "artist",
       "relevant": 32,
-      "ndcg@10": 0.7799,
+      "ndcg@10": 0.89,
       "recall@10": 0.2812,
-      "ndcg@50": 0.916,
+      "ndcg@50": 0.9683,
       "recall@50": 1.0,
-      "mrr": 0.5
+      "mrr": 1.0
     },
     {
       "query_id": "artist_002",
@@ -70,9 +70,9 @@
       "query_id": "artist_004",
       "type": "artist",
       "relevant": 8,
-      "ndcg@10": 0.986,
+      "ndcg@10": 0.9783,
       "recall@10": 1.0,
-      "ndcg@50": 0.986,
+      "ndcg@50": 0.9783,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -80,19 +80,19 @@
       "query_id": "artist_005",
       "type": "artist",
       "relevant": 12,
-      "ndcg@10": 0.7949,
+      "ndcg@10": 0.7137,
       "recall@10": 0.6667,
-      "ndcg@50": 0.9149,
+      "ndcg@50": 0.8424,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.5
     },
     {
       "query_id": "artist_006",
       "type": "artist",
       "relevant": 15,
-      "ndcg@10": 0.7952,
+      "ndcg@10": 0.8268,
       "recall@10": 0.5333,
-      "ndcg@50": 0.906,
+      "ndcg@50": 0.9377,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -120,9 +120,9 @@
       "query_id": "artist_009",
       "type": "artist",
       "relevant": 4,
-      "ndcg@10": 0.8486,
+      "ndcg@10": 0.9268,
       "recall@10": 1.0,
-      "ndcg@50": 0.8486,
+      "ndcg@50": 0.9268,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -130,9 +130,9 @@
       "query_id": "artist_010",
       "type": "artist",
       "relevant": 30,
-      "ndcg@10": 0.9306,
-      "recall@10": 0.3,
-      "ndcg@50": 0.9784,
+      "ndcg@10": 0.8572,
+      "recall@10": 0.2667,
+      "ndcg@50": 0.9693,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -140,9 +140,9 @@
       "query_id": "artist_011",
       "type": "artist",
       "relevant": 30,
-      "ndcg@10": 0.4928,
+      "ndcg@10": 0.5085,
       "recall@10": 0.1667,
-      "ndcg@50": 0.8202,
+      "ndcg@50": 0.8298,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -160,11 +160,11 @@
       "query_id": "artist_013",
       "type": "artist",
       "relevant": 8,
-      "ndcg@10": 0.6241,
+      "ndcg@10": 0.5371,
       "recall@10": 0.75,
-      "ndcg@50": 0.7588,
+      "ndcg@50": 0.6719,
       "recall@50": 1.0,
-      "mrr": 0.5
+      "mrr": 0.25
     },
     {
       "query_id": "artist_014",
@@ -190,9 +190,9 @@
       "query_id": "artist_016",
       "type": "artist",
       "relevant": 32,
-      "ndcg@10": 0.9306,
+      "ndcg@10": 0.9149,
       "recall@10": 0.2812,
-      "ndcg@50": 0.9781,
+      "ndcg@50": 0.9771,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -200,9 +200,9 @@
       "query_id": "artist_017",
       "type": "artist",
       "relevant": 3,
-      "ndcg@10": 0.7123,
+      "ndcg@10": 0.6797,
       "recall@10": 1.0,
-      "ndcg@50": 0.7123,
+      "ndcg@50": 0.6797,
       "recall@50": 1.0,
       "mrr": 0.5
     },
@@ -220,11 +220,11 @@
       "query_id": "artist_019",
       "type": "artist",
       "relevant": 4,
-      "ndcg@10": 0.5274,
-      "recall@10": 0.75,
-      "ndcg@50": 0.6105,
+      "ndcg@10": 0.5079,
+      "recall@10": 0.5,
+      "ndcg@50": 0.6998,
       "recall@50": 1.0,
-      "mrr": 0.5
+      "mrr": 1.0
     },
     {
       "query_id": "artist_020",
@@ -300,9 +300,9 @@
       "query_id": "artist_027",
       "type": "artist",
       "relevant": 8,
-      "ndcg@10": 0.8165,
+      "ndcg@10": 0.8202,
       "recall@10": 1.0,
-      "ndcg@50": 0.8165,
+      "ndcg@50": 0.8202,
       "recall@50": 1.0,
       "mrr": 0.5
     },
@@ -310,9 +310,9 @@
       "query_id": "artist_028",
       "type": "artist",
       "relevant": 5,
-      "ndcg@10": 0.46,
-      "recall@10": 0.4,
-      "ndcg@50": 0.7232,
+      "ndcg@10": 0.5774,
+      "recall@10": 0.6,
+      "ndcg@50": 0.749,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -330,9 +330,9 @@
       "query_id": "artist_030",
       "type": "artist",
       "relevant": 15,
-      "ndcg@10": 0.8205,
-      "recall@10": 0.5333,
-      "ndcg@50": 0.9435,
+      "ndcg@10": 0.9052,
+      "recall@10": 0.6,
+      "ndcg@50": 0.9616,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -372,7 +372,7 @@
       "relevant": 25,
       "ndcg@10": 1.0,
       "recall@10": 0.4,
-      "ndcg@50": 0.9944,
+      "ndcg@50": 0.9979,
       "recall@50": 1.0,
       "mrr": 1.0
     },
@@ -430,11 +430,11 @@
       "query_id": "lyric_000",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.6309,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.6309,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.5
     },
     {
       "query_id": "lyric_001",
@@ -462,9 +462,9 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.25,
+      "ndcg@50": 0.2626,
       "recall@50": 1.0,
-      "mrr": 0.0667
+      "mrr": 0.0769
     },
     {
       "query_id": "lyric_004",
@@ -512,9 +512,9 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.2181,
+      "ndcg@50": 0.2153,
       "recall@50": 1.0,
-      "mrr": 0.0435
+      "mrr": 0.0417
     },
     {
       "query_id": "lyric_009",
@@ -540,21 +540,21 @@
       "query_id": "lyric_011",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.3562,
+      "ndcg@10": 0.6309,
       "recall@10": 1.0,
-      "ndcg@50": 0.3562,
+      "ndcg@50": 0.6309,
       "recall@50": 1.0,
-      "mrr": 0.1667
+      "mrr": 0.5
     },
     {
       "query_id": "lyric_012",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.2242,
+      "ndcg@10": 0.301,
+      "recall@10": 1.0,
+      "ndcg@50": 0.301,
       "recall@50": 1.0,
-      "mrr": 0.0476
+      "mrr": 0.1111
     },
     {
       "query_id": "lyric_013",
@@ -582,9 +582,9 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.195,
+      "ndcg@50": 0.2,
       "recall@50": 1.0,
-      "mrr": 0.0294
+      "mrr": 0.0323
     },
     {
       "query_id": "lyric_016",
@@ -670,11 +670,11 @@
       "query_id": "lyric_024",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.3562,
+      "ndcg@10": 0.3869,
       "recall@10": 1.0,
-      "ndcg@50": 0.3562,
+      "ndcg@50": 0.3869,
       "recall@50": 1.0,
-      "mrr": 0.1667
+      "mrr": 0.2
     },
     {
       "query_id": "lyric_025",
@@ -700,11 +700,11 @@
       "query_id": "lyric_027",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.2891,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.2891,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.1
     },
     {
       "query_id": "lyric_028",
@@ -770,11 +770,11 @@
       "query_id": "lyric_034",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_035",
@@ -790,11 +790,11 @@
       "query_id": "lyric_036",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.4307,
-      "recall@10": 1.0,
-      "ndcg@50": 0.4307,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2447,
       "recall@50": 1.0,
-      "mrr": 0.25
+      "mrr": 0.0625
     },
     {
       "query_id": "lyric_037",
@@ -830,20 +830,20 @@
       "query_id": "seed_000",
       "type": "seed",
       "relevant": 25,
-      "ndcg@10": 0.1772,
+      "ndcg@10": 0.1934,
       "recall@10": 0.04,
-      "ndcg@50": 0.3048,
+      "ndcg@50": 0.329,
       "recall@50": 0.08,
-      "mrr": 0.1
+      "mrr": 0.125
     },
     {
       "query_id": "seed_001",
       "type": "seed",
       "relevant": 50,
-      "ndcg@10": 0.4693,
-      "recall@10": 0.02,
-      "ndcg@50": 0.7042,
-      "recall@50": 0.06,
+      "ndcg@10": 0.7977,
+      "recall@10": 0.04,
+      "ndcg@50": 0.7977,
+      "recall@50": 0.04,
       "mrr": 1.0
     },
     {
@@ -852,19 +852,19 @@
       "relevant": 25,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.291,
-      "recall@50": 0.12,
-      "mrr": 0.05
+      "ndcg@50": 0.2353,
+      "recall@50": 0.08,
+      "mrr": 0.0345
     },
     {
       "query_id": "seed_003",
       "type": "seed",
       "relevant": 41,
-      "ndcg@10": 0.3066,
+      "ndcg@10": 0.3869,
       "recall@10": 0.0244,
-      "ndcg@50": 0.4252,
+      "ndcg@50": 0.4972,
       "recall@50": 0.0488,
-      "mrr": 0.3333
+      "mrr": 0.5
     },
     {
       "query_id": "seed_004",
@@ -880,21 +880,21 @@
       "query_id": "seed_005",
       "type": "seed",
       "relevant": 27,
-      "ndcg@10": 0.2901,
+      "ndcg@10": 0.4415,
       "recall@10": 0.0741,
-      "ndcg@50": 0.4523,
+      "ndcg@50": 0.6271,
       "recall@50": 0.1481,
-      "mrr": 0.2
+      "mrr": 0.5
     },
     {
       "query_id": "seed_006",
       "type": "seed",
       "relevant": 8,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@10": 0.4307,
+      "recall@10": 0.125,
+      "ndcg@50": 0.4307,
+      "recall@50": 0.125,
+      "mrr": 0.25
     },
     {
       "query_id": "seed_007",
@@ -910,10 +910,10 @@
       "query_id": "seed_008",
       "type": "seed",
       "relevant": 106,
-      "ndcg@10": 0.6714,
-      "recall@10": 0.0283,
-      "ndcg@50": 0.7502,
-      "recall@50": 0.0377,
+      "ndcg@10": 0.4462,
+      "recall@10": 0.0189,
+      "ndcg@50": 0.6764,
+      "recall@50": 0.0472,
       "mrr": 1.0
     },
     {
@@ -932,9 +932,9 @@
       "relevant": 25,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.2523,
-      "recall@50": 0.08,
-      "mrr": 0.0526
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "seed_011",
@@ -942,9 +942,9 @@
       "relevant": 9,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.0,
-      "recall@50": 0.0,
-      "mrr": 0.0
+      "ndcg@50": 0.1763,
+      "recall@50": 0.1111,
+      "mrr": 0.02
     },
     {
       "query_id": "seed_012",
@@ -962,19 +962,19 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.256,
-      "recall@50": 1.0,
-      "mrr": 0.0714
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "seed_014",
       "type": "seed",
       "relevant": 6,
-      "ndcg@10": 0.4307,
-      "recall@10": 0.1667,
-      "ndcg@50": 0.4307,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2789,
       "recall@50": 0.1667,
-      "mrr": 0.25
+      "mrr": 0.0909
     },
     {
       "query_id": "seed_015",
@@ -992,9 +992,9 @@
       "relevant": 52,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.181,
+      "ndcg@50": 0.1854,
       "recall@50": 0.0192,
-      "mrr": 0.0222
+      "mrr": 0.0244
     },
     {
       "query_id": "seed_017",
@@ -1010,11 +1010,11 @@
       "query_id": "seed_018",
       "type": "seed",
       "relevant": 9,
-      "ndcg@10": 0.3236,
-      "recall@10": 0.2222,
-      "ndcg@50": 0.4361,
-      "recall@50": 0.3333,
-      "mrr": 0.1667
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2508,
+      "recall@50": 0.2222,
+      "mrr": 0.0455
     },
     {
       "query_id": "seed_019",
@@ -1040,11 +1040,11 @@
       "query_id": "seed_021",
       "type": "seed",
       "relevant": 53,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.3054,
+      "ndcg@10": 0.3434,
+      "recall@10": 0.0377,
+      "ndcg@50": 0.4538,
       "recall@50": 0.0566,
-      "mrr": 0.0588
+      "mrr": 0.25
     },
     {
       "query_id": "seed_022",
@@ -1070,30 +1070,30 @@
       "query_id": "seed_024",
       "type": "seed",
       "relevant": 4,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.256,
+      "ndcg@10": 1.0,
+      "recall@10": 0.25,
+      "ndcg@50": 1.0,
       "recall@50": 0.25,
-      "mrr": 0.0714
+      "mrr": 1.0
     },
     {
       "query_id": "seed_025",
       "type": "seed",
       "relevant": 19,
-      "ndcg@10": 0.0,
-      "recall@10": 0.0,
-      "ndcg@50": 0.256,
+      "ndcg@10": 0.5,
+      "recall@10": 0.0526,
+      "ndcg@50": 0.5,
       "recall@50": 0.0526,
-      "mrr": 0.0714
+      "mrr": 0.3333
     },
     {
       "query_id": "seed_026",
       "type": "seed",
       "relevant": 25,
-      "ndcg@10": 0.6508,
-      "recall@10": 0.08,
-      "ndcg@50": 0.7613,
-      "recall@50": 0.12,
+      "ndcg@10": 0.6131,
+      "recall@10": 0.04,
+      "ndcg@50": 0.7469,
+      "recall@50": 0.08,
       "mrr": 1.0
     },
     {
@@ -1122,16 +1122,16 @@
       "relevant": 8,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.1843,
-      "recall@50": 0.125,
-      "mrr": 0.0238
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     }
   ],
   "meta": {
     "queries_path": "D:\\Code\\ProjectR\\R_data\\corpus\\eval\\queries.jsonl",
-    "corpus_size": 4160,
+    "corpus_size": 4157,
     "ann_top_k": 200,
     "top_k": 50,
-    "generated_at": "2026-09-15T11:58:04.549739+00:00"
+    "generated_at": "2026-09-18T12:56:09.445258+00:00"
   }
 }

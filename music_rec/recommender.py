@@ -30,6 +30,8 @@ class MusicRecommender:
         self.use_features = use_features
         self.songs = pd.read_csv(self.config.cleaned_lyrics_csv, encoding="utf-8")
         self.songs = self.songs.set_index("song_id", drop=False)
+        self.song_ids = self.songs["song_id"].to_numpy()
+        self.row_of_song = {int(sid): row for row, sid in enumerate(self.song_ids)}
 
         self.embeddings = normalize(np.load(self.config.embeddings_npy))
 
@@ -75,7 +77,10 @@ class MusicRecommender:
         return float(self.sentiment.loc[song_id, "sentiment_score"])
 
     def _row_index(self, song_id: int) -> int:
-        return int(np.where(self.songs["song_id"].to_numpy() == song_id)[0][0])
+        try:
+            return self.row_of_song[int(song_id)]
+        except KeyError as exc:
+            raise KeyError(f"song_id {song_id} is not in the corpus") from exc
 
     def _filter_mask(self, artist: str | None, category: str | None) -> np.ndarray:
         mask = np.ones(len(self.songs), dtype=bool)
@@ -96,11 +101,12 @@ class MusicRecommender:
     ) -> list[Recommendation]:
         cfg = self.config
         keep_mask = self._filter_mask(artist, category)
+        exclude_row = self.row_of_song.get(int(exclude_id)) if exclude_id is not None else None
 
         if artist or category:
             mask_rows = np.nonzero(keep_mask)[0]
-            if exclude_id is not None:
-                mask_rows = mask_rows[mask_rows != exclude_id]
+            if exclude_row is not None:
+                mask_rows = mask_rows[mask_rows != exclude_row]
             if len(mask_rows) == 0:
                 return []
             if window_scores is not None:
@@ -109,22 +115,22 @@ class MusicRecommender:
                 query_emb = query_vec_index[: self.embeddings.shape[1]]
                 sims = self.embeddings[mask_rows] @ query_emb
             order = np.argsort(-sims)[: cfg.ann_top_k]
-            cand_ids = mask_rows[order].astype(int)
+            cand_ids = self.song_ids[mask_rows[order]]
             cand_rel = sims[order].astype(np.float64)
         elif window_scores is not None:
             order = np.argsort(-window_scores)[: cfg.ann_top_k]
             order = [row for row in order if np.isfinite(window_scores[row])]
-            cand_ids = np.asarray(order, dtype=int)
+            cand_ids = self.song_ids[np.asarray(order, dtype=int)]
             cand_rel = window_scores[order].astype(np.float64)
         else:
-            scores, ids = search(self.index, query_vec_index, min(cfg.ann_top_k * 3, len(self.songs)))
+            scores, rows = search(self.index, query_vec_index, min(cfg.ann_top_k * 3, len(self.songs)))
             cand_ids, cand_rel = [], []
-            for sid, sc in zip(ids, scores):
-                if sid < 0 or sid == exclude_id:
+            for row, sc in zip(rows, scores):
+                if row < 0 or row == exclude_row:
                     continue
-                if not keep_mask[sid]:
+                if not keep_mask[row]:
                     continue
-                cand_ids.append(int(sid))
+                cand_ids.append(int(self.song_ids[row]))
                 cand_rel.append(float(sc))
                 if len(cand_ids) >= cfg.ann_top_k:
                     break
