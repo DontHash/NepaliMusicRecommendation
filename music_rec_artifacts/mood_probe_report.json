@@ -1,62 +1,62 @@
 {
-  "songs_in_train_pool": 1934,
+  "songs_in_train_pool": 4011,
   "labels": {},
   "holdout_emotion_f1": {
-    "joy": 0.4639,
-    "sadness": 0.9102,
-    "anger": 0.0,
-    "fear": 0.5353,
-    "depression": 0.8653
+    "joy": 0.656,
+    "sadness": 0.7317,
+    "anger": 0.1538,
+    "fear": 0.0,
+    "depression": 0.0
   },
   "holdout_f1": {
-    "joy": 0.4639,
-    "sadness": 0.9102,
-    "anger": 0.0,
-    "fear": 0.5353,
-    "depression": 0.8653,
-    "positive": 0.1978,
-    "negative": 0.8227
+    "joy": 0.656,
+    "sadness": 0.7317,
+    "anger": 0.1538,
+    "fear": 0.0,
+    "depression": 0.0,
+    "positive": 0.7718,
+    "negative": 0.783
   },
-  "holdout_macro_f1": 0.5422,
+  "holdout_macro_f1": 0.4423,
   "sentiment_distribution": {
-    "negative": 3403,
-    "positive": 526,
-    "neutral": 231
+    "positive": 2355,
+    "negative": 1573,
+    "neutral": 232
   },
   "gold": {
-    "relaxed_accuracy": 0.557,
+    "relaxed_accuracy": 0.7919,
     "positive": {
-      "f1": 0.2069,
-      "precision": 0.9,
-      "recall": 0.1169,
+      "f1": 0.7209,
+      "precision": 0.6526,
+      "recall": 0.8052,
       "support": 77
     },
     "negative": {
-      "f1": 0.7551,
-      "precision": 0.6607,
-      "recall": 0.881,
+      "f1": 0.7531,
+      "precision": 0.7821,
+      "recall": 0.7262,
       "support": 84
     }
   },
   "gold_emotions": {
     "joy": {
-      "f1": 0.506,
+      "f1": 0.64,
       "support": 50
     },
     "sadness": {
-      "f1": 0.7053,
+      "f1": 0.6917,
       "support": 74
     },
     "anger": {
-      "f1": 0.0,
+      "f1": 0.3704,
       "support": 22
     },
     "fear": {
-      "f1": 0.0455,
+      "f1": 0.0,
       "support": 2
     },
     "depression": {
-      "f1": 0.0159,
+      "f1": 0.0,
       "support": 1
     }
   }
