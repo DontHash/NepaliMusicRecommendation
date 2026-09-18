@@ -1,0 +1,11 @@
+{
+  "split": "corpus",
+  "model": "gemini-3.5-flash",
+  "run_name": "corpus_v3",
+  "batch_size": 30,
+  "total": 703,
+  "labeled": 703,
+  "tokens_in": 34511,
+  "tokens_out": 4251,
+  "errors": []
+}

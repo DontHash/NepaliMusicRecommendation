@@ -258,6 +258,12 @@ def main() -> None:
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--shard-total", type=int, default=1)
     parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument(
+        "--ids-file",
+        type=Path,
+        default=None,
+        help="Optional file of song_ids (one per line, or a CSV with a song_id column) to restrict labeling",
+    )
     parser.add_argument("--run-name", default="")
     parser.add_argument("--keep-few-shot", action="store_true")
     args = parser.parse_args()
@@ -274,6 +280,18 @@ def main() -> None:
         subset = cleaned[cleaned["song_id"].isin(ids)].copy()
 
     subset = subset.sort_values("song_id").reset_index(drop=True)
+    if args.ids_file:
+        wanted: set[int] = set()
+        text = args.ids_file.read_text(encoding="utf-8")
+        if args.ids_file.suffix.lower() == ".csv":
+            wanted = {int(value) for value in pd.read_csv(args.ids_file)["song_id"]}
+        else:
+            for line in text.splitlines():
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                wanted.add(int(line.split(",")[0]))
+        subset = subset[subset["song_id"].isin(wanted)].reset_index(drop=True)
     if args.shard_total > 1:
         subset = subset.iloc[args.shard_index :: args.shard_total].reset_index(drop=True)
     if args.limit:
