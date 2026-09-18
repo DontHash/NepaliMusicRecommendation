@@ -139,11 +139,11 @@ def few_shot_block(gold: pd.DataFrame, cleaned: pd.DataFrame) -> str:
     return "\n".join(lines)
 
 
-def build_prompt(block: str, batch: list[pd.Series]) -> str:
+def build_prompt(block: str, batch: list[pd.Series], max_chars: int = 3000) -> str:
     lines = [block, "", "### Songs to label"]
     for row in batch:
         lines.append(f"<song id={int(row['song_id'])}> {row['title']} — {row['artist']}")
-        lines.append(str(row["lyrics"])[:3000])
+        lines.append(str(row["lyrics"])[:max_chars])
         lines.append("</song>")
     lines.append("")
     lines.append(f"Label all {len(batch)} songs above. Reply with ONLY the JSON array.")
@@ -182,9 +182,18 @@ def normalize(item: dict, expected: set[int]) -> dict | None:
     return out
 
 
-def label_batch(client, model: str, prompt: str, expected: set[int], attempts: int = 3):
+def label_batch(
+    client,
+    model: str,
+    prompt: str,
+    expected: set[int],
+    attempts: int = 3,
+    retry_forever: bool = False,
+    retry_sleep: int = 60,
+):
     last_err = None
-    for attempt in range(attempts):
+    attempt = 0
+    while True:
         try:
             from google.genai import types
 
@@ -221,8 +230,17 @@ def label_batch(client, model: str, prompt: str, expected: set[int], attempts: i
                 last_err = f"unparseable (finish={finish}, block={block}, head={text[:150]!r})"
         except Exception as exc:  # noqa: BLE001
             last_err = f"{type(exc).__name__}: {str(exc)[:200]}"
-        time.sleep(5 * (attempt + 1))
-    return [], None, last_err
+            if "403" in last_err or "404" in last_err:
+                return [], None, f"PERMANENT {last_err}"
+
+        attempt += 1
+        if retry_forever:
+            print(f"    retry in {retry_sleep}s ({last_err[:90]})", flush=True)
+            time.sleep(retry_sleep)
+            continue
+        if attempt >= attempts:
+            return [], None, last_err
+        time.sleep(5 * attempt)
 
 
 def main() -> None:
@@ -231,6 +249,11 @@ def main() -> None:
     parser.add_argument("--model", default="gemini-3.8-flash")
     parser.add_argument("--batch-size", type=int, default=30)
     parser.add_argument("--attempts", type=int, default=3)
+    parser.add_argument("--retry-forever", action="store_true")
+    parser.add_argument("--retry-sleep", type=int, default=60)
+    parser.add_argument("--sleep-between", type=int, default=0)
+    parser.add_argument("--break-on-fail", action="store_true")
+    parser.add_argument("--max-lyrics-chars", type=int, default=3000)
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--run-name", default="")
     parser.add_argument("--keep-few-shot", action="store_true")
@@ -288,13 +311,23 @@ def main() -> None:
             for i in range(n_batches):
                 batch = todo[i * args.batch_size : (i + 1) * args.batch_size]
                 expected = {int(r["song_id"]) for r in batch}
-                prompt = build_prompt(block, batch)
+                prompt = build_prompt(block, batch, args.max_lyrics_chars)
                 items, usage, err = label_batch(
-                    client, args.model, prompt, expected, attempts=args.attempts
+                    client,
+                    args.model,
+                    prompt,
+                    expected,
+                    attempts=args.attempts,
+                    retry_forever=args.retry_forever,
+                    retry_sleep=args.retry_sleep,
                 )
                 if not items and err:
-                    print(f"batch {i + 1}/{n_batches}: FAILED ({err})")
+                    print(f"batch {i + 1}/{n_batches}: FAILED ({err})", flush=True)
                     errors.append({"batch": i + 1, "error": err, "ids": sorted(expected)})
+                    if err.startswith("PERMANENT"):
+                        break
+                    if args.break_on_fail:
+                        break
                     continue
                 for rec in items:
                     fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
@@ -304,7 +337,9 @@ def main() -> None:
                 to = getattr(usage, "candidates_token_count", 0) or 0
                 tokens_in += ti
                 tokens_out += to
-                print(f"batch {i + 1}/{n_batches}: labeled {len(items)} (in {ti} / out {to} tokens)")
+                print(f"batch {i + 1}/{n_batches}: labeled {len(items)} (in {ti} / out {to} tokens)", flush=True)
+                if args.sleep_between:
+                    time.sleep(args.sleep_between)
 
         report = {
             "split": args.split,
