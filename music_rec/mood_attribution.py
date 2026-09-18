@@ -116,6 +116,7 @@ class MoodAttributor:
         self._sent_model = None
         self._cleaned = None
         self._phrase = None
+        self._gold = None
         self._scores = None
         self._window_vectors = None
         self._window_owners = None
@@ -173,6 +174,10 @@ class MoodAttributor:
         phrases_csv = self.config.artifacts_dir / "mood_phrases.csv"
         if phrases_csv.exists():
             self._phrase = pd.read_csv(phrases_csv, encoding="utf-8").set_index("song_id")
+        gold_csv = Path(__file__).resolve().parents[1] / "eval" / "mood_gold.csv"
+        self._gold = None
+        if gold_csv.exists():
+            self._gold = pd.read_csv(gold_csv, encoding="utf-8").set_index("song_id")
         if self.config.sentiment_scores_csv.exists():
             self._scores = pd.read_csv(self.config.sentiment_scores_csv, encoding="utf-8").set_index("song_id")
 
@@ -277,6 +282,11 @@ class MoodAttributor:
         if self._phrase is not None and song_id in self._phrase.index:
             meta["mood_phrase"] = str(self._phrase.loc[song_id, "mood_phrase"])
             meta["confidence"] = str(self._phrase.loc[song_id, "confidence"])
+        elif self._gold is not None and song_id in self._gold.index:
+            note = str(self._gold.loc[song_id, "notes"])
+            if note and note != "nan":
+                meta["mood_phrase"] = note
+            meta["confidence"] = str(self._gold.loc[song_id, "confidence"])
         return self._build_payload(text, probs_all, spans, meta, polarity)
 
     def attribute_text(self, text: str) -> dict:
