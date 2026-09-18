@@ -31,12 +31,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from lyrics_pipeline.patterns import INVISIBLE_CHARS_RE  # noqa: E402
+from lyrics_pipeline.patterns import EMOJI_RE, INVISIBLE_CHARS_RE  # noqa: E402
 from music_rec.config import Config  # noqa: E402
-
-EMOJI_RE = re.compile(
-    "[\U0001f300-\U0001faff\u2600-\u27bf\ufe0f\u2190-\u21ff\u2b00-\u2bff]"
-)
 
 ARTIFACT_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     (

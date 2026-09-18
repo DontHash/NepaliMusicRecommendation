@@ -13,6 +13,7 @@ import unicodedata
 from collections import OrderedDict
 from pathlib import Path
 
+from .english_lexicon import ENGLISH_CONTRACTION_SUFFIXES, ENGLISH_WORDS
 from .patterns import DEVANAGARI_RE, ROMAN_TOKEN_RE
 
 try:
@@ -233,10 +234,12 @@ class NepaliTransliterator:
         decode: str = "greedy",
         batch_size: int = 256,
         cache_size: int = 200_000,
+        english_gate: bool = True,
     ):
         self.beam_size = beam_size
         self.decode = decode
         self.batch_size = max(batch_size, 1)
+        self.english_gate = english_gate
         self.model = None
         self.char_to_id = None
         self.id_to_char = None
@@ -300,6 +303,27 @@ class NepaliTransliterator:
     @property
     def available(self) -> bool:
         return self.model is not None
+
+    def _keeps_english(self, token: str, previous_was_english: bool) -> bool:
+        """English tokens pass through; contraction tails follow English bases."""
+        key = token.lower()
+        if key in ENGLISH_WORDS:
+            return True
+        if previous_was_english and key in ENGLISH_CONTRACTION_SUFFIXES:
+            return True
+        if key.endswith("s") and key[:-1] in ENGLISH_WORDS:
+            return True
+        if key.endswith("ing"):
+            stem = key[:-3]
+            if stem in ENGLISH_WORDS or stem + "e" in ENGLISH_WORDS:
+                return True
+            if len(stem) >= 2 and stem[-1] == stem[-2] and stem[:-1] in ENGLISH_WORDS:
+                return True
+        if key.endswith("ed"):
+            stem = key[:-2]
+            if stem in ENGLISH_WORDS or stem + "e" in ENGLISH_WORDS:
+                return True
+        return False
 
     @staticmethod
     def _resolve_existing(primary: Path | str | None, *fallback_names: str) -> Path | None:
@@ -444,9 +468,21 @@ class NepaliTransliterator:
         roman_positions = [i for i, part in enumerate(parts) if ROMAN_TOKEN_RE.fullmatch(part)]
         if not roman_positions:
             return line
-        converted = self.transliterate_tokens([parts[i] for i in roman_positions])
-        for pos, result in zip(roman_positions, converted):
-            parts[pos] = result
+        job_positions: list[int] = []
+        previous_was_english = False
+        for position in roman_positions:
+            if self.english_gate and self._keeps_english(
+                parts[position], previous_was_english
+            ):
+                previous_was_english = True
+            else:
+                job_positions.append(position)
+                previous_was_english = False
+        if not job_positions:
+            return line
+        converted = self.transliterate_tokens([parts[i] for i in job_positions])
+        for position, result in zip(job_positions, converted):
+            parts[position] = result
         return "".join(parts)
 
     def transliterate_text(self, text: str) -> str:
@@ -459,9 +495,15 @@ class NepaliTransliterator:
         for line_index, line in enumerate(lines):
             parts = re.findall(r"[A-Za-z]+|[^A-Za-z]+", line)
             parts_per_line.append(parts)
+            previous_was_english = False
             for part_index, part in enumerate(parts):
-                if ROMAN_TOKEN_RE.fullmatch(part):
-                    roman_jobs.append((line_index, part_index, part))
+                if not ROMAN_TOKEN_RE.fullmatch(part):
+                    continue
+                if self.english_gate and self._keeps_english(part, previous_was_english):
+                    previous_was_english = True
+                    continue
+                previous_was_english = False
+                roman_jobs.append((line_index, part_index, part))
         if not roman_jobs:
             return text
 
