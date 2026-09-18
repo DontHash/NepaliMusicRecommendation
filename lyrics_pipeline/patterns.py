@@ -57,17 +57,23 @@ METADATA_LINE_PATTERNS = (
 # lines like "शब्द केलाउ" or "संगीत अमर कर दो" survive.
 CREDIT_LINE_PATTERNS = (
     re.compile(
-        r"^(?:(?:Music|Song|Video|Audio|Lyrics)\s+)?"
+        r"^[\s\-–—►▶•*·]*"
+        r"(?:(?:Asst|Assist|Assit|Assistant|Associate|Additional|First|Second|Dance|Chief|Executive|"
+        r"Direc(?:t|k)or|Direction|Directon|Edit|"
+        r"Making|Original|Lyrical|Official|Many|New|Old|Music|Song|Video|Audio|Lyrics|Nepali|Unicode|Roman|"
+        r"मुख्य|सहायक|नेपाली|युनिकोड|रोमन)\s*\.?\s*[/|]?\s*)?"
         r"(?:Lyrics?|Singers?|Song|Songs|Cast|Casts?|Actors?|Actress|Music|Composer|Composed|Composition|"
-        r"Director|Producer|Starring|Vocals?|Vocal|Songwriter|Arranger|Recordist|Mixing|"
-        r"Mastering|Studio|Editor|Colorist|Credits|"
-        r"शब्द|संगीत|संगीतकार|गायक|गायिका|कलाकार|एक्टर्स|निर्देशक|निर्माता|लिरिक्स|"
+        r"Compose|Director|Producer|Starring|Vocals?|Vocal|Songwriter|Lyricist|Arranger|Recordist|Mixing|"
+        r"Mastering|Master|Mix|Studio|Editor|Colorist|Credits|Choreographer|Cinematographer|"
+        r"Assistant|Poster|Publicity|Digital|Partner|Management|Executive|Action|Story|Concept|"
+        r"Design|Dialogue|Edit|Transportation|Version|Video|Audio|Thanks|"
+        r"शब्द|संगीत|संगीतकार|गायक|गायिका|कलाकार|एक्टर्स|निर्देशक|निर्माता|लिरिक्स|कम्पोज|भर्सन|"
         r"सोङ|एरेन्जर|एरेन्ज|मास्टरिङ|रेकर्डिस्ट|रेकर्डिङ|स्टुडियो|डाइरेक्टर|डाइरेक्सन|"
         r"क्यामेरा|पब्लिसिटी|म्यानेजमेन्ट|प्रोड्युसर|प्रोडक्सन|कोरियोग्राफर|वोकल|"
         r"सिनेमाटोग्राफर|सिनेमेटोग्राफी|ब्याकग्राउन्ड|कोपीराइट|डिजिटल|डिजाइन|विजुअल|"
         r"एडिट|कलरिस्ट|आर्टिस्ट|एक्जिक्युटिभ|स्टोरी|कन्सेप्ट|ट्रान्सपोर्टेसन|"
         r"सारंगी|मादल|बाँसुरी|बासुरी|गिटार|तबला|ढोल|मन्जिरा|हार्मोनियम|ब्यान्जो|खैंजडी)"
-        r"\s*[:：\-–].*$",
+        r"\s*(?:[/|:：\-–]).*$",
         re.IGNORECASE,
     ),
     re.compile(
@@ -127,8 +133,37 @@ EMOJI_RE = re.compile(
 )
 MUSIC_NOTE_RE = re.compile(r"[♬♪♩♫]")
 
-HASHTAG_RE = re.compile(r"(?<!\w)#\S+")
-HASHTAG_ONLY_RE = re.compile(r"^#\S+(?:\s+#\S+)*$")
+HASHTAG_RE = re.compile(r"(?<![\w\u0900-\u097F])#(?!\s)\S+")
+HASHTAG_ONLY_RE = re.compile(r"^#(?!\s)\S+(?:\s+#\S+)*$")
+
+# Site section headers that are page furniture, not lyrics.
+SITE_HEADER_PATTERNS = (
+    re.compile(
+        r"^(?:[Dd]escription|[Dd]iscription|[Dd]esc)\s*(?:of\s+)?(?:[Vv]ideo)?$",
+        re.IGNORECASE,
+    ),
+    re.compile(r"^[Rr]omaniz(?:e|ed|ation)s?$", re.IGNORECASE),
+    re.compile(
+        r"^(?:(?:Making|Original|Lyrical|Official)\s+)?(?:[Vv]ideo|[Aa]udio)\s*"
+        r"(?:[Cc]redits?|Animation)?$",
+        re.IGNORECASE,
+    ),
+    re.compile(r"^(?:[Ss]pecial\s+)?[Tt]hanks?(?:\s+[Tt]o)?\s*[:：]?$", re.IGNORECASE),
+    re.compile(r"^[Bb]est\s+[Hh]eadphones.*$"),
+    re.compile(r"^[Ss]pecial\s+[Tt]hanks\S.*$"),
+    re.compile(
+        r"^(?:(?:Asst|Assist|Assit|Assistant|Chief|Executive|Associate|Additional|"
+        r"First|Second|Dance|Original|Making|Lyrical|Official|New|Old|Nepali)\s*\.?\s*)?"
+        r"(?:Choreographer|Cinematographer|Costume|Makeup|Version|Editor|Colorist|"
+        r"Director|Producer)s?(?:\s+\d{4})?$",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"^(?:Choreographer|Cinematographer|Director|Producer|Editor|Colorist)\s+"
+        r"[A-Z][\w.]*(?:\s+[A-Z][\w.]*){0,4}$"
+    ),
+    re.compile(r"^[Ll]yrical\s+[Vv]ideo\s+[Aa]nimation\b.*$"),
+)
 
 EMBED_SUFFIX_RE = re.compile(r"\s*[\(\[]?(?:नएम्बेड|एम्बेड|[Ee]mbed)[\)\]]?\s*$")
 

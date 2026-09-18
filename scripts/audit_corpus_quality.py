@@ -64,7 +64,7 @@ ARTIFACT_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
         "embed_marker",
         re.compile(r"(?:नएम्बेड|एम्बेड|\bembed\b)", re.IGNORECASE),
     ),
-    ("hashtag", re.compile(r"(?<!\w)#[^\s#]+")),
+    ("hashtag", re.compile(r"(?<![\w\u0900-\u097F])#(?!\s)[^\s#]+")),
     (
         "url",
         re.compile(

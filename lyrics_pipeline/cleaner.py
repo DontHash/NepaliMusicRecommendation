@@ -27,6 +27,7 @@ from .patterns import (
     ROMAN_RE,
     SECTION_BRACKET_RE,
     SECTION_WORD_RE,
+    SITE_HEADER_PATTERNS,
     TITLE_JUNK_RE,
     TITLE_SUFFIX_RE,
     TRAILING_VIDEO_RE,
@@ -186,6 +187,13 @@ def is_noise_line(line: str, title: str, artist: str) -> bool:
     for pattern in CRAWLER_FOOTER_PATTERNS:
         if pattern.match(stripped):
             return True
+
+    for pattern in SITE_HEADER_PATTERNS:
+        if pattern.match(stripped):
+            return True
+
+    if is_english_prose_line(stripped):
+        return True
 
     normalized = _normalize_for_match(stripped)
     if normalized in TEMPLATE_ARTIFACT_LINES:

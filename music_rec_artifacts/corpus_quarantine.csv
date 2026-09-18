@@ -1,6 +1,4 @@
-song_id,title,artist,source,total_lines,artifact_lines,artifact_ratio,artifact_types,repeat_lines,meta_repeat_lines,in_mood_gold,in_line_gold,quarantine,quarantine_reason
-2652,Sanumaya Ghumti Ghumti Bato सानुमाया घुम्तीघुम्ती बाटो,Prashant Poudel,site_paankopat.com,30,22,0.7333,"emoji,lyrics_credit,music_credit,video_credits",0,0,False,False,True,artifact ratio 73% of lines (22/30)
-2730,Kali काली,Pushpan Pradhan,site_paankopat.com,35,22,0.6286,"emoji,hashtag,music_credit,video_credits",0,0,False,False,True,artifact ratio 63% of lines (22/35)
-2671,Chahanchhu 4,Pratap Das,site_paankopat.com,37,19,0.5135,"emoji,hashtag,music_credit,video_credits",2,2,False,False,True,artifact ratio 51% of lines (19/37)
-1855,Aakashbandi,LEGITHIPHOP,legacy_932,23,0,0.0,,0,0,True,True,True,legacy source text is phonetic Devanagari of English lyrics; unrecoverable
-1860,Katha,Lijal Shrestha,legacy_932,27,0,0.0,,0,0,True,True,True,legacy source text corrupted (non-Nepali word salad); unrecoverable
+song_id,title,artist,source,reason,v1_lines,v2_lines,v2_tokens
+89,The Melodic Journey of Nepali Music: From Traditional Instruments to Modern Genres,2024,site_paankopat.com,"cleaned_short: 0 lines, 0 tokens after cleaning",9,0,0
+1855,Aakashbandi,LEGITHIPHOP,legacy_932,legacy source text is phonetic Devanagari of English lyrics; unrecoverable,23,23,176
+1860,Katha,Lijal Shrestha,legacy_932,legacy source text corrupted (non-Nepali word salad); unrecoverable,27,27,156

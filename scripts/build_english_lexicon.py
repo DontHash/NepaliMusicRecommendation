@@ -75,15 +75,19 @@ lonely funny serious honest kind cruel gentle wild calm
 
 META = """
 subscribe channel channels video videos lyric lyrics chords download downloads official
-description descriptions comment comments notification bell facebook instagram twitter
-youtube click link below above watch start timer contains hidden meaning translation
-translated romanized romanization english language album released featuring artist artists
-follow visit website content copyright report error recent years witnessed rise popular
-genres genre pop rap hip hop remix version audio streaming stream playlist track share
-shared sharing liked button buttons screen media social page pages online free top latest
-hd hq mp3 quality movie film trailer teaser scene scenes credit credits vocal vocals singer
-singers music director producer production studio recording mastering mixing composed composer
-lyricist writer written performed performance cast starring actor actress
+description descriptions discription romanize romanized romanization headphones special
+thanks post production version nepalising assistant choreographer cinematographer
+cinematography colorist editor poster publicity digital partner rights management
+executive action story concept transportation male female vocals vocal singer singers
+music director producer studio recording recordist mastering mixing mix master cast credit
+credits composer composed compose lyricist writer written performed performance starring
+actor actress song songs album released featuring artist artists follow visit website
+content copyright report error recent years witnessed rise popular genres genre pop rap
+hip hop remix audio streaming stream playlist track share shared sharing liked button
+buttons screen media social page pages online free top latest hd hq mp3 quality movie
+film trailer teaser scene scenes click link below above watch start timer contains hidden
+meaning translation translated english language facebook instagram twitter youtube
+comment comments notification bell
 """.split()
 
 CONTRACTIONS = [
