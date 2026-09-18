@@ -583,8 +583,9 @@ non-gold songs labeled in ~30-song batches with schema-constrained JSON
 few-shot examples excluded from metrics, sharded across keys and rotating over
 flash models on quota resets. The installed probe (`music_rec_artifacts/
 sentiment_scores.csv`) is retrained on those labels; emotion F1 on gold: joy
-0.64, sadness 0.69, anger 0.37, fear 0.00, depression 0.00 (fear/depression
-still too sparse to learn; joy still over-flags romance/devotion). Mood phrases
+0.64, sadness 0.69, anger 0.37, fear 0.00, depression 0.00 (fear and depression
+are out of scope for now — too sparse to learn; joy still over-flags
+romance/devotion). Mood phrases
 are stored in `music_rec_artifacts/mood_phrases.csv` for a future semantic
 mood-search feature. `MusicAnalyzer.py` still uses the old tweet muRIL model at
 runtime; probe integration is a follow-up.
