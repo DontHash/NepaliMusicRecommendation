@@ -1,0 +1,832 @@
+{
+  "corpus": "D:\\Code\\ProjectR\\music_rec_artifacts\\cleaned_lyrics.csv",
+  "corpus_final": "D:\\Code\\ProjectR\\CSVs Dataset\\corpus_final.csv",
+  "total_songs": 4160,
+  "total_lines": 155910,
+  "songs_with_artifacts": 903,
+  "artifact_lines_total": 4218,
+  "patterns": {
+    "crawler_footer": {
+      "songs": 273,
+      "lines": 1138
+    },
+    "video_credits": {
+      "songs": 185,
+      "lines": 502
+    },
+    "romanize_block": {
+      "songs": 152,
+      "lines": 305
+    },
+    "contributor_block": {
+      "songs": 1,
+      "lines": 1
+    },
+    "embed_marker": {
+      "songs": 209,
+      "lines": 209
+    },
+    "hashtag": {
+      "songs": 265,
+      "lines": 961
+    },
+    "url": {
+      "songs": 24,
+      "lines": 27
+    },
+    "lyrics_credit": {
+      "songs": 59,
+      "lines": 60
+    },
+    "annotation_tag": {
+      "songs": 0,
+      "lines": 0
+    },
+    "emoji": {
+      "songs": 131,
+      "lines": 1261
+    },
+    "music_credit": {
+      "songs": 191,
+      "lines": 722
+    }
+  },
+  "shared_templates": {
+    "count": 183,
+    "metadata_like": 70,
+    "min_songs": 4,
+    "top": [
+      {
+        "line": "डाउनलोड लिरिक्स",
+        "songs": 215,
+        "metadata_like": true,
+        "sample_song_ids": [
+          17,
+          101,
+          102,
+          103,
+          122
+        ],
+        "sample_sources": [
+          "site_nepali-songslyrics.com"
+        ]
+      },
+      {
+        "line": "स्टार्ट टाइमर फोर डाउनलोड",
+        "songs": 215,
+        "metadata_like": true,
+        "sample_song_ids": [
+          17,
+          101,
+          102,
+          103,
+          122
+        ],
+        "sample_sources": [
+          "site_nepali-songslyrics.com"
+        ]
+      },
+      {
+        "line": "वाच ओन युट्युब",
+        "songs": 215,
+        "metadata_like": true,
+        "sample_song_ids": [
+          17,
+          101,
+          102,
+          103,
+          122
+        ],
+        "sample_sources": [
+          "site_nepali-songslyrics.com"
+        ]
+      },
+      {
+        "line": "डिस्क्रिप्सन ओएफ विदेओ",
+        "songs": 150,
+        "metadata_like": true,
+        "sample_song_ids": [
+          0,
+          1,
+          4,
+          5,
+          6
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com"
+        ]
+      },
+      {
+        "line": "विदेओ क्रेडिट्स",
+        "songs": 65,
+        "metadata_like": true,
+        "sample_song_ids": [
+          304,
+          405,
+          406,
+          408,
+          409
+        ],
+        "sample_sources": [
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "न्यूनेपालिसंग",
+        "songs": 56,
+        "metadata_like": true,
+        "sample_song_ids": [
+          13,
+          304,
+          532,
+          753,
+          1035
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "सिनेमाटोग्राफर",
+        "songs": 51,
+        "metadata_like": true,
+        "sample_song_ids": [
+          291,
+          304,
+          338,
+          403,
+          405
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "मिक्सिङ मास्टरिङ",
+        "songs": 35,
+        "metadata_like": true,
+        "sample_song_ids": [
+          304,
+          338,
+          408,
+          412,
+          414
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "आउडियो विदेओ",
+        "songs": 34,
+        "metadata_like": true,
+        "sample_song_ids": [
+          304,
+          403,
+          405,
+          406,
+          408
+        ],
+        "sample_sources": [
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "लव थिस डिस्कभर मोर लिरिक्स थात स्पीक टो युर सौल",
+        "songs": 30,
+        "metadata_like": true,
+        "sample_song_ids": [
+          90,
+          396,
+          397,
+          780,
+          954
+        ],
+        "sample_sources": [
+          "site_nepaligeetlyrics.com"
+        ]
+      },
+      {
+        "line": "म्युजिक एरेन्जर",
+        "songs": 25,
+        "metadata_like": true,
+        "sample_song_ids": [
+          304,
+          406,
+          412,
+          626,
+          753
+        ],
+        "sample_sources": [
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "स्पेसियल थ्याङ्क्स",
+        "songs": 24,
+        "metadata_like": true,
+        "sample_song_ids": [
+          6,
+          405,
+          410,
+          411,
+          533
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "पोस्ट प्रोडक्सन",
+        "songs": 22,
+        "metadata_like": true,
+        "sample_song_ids": [
+          338,
+          405,
+          533,
+          883,
+          1078
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "नेपाली भर्सन",
+        "songs": 22,
+        "metadata_like": true,
+        "sample_song_ids": [
+          1060,
+          1456,
+          1649,
+          1658,
+          1665
+        ],
+        "sample_sources": [
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "लिरिक्स म्युजिक",
+        "songs": 21,
+        "metadata_like": true,
+        "sample_song_ids": [
+          304,
+          405,
+          408,
+          438,
+          723
+        ],
+        "sample_sources": [
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "कोरियोग्राफर",
+        "songs": 19,
+        "metadata_like": true,
+        "sample_song_ids": [
+          0,
+          291,
+          338,
+          408,
+          414
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "आउडियो क्रेडिट्स",
+        "songs": 19,
+        "metadata_like": true,
+        "sample_song_ids": [
+          533,
+          748,
+          1546,
+          1880,
+          2349
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "फाउन्ड अन एरर रिपोर्ट आइटी हेरे",
+        "songs": 17,
+        "metadata_like": true,
+        "sample_song_ids": [
+          94,
+          132,
+          586,
+          1114,
+          1777
+        ],
+        "sample_sources": [
+          "site_songsdiary.com"
+        ]
+      },
+      {
+        "line": "प्रोडक्सन म्यानेजर",
+        "songs": 17,
+        "metadata_like": true,
+        "sample_song_ids": [
+          291,
+          338,
+          408,
+          411,
+          415
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "मिक्स मास्टर",
+        "songs": 16,
+        "metadata_like": true,
+        "sample_song_ids": [
+          403,
+          406,
+          410,
+          415,
+          537
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "हो हो हो हो हो हो",
+        "songs": 14,
+        "metadata_like": false,
+        "sample_song_ids": [
+          241,
+          831,
+          1147,
+          1369,
+          1699
+        ],
+        "sample_sources": [
+          "kaggle_genius",
+          "legacy_932",
+          "site_nepalilyrics.net",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "रेकर्डिङ स्टुडियो",
+        "songs": 13,
+        "metadata_like": true,
+        "sample_song_ids": [
+          411,
+          533,
+          1169,
+          1546,
+          2547
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "बिशाल निरोउला",
+        "songs": 12,
+        "metadata_like": false,
+        "sample_song_ids": [
+          304,
+          404,
+          1248,
+          1512,
+          2349
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "बेस्ट हेडफोन्स ओन दराज ब्यु नोव",
+        "songs": 11,
+        "metadata_like": true,
+        "sample_song_ids": [
+          12,
+          92,
+          2717,
+          2723,
+          2959
+        ],
+        "sample_sources": [
+          "site_nepaligeetlyrics.com"
+        ]
+      },
+      {
+        "line": "मारुनी डिजिटल",
+        "songs": 11,
+        "metadata_like": true,
+        "sample_song_ids": [
+          406,
+          414,
+          438,
+          723,
+          1248
+        ],
+        "sample_sources": [
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "राजेन्द्र अर्याल",
+        "songs": 9,
+        "metadata_like": false,
+        "sample_song_ids": [
+          405,
+          408,
+          537,
+          539,
+          1080
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "हे हे हे हे हे",
+        "songs": 9,
+        "metadata_like": false,
+        "sample_song_ids": [
+          518,
+          1043,
+          1077,
+          1818,
+          2360
+        ],
+        "sample_sources": [
+          "site_nepalilyrics.net"
+        ]
+      },
+      {
+        "line": "माके यूपी आर्टिस्ट",
+        "songs": 9,
+        "metadata_like": false,
+        "sample_song_ids": [
+          626,
+          1029,
+          2349,
+          2616,
+          2748
+        ],
+        "sample_sources": [
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "हो हो हो हो हो हो हो हो",
+        "songs": 9,
+        "metadata_like": false,
+        "sample_song_ids": [
+          849,
+          854,
+          1369,
+          1699,
+          1733
+        ],
+        "sample_sources": [
+          "kaggle_genius",
+          "legacy_932",
+          "site_nepalilyrics.net"
+        ]
+      },
+      {
+        "line": "मिलान बिश्वोकरमा",
+        "songs": 9,
+        "metadata_like": false,
+        "sample_song_ids": [
+          1248,
+          1734,
+          2349,
+          2555,
+          2618
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "लिल स्टोन फिन्न कुक थिस बीट",
+        "songs": 9,
+        "metadata_like": false,
+        "sample_song_ids": [
+          1380,
+          1866,
+          1867,
+          3556,
+          3570
+        ],
+        "sample_sources": [
+          "kaggle_genius",
+          "legacy_932"
+        ]
+      },
+      {
+        "line": "समीक्ष्यअधिकारी",
+        "songs": 8,
+        "metadata_like": false,
+        "sample_song_ids": [
+          98,
+          3124,
+          3125,
+          3127,
+          3130
+        ],
+        "sample_sources": [
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "बिक्रम चौहाँ",
+        "songs": 8,
+        "metadata_like": false,
+        "sample_song_ids": [
+          304,
+          1248,
+          1512,
+          2349,
+          2555
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "राजेन्द्र मोक्तान",
+        "songs": 8,
+        "metadata_like": false,
+        "sample_song_ids": [
+          338,
+          405,
+          883,
+          1247,
+          2802
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "मिक्स मास्टरिङ",
+        "songs": 8,
+        "metadata_like": true,
+        "sample_song_ids": [
+          404,
+          1512,
+          2636,
+          2744,
+          3130
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "एएसएसटी डाइरेक्टर",
+        "songs": 8,
+        "metadata_like": true,
+        "sample_song_ids": [
+          405,
+          1782,
+          2105,
+          2768,
+          3218
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "तिमीलाई तिमीलाई",
+        "songs": 8,
+        "metadata_like": false,
+        "sample_song_ids": [
+          449,
+          721,
+          901,
+          1079,
+          1572
+        ],
+        "sample_sources": [
+          "kaggle_genius",
+          "legacy_932",
+          "site_nepalilyrics.net",
+          "site_paankopat.com"
+        ]
+      },
+      {
+        "line": "ला ला ला ला ला",
+        "songs": 8,
+        "metadata_like": false,
+        "sample_song_ids": [
+          617,
+          1331,
+          2318,
+          2764,
+          3186
+        ],
+        "sample_sources": [
+          "legacy_932",
+          "site_nepali-songslyrics.com",
+          "site_nepalilyrics.net"
+        ]
+      },
+      {
+        "line": "ला ला ला ला ला ला",
+        "songs": 8,
+        "metadata_like": false,
+        "sample_song_ids": [
+          1050,
+          2318,
+          2703,
+          3190,
+          3653
+        ],
+        "sample_sources": [
+          "kaggle_genius",
+          "legacy_932",
+          "site_nepalilyrics.net"
+        ]
+      },
+      {
+        "line": "पब्लिसिटी डिजाइन",
+        "songs": 8,
+        "metadata_like": true,
+        "sample_song_ids": [
+          1080,
+          2016,
+          2349,
+          3218,
+          3420
+        ],
+        "sample_sources": [
+          "site_geetishabda.blogspot.com",
+          "site_paankopat.com"
+        ]
+      }
+    ]
+  },
+  "per_source": {
+    "deezer": {
+      "songs": 4,
+      "artifact_songs": 0,
+      "quarantine_songs": 0,
+      "lyrics_lines": 108,
+      "artifact_lines": 0,
+      "artifact_ratio": 0.0
+    },
+    "itunes": {
+      "songs": 71,
+      "artifact_songs": 1,
+      "quarantine_songs": 0,
+      "lyrics_lines": 2214,
+      "artifact_lines": 3,
+      "artifact_ratio": 0.0014
+    },
+    "kaggle_genius": {
+      "songs": 371,
+      "artifact_songs": 7,
+      "quarantine_songs": 0,
+      "lyrics_lines": 13886,
+      "artifact_lines": 25,
+      "artifact_ratio": 0.0018
+    },
+    "legacy_932": {
+      "songs": 735,
+      "artifact_songs": 7,
+      "quarantine_songs": 2,
+      "lyrics_lines": 16942,
+      "artifact_lines": 10,
+      "artifact_ratio": 0.0006
+    },
+    "rupesh_aryal": {
+      "songs": 368,
+      "artifact_songs": 209,
+      "quarantine_songs": 0,
+      "lyrics_lines": 12319,
+      "artifact_lines": 211,
+      "artifact_ratio": 0.0171
+    },
+    "site_geetishabda.blogspot.com": {
+      "songs": 151,
+      "artifact_songs": 151,
+      "quarantine_songs": 0,
+      "lyrics_lines": 14395,
+      "artifact_lines": 968,
+      "artifact_ratio": 0.0672
+    },
+    "site_nepali-songslyrics.com": {
+      "songs": 215,
+      "artifact_songs": 215,
+      "quarantine_songs": 0,
+      "lyrics_lines": 9551,
+      "artifact_lines": 1077,
+      "artifact_ratio": 0.1128
+    },
+    "site_nepaligeetlyrics.com": {
+      "songs": 179,
+      "artifact_songs": 2,
+      "quarantine_songs": 0,
+      "lyrics_lines": 7975,
+      "artifact_lines": 2,
+      "artifact_ratio": 0.0003
+    },
+    "site_nepalilyrics.net": {
+      "songs": 1510,
+      "artifact_songs": 4,
+      "quarantine_songs": 0,
+      "lyrics_lines": 52757,
+      "artifact_lines": 13,
+      "artifact_ratio": 0.0002
+    },
+    "site_paankopat.com": {
+      "songs": 539,
+      "artifact_songs": 290,
+      "quarantine_songs": 3,
+      "lyrics_lines": 24950,
+      "artifact_lines": 1892,
+      "artifact_ratio": 0.0758
+    },
+    "site_songsdiary.com": {
+      "songs": 17,
+      "artifact_songs": 17,
+      "quarantine_songs": 0,
+      "lyrics_lines": 813,
+      "artifact_lines": 17,
+      "artifact_ratio": 0.0209
+    }
+  },
+  "known_bad": {
+    "1855": "legacy source text is phonetic Devanagari of English lyrics; unrecoverable",
+    "1860": "legacy source text corrupted (non-Nepali word salad); unrecoverable"
+  },
+  "quarantine_songs": 5,
+  "gold_impact": {
+    "mood_gold_songs": [
+      101,
+      347,
+      352,
+      539,
+      618,
+      684,
+      705,
+      722,
+      764,
+      937,
+      1066,
+      1423,
+      1660,
+      1777,
+      1848,
+      2028,
+      2111,
+      2112,
+      2615,
+      2794,
+      3059,
+      3131,
+      3154,
+      3248,
+      3271,
+      3308,
+      3340,
+      3396,
+      3456,
+      3525,
+      3553,
+      3667,
+      3671,
+      3734,
+      3800,
+      3821,
+      3822
+    ],
+    "line_gold_songs": [
+      3248,
+      3396
+    ]
+  }
+}
