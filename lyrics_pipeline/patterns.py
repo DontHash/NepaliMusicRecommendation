@@ -57,13 +57,16 @@ METADATA_LINE_PATTERNS = (
 # lines like "शब्द केलाउ" or "संगीत अमर कर दो" survive.
 CREDIT_LINE_PATTERNS = (
     re.compile(
-        r"^(?:Lyrics?|Singers?|Cast|Casts?|Actors?|Actress|Music|Composer|Composed|Composition|"
-        r"Director|Producer|Starring|Vocals?|Songwriter|"
+        r"^(?:(?:Music|Song|Video|Audio|Lyrics)\s+)?"
+        r"(?:Lyrics?|Singers?|Song|Songs|Cast|Casts?|Actors?|Actress|Music|Composer|Composed|Composition|"
+        r"Director|Producer|Starring|Vocals?|Vocal|Songwriter|Arranger|Recordist|Mixing|"
+        r"Mastering|Studio|Editor|Colorist|Credits|"
         r"शब्द|संगीत|संगीतकार|गायक|गायिका|कलाकार|एक्टर्स|निर्देशक|निर्माता|लिरिक्स|"
         r"सोङ|एरेन्जर|एरेन्ज|मास्टरिङ|रेकर्डिस्ट|रेकर्डिङ|स्टुडियो|डाइरेक्टर|डाइरेक्सन|"
         r"क्यामेरा|पब्लिसिटी|म्यानेजमेन्ट|प्रोड्युसर|प्रोडक्सन|कोरियोग्राफर|वोकल|"
         r"सिनेमाटोग्राफर|सिनेमेटोग्राफी|ब्याकग्राउन्ड|कोपीराइट|डिजिटल|डिजाइन|विजुअल|"
-        r"एडिट|कलरिस्ट|आर्टिस्ट|एक्जिक्युटिभ|स्टोरी|कन्सेप्ट|ट्रान्सपोर्टेसन)"
+        r"एडिट|कलरिस्ट|आर्टिस्ट|एक्जिक्युटिभ|स्टोरी|कन्सेप्ट|ट्रान्सपोर्टेसन|"
+        r"सारंगी|मादल|बाँसुरी|बासुरी|गिटार|तबला|ढोल|मन्जिरा|हार्मोनियम|ब्यान्जो|खैंजडी)"
         r"\s*[:：\-–].*$",
         re.IGNORECASE,
     ),
@@ -130,7 +133,7 @@ HASHTAG_ONLY_RE = re.compile(r"^#\S+(?:\s+#\S+)*$")
 EMBED_SUFFIX_RE = re.compile(r"\s*[\(\[]?(?:नएम्बेड|एम्बेड|[Ee]mbed)[\)\]]?\s*$")
 
 CONTRIBUTOR_PREFIX_RE = re.compile(
-    r"^\d+\s*कन्ट्रिब्युटरस?[^\n]*?लिरिक्स\s*(?:\[[^\]]*\])?",
+    r"^\d+\s*(?:कन्ट्रिब्युटरस?|Contributors?)[^\n]*?(?:लिरिक्स|Lyrics)\s*(?:\[[^\]]*\])?",
     re.IGNORECASE,
 )
 

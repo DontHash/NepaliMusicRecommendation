@@ -56,6 +56,21 @@ devil god pray prayer faith hope wish wishes magic miracle wonderful amazing per
 cute honey darling dear shining burning falling calling waiting wanting needing living dying
 breathing
 think thing things thank believe wonder voice memory promise reason season word fear
+shoot yourself myself himself herself itself ourselves themselves dead alive death side faces
+stand sits sat stood right wrong top hot coat road gravity myth brother sister mother father
+family sunrise sunset ocean river mountain city town street school teacher story history
+future past present moment second minute hour week month weather storm thunder lightning
+cloud wind dust stone rock gold silver diamond money price value power glory victory fight
+war peace freedom nightmare whisper shout scream silence noise echo rhythm melody harmony
+guitar piano drum beat bass jazz blues party club hotel station train plane boat ship car
+bike phone message letter line page book movie show stage spotlight camera picture photo
+secret answer question choice lesson blessing magic heaven hell angel devil ghost monster
+hero villain king queen prince princess soldier stranger lover sugar candy chocolate coffee
+whiskey wine water earth blood bone skin smile laugh kiss touch hug dance soul sound hope
+fear anger joy sorrow hate pleasure sweet bitter sour salty cool young fresh clean dirty
+rich poor strong weak fast slow hard soft loud quiet bright deep near open closed free busy
+ready tired hungry thirsty sick healthy happy sad angry scared brave shy proud jealous
+lonely funny serious honest kind cruel gentle wild calm
 """.split()
 
 META = """

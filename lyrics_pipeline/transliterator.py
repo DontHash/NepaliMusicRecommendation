@@ -16,6 +16,28 @@ from pathlib import Path
 from .english_lexicon import ENGLISH_CONTRACTION_SUFFIXES, ENGLISH_WORDS
 from .patterns import DEVANAGARI_RE, ROMAN_TOKEN_RE
 
+ENGLISH_FUNCTION_WORDS = frozenset(
+    """
+a an the of to and or is are was were be been being am you i we they he she it
+with for on in at by from as my your his her our their that this these those
+but not so do does did dont cant wont will would could should can may might must
+have has had me him them us what when where who why how all no yes
+up down out off away here there now then tonight today tomorrow yesterday
+again still just only ever never always sometimes maybe very too much more most
+""".split()
+)
+
+NEPALI_FUNCTION_WORDS = frozenset(
+    """
+ma malai mero timi timilai timro hamro hami hamilai afno aafno
+cha chha chhan chhu chhau chhaina ho hun hunchha huncha thiyo thie thiyena
+ra pani lai ko ki ka le bata sanga bina jaba kahile kaha kina kasto kati
+sabai garna garchu garchhan garne bhayo bhae bhayena hola ta na ni re
+yo tyo yesto kasto jasto jhai jastai ek dui tin char panch
+sakyo sake sakena dinu dinchhu liyo lyau aayo aauchha gayo janchha basyo baschha
+""".split()
+)
+
 try:
     import torch
     import torch.nn as nn
@@ -325,6 +347,20 @@ class NepaliTransliterator:
                 return True
         return False
 
+    def _line_looks_english(self, parts: list[str]) -> bool:
+        """True when a line reads as an English sentence, so nothing should change.
+
+        Signals are English function words with no Nepali function words: this
+        keeps fully English songs (and English prose) intact while still
+        transliterating Nepali lines that embed English loanwords.
+        """
+        tokens = [part.lower() for part in parts if ROMAN_TOKEN_RE.fullmatch(part)]
+        if len(tokens) < 4:
+            return False
+        english = sum(1 for token in tokens if token in ENGLISH_FUNCTION_WORDS)
+        nepali = sum(1 for token in tokens if token in NEPALI_FUNCTION_WORDS)
+        return english >= 3 and nepali == 0
+
     @staticmethod
     def _resolve_existing(primary: Path | str | None, *fallback_names: str) -> Path | None:
         candidates: list[Path] = []
@@ -468,6 +504,8 @@ class NepaliTransliterator:
         roman_positions = [i for i, part in enumerate(parts) if ROMAN_TOKEN_RE.fullmatch(part)]
         if not roman_positions:
             return line
+        if self.english_gate and self._line_looks_english(parts):
+            return line
         job_positions: list[int] = []
         previous_was_english = False
         for position in roman_positions:
@@ -495,6 +533,8 @@ class NepaliTransliterator:
         for line_index, line in enumerate(lines):
             parts = re.findall(r"[A-Za-z]+|[^A-Za-z]+", line)
             parts_per_line.append(parts)
+            if self.english_gate and self._line_looks_english(parts):
+                continue
             previous_was_english = False
             for part_index, part in enumerate(parts):
                 if not ROMAN_TOKEN_RE.fullmatch(part):

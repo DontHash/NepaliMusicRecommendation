@@ -32,6 +32,9 @@ def test_clean_lyrics_body_removes_scrape_artifacts() -> None:
             "म्युजिक बजाउँदै नाच",
             "राम्रो गीत गाउँछुएम्बेड",
             "2 कन्ट्रिब्युटर्ससप लिरिक्सचारैतिर अध्यारो",
+            "1 ContributorDashain Aayo Lyrics[Pre-Chorus]",
+            "Song:- मायालु",
+            "Music Arranger:- Prashant Poudel",
             "हो हो हो हो हो हो हो",
             "1 कन्ट्रिब्युटरनेपा हो लिरिक्स[चोरुस]",
             "पुरानो बास्न लिरिक्स | अंकिता पुन",
@@ -89,6 +92,19 @@ def test_transliteration_gate_keeps_english(transliterator: NepaliTransliterator
     )
     assert transliterator.transliterate_text("you are my sunshine") == "you are my sunshine"
     assert transliterator.transliterate_text("here comes the sun") == "here comes the सुन"
+    english_line = (
+        "Sunday morning I met a man with a top hat and a tail coat walking down the road"
+    )
+    assert transliterator.transliterate_text(english_line) == english_line
+
+
+def test_transliteration_gate_transliterates_mixed_nepali(
+    transliterator: NepaliTransliterator,
+) -> None:
+    output = transliterator.transliterate_text("I love you bhanne geet")
+    assert "I love you" in output
+    assert "bhanne" not in output
+    assert "geet" not in output
 
 
 def test_transliteration_gate_still_converts_nepali(
