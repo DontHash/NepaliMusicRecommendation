@@ -25,6 +25,7 @@ class Config:
     window_owners_npy: Path = field(init=False)
     sentiment_scores_csv: Path = field(init=False)
     sentiment_model_dir: Path = field(init=False)
+    mood_probe_npz: Path = field(init=False)
     feature_matrix_npy: Path = field(init=False)
     faiss_index_path: Path = field(init=False)
     metadata_parquet: Path = field(init=False)
@@ -47,6 +48,8 @@ class Config:
     mmr_lambda: float = 0.7
     sentiment_weight: float = 0.15
     use_window_search: bool = True
+    probe_positive_threshold: float = 0.0
+    probe_negative_threshold: float = 0.10
 
     def __post_init__(self):
         self.artifacts_dir.mkdir(parents=True, exist_ok=True)
@@ -58,6 +61,7 @@ class Config:
         self.window_owners_npy = self.artifacts_dir / "window_owners.npy"
         self.sentiment_scores_csv = self.artifacts_dir / "sentiment_scores.csv"
         self.sentiment_model_dir = self.artifacts_dir / "sentiment_model"
+        self.mood_probe_npz = self.artifacts_dir / "mood_probe.npz"
         self.feature_matrix_npy = self.artifacts_dir / "feature_matrix.npy"
         self.faiss_index_path = self.artifacts_dir / "lyrics.faiss"
         self.metadata_parquet = self.artifacts_dir / "song_metadata.csv"

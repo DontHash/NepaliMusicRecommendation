@@ -79,6 +79,7 @@ def _encode_chunked(
     max_len: int,
     stride: int,
     log_every: int,
+    quiet: bool = False,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     import torch
 
@@ -95,7 +96,7 @@ def _encode_chunked(
         window_masks.extend(mask_list)
         owners.extend([index] * len(ids_list))
         done = index + 1
-        if done % log_every == 0 or done == len(texts):
+        if not quiet and (done % log_every == 0 or done == len(texts)):
             print(f"[embeddings] tokenized {done}/{len(texts)} songs into {len(window_ids)} windows")
 
     hidden_size = _embedding_dim(model)
@@ -124,7 +125,7 @@ def _encode_chunked(
             np.add.at(sums, batch_owners, vectors)
             np.add.at(counts, batch_owners, 1)
             done = min(start + batch_size, len(window_ids))
-            if done % (log_every * batch_size) < batch_size or done == len(window_ids):
+            if not quiet and (done % (log_every * batch_size) < batch_size or done == len(window_ids)):
                 print(f"[embeddings] encoded {done}/{len(window_ids)} windows")
 
     counts[counts == 0] = 1

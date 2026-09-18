@@ -26,10 +26,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from music_rec.config import Config
+
 LABELS = ("joy", "sadness", "anger", "fear", "depression", "positive", "negative")
 EMOTIONS = LABELS[:5]
-POSITIVE_THRESHOLD = 0.0
-NEGATIVE_THRESHOLD = 0.10
 
 
 def parse_args() -> argparse.Namespace:
@@ -90,6 +90,7 @@ def main() -> None:
     from sklearn.linear_model import LogisticRegression
 
     args = parse_args()
+    config = Config()
     cleaned = pd.read_csv(args.cleaned, encoding="utf-8")
     ids = [int(x) for x in json.loads(args.ids.read_text(encoding="utf-8"))]
     embeddings = np.load(args.embeddings).astype(np.float32)
@@ -140,9 +141,9 @@ def main() -> None:
     score = scores["positive"] - scores["negative"]
     scores["sentiment_score"] = score
     scores["sentiment_label"] = np.where(
-        score > POSITIVE_THRESHOLD,
+        score > config.probe_positive_threshold,
         "positive",
-        np.where(score < -NEGATIVE_THRESHOLD, "negative", "neutral"),
+        np.where(score < -config.probe_negative_threshold, "negative", "neutral"),
     )
     scores.to_csv(args.scores_out, index=False, encoding="utf-8")
     report["sentiment_distribution"] = scores["sentiment_label"].value_counts().to_dict()

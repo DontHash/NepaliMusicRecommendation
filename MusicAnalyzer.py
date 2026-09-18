@@ -1,4 +1,4 @@
-"""Analyze Nepali lyrics: sentiment, keywords, category. Edit LYRICS below or use CLI."""
+"""Analyze Nepali lyrics: mood (linear probe), keywords, category. Edit LYRICS below or use CLI."""
 
 from __future__ import annotations
 
@@ -88,13 +88,24 @@ def _mood(label: str, score: float) -> str:
     return "Neutral / Calm"
 
 
+def probe_predict(embedding: np.ndarray, coef: np.ndarray, intercept: np.ndarray) -> np.ndarray:
+    """Sigmoid of the linear mood probe for one L2-normalized embedding."""
+    return 1.0 / (1.0 + np.exp(-(coef @ embedding + intercept)))
+
+
+def sentiment_label(score: float, positive_threshold: float, negative_threshold: float) -> str:
+    if score > positive_threshold:
+        return "positive"
+    if score < -negative_threshold:
+        return "negative"
+    return "neutral"
+
+
 class MusicAnalyzer:
     def __init__(self, config: Config | None = None, use_transliterator: bool = True):
         self.config = config or Config()
         self.use_transliterator = use_transliterator
-        self._sent_model = None
-        self._sent_tokenizer = None
-        self._id2label = None
+        self._probe = None
         self._embed_model = None
         self._transliterator = None
         self._corpus = None
@@ -102,22 +113,22 @@ class MusicAnalyzer:
         self._tfidf = None
         self._tfidf_matrix = None
 
-    def _load_sentiment(self):
-        if self._sent_model is not None:
-            return
-        from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
-        model_dir = self.config.sentiment_model_dir
-        if not (model_dir / "config.json").exists():
+    def _load_probe(self):
+        if self._probe is not None:
+            return self._probe
+        path = self.config.mood_probe_npz
+        if not path.exists():
             raise FileNotFoundError(
-                f"Sentiment model not found at {model_dir}. Train it first "
-                "(scripts/run_music_rec.py sentiment) or download the Kaggle artifact."
+                f"Mood probe not found at {path}. Train it first: "
+                "python scripts/train_mood_probe.py --pseudo <labels.csv>"
             )
-        self._sent_tokenizer = AutoTokenizer.from_pretrained(model_dir)
-        self._sent_model = AutoModelForSequenceClassification.from_pretrained(model_dir)
-        self._sent_model.eval()
-        label_map = json.loads((model_dir / "label_map.json").read_text(encoding="utf-8"))
-        self._id2label = {v: k for k, v in label_map.items()}
+        data = np.load(path, allow_pickle=False)
+        self._probe = {
+            "coef": data["coef"].astype(np.float32),
+            "intercept": data["intercept"].astype(np.float32),
+            "labels": [str(x) for x in data["labels"]],
+        }
+        return self._probe
 
     def _load_embedder(self):
         if self._embed_model is None:
@@ -193,37 +204,42 @@ class MusicAnalyzer:
         }
 
     def analyze_sentiment(self, devanagari_text: str) -> dict:
-        import torch
+        probe = self._load_probe()
+        model = self._load_embedder()
 
-        self._load_sentiment()
-        max_len = self.config.sentiment_max_len
-        ids = self._sent_tokenizer.encode(devanagari_text, add_special_tokens=True)
-        if len(ids) > max_len:
-            ids = [ids[0]] + ids[-(max_len - 1):]
-        input_ids = torch.tensor([ids])
-        attn = torch.ones_like(input_ids)
+        from music_rec.embeddings import _encode_chunked
 
-        with torch.no_grad():
-            logits = self._sent_model(input_ids=input_ids, attention_mask=attn).logits
-            probs = torch.softmax(logits, dim=-1)[0].cpu().numpy()
+        max_len = min(self.config.embed_window_tokens, model.max_seq_length)
+        stride = max(1, min(self.config.embed_window_stride, max_len - 1))
+        matrix, _, _ = _encode_chunked(
+            model,
+            [devanagari_text],
+            self.config.embed_batch_size,
+            max_len,
+            stride,
+            1,
+            quiet=True,
+        )
+        embedding = matrix[0]
+        norm = float(np.linalg.norm(embedding)) or 1.0
+        probs = probe_predict(embedding / norm, probe["coef"], probe["intercept"])
+        by_label = {label: float(p) for label, p in zip(probe["labels"], probs)}
 
-        def polarity(name: str) -> int:
-            n = name.lower()
-            if any(t in n for t in ("pos", "happy")):
-                return 1
-            if any(t in n for t in ("neg", "sad")):
-                return -1
-            return 0
-
-        pos = sum(probs[i] for i in range(len(probs)) if polarity(self._id2label[i]) == 1)
-        neg = sum(probs[i] for i in range(len(probs)) if polarity(self._id2label[i]) == -1)
-        score = float(pos - neg)
-        label = self._id2label[int(probs.argmax())]
+        score = by_label.get("positive", 0.0) - by_label.get("negative", 0.0)
+        label = sentiment_label(
+            score,
+            self.config.probe_positive_threshold,
+            self.config.probe_negative_threshold,
+        )
+        emotions = {
+            name: round(by_label.get(name, 0.0), 4) for name in ("joy", "sadness", "anger")
+        }
         return {
             "label": label,
             "score": round(score, 4),
             "mood": _mood(label, score),
-            "probabilities": {self._id2label[i]: round(float(p), 4) for i, p in enumerate(probs)},
+            "emotions": emotions,
+            "probabilities": {name: round(p, 4) for name, p in by_label.items()},
         }
 
     def extract_keywords(self, devanagari_text: str, top_n: int = 10) -> list[dict]:
@@ -303,6 +319,9 @@ def _format_report(result: dict) -> str:
     lines.append(f"  Label  : {sent['label']}")
     lines.append(f"  Score  : {sent['score']:+.3f}   (range -1 .. +1)")
     lines.append(f"  Mood   : {sent['mood']}")
+    if sent.get("emotions"):
+        emo = "  ".join(f"{k}={v:.2f}" for k, v in sent["emotions"].items())
+        lines.append(f"  Emo    : {emo}")
     probs = "  ".join(f"{k}={v:.2f}" for k, v in sent["probabilities"].items())
     lines.append(f"  Probs  : {probs}")
     lines.append("")
