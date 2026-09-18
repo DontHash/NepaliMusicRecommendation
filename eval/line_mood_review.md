@@ -51,7 +51,7 @@ Song gold: **none** (positive) — romantic devotion (name written in sky)
 | 11 | 1 | पातमा लेखे तिम्रो नौ | neutral | neutral | joy 0.36 sadness 0.41 anger 0.03 | context_only | easy | name on leaf |
 | 12 | 1 | सीतले आए बगाई दियो | neutral | sadness | joy 0.30 sadness 0.49 anger 0.04 | context_only | medium | water washed it |
 | 14 | 1 | सर्गम बानी गुन्जी दियो | neutral | sadness | joy 0.28 sadness 0.52 anger 0.04 | context_only | medium | echoes in melody |
-| 15 | 1 | कुरा गरे कुराई को दुःख | neutral | sadness | joy 0.23 sadness 0.61 anger 0.03 | context_only | hard | दुःख idiom; ambiguous |
+| 15 | 1 | कुरा गरे कुराई को दुःख | sadness | sadness | joy 0.23 sadness 0.61 anger 0.03 | context_only | hard | grief/suffering in separation |
 | 16 | 1 | तिमी बिना कहा चा सुखा | sadness | sadness | joy 0.21 sadness 0.65 anger 0.03 | context_only | medium | no happiness without you |
 | 17 | 1 | तिम्रो यादमा हरपाल | neutral | sadness | joy 0.21 sadness 0.65 anger 0.03 | context_only | medium | always in your memory |
 | 18 | 1 | भये मा प्रेम बियोगे | sadness | sadness | joy 0.23 sadness 0.62 anger 0.03 | context_only | medium | if separated in love |
@@ -70,7 +70,7 @@ Song gold: **joy** (mixed) — rain joy + fleeting life; mixed
 |----:|--:|------|-------|-------|---------------|-----|------|------|
 | 0 | 1 | पानी पऱ्यो सरर, छाना बज्यो गरर | joy | sadness | joy 0.38 sadness 0.71 anger 0.00 | lexical | medium | rain joy imagery (सरर) |
 | 1 | 1 | मनमा उठ्यो आज मेरो आनन्दको लहर | joy | sadness | joy 0.38 sadness 0.71 anger 0.00 | lexical | easy | आनन्द explicit |
-| 2 | 2 | हिजोको बिपना आज भएछ सपना | joy | sadness | joy 0.32 sadness 0.73 anger 0.01 | context_only | medium | sorrow turned to dream |
+| 2 | 2 | हिजोको बिपना आज भएछ सपना | sadness | sadness | joy 0.32 sadness 0.73 anger 0.01 | context_only | medium | sorrow turned to dream; nostalgic lament |
 | 3 | 1 | ए कान्छी, कति चाँडै बितेको यो जीवन | sadness | sadness | joy 0.32 sadness 0.73 anger 0.01 | context_only | medium | life passed quickly; lament |
 | 4 | 1 | पानी पऱ्यो सरर, भिज्यो कालेबुङ सहर | joy | sadness | joy 0.28 sadness 0.75 anger 0.01 | context_only | medium | city-soaked rain joy |
 | 5 | 1 | कालो-कालो बादल चढी फर्की आयो असार, लहै | joy | sadness | joy 0.34 sadness 0.65 anger 0.02 | context_only | medium | monsoon return; delight |
@@ -119,7 +119,7 @@ Song gold: **joy** (positive) — playful folk flirtation
 
 | idx | x | text | label | model | probs (j/s/a) | cue | diff | note |
 |----:|--:|------|-------|-------|---------------|-----|------|------|
-| 0 | 2 | लेकाली Hey Hey चोया को डोको | joy | joy | joy 0.85 sadness 0.05 anger 0.07 | address | medium | playful address; flirtation |
+| 0 | 2 | लेकाली Hey Hey चोया को डोको | neutral | joy | joy 0.85 sadness 0.05 anger 0.07 | address | medium | playful folk prop and address |
 | 1 | 2 | सानो माया Hey Hey लगाउने धोको | neutral | joy | joy 0.85 sadness 0.05 anger 0.07 | context_only | medium | teasing risk of attachment |
 | 2 | 2 | नपुग्दै मा मर्चु पो क्यारे | neutral | joy | joy 0.80 sadness 0.11 anger 0.04 | metaphor | hard | playful dying hyperbole; ambiguous |
 | 3 | 2 | Hey भना सोल्टी बराबर नधती | neutral | joy | joy 0.80 sadness 0.11 anger 0.04 | context_only | hard | folk banter; unclear |
@@ -132,7 +132,7 @@ Song gold: **joy** (positive) — playful folk flirtation
 | 10 | 1 | (रातो चोलो पाखुरीमा तिमिक्कै | neutral | joy | joy 0.61 sadness 0.26 anger 0.03 | context_only | medium | red-blouse teasing image |
 | 11 | 1 | माया बस्यो मखाइमा घिमिक्कै) - 2 | neutral | joy | joy 0.56 sadness 0.30 anger 0.03 | context_only | medium | love glowing on face |
 | 12 | 1 | के गोड्नु कर्कला बारी | neutral | joy | joy 0.46 sadness 0.39 anger 0.04 | metaphor | medium | folk garden image |
-| 13 | 1 | पर्खा तिमीलाई रोएरहने नपारी | sadness | joy | joy 0.46 sadness 0.39 anger 0.04 | address | medium | weeping-wait plea (tears) |
+| 13 | 1 | पर्खा तिमीलाई रोएरहने नपारी | neutral | joy | joy 0.46 sadness 0.39 anger 0.04 | address | medium | teasing reassurance; negated weeping |
 | 14 | 1 | बैसैमा.. बैसैमा मर्चु पी क्यारे | neutral | joy | joy 0.62 sadness 0.24 anger 0.04 | context_only | hard | folk refrain fragment |
 
 ## 1511 · Mero Man Ma Aago — Himal Sagar
@@ -152,7 +152,7 @@ Song gold: **anger** (negative) — betrayal burns the heart
 | 12 | 1 | जिन्दगी नै डढेलो झैं आगो सल्कियोस् | anger | joy | joy 0.48 sadness 0.44 anger 0.14 | metaphor | hard | life as wildfire |
 | 15 | 2 | तिमीले ता दुबै चड्योउ माना मिल्ने मुटु लाई | anger | joy | joy 0.55 sadness 0.17 anger 0.01 | context_only | hard | burdened the meeting heart |
 | 16 | 2 | जिन्दगी भर आँसु दियोउ चोखो माया लाउने लाई | anger | neutral | joy 0.41 sadness 0.27 anger 0.01 | context_only | medium | lifetime of tears; blame |
-| 19 | 1 | अर्का मन धार धारी रुआँए को | sadness | sadness | joy 0.18 sadness 0.67 anger 0.06 | metaphor | hard | another heart weeping (grief) |
+| 19 | 1 | अर्का मन धार धारी रुआँए को | anger | sadness | joy 0.18 sadness 0.67 anger 0.06 | metaphor | hard | accusatory betrayal; parallel indictment |
 | 20 | 1 | सुखा सँधै ताधै बाटा अन्तै तर्कियोस् | anger | sadness | joy 0.28 sadness 0.53 anger 0.06 | metaphor | hard | curse: may you drift |
 | 23 | 1 | मेरो मन धार धार रुआने को | anger | joy | joy 0.63 sadness 0.16 anger 0.01 | metaphor | medium | who made my heart weep |
 
@@ -256,7 +256,7 @@ Song gold: **anger** (negative) — protest against caste division and violence
 | 9 | 1 | तिमी यही भन्ने गर | neutral | joy | joy 0.45 sadness 0.16 anger 0.29 | address | medium | say this; injunction |
 | 10 | 2 | तिमी को हो थाहा भएन | neutral | joy | joy 0.59 sadness 0.14 anger 0.15 | context_only | medium | don't know who you are |
 | 11 | 2 | म चाहिँ नेपाली | neutral | joy | joy 0.59 sadness 0.14 anger 0.15 | context_only | medium | Nepali identity assertion |
-| 14 | 1 | मानिस ठूलो जातले हुन्न यहाँ | anger | joy | joy 0.50 sadness 0.21 anger 0.19 | context_only | medium | caste critique |
+| 14 | 1 | मानिस ठूलो जातले हुन्न यहाँ | neutral | joy | joy 0.50 sadness 0.21 anger 0.19 | context_only | medium | philosophical/didactic maxim |
 | 15 | 1 | दिल नै ठूलो सबै थोक भन्दा | neutral | neutral | joy 0.44 sadness 0.26 anger 0.24 | context_only | easy | heart is greatest |
 | 16 | 1 | मुना-मदन आए गए, कसैले केही बुझेन | sadness | neutral | joy 0.39 sadness 0.28 anger 0.24 | context_only | medium | cynical regret of society |
 | 17 | 1 | सगरमाथा कसको भागमा पर्ला फेरि? | anger | neutral | joy 0.19 sadness 0.38 anger 0.28 | context_only | medium | satire: whose Everest? |

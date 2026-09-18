@@ -1,4 +1,4 @@
-# Line mood policy (v2, agent-annotated on the rebuilt corpus)
+# Line mood policy (v3, agent-annotated, review-corrected)
 
 Decision rubric for `eval/line_mood_gold.csv` — the line-level companion to the
 song-level set in `eval/mood_gold.csv`. It exists so the probe's per-line
@@ -11,6 +11,9 @@ lyric text before labeling, the quarantined legacy songs (1855 Aakashbandi,
 `eval/gold_exclusions.csv`), and English code-switch is preserved in Latin
 script by the transliteration gate. Line texts therefore read as the model will
 see them at inference time.
+
+v3 folds the gold-standard review: six corrections accepted (263:15, 757:2,
+1469:0, 1469:13, 1511:19, 3174:14) and rules 1 and 4 amended to match.
 
 ## Units
 
@@ -31,8 +34,9 @@ see them at inference time.
    `उमङ्ग`, `रमाइलो`, smiling, celebration, gratitude/warmth (1938 Aama),
    festive bustle (3396). **Romance/devotion alone is neutral** (3235 lines 2-5;
    1365 `तिमी नै हाउ`), matching the song-level rule that "romantic devotion" is
-   not joy (gold 263). Playful courtship/teasing **does** count as joy (1469,
-   3396 register) because the playfulness itself is positive affect.
+   not joy (gold 263). Playful courtship/teasing with expressed affection
+   **does** count as joy (3396 register); folk props and teasing banter without
+   positive affect stay neutral (1469 `लेकाली Hey Hey`).
 2. **National/cultural pride is not joy** unless happiness is expressed
    (3174 `म चाहिँ नेपाली` → neutral). Devotional hymns likewise (263).
 3. **Sadness = grief, loss, longing, tears, pain, melancholy.** Covers explicit
@@ -42,9 +46,10 @@ see them at inference time.
 4. **Anger = directed**. Accusation, protest, indictment, threat, curse, or
    confrontation aimed at someone/something: 3980 street defiance, 1511 "who
    set my heart on fire", 3174 caste critique, 3248 saw-on-wounded-heart.
-   Undirected suffering stays sadness even inside anger songs (1511 "another
-   heart weeping" → sadness). Bitter grief plus a blamed target → anger; the
-   target decides.
+   Suffering stays sadness only when no target is blamed; an indictment of who
+   caused it remains anger (1511 `अर्का मन धार धारी रुआँए को` → anger — the
+   agentive `को` blames whoever made another heart weep). Bitter grief plus a
+   blamed target → anger; the target decides.
 5. **Comfort resolves pain.** If the line's own event is being comforted or the
    gratitude for it, label joy: 1938 `आँशु मेरो पुछि दियौ` (you wiped my tears →
    joy), `दुख मेरो बुझि दियौ` → joy; whereas lines that describe the pain itself
@@ -78,7 +83,8 @@ see them at inference time.
 - `difficulty` — `easy` (unambiguous), `medium` (needs the cue rules),
   `hard` (ambiguous/fragment; expected probe failures).
 - `notes` — one-line justification, written for the error-analysis breakdown.
-- `source` — `agent_v2` for this pass; corrections bump this.
+- `source` — `agent_v2` for the initial pass, `user_v2` after the gold-standard
+  review (v3).
 
 ## Deliberate asymmetries
 

@@ -60,7 +60,7 @@ def test_columns_and_vocabulary(gold: pd.DataFrame):
     assert set(gold["polarity"]) <= POLARITIES
     assert set(gold["cue_type"]) <= CUES
     assert set(gold["difficulty"]) <= DIFFICULTIES
-    assert set(gold["source"]) == {"agent_v2"}
+    assert set(gold["source"]) == {"user_v2"}
 
 
 def test_rows_unique_per_song_line(gold: pd.DataFrame):

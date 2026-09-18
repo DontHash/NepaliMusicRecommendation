@@ -1,250 +1,250 @@
 song_id,title,artist,line_index,text,occurrences,primary_emotion,polarity,cue_type,difficulty,notes,source
-182,Na Aau Feri,Akash khadka,0,"धेरै कुरा भन्नु थियो, सुन्न छैनौ तिमी",1,sadness,negative,context_only,medium,words unsaid; unheard,agent_v2
-182,Na Aau Feri,Akash khadka,1,"भारी हुन्छ मन मेरो, छाडी गयौ मलाई",1,sadness,negative,lexical,easy,"heavy heart, left behind",agent_v2
-182,Na Aau Feri,Akash khadka,2,वाचाहरू झूटो रहेछ तिमीले गरको मलाई,1,sadness,negative,context_only,medium,false promises; grief-toned,agent_v2
-182,Na Aau Feri,Akash khadka,3,"साथ हाम्रो अधूरो रहेछ, टाढा हुनुपर्यो है",1,sadness,negative,lexical,medium,incomplete bond; parting,agent_v2
-182,Na Aau Feri,Akash khadka,4,नअल्झ है फेरि तिमी कतै,1,sadness,negative,context_only,medium,bittersweet warning,agent_v2
-182,Na Aau Feri,Akash khadka,5,दुख्छ यो मन मायामा परे,1,sadness,negative,lexical,easy,heart hurts in love,agent_v2
-182,Na Aau Feri,Akash khadka,6,नफर्क है फेरि मसँग नै,1,sadness,negative,context_only,medium,don't-return warning,agent_v2
-182,Na Aau Feri,Akash khadka,7,मायामा विश्वास हराइसक्यो है,1,sadness,negative,lexical,easy,trust lost,agent_v2
-182,Na Aau Feri,Akash khadka,8,नआऊ फेरि तिमी सपनी बनी,1,sadness,negative,address,easy,don't come even in dreams,agent_v2
-182,Na Aau Feri,Akash khadka,9,सम्झेर रुनु छैन फेरि मलाई,1,sadness,negative,negation,medium,mustn't cry (रुनु छैन),agent_v2
-182,Na Aau Feri,Akash khadka,10,नगरिदेऊ अब याद मलाई,1,sadness,negative,address,medium,don't give memories,agent_v2
-182,Na Aau Feri,Akash khadka,11,"सुरुवात गर नयाँ कहानी आफ्नै, आफ्नै",1,neutral,mixed,context_only,medium,farewell well-wishing,agent_v2
-182,Na Aau Feri,Akash khadka,12,आफ्नै कहानी लेख अब,1,neutral,mixed,context_only,medium,write your own story,agent_v2
-182,Na Aau Feri,Akash khadka,13,"बिर्सिदेऊ मलाई, एउटा याद सोच",1,sadness,mixed,address,medium,forget-me plea,agent_v2
-182,Na Aau Feri,Akash khadka,14,सपना तिम्रो सबै पूरा गर,1,neutral,positive,context_only,medium,well-wish,agent_v2
-182,Na Aau Feri,Akash khadka,15,मात्र कामना मेरो तिम्रो साथ,1,sadness,mixed,context_only,medium,only wish: togetherness,agent_v2
-182,Na Aau Feri,Akash khadka,16,"साथ, मात्र कामना साथ",1,sadness,mixed,repetition,medium,togetherness refrain,agent_v2
-182,Na Aau Feri,Akash khadka,17,साथ मात्र याद छ,1,sadness,negative,context_only,medium,only memory remains,agent_v2
-182,Na Aau Feri,Akash khadka,18,"एचएमएम-एमएमएम, एचएमएम",1,neutral,neutral,filler,easy,humming,agent_v2
-263,Aakashma Lekhe,Anil Singh,0,हावाले आए उडाए दियो,1,neutral,mixed,context_only,medium,name blown away; conceit,agent_v2
-263,Aakashma Lekhe,Anil Singh,1,जुन्नमा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name on moon; devotion,agent_v2
-263,Aakashma Lekhe,Anil Singh,2,ग्रहणले आए ढाकी दियो,1,neutral,mixed,context_only,medium,eclipse covers it,agent_v2
-263,Aakashma Lekhe,Anil Singh,3,हृद्यमा लेखे तिम्रो नौ,2,neutral,positive,context_only,easy,name in heart,agent_v2
-263,Aakashma Lekhe,Anil Singh,4,प्रीत बानी फक्रिदियो?,1,neutral,positive,context_only,medium,love flourished?,agent_v2
-263,Aakashma Lekhe,Anil Singh,5,पगल सम्झे पागल साही,1,neutral,positive,context_only,medium,"if called mad, so be it",agent_v2
-263,Aakashma Lekhe,Anil Singh,6,जोगी सम्झे जोगी साही,1,neutral,positive,context_only,medium,"if called ascetic, so be it",agent_v2
-263,Aakashma Lekhe,Anil Singh,7,जे भने ने मा हु प्रेमी,1,neutral,positive,context_only,easy,I am a lover,agent_v2
-263,Aakashma Lekhe,Anil Singh,8,प्रेमको मा पूजारी?,1,neutral,positive,context_only,medium,love's priest?,agent_v2
-263,Aakashma Lekhe,Anil Singh,9,फुलमा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name on flower,agent_v2
-263,Aakashma Lekhe,Anil Singh,10,भावराले टप्पा टिपे दियो,1,neutral,mixed,context_only,medium,bee takes the mark,agent_v2
-263,Aakashma Lekhe,Anil Singh,11,पातमा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name on leaf,agent_v2
-263,Aakashma Lekhe,Anil Singh,12,सीतले आए बगाई दियो,1,neutral,mixed,context_only,medium,water washed it,agent_v2
-263,Aakashma Lekhe,Anil Singh,14,सर्गम बानी गुन्जी दियो,1,neutral,positive,context_only,medium,echoes in melody,agent_v2
-263,Aakashma Lekhe,Anil Singh,15,कुरा गरे कुराई को दुःख,1,neutral,mixed,context_only,hard,दुःख idiom; ambiguous,agent_v2
-263,Aakashma Lekhe,Anil Singh,16,तिमी बिना कहा चा सुखा,1,sadness,mixed,context_only,medium,no happiness without you,agent_v2
-263,Aakashma Lekhe,Anil Singh,17,तिम्रो यादमा हरपाल,1,neutral,positive,context_only,medium,always in your memory,agent_v2
-263,Aakashma Lekhe,Anil Singh,18,भये मा प्रेम बियोगे,1,sadness,negative,context_only,medium,if separated in love,agent_v2
-263,Aakashma Lekhe,Anil Singh,19,हिमालमा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name on Himalaya,agent_v2
-263,Aakashma Lekhe,Anil Singh,20,हेउ सँगै पग्ली दियो,1,neutral,mixed,context_only,medium,snow melted together,agent_v2
-263,Aakashma Lekhe,Anil Singh,21,किनारमा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name on shore,agent_v2
-263,Aakashma Lekhe,Anil Singh,22,चालले आए बगाये दियो,1,neutral,mixed,context_only,medium,waves washed away,agent_v2
-263,Aakashma Lekhe,Anil Singh,23,हृदिये मा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name in heart,agent_v2
-263,Aakashma Lekhe,Anil Singh,24,धड्कन बानी धड्की दियो,1,neutral,positive,context_only,medium,heartbeat image,agent_v2
-757,Asaar,Bipul Chettri,0,"पानी पऱ्यो सरर, छाना बज्यो गरर",1,joy,positive,lexical,medium,rain joy imagery (सरर),agent_v2
-757,Asaar,Bipul Chettri,1,मनमा उठ्यो आज मेरो आनन्दको लहर,1,joy,positive,lexical,easy,आनन्द explicit,agent_v2
-757,Asaar,Bipul Chettri,2,हिजोको बिपना आज भएछ सपना,2,joy,mixed,context_only,medium,sorrow turned to dream,agent_v2
-757,Asaar,Bipul Chettri,3,"ए कान्छी, कति चाँडै बितेको यो जीवन",1,sadness,negative,context_only,medium,life passed quickly; lament,agent_v2
-757,Asaar,Bipul Chettri,4,"पानी पऱ्यो सरर, भिज्यो कालेबुङ सहर",1,joy,positive,context_only,medium,city-soaked rain joy,agent_v2
-757,Asaar,Bipul Chettri,5,"कालो-कालो बादल चढी फर्की आयो असार, लहै",1,joy,positive,context_only,medium,monsoon return; delight,agent_v2
-757,Asaar,Bipul Chettri,6,"जिन्दगी कहिले घाम कहिले पानी, लैबरी लै",1,neutral,mixed,context_only,medium,sun-and-rain philosophy,agent_v2
-757,Asaar,Bipul Chettri,7,माया नै सबैभन्दा ठूलो कुरो रैछ नि है,1,neutral,positive,context_only,medium,love is greatest,agent_v2
-757,Asaar,Bipul Chettri,8,चारैतिर निला-निला आकाश नै छायो है,1,joy,positive,context_only,medium,blue sky delight,agent_v2
-757,Asaar,Bipul Chettri,9,वरिपरि लागेको यो कुइरो हरायो है,1,joy,positive,context_only,medium,fog cleared; relief,agent_v2
-757,Asaar,Bipul Chettri,10,मनलाई साँचो राखी हिँडिँरहेछु,1,neutral,positive,context_only,medium,keeping heart true,agent_v2
-757,Asaar,Bipul Chettri,11,"म तिम्रो साहारामै बाँचिरहेछु, मायालु",1,neutral,positive,context_only,medium,living on your support,agent_v2
-757,Asaar,Bipul Chettri,12,"पानी पऱ्यो सरर, झोडा बग्याे गरर",1,joy,positive,context_only,medium,streams flowing; rain joy,agent_v2
-757,Asaar,Bipul Chettri,13,फर्की आएँ तिम्रैतिर छाडी सारा संसार,1,neutral,positive,context_only,medium,returned to you; devotion,agent_v2
-757,Asaar,Bipul Chettri,15,"ए कान्छी, कति चाँडै बितेकाे याे जीवन",1,sadness,negative,context_only,medium,life passed quickly variant,agent_v2
-757,Asaar,Bipul Chettri,16,"पानी पऱ्यो सरर, भिज्याे कालेबुङ सहर",1,joy,positive,context_only,medium,city-soaked rain variant,agent_v2
-757,Asaar,Bipul Chettri,17,कालाे-कालाे बादल चढी फर्की आयाे असार,1,joy,positive,context_only,medium,monsoon return variant,agent_v2
-757,Asaar,Bipul Chettri,18,"लैबरी, लैबरी, लैबरी लै, ओ नानी, लैबरी, लैबरी लै",6,neutral,neutral,filler,easy,लैबरी filler refrain,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,0,उपहार स्वरूप यो तस्बीर माया गर्ने हरू लाई,1,neutral,positive,context_only,medium,gift picture to lovers,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,1,भलाई चोटो होला यहा सबै दृश्य अटाउन लाई,1,neutral,neutral,context_only,hard,corrupt line,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,2,"जिन्दगी नरहोस्, रही रहनेछ येसमा कैद पाल हरू",1,neutral,mixed,context_only,hard,moments captured; philosophical,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,3,"तिमी चाउ, तिम्रो प्यारो मान्छे चा",1,neutral,positive,context_only,medium,your dear person; devotion,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,4,त्यो भन्दा अरु के नै चाहिँचा एउटा माया गर्ने ब्यक्ति लाई,1,neutral,positive,context_only,medium,what else a lover needs,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,5,तिमी नै हाउ,4,neutral,positive,context_only,easy,it's you; devotion,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,6,मलाई माया गर्ने,1,neutral,positive,context_only,easy,one who loves me,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,7,"तिमी नै हाउ, तिमी नै हाउ",4,neutral,positive,context_only,easy,it's you refrain,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,10,मलाई खुशी डाइनी,1,joy,positive,lexical,easy,gives me happiness (खुशी),agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,15,हेरा मलाई समाउ यो हात,1,neutral,positive,address,medium,hold this hand,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,16,नछुटोश हाम्रो दरिलो साथ,1,neutral,positive,context_only,medium,wish bond unbroken,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,17,"देख्ने ले देखोश, सुनोश",1,neutral,neutral,context_only,medium,let them see/hear,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,18,हाम्रो यो सम्बन्ध,1,neutral,neutral,context_only,medium,this relationship,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,19,पश्चाताप चैन कुनै यहा,1,joy,positive,context_only,medium,no regret; contentment,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,20,खुसी चाउ हामी चाउ जहा,1,joy,positive,lexical,medium,we want happiness,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,21,"वन्ने ले वनोश, गरोश",1,neutral,mixed,context_only,medium,let them talk; resolve,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,22,हाम्रो ब्यारे कुरा,1,neutral,neutral,context_only,medium,talk about us,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,23,जाति जे चा मेरो,1,neutral,neutral,context_only,medium,whatever my caste,agent_v2
-1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,24,तिमी हाउ,1,neutral,positive,context_only,easy,it's you fragment,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,0,लेकाली Hey Hey चोया को डोको,2,joy,positive,address,medium,playful address; flirtation,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,1,सानो माया Hey Hey लगाउने धोको,2,neutral,neutral,context_only,medium,teasing risk of attachment,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,2,नपुग्दै मा मर्चु पो क्यारे,2,neutral,mixed,metaphor,hard,playful dying hyperbole; ambiguous,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,3,Hey भना सोल्टी बराबर नधती,2,neutral,neutral,context_only,hard,folk banter; unclear,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,4,(बहायो खोला बेसी घर्यो सम्मै,1,neutral,neutral,context_only,medium,river-valley scenery,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,5,तिम्रो माया कलेजी मा ताम्मै) - 2,1,neutral,positive,context_only,medium,love-in-heart; no happiness,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,6,आखै मा गजलु लपक्कै,1,neutral,neutral,context_only,medium,eyes-liner flirt image,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,7,भना माया लाएदिउँ की चापककै,1,neutral,positive,context_only,medium,teasing invitation,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,8,बैसैमा बैसैमा मर्चु पो क्यारे,1,neutral,mixed,metaphor,hard,repeated dying hyperbole,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,9,Hey भना सोल्टी बराबर नधती - 2,2,neutral,neutral,repetition,medium,folk refrain,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,10,(रातो चोलो पाखुरीमा तिमिक्कै,1,neutral,neutral,context_only,medium,red-blouse teasing image,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,11,माया बस्यो मखाइमा घिमिक्कै) - 2,1,neutral,positive,context_only,medium,love glowing on face,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,12,के गोड्नु कर्कला बारी,1,neutral,neutral,metaphor,medium,folk garden image,agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,13,पर्खा तिमीलाई रोएरहने नपारी,1,sadness,negative,address,medium,weeping-wait plea (tears),agent_v2
-1469,Lekali Hey Choyako Doko,Harish Mathema,14,बैसैमा.. बैसैमा मर्चु पी क्यारे,1,neutral,neutral,context_only,hard,folk refrain fragment,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,0,मेरो मान मा आगो लाउने को,2,anger,negative,metaphor,medium,who set my heart on fire,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,1,मेरो मान धार धार रुआँए को,2,anger,negative,metaphor,medium,accusatory; tears as injury,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,4,तिम्रो पानी चाटी भित्र आगो डाँकियोस्,2,anger,negative,metaphor,hard,curse: fire inside you,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,5,सँधै भरि माया पाउन मुटु चल्कियोस्,9,anger,negative,metaphor,hard,curse: heart burns longing,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,7,चुलेसी ले रेटी रेटी तिखो चुरा चलायोउ,2,anger,negative,metaphor,hard,knife-edge betrayal image,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,8,टिमले माया अन्तै सर्योउ जोगी पारी सबै हसायौ,1,anger,negative,context_only,medium,love shifted; mocked,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,10,टिमले माया अन्तै सर्योउ जोरी पारी सबै हसायौ,1,anger,negative,context_only,medium,love shifted; mocked variant,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,11,हासी हासी अचानो मा रेट्ने को,1,anger,negative,metaphor,medium,grinding on stone laughing,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,12,जिन्दगी नै डढेलो झैं आगो सल्कियोस्,1,anger,negative,metaphor,hard,life as wildfire,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,15,तिमीले ता दुबै चड्योउ माना मिल्ने मुटु लाई,2,anger,negative,context_only,hard,burdened the meeting heart,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,16,जिन्दगी भर आँसु दियोउ चोखो माया लाउने लाई,2,anger,negative,context_only,medium,lifetime of tears; blame,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,19,अर्का मन धार धारी रुआँए को,1,sadness,negative,metaphor,hard,another heart weeping (grief),agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,20,सुखा सँधै ताधै बाटा अन्तै तर्कियोस्,1,anger,negative,metaphor,hard,curse: may you drift,agent_v2
-1511,Mero Man Ma Aago,Himal Sagar,23,मेरो मन धार धार रुआने को,1,anger,negative,metaphor,medium,who made my heart weep,agent_v2
-1938,Aama,Mantra Band,0,अमूल्य मेरो मेरो जीवन,2,joy,positive,context_only,medium,precious-life gratitude,agent_v2
-1938,Aama,Mantra Band,1,उपहार तिम्रै नै हो,2,joy,positive,lexical,medium,gift of life gratitude,agent_v2
-1938,Aama,Mantra Band,2,कोसेली धेरै धेरै चोखो,1,joy,positive,context_only,medium,pure gift gratitude,agent_v2
-1938,Aama,Mantra Band,3,तिम्रै मायाको प्रतिक हो,1,joy,positive,context_only,medium,symbol of love gratitude,agent_v2
-1938,Aama,Mantra Band,4,तिम्रो न्यानो काख भरि,1,joy,positive,context_only,medium,warm-lap warmth,agent_v2
-1938,Aama,Mantra Band,5,कति सपना मैले देखें,1,joy,positive,context_only,medium,dreams under her care,agent_v2
-1938,Aama,Mantra Band,6,समाई तिम्रा हातहरु,1,joy,positive,context_only,medium,holding hands warmth,agent_v2
-1938,Aama,Mantra Band,7,कति बाटो म हिडें,1,neutral,neutral,none,medium,paths walked; factual,agent_v2
-1938,Aama,Mantra Band,8,संसार तिमी नै हौ आमा,5,neutral,positive,context_only,medium,adoration; no happiness,agent_v2
-1938,Aama,Mantra Band,9,अपार तिमी नै छौ आमा,5,neutral,positive,context_only,medium,adoration; no happiness,agent_v2
-1938,Aama,Mantra Band,10,हे आमा हे आमा हे आमा,1,neutral,neutral,repetition,easy,vocative refrain,agent_v2
-1938,Aama,Mantra Band,13,सबै रुप तिम्रो माया सरी,1,neutral,positive,context_only,medium,praised likeness,agent_v2
-1938,Aama,Mantra Band,14,तिमी नै मेरो धर्तीको परी,1,neutral,positive,context_only,medium,angel praise,agent_v2
-1938,Aama,Mantra Band,15,बलिदान तिम्रो नि:स्वार्थ छ,1,joy,positive,context_only,medium,grateful for sacrifice,agent_v2
-1938,Aama,Mantra Band,16,यो माया तिम्रो चोखो छ,1,joy,positive,context_only,medium,pure-love gratitude,agent_v2
-1938,Aama,Mantra Band,17,कालो कालो रातमा,1,sadness,negative,metaphor,medium,dark-night suffering imagery,agent_v2
-1938,Aama,Mantra Band,18,धेरै दुख्ने घातमा,1,sadness,negative,lexical,medium,hurtful-blow suffering,agent_v2
-1938,Aama,Mantra Band,19,तिमीले मलाई सम्हाल्यौ,2,joy,positive,context_only,medium,comforted; being held,agent_v2
-1938,Aama,Mantra Band,20,धेरै घाउमा धेरै बिझ्ने पिडामा,1,sadness,negative,lexical,medium,wounds and stinging pain,agent_v2
-1938,Aama,Mantra Band,22,तिम्रै निम्ति म हाँसी दिन्छु,2,joy,positive,lexical,medium,smile for her,agent_v2
-1938,Aama,Mantra Band,23,तिम्रै निम्ति म बाँची दिन्छु,2,neutral,positive,context_only,medium,live-for-you devotion,agent_v2
-1938,Aama,Mantra Band,26,आँशु मेरो पुछि दियौ,1,joy,positive,context_only,medium,tears wiped; comfort,agent_v2
-1938,Aama,Mantra Band,27,दुख मेरो बुझि दियौ,1,joy,positive,context_only,medium,sorrow understood; comfort,agent_v2
-1938,Aama,Mantra Band,28,हरेक पल सुख दिन चाह्यौ,1,joy,positive,lexical,medium,wished happiness (सुख),agent_v2
-1938,Aama,Mantra Band,29,बाटो मलाई देखाई दियौ,1,joy,positive,context_only,medium,shown the way; gratitude,agent_v2
-1938,Aama,Mantra Band,30,दियो मेरो जलाई दियौ,1,joy,positive,metaphor,medium,lit my lamp,agent_v2
-1938,Aama,Mantra Band,31,उज्यालो जीवन बनाइदियौ,1,joy,positive,metaphor,medium,made life bright,agent_v2
-1938,Aama,Mantra Band,36,हे आमा हे आमा,1,neutral,neutral,repetition,easy,vocative refrain,agent_v2
-2061,Dherai Dherai,Mingma Sherpa,0,मा संग माना मिलाउछु वन्दै,1,neutral,neutral,context_only,hard,corrupt OCR line,agent_v2
-2061,Dherai Dherai,Mingma Sherpa,1,माया गसु वन्छ अन्त्यमा,1,neutral,neutral,context_only,hard,corrupt OCR line,agent_v2
-2061,Dherai Dherai,Mingma Sherpa,2,मायालु मेरी माया,2,neutral,positive,address,easy,"my love, my love",agent_v2
-2061,Dherai Dherai,Mingma Sherpa,3,कसको माया लाग्यो वना,4,neutral,neutral,context_only,medium,whose love? questioning,agent_v2
-2061,Dherai Dherai,Mingma Sherpa,4,कस्तो यादा आयो वना,2,neutral,neutral,context_only,medium,what memory came,agent_v2
-2061,Dherai Dherai,Mingma Sherpa,6,के वनी बोलाउ तिमीलाई,1,neutral,neutral,context_only,medium,what to call you,agent_v2
-2061,Dherai Dherai,Mingma Sherpa,7,वनिदेउ वनिदेउ,1,neutral,neutral,repetition,easy,वनिदेउ filler,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,0,"[आज भोली हरेक साँझ, मातिन थालेछ।",1,sadness,negative,context_only,medium,evening drunkenness,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,1,"जिन्दगी देखि जिन्दगी, आतिन थालेछ।]...२",1,sadness,negative,context_only,medium,life distressed,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,2,"आज भोली, हरेक साँझ।",3,sadness,negative,repetition,medium,every-evening refrain,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,3,"रहरै रहरमा पिए, विवश भएर पिए।...२",1,sadness,negative,context_only,medium,helpless drinking,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,4,"दुखमा पिए, सुखमा पिए।...२",1,sadness,mixed,lexical,medium,drank in sorrow and joy; escapism,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,5,"पिउदिन पिउदिन, भन्दै पिए।",1,sadness,negative,context_only,medium,self-destructive pledge,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,6,"आजभोली जिन्दगानी, छोटिन थालेछ।",1,sadness,negative,lexical,medium,life shortening,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,7,"जिन्दगी देखि जिन्दगी, आतिन थालेछ।",2,sadness,negative,lexical,medium,life distressed refrain,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,9,"मन्दिरमा बसेर पिए, मसानमा लडेर पिए।...२",1,sadness,negative,metaphor,medium,temple vs cremation drinking,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,10,"नाचेर पिए, हाँसेर पिए।...२",1,sadness,mixed,context_only,hard,forced gaiety; escapism,agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,11,"एकान्तमा कहिलेकाहीं, रुदै पिए।",1,sadness,negative,lexical,easy,crying alone (रुदै),agent_v2
-2164,Aja bholi hareko saajh,Narayan Gopal,12,"आजभोली हरेक रात, रक्सिन थालेछ।",1,sadness,negative,context_only,medium,nightly intoxication,agent_v2
-2252,Timile Pani Ma Jastai,Narayan Gopal,0,मायालुको सम्झनामा आफूलाई बिर्सी हेरा - एक्स2,3,sadness,negative,context_only,medium,remembrance self-loss,agent_v2
-2252,Timile Pani Ma Jastai,Narayan Gopal,1,सुन साँ रात सँगै एकान्त भयेर हेरा - एक्स2,1,sadness,negative,context_only,medium,alone together; longing,agent_v2
-2252,Timile Pani Ma Jastai,Narayan Gopal,2,सागरा को लहरा जस्तै अशान्त भयेर हेरा,1,sadness,negative,metaphor,medium,restless like waves,agent_v2
-2252,Timile Pani Ma Jastai,Narayan Gopal,3,आशुका थोपा जस्तै भुईमा खसेर हेरा,1,sadness,negative,metaphor,easy,teardrops falling,agent_v2
-2252,Timile Pani Ma Jastai,Narayan Gopal,5,पूजा को फुल जस्तै दिन दिन मरेर हेरा - एक्स2,1,sadness,negative,metaphor,medium,flower dying daily,agent_v2
-2252,Timile Pani Ma Jastai,Narayan Gopal,6,ढुंगाको मूर्ति जस्तै दोबाटोमा बची हेरा,1,sadness,negative,metaphor,medium,stone statue at crossroads,agent_v2
-2252,Timile Pani Ma Jastai,Narayan Gopal,7,छातीमा एउटा घाइते मुटु बोकेर हेरा,1,sadness,negative,metaphor,easy,wounded heart carried,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,0,आज कति भागमा फुट्यौं हामी?,1,anger,negative,context_only,medium,why divided? indictment,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,1,जातकै कुरामा अल्झी जानी-नजानी,1,anger,negative,context_only,medium,caste entanglement critique,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,2,जब संसार मिलिजुली एकै हुँदैछ,1,neutral,neutral,context_only,medium,world uniting; setup,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,3,केटा कुन जातको मनपराईस्?,1,anger,negative,address,medium,caste-question indictment,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,4,केटी कुन थरको तैले भगाईस्?,1,anger,negative,address,medium,caste-question indictment,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,5,किन यहाँ सबैलाई राज्य चाहिएको छ?,1,anger,negative,context_only,medium,everyone wants a kingdom?,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,6,"को मतवाली, को बाहुन क्षेत्री?",1,anger,negative,context_only,medium,caste labels questioned,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,7,के हामी एकै होइनौं र?,1,anger,negative,context_only,medium,are we not the same?,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,8,त्यसैले जातभात छुट्याउनेलाई,1,anger,negative,context_only,medium,to those who divide,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,9,तिमी यही भन्ने गर,1,neutral,neutral,address,medium,say this; injunction,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,10,तिमी को हो थाहा भएन,2,neutral,negative,context_only,medium,don't know who you are,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,11,म चाहिँ नेपाली,2,neutral,positive,context_only,medium,Nepali identity assertion,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,14,मानिस ठूलो जातले हुन्न यहाँ,1,anger,negative,context_only,medium,caste critique,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,15,दिल नै ठूलो सबै थोक भन्दा,1,neutral,positive,context_only,easy,heart is greatest,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,16,"मुना-मदन आए गए, कसैले केही बुझेन",1,sadness,mixed,context_only,medium,cynical regret of society,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,17,सगरमाथा कसको भागमा पर्ला फेरि?,1,anger,negative,context_only,medium,satire: whose Everest?,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,18,बुद्ध बाड्ने कसको जिम्मेवारी,1,anger,negative,context_only,medium,satire: dividing Buddha,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,19,"नेपाल, हाम्रो प्यारो देशमा",1,neutral,positive,context_only,easy,dear Nepal address,agent_v2
-3174,Ma Chahi Nepali,Samriddhi Rai,20,हिंसा अब चाहिएन,1,neutral,mixed,context_only,medium,violence no longer wanted,agent_v2
-3235,Ooth Dekhi Ooth Samma,Saroj Dutta,0,"ओठदेखि ओठसम्म, छाओस यस्तो खुशी",5,joy,positive,lexical,easy,explicit happiness blessing (खुशी),agent_v2
-3235,Ooth Dekhi Ooth Samma,Saroj Dutta,2,"जीवनभर मदेखि, नहुनु है दु:खी",2,joy,positive,negation,medium,blessing against sorrow (नहुनु दु:खी),agent_v2
-3235,Ooth Dekhi Ooth Samma,Saroj Dutta,4,"तनदेखि मनसम्म, तिम्रो मात्र छायाँ",2,neutral,positive,context_only,medium,devotion imagery; no happiness,agent_v2
-3235,Ooth Dekhi Ooth Samma,Saroj Dutta,6,"जहाँ जान्छु,जता जान्छु, तिम्रो हुन्छु दाँया-बाँया",1,neutral,positive,context_only,medium,devotion; no happiness,agent_v2
-3235,Ooth Dekhi Ooth Samma,Saroj Dutta,7,"जुनी-जुनीसम्म,तिम्रो साथ रहोस्",1,neutral,positive,context_only,medium,togetherness wish; no happiness,agent_v2
-3235,Ooth Dekhi Ooth Samma,Saroj Dutta,8,"तिम्रो मेरो मायाको,यस्तो संसार् बनोस्",1,neutral,positive,context_only,medium,love-world wish; no happiness,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",0,मै'सबले घाइते दिलमा आरा चलाइस्यो,12,anger,negative,metaphor,medium,saw-on-wounded-heart accusation,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",2,लाउन नी के एचम्मको पारा चलाइस्यो,10,anger,negative,context_only,medium,what a game played on me,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",6,आइया पानी वन्न नपाई मारिने वो सरकार,4,anger,negative,context_only,hard,state kills; corrupt line,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",10,जालिम नजर कस्तो ज्यानमारा चलाइस्यो,2,anger,negative,metaphor,medium,cruel murderous gaze,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",16,घाइते दिलमा आरा चलाइस्यो,1,anger,negative,metaphor,medium,saw on wounded heart,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",17,हो मै'सबले,1,neutral,neutral,context_only,hard,fragment; my own kin,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",18,सुकला रा ज्युनार पानी गरिसिन्न अचेल,4,sadness,mixed,metaphor,hard,dried springs lament; corrupt,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",22,यो कस्तो मुलुकी आइनको धारा चलाइस्यो,2,anger,negative,context_only,medium,what law applied? grievance,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",28,जहाँ जाउँ मेरै कुरा काट्ने वये सबै,4,anger,negative,context_only,medium,gossiped everywhere,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",32,किना येसरी टोल बजारमा नारा चलाइस्यो,2,anger,negative,context_only,medium,slogans against me; why,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",38,त्यो दिलमा मलाई नै राज होस वाँसियो,4,anger,negative,context_only,hard,sarcastic king-in-heart,agent_v2
-3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",42,जुन वयेर हजुरले छेउको तारा चलाइस्यो,2,anger,negative,metaphor,medium,you struck the star,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,0,दशै आयो खाउँला-पिउँला,2,joy,positive,lexical,easy,festive eat-drink cheer,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,1,नयाँ नाना लगाइ हामी पिङ खेलैं न,2,joy,positive,lexical,easy,"new clothes, swing fun",agent_v2
-3396,Dashain Aayo,Sugam Pokharel,2,दशै आयो उमङ्ग ल्यायो,2,joy,positive,lexical,easy,उमङ्ग excitement,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,3,सारा संसारमा खुशीयाली छायो,2,joy,positive,lexical,easy,खुशीयाली explicit,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,4,माथि-माथि-माथि चङ्गा उडाइ मज्जा गरौं न,2,joy,positive,lexical,easy,मज्जा kite fun,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,5,रातो टिका अनि जमरा लगाइ आशिस थापैं न,2,joy,positive,context_only,medium,ritual celebration,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,6,बर्ष दिनमा आउने यो चाड,2,neutral,neutral,none,easy,factual festival line,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,7,"सबै परिवार हुन्छ एकाग्रह, सबै मिलेर",2,joy,positive,context_only,medium,family gathering warmth,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,8,"नाँचैं न, गाउं न, रमाइलो गरौं न, हामी पिङ खेलैं न",3,joy,positive,lexical,easy,dance-sing रमाइलो,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,9,"रमाइलो गरौं न, नाँचैं न, गाउं न",2,joy,positive,lexical,easy,रमाइलो refrain,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,10,पर्देशीएका आफ्नत नि घर फर्की आउछन्,1,joy,positive,context_only,medium,reunion happiness,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,11,फर्की आउन नपाउनेहरू उतै दशै मनाउ छन्,2,sadness,negative,context_only,hard,left-behind ache; bittersweet,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,12,"हो, पर्देशीएका आफ्नत नि घर फर्की आउछन्",1,joy,positive,context_only,medium,reunion happiness,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,14,घर परिवार सबैलाई सम्झेर,1,sadness,mixed,context_only,medium,homesick remembrance,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,15,जहाँ भए नि मनाउ यो दशै,1,joy,positive,context_only,medium,consoling celebration,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,16,"जहाँ भए नि मनाउ यो चाड, सबै मिलेर",1,joy,positive,context_only,medium,celebrate together,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,28,"रमाइलो गरौं न, नाँचैं न, गाउं न, रमाइलो गरौं न, हामी पिङ खेलैं न",1,joy,positive,lexical,easy,रमाइलो run-on refrain,agent_v2
-3396,Dashain Aayo,Sugam Pokharel,29,"रमाइलो गरौं न, हामी पिङ खेलैं न, रमाइलो गरौं न",1,joy,positive,lexical,easy,run-on refrain variant,agent_v2
-3980,Galli Sadak,VTEN,0,"जो गर्न खोज्छ यहाँ राम्रो काम, त्यही नर्क जान्छ",1,anger,negative,context_only,medium,injustice of good works,agent_v2
-3980,Galli Sadak,VTEN,1,मेरो बानी बेहोराले यहाँ सब कुरा फरक पार्छ,1,neutral,neutral,context_only,medium,self-assertion; defiant,agent_v2
-3980,Galli Sadak,VTEN,2,"जब हान्न थाल्छु राप, एक्कासि रगत तात्छ",1,anger,negative,metaphor,medium,violence imagery; blood boils,agent_v2
-3980,Galli Sadak,VTEN,3,किनकी मेरो कहानीको सुरुआत भयो गल्ली र सडकबाट,1,neutral,neutral,context_only,medium,street origin story,agent_v2
-3980,Galli Sadak,VTEN,4,"कसैलाई मद्दत मागेन, लागेँ म फरक बाटोमा",1,neutral,mixed,context_only,medium,took own path; defiant,agent_v2
-3980,Galli Sadak,VTEN,5,वान्टेड मा छ रे मेरो नाम पत्रिकाले खबर छापेछ,1,neutral,negative,context_only,medium,wanted; press coverage,agent_v2
-3980,Galli Sadak,VTEN,6,त्यसको केही मतलब लागेन (के?),1,neutral,neutral,none,easy,didn't care,agent_v2
-3980,Galli Sadak,VTEN,7,हेर्दिन समाचार म,1,neutral,neutral,none,easy,don't watch news,agent_v2
-3980,Galli Sadak,VTEN,8,"एनकाउन्टर हान्ने सोचि राछस्, मुजी, खबरदार तँ",1,anger,negative,address,medium,encounter threat; beware,agent_v2
-3980,Galli Sadak,VTEN,9,इज्जत गर् भेट्लास् (भेट्लास्) फेरि,1,anger,negative,address,medium,respect-or-else threat,agent_v2
-3980,Galli Sadak,VTEN,10,मेरो गाङ छ नेपाल भरि,2,neutral,negative,context_only,medium,gang boast,agent_v2
-3980,Galli Sadak,VTEN,11,तँ जस्तो हैन म हिँड्छु सबैलाई राम्रो व्यवहार गरी (सही हो),1,neutral,mixed,context_only,medium,defiant contrast,agent_v2
-3980,Galli Sadak,VTEN,12,केटाहरू सब भेज्जा छ नि,1,anger,negative,context_only,medium,accusation of fakeness,agent_v2
-3980,Galli Sadak,VTEN,14,"राई, लिम्बू, तामाङ, मगर, गुरुङ, शेर्नेपा, नेवार धरि",1,neutral,neutral,none,easy,ethnic roll call,agent_v2
-3980,Galli Sadak,VTEN,15,"मुजी, हेर्, म जाँदिन जेल",1,anger,negative,address,medium,refuse jail; defiant,agent_v2
-3980,Galli Sadak,VTEN,16,मलाई खेल्नुछैन त्यो कवाडी सरकारी राजनीतिक खेल,1,anger,negative,context_only,medium,resentment of politics,agent_v2
-3980,Galli Sadak,VTEN,17,"हँ, खाते, आफूलाई त्यहाँ राखेर हेर्",1,anger,negative,address,medium,put-yourself-there taunt,agent_v2
-3980,Galli Sadak,VTEN,18,मलाई के ल्याङ हान्छस्?,1,anger,negative,address,medium,challenge question,agent_v2
-3980,Galli Sadak,VTEN,19,चाहेँ भनेँ उल्टै तँलाई हाल्दीन्छु जेल,1,anger,negative,address,medium,jail threat,agent_v2
-4024,Ekkasi,Yabesh Thapa,0,सात समुन्द्र तरी आए तिम्रै छेउमा,1,neutral,mixed,context_only,medium,devotion odyssey; mixed,agent_v2
-4024,Ekkasi,Yabesh Thapa,1,यसरी नचिने झै गरी नसताउ न,2,sadness,negative,address,medium,don't-ignore plea,agent_v2
-4024,Ekkasi,Yabesh Thapa,2,"माया नभए पनि एकै छिन बस है, सँगै",2,sadness,negative,address,medium,stay-a-moment plea,agent_v2
-4024,Ekkasi,Yabesh Thapa,3,यादहरु बिताउन चहिन्न पिरती,2,sadness,mixed,context_only,medium,memories need no love; wistful,agent_v2
-4024,Ekkasi,Yabesh Thapa,4,तै पनि मुटु खोजी बस अलि कति,2,sadness,negative,metaphor,medium,heart keeps searching,agent_v2
-4024,Ekkasi,Yabesh Thapa,5,"थाहा छ अलि अलि छु म पनि स्वर्थी नै, आफै",2,sadness,negative,context_only,medium,self-blame,agent_v2
-4024,Ekkasi,Yabesh Thapa,6,नजानु मलाई छोडी यो भिडमा,3,sadness,negative,address,easy,don't-leave plea,agent_v2
-4024,Ekkasi,Yabesh Thapa,7,नजानु मुटु तोडी आज एकै छिनमा,3,sadness,negative,address,easy,don't-break-heart plea,agent_v2
-4024,Ekkasi,Yabesh Thapa,8,ए निष्ठुरी सानी सुस्तरी माया मार है,3,sadness,negative,address,medium,cruel-one plea; accusatory,agent_v2
-4024,Ekkasi,Yabesh Thapa,9,फेरी दुख्छ यो मुटु बेसरी,3,sadness,negative,lexical,easy,heart hurts,agent_v2
-4024,Ekkasi,Yabesh Thapa,10,"छाडी तिमी गए, एक्कासी",3,sadness,negative,lexical,medium,sudden departure,agent_v2
-4024,Ekkasi,Yabesh Thapa,11,सात समुन्द्र तरी आए तिम्रै छेउ मा,1,neutral,mixed,context_only,medium,devotion odyssey variant,agent_v2
+182,Na Aau Feri,Akash khadka,0,"धेरै कुरा भन्नु थियो, सुन्न छैनौ तिमी",1,sadness,negative,context_only,medium,words unsaid; unheard,user_v2
+182,Na Aau Feri,Akash khadka,1,"भारी हुन्छ मन मेरो, छाडी गयौ मलाई",1,sadness,negative,lexical,easy,"heavy heart, left behind",user_v2
+182,Na Aau Feri,Akash khadka,2,वाचाहरू झूटो रहेछ तिमीले गरको मलाई,1,sadness,negative,context_only,medium,false promises; grief-toned,user_v2
+182,Na Aau Feri,Akash khadka,3,"साथ हाम्रो अधूरो रहेछ, टाढा हुनुपर्यो है",1,sadness,negative,lexical,medium,incomplete bond; parting,user_v2
+182,Na Aau Feri,Akash khadka,4,नअल्झ है फेरि तिमी कतै,1,sadness,negative,context_only,medium,bittersweet warning,user_v2
+182,Na Aau Feri,Akash khadka,5,दुख्छ यो मन मायामा परे,1,sadness,negative,lexical,easy,heart hurts in love,user_v2
+182,Na Aau Feri,Akash khadka,6,नफर्क है फेरि मसँग नै,1,sadness,negative,context_only,medium,don't-return warning,user_v2
+182,Na Aau Feri,Akash khadka,7,मायामा विश्वास हराइसक्यो है,1,sadness,negative,lexical,easy,trust lost,user_v2
+182,Na Aau Feri,Akash khadka,8,नआऊ फेरि तिमी सपनी बनी,1,sadness,negative,address,easy,don't come even in dreams,user_v2
+182,Na Aau Feri,Akash khadka,9,सम्झेर रुनु छैन फेरि मलाई,1,sadness,negative,negation,medium,mustn't cry (रुनु छैन),user_v2
+182,Na Aau Feri,Akash khadka,10,नगरिदेऊ अब याद मलाई,1,sadness,negative,address,medium,don't give memories,user_v2
+182,Na Aau Feri,Akash khadka,11,"सुरुवात गर नयाँ कहानी आफ्नै, आफ्नै",1,neutral,mixed,context_only,medium,farewell well-wishing,user_v2
+182,Na Aau Feri,Akash khadka,12,आफ्नै कहानी लेख अब,1,neutral,mixed,context_only,medium,write your own story,user_v2
+182,Na Aau Feri,Akash khadka,13,"बिर्सिदेऊ मलाई, एउटा याद सोच",1,sadness,mixed,address,medium,forget-me plea,user_v2
+182,Na Aau Feri,Akash khadka,14,सपना तिम्रो सबै पूरा गर,1,neutral,positive,context_only,medium,well-wish,user_v2
+182,Na Aau Feri,Akash khadka,15,मात्र कामना मेरो तिम्रो साथ,1,sadness,mixed,context_only,medium,only wish: togetherness,user_v2
+182,Na Aau Feri,Akash khadka,16,"साथ, मात्र कामना साथ",1,sadness,mixed,repetition,medium,togetherness refrain,user_v2
+182,Na Aau Feri,Akash khadka,17,साथ मात्र याद छ,1,sadness,negative,context_only,medium,only memory remains,user_v2
+182,Na Aau Feri,Akash khadka,18,"एचएमएम-एमएमएम, एचएमएम",1,neutral,neutral,filler,easy,humming,user_v2
+263,Aakashma Lekhe,Anil Singh,0,हावाले आए उडाए दियो,1,neutral,mixed,context_only,medium,name blown away; conceit,user_v2
+263,Aakashma Lekhe,Anil Singh,1,जुन्नमा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name on moon; devotion,user_v2
+263,Aakashma Lekhe,Anil Singh,2,ग्रहणले आए ढाकी दियो,1,neutral,mixed,context_only,medium,eclipse covers it,user_v2
+263,Aakashma Lekhe,Anil Singh,3,हृद्यमा लेखे तिम्रो नौ,2,neutral,positive,context_only,easy,name in heart,user_v2
+263,Aakashma Lekhe,Anil Singh,4,प्रीत बानी फक्रिदियो?,1,neutral,positive,context_only,medium,love flourished?,user_v2
+263,Aakashma Lekhe,Anil Singh,5,पगल सम्झे पागल साही,1,neutral,positive,context_only,medium,"if called mad, so be it",user_v2
+263,Aakashma Lekhe,Anil Singh,6,जोगी सम्झे जोगी साही,1,neutral,positive,context_only,medium,"if called ascetic, so be it",user_v2
+263,Aakashma Lekhe,Anil Singh,7,जे भने ने मा हु प्रेमी,1,neutral,positive,context_only,easy,I am a lover,user_v2
+263,Aakashma Lekhe,Anil Singh,8,प्रेमको मा पूजारी?,1,neutral,positive,context_only,medium,love's priest?,user_v2
+263,Aakashma Lekhe,Anil Singh,9,फुलमा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name on flower,user_v2
+263,Aakashma Lekhe,Anil Singh,10,भावराले टप्पा टिपे दियो,1,neutral,mixed,context_only,medium,bee takes the mark,user_v2
+263,Aakashma Lekhe,Anil Singh,11,पातमा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name on leaf,user_v2
+263,Aakashma Lekhe,Anil Singh,12,सीतले आए बगाई दियो,1,neutral,mixed,context_only,medium,water washed it,user_v2
+263,Aakashma Lekhe,Anil Singh,14,सर्गम बानी गुन्जी दियो,1,neutral,positive,context_only,medium,echoes in melody,user_v2
+263,Aakashma Lekhe,Anil Singh,15,कुरा गरे कुराई को दुःख,1,sadness,negative,context_only,hard,grief/suffering in separation,user_v2
+263,Aakashma Lekhe,Anil Singh,16,तिमी बिना कहा चा सुखा,1,sadness,mixed,context_only,medium,no happiness without you,user_v2
+263,Aakashma Lekhe,Anil Singh,17,तिम्रो यादमा हरपाल,1,neutral,positive,context_only,medium,always in your memory,user_v2
+263,Aakashma Lekhe,Anil Singh,18,भये मा प्रेम बियोगे,1,sadness,negative,context_only,medium,if separated in love,user_v2
+263,Aakashma Lekhe,Anil Singh,19,हिमालमा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name on Himalaya,user_v2
+263,Aakashma Lekhe,Anil Singh,20,हेउ सँगै पग्ली दियो,1,neutral,mixed,context_only,medium,snow melted together,user_v2
+263,Aakashma Lekhe,Anil Singh,21,किनारमा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name on shore,user_v2
+263,Aakashma Lekhe,Anil Singh,22,चालले आए बगाये दियो,1,neutral,mixed,context_only,medium,waves washed away,user_v2
+263,Aakashma Lekhe,Anil Singh,23,हृदिये मा लेखे तिम्रो नौ,1,neutral,positive,context_only,easy,name in heart,user_v2
+263,Aakashma Lekhe,Anil Singh,24,धड्कन बानी धड्की दियो,1,neutral,positive,context_only,medium,heartbeat image,user_v2
+757,Asaar,Bipul Chettri,0,"पानी पऱ्यो सरर, छाना बज्यो गरर",1,joy,positive,lexical,medium,rain joy imagery (सरर),user_v2
+757,Asaar,Bipul Chettri,1,मनमा उठ्यो आज मेरो आनन्दको लहर,1,joy,positive,lexical,easy,आनन्द explicit,user_v2
+757,Asaar,Bipul Chettri,2,हिजोको बिपना आज भएछ सपना,2,sadness,negative,context_only,medium,sorrow turned to dream; nostalgic lament,user_v2
+757,Asaar,Bipul Chettri,3,"ए कान्छी, कति चाँडै बितेको यो जीवन",1,sadness,negative,context_only,medium,life passed quickly; lament,user_v2
+757,Asaar,Bipul Chettri,4,"पानी पऱ्यो सरर, भिज्यो कालेबुङ सहर",1,joy,positive,context_only,medium,city-soaked rain joy,user_v2
+757,Asaar,Bipul Chettri,5,"कालो-कालो बादल चढी फर्की आयो असार, लहै",1,joy,positive,context_only,medium,monsoon return; delight,user_v2
+757,Asaar,Bipul Chettri,6,"जिन्दगी कहिले घाम कहिले पानी, लैबरी लै",1,neutral,mixed,context_only,medium,sun-and-rain philosophy,user_v2
+757,Asaar,Bipul Chettri,7,माया नै सबैभन्दा ठूलो कुरो रैछ नि है,1,neutral,positive,context_only,medium,love is greatest,user_v2
+757,Asaar,Bipul Chettri,8,चारैतिर निला-निला आकाश नै छायो है,1,joy,positive,context_only,medium,blue sky delight,user_v2
+757,Asaar,Bipul Chettri,9,वरिपरि लागेको यो कुइरो हरायो है,1,joy,positive,context_only,medium,fog cleared; relief,user_v2
+757,Asaar,Bipul Chettri,10,मनलाई साँचो राखी हिँडिँरहेछु,1,neutral,positive,context_only,medium,keeping heart true,user_v2
+757,Asaar,Bipul Chettri,11,"म तिम्रो साहारामै बाँचिरहेछु, मायालु",1,neutral,positive,context_only,medium,living on your support,user_v2
+757,Asaar,Bipul Chettri,12,"पानी पऱ्यो सरर, झोडा बग्याे गरर",1,joy,positive,context_only,medium,streams flowing; rain joy,user_v2
+757,Asaar,Bipul Chettri,13,फर्की आएँ तिम्रैतिर छाडी सारा संसार,1,neutral,positive,context_only,medium,returned to you; devotion,user_v2
+757,Asaar,Bipul Chettri,15,"ए कान्छी, कति चाँडै बितेकाे याे जीवन",1,sadness,negative,context_only,medium,life passed quickly variant,user_v2
+757,Asaar,Bipul Chettri,16,"पानी पऱ्यो सरर, भिज्याे कालेबुङ सहर",1,joy,positive,context_only,medium,city-soaked rain variant,user_v2
+757,Asaar,Bipul Chettri,17,कालाे-कालाे बादल चढी फर्की आयाे असार,1,joy,positive,context_only,medium,monsoon return variant,user_v2
+757,Asaar,Bipul Chettri,18,"लैबरी, लैबरी, लैबरी लै, ओ नानी, लैबरी, लैबरी लै",6,neutral,neutral,filler,easy,लैबरी filler refrain,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,0,उपहार स्वरूप यो तस्बीर माया गर्ने हरू लाई,1,neutral,positive,context_only,medium,gift picture to lovers,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,1,भलाई चोटो होला यहा सबै दृश्य अटाउन लाई,1,neutral,neutral,context_only,hard,corrupt line,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,2,"जिन्दगी नरहोस्, रही रहनेछ येसमा कैद पाल हरू",1,neutral,mixed,context_only,hard,moments captured; philosophical,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,3,"तिमी चाउ, तिम्रो प्यारो मान्छे चा",1,neutral,positive,context_only,medium,your dear person; devotion,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,4,त्यो भन्दा अरु के नै चाहिँचा एउटा माया गर्ने ब्यक्ति लाई,1,neutral,positive,context_only,medium,what else a lover needs,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,5,तिमी नै हाउ,4,neutral,positive,context_only,easy,it's you; devotion,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,6,मलाई माया गर्ने,1,neutral,positive,context_only,easy,one who loves me,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,7,"तिमी नै हाउ, तिमी नै हाउ",4,neutral,positive,context_only,easy,it's you refrain,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,10,मलाई खुशी डाइनी,1,joy,positive,lexical,easy,gives me happiness (खुशी),user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,15,हेरा मलाई समाउ यो हात,1,neutral,positive,address,medium,hold this hand,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,16,नछुटोश हाम्रो दरिलो साथ,1,neutral,positive,context_only,medium,wish bond unbroken,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,17,"देख्ने ले देखोश, सुनोश",1,neutral,neutral,context_only,medium,let them see/hear,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,18,हाम्रो यो सम्बन्ध,1,neutral,neutral,context_only,medium,this relationship,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,19,पश्चाताप चैन कुनै यहा,1,joy,positive,context_only,medium,no regret; contentment,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,20,खुसी चाउ हामी चाउ जहा,1,joy,positive,lexical,medium,we want happiness,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,21,"वन्ने ले वनोश, गरोश",1,neutral,mixed,context_only,medium,let them talk; resolve,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,22,हाम्रो ब्यारे कुरा,1,neutral,neutral,context_only,medium,talk about us,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,23,जाति जे चा मेरो,1,neutral,neutral,context_only,medium,whatever my caste,user_v2
+1365,Sabin Rai - Timi Nai Hau [Romanized],Genius Romanizations,24,तिमी हाउ,1,neutral,positive,context_only,easy,it's you fragment,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,0,लेकाली Hey Hey चोया को डोको,2,neutral,neutral,address,medium,playful folk prop and address,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,1,सानो माया Hey Hey लगाउने धोको,2,neutral,neutral,context_only,medium,teasing risk of attachment,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,2,नपुग्दै मा मर्चु पो क्यारे,2,neutral,mixed,metaphor,hard,playful dying hyperbole; ambiguous,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,3,Hey भना सोल्टी बराबर नधती,2,neutral,neutral,context_only,hard,folk banter; unclear,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,4,(बहायो खोला बेसी घर्यो सम्मै,1,neutral,neutral,context_only,medium,river-valley scenery,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,5,तिम्रो माया कलेजी मा ताम्मै) - 2,1,neutral,positive,context_only,medium,love-in-heart; no happiness,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,6,आखै मा गजलु लपक्कै,1,neutral,neutral,context_only,medium,eyes-liner flirt image,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,7,भना माया लाएदिउँ की चापककै,1,neutral,positive,context_only,medium,teasing invitation,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,8,बैसैमा बैसैमा मर्चु पो क्यारे,1,neutral,mixed,metaphor,hard,repeated dying hyperbole,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,9,Hey भना सोल्टी बराबर नधती - 2,2,neutral,neutral,repetition,medium,folk refrain,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,10,(रातो चोलो पाखुरीमा तिमिक्कै,1,neutral,neutral,context_only,medium,red-blouse teasing image,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,11,माया बस्यो मखाइमा घिमिक्कै) - 2,1,neutral,positive,context_only,medium,love glowing on face,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,12,के गोड्नु कर्कला बारी,1,neutral,neutral,metaphor,medium,folk garden image,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,13,पर्खा तिमीलाई रोएरहने नपारी,1,neutral,neutral,address,medium,teasing reassurance; negated weeping,user_v2
+1469,Lekali Hey Choyako Doko,Harish Mathema,14,बैसैमा.. बैसैमा मर्चु पी क्यारे,1,neutral,neutral,context_only,hard,folk refrain fragment,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,0,मेरो मान मा आगो लाउने को,2,anger,negative,metaphor,medium,who set my heart on fire,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,1,मेरो मान धार धार रुआँए को,2,anger,negative,metaphor,medium,accusatory; tears as injury,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,4,तिम्रो पानी चाटी भित्र आगो डाँकियोस्,2,anger,negative,metaphor,hard,curse: fire inside you,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,5,सँधै भरि माया पाउन मुटु चल्कियोस्,9,anger,negative,metaphor,hard,curse: heart burns longing,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,7,चुलेसी ले रेटी रेटी तिखो चुरा चलायोउ,2,anger,negative,metaphor,hard,knife-edge betrayal image,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,8,टिमले माया अन्तै सर्योउ जोगी पारी सबै हसायौ,1,anger,negative,context_only,medium,love shifted; mocked,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,10,टिमले माया अन्तै सर्योउ जोरी पारी सबै हसायौ,1,anger,negative,context_only,medium,love shifted; mocked variant,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,11,हासी हासी अचानो मा रेट्ने को,1,anger,negative,metaphor,medium,grinding on stone laughing,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,12,जिन्दगी नै डढेलो झैं आगो सल्कियोस्,1,anger,negative,metaphor,hard,life as wildfire,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,15,तिमीले ता दुबै चड्योउ माना मिल्ने मुटु लाई,2,anger,negative,context_only,hard,burdened the meeting heart,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,16,जिन्दगी भर आँसु दियोउ चोखो माया लाउने लाई,2,anger,negative,context_only,medium,lifetime of tears; blame,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,19,अर्का मन धार धारी रुआँए को,1,anger,negative,metaphor,hard,accusatory betrayal; parallel indictment,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,20,सुखा सँधै ताधै बाटा अन्तै तर्कियोस्,1,anger,negative,metaphor,hard,curse: may you drift,user_v2
+1511,Mero Man Ma Aago,Himal Sagar,23,मेरो मन धार धार रुआने को,1,anger,negative,metaphor,medium,who made my heart weep,user_v2
+1938,Aama,Mantra Band,0,अमूल्य मेरो मेरो जीवन,2,joy,positive,context_only,medium,precious-life gratitude,user_v2
+1938,Aama,Mantra Band,1,उपहार तिम्रै नै हो,2,joy,positive,lexical,medium,gift of life gratitude,user_v2
+1938,Aama,Mantra Band,2,कोसेली धेरै धेरै चोखो,1,joy,positive,context_only,medium,pure gift gratitude,user_v2
+1938,Aama,Mantra Band,3,तिम्रै मायाको प्रतिक हो,1,joy,positive,context_only,medium,symbol of love gratitude,user_v2
+1938,Aama,Mantra Band,4,तिम्रो न्यानो काख भरि,1,joy,positive,context_only,medium,warm-lap warmth,user_v2
+1938,Aama,Mantra Band,5,कति सपना मैले देखें,1,joy,positive,context_only,medium,dreams under her care,user_v2
+1938,Aama,Mantra Band,6,समाई तिम्रा हातहरु,1,joy,positive,context_only,medium,holding hands warmth,user_v2
+1938,Aama,Mantra Band,7,कति बाटो म हिडें,1,neutral,neutral,none,medium,paths walked; factual,user_v2
+1938,Aama,Mantra Band,8,संसार तिमी नै हौ आमा,5,neutral,positive,context_only,medium,adoration; no happiness,user_v2
+1938,Aama,Mantra Band,9,अपार तिमी नै छौ आमा,5,neutral,positive,context_only,medium,adoration; no happiness,user_v2
+1938,Aama,Mantra Band,10,हे आमा हे आमा हे आमा,1,neutral,neutral,repetition,easy,vocative refrain,user_v2
+1938,Aama,Mantra Band,13,सबै रुप तिम्रो माया सरी,1,neutral,positive,context_only,medium,praised likeness,user_v2
+1938,Aama,Mantra Band,14,तिमी नै मेरो धर्तीको परी,1,neutral,positive,context_only,medium,angel praise,user_v2
+1938,Aama,Mantra Band,15,बलिदान तिम्रो नि:स्वार्थ छ,1,joy,positive,context_only,medium,grateful for sacrifice,user_v2
+1938,Aama,Mantra Band,16,यो माया तिम्रो चोखो छ,1,joy,positive,context_only,medium,pure-love gratitude,user_v2
+1938,Aama,Mantra Band,17,कालो कालो रातमा,1,sadness,negative,metaphor,medium,dark-night suffering imagery,user_v2
+1938,Aama,Mantra Band,18,धेरै दुख्ने घातमा,1,sadness,negative,lexical,medium,hurtful-blow suffering,user_v2
+1938,Aama,Mantra Band,19,तिमीले मलाई सम्हाल्यौ,2,joy,positive,context_only,medium,comforted; being held,user_v2
+1938,Aama,Mantra Band,20,धेरै घाउमा धेरै बिझ्ने पिडामा,1,sadness,negative,lexical,medium,wounds and stinging pain,user_v2
+1938,Aama,Mantra Band,22,तिम्रै निम्ति म हाँसी दिन्छु,2,joy,positive,lexical,medium,smile for her,user_v2
+1938,Aama,Mantra Band,23,तिम्रै निम्ति म बाँची दिन्छु,2,neutral,positive,context_only,medium,live-for-you devotion,user_v2
+1938,Aama,Mantra Band,26,आँशु मेरो पुछि दियौ,1,joy,positive,context_only,medium,tears wiped; comfort,user_v2
+1938,Aama,Mantra Band,27,दुख मेरो बुझि दियौ,1,joy,positive,context_only,medium,sorrow understood; comfort,user_v2
+1938,Aama,Mantra Band,28,हरेक पल सुख दिन चाह्यौ,1,joy,positive,lexical,medium,wished happiness (सुख),user_v2
+1938,Aama,Mantra Band,29,बाटो मलाई देखाई दियौ,1,joy,positive,context_only,medium,shown the way; gratitude,user_v2
+1938,Aama,Mantra Band,30,दियो मेरो जलाई दियौ,1,joy,positive,metaphor,medium,lit my lamp,user_v2
+1938,Aama,Mantra Band,31,उज्यालो जीवन बनाइदियौ,1,joy,positive,metaphor,medium,made life bright,user_v2
+1938,Aama,Mantra Band,36,हे आमा हे आमा,1,neutral,neutral,repetition,easy,vocative refrain,user_v2
+2061,Dherai Dherai,Mingma Sherpa,0,मा संग माना मिलाउछु वन्दै,1,neutral,neutral,context_only,hard,corrupt OCR line,user_v2
+2061,Dherai Dherai,Mingma Sherpa,1,माया गसु वन्छ अन्त्यमा,1,neutral,neutral,context_only,hard,corrupt OCR line,user_v2
+2061,Dherai Dherai,Mingma Sherpa,2,मायालु मेरी माया,2,neutral,positive,address,easy,"my love, my love",user_v2
+2061,Dherai Dherai,Mingma Sherpa,3,कसको माया लाग्यो वना,4,neutral,neutral,context_only,medium,whose love? questioning,user_v2
+2061,Dherai Dherai,Mingma Sherpa,4,कस्तो यादा आयो वना,2,neutral,neutral,context_only,medium,what memory came,user_v2
+2061,Dherai Dherai,Mingma Sherpa,6,के वनी बोलाउ तिमीलाई,1,neutral,neutral,context_only,medium,what to call you,user_v2
+2061,Dherai Dherai,Mingma Sherpa,7,वनिदेउ वनिदेउ,1,neutral,neutral,repetition,easy,वनिदेउ filler,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,0,"[आज भोली हरेक साँझ, मातिन थालेछ।",1,sadness,negative,context_only,medium,evening drunkenness,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,1,"जिन्दगी देखि जिन्दगी, आतिन थालेछ।]...२",1,sadness,negative,context_only,medium,life distressed,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,2,"आज भोली, हरेक साँझ।",3,sadness,negative,repetition,medium,every-evening refrain,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,3,"रहरै रहरमा पिए, विवश भएर पिए।...२",1,sadness,negative,context_only,medium,helpless drinking,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,4,"दुखमा पिए, सुखमा पिए।...२",1,sadness,mixed,lexical,medium,drank in sorrow and joy; escapism,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,5,"पिउदिन पिउदिन, भन्दै पिए।",1,sadness,negative,context_only,medium,self-destructive pledge,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,6,"आजभोली जिन्दगानी, छोटिन थालेछ।",1,sadness,negative,lexical,medium,life shortening,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,7,"जिन्दगी देखि जिन्दगी, आतिन थालेछ।",2,sadness,negative,lexical,medium,life distressed refrain,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,9,"मन्दिरमा बसेर पिए, मसानमा लडेर पिए।...२",1,sadness,negative,metaphor,medium,temple vs cremation drinking,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,10,"नाचेर पिए, हाँसेर पिए।...२",1,sadness,mixed,context_only,hard,forced gaiety; escapism,user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,11,"एकान्तमा कहिलेकाहीं, रुदै पिए।",1,sadness,negative,lexical,easy,crying alone (रुदै),user_v2
+2164,Aja bholi hareko saajh,Narayan Gopal,12,"आजभोली हरेक रात, रक्सिन थालेछ।",1,sadness,negative,context_only,medium,nightly intoxication,user_v2
+2252,Timile Pani Ma Jastai,Narayan Gopal,0,मायालुको सम्झनामा आफूलाई बिर्सी हेरा - एक्स2,3,sadness,negative,context_only,medium,remembrance self-loss,user_v2
+2252,Timile Pani Ma Jastai,Narayan Gopal,1,सुन साँ रात सँगै एकान्त भयेर हेरा - एक्स2,1,sadness,negative,context_only,medium,alone together; longing,user_v2
+2252,Timile Pani Ma Jastai,Narayan Gopal,2,सागरा को लहरा जस्तै अशान्त भयेर हेरा,1,sadness,negative,metaphor,medium,restless like waves,user_v2
+2252,Timile Pani Ma Jastai,Narayan Gopal,3,आशुका थोपा जस्तै भुईमा खसेर हेरा,1,sadness,negative,metaphor,easy,teardrops falling,user_v2
+2252,Timile Pani Ma Jastai,Narayan Gopal,5,पूजा को फुल जस्तै दिन दिन मरेर हेरा - एक्स2,1,sadness,negative,metaphor,medium,flower dying daily,user_v2
+2252,Timile Pani Ma Jastai,Narayan Gopal,6,ढुंगाको मूर्ति जस्तै दोबाटोमा बची हेरा,1,sadness,negative,metaphor,medium,stone statue at crossroads,user_v2
+2252,Timile Pani Ma Jastai,Narayan Gopal,7,छातीमा एउटा घाइते मुटु बोकेर हेरा,1,sadness,negative,metaphor,easy,wounded heart carried,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,0,आज कति भागमा फुट्यौं हामी?,1,anger,negative,context_only,medium,why divided? indictment,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,1,जातकै कुरामा अल्झी जानी-नजानी,1,anger,negative,context_only,medium,caste entanglement critique,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,2,जब संसार मिलिजुली एकै हुँदैछ,1,neutral,neutral,context_only,medium,world uniting; setup,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,3,केटा कुन जातको मनपराईस्?,1,anger,negative,address,medium,caste-question indictment,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,4,केटी कुन थरको तैले भगाईस्?,1,anger,negative,address,medium,caste-question indictment,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,5,किन यहाँ सबैलाई राज्य चाहिएको छ?,1,anger,negative,context_only,medium,everyone wants a kingdom?,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,6,"को मतवाली, को बाहुन क्षेत्री?",1,anger,negative,context_only,medium,caste labels questioned,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,7,के हामी एकै होइनौं र?,1,anger,negative,context_only,medium,are we not the same?,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,8,त्यसैले जातभात छुट्याउनेलाई,1,anger,negative,context_only,medium,to those who divide,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,9,तिमी यही भन्ने गर,1,neutral,neutral,address,medium,say this; injunction,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,10,तिमी को हो थाहा भएन,2,neutral,negative,context_only,medium,don't know who you are,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,11,म चाहिँ नेपाली,2,neutral,positive,context_only,medium,Nepali identity assertion,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,14,मानिस ठूलो जातले हुन्न यहाँ,1,neutral,neutral,context_only,medium,philosophical/didactic maxim,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,15,दिल नै ठूलो सबै थोक भन्दा,1,neutral,positive,context_only,easy,heart is greatest,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,16,"मुना-मदन आए गए, कसैले केही बुझेन",1,sadness,mixed,context_only,medium,cynical regret of society,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,17,सगरमाथा कसको भागमा पर्ला फेरि?,1,anger,negative,context_only,medium,satire: whose Everest?,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,18,बुद्ध बाड्ने कसको जिम्मेवारी,1,anger,negative,context_only,medium,satire: dividing Buddha,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,19,"नेपाल, हाम्रो प्यारो देशमा",1,neutral,positive,context_only,easy,dear Nepal address,user_v2
+3174,Ma Chahi Nepali,Samriddhi Rai,20,हिंसा अब चाहिएन,1,neutral,mixed,context_only,medium,violence no longer wanted,user_v2
+3235,Ooth Dekhi Ooth Samma,Saroj Dutta,0,"ओठदेखि ओठसम्म, छाओस यस्तो खुशी",5,joy,positive,lexical,easy,explicit happiness blessing (खुशी),user_v2
+3235,Ooth Dekhi Ooth Samma,Saroj Dutta,2,"जीवनभर मदेखि, नहुनु है दु:खी",2,joy,positive,negation,medium,blessing against sorrow (नहुनु दु:खी),user_v2
+3235,Ooth Dekhi Ooth Samma,Saroj Dutta,4,"तनदेखि मनसम्म, तिम्रो मात्र छायाँ",2,neutral,positive,context_only,medium,devotion imagery; no happiness,user_v2
+3235,Ooth Dekhi Ooth Samma,Saroj Dutta,6,"जहाँ जान्छु,जता जान्छु, तिम्रो हुन्छु दाँया-बाँया",1,neutral,positive,context_only,medium,devotion; no happiness,user_v2
+3235,Ooth Dekhi Ooth Samma,Saroj Dutta,7,"जुनी-जुनीसम्म,तिम्रो साथ रहोस्",1,neutral,positive,context_only,medium,togetherness wish; no happiness,user_v2
+3235,Ooth Dekhi Ooth Samma,Saroj Dutta,8,"तिम्रो मेरो मायाको,यस्तो संसार् बनोस्",1,neutral,positive,context_only,medium,love-world wish; no happiness,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",0,मै'सबले घाइते दिलमा आरा चलाइस्यो,12,anger,negative,metaphor,medium,saw-on-wounded-heart accusation,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",2,लाउन नी के एचम्मको पारा चलाइस्यो,10,anger,negative,context_only,medium,what a game played on me,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",6,आइया पानी वन्न नपाई मारिने वो सरकार,4,anger,negative,context_only,hard,state kills; corrupt line,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",10,जालिम नजर कस्तो ज्यानमारा चलाइस्यो,2,anger,negative,metaphor,medium,cruel murderous gaze,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",16,घाइते दिलमा आरा चलाइस्यो,1,anger,negative,metaphor,medium,saw on wounded heart,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",17,हो मै'सबले,1,neutral,neutral,context_only,hard,fragment; my own kin,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",18,सुकला रा ज्युनार पानी गरिसिन्न अचेल,4,sadness,mixed,metaphor,hard,dried springs lament; corrupt,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",22,यो कस्तो मुलुकी आइनको धारा चलाइस्यो,2,anger,negative,context_only,medium,what law applied? grievance,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",28,जहाँ जाउँ मेरै कुरा काट्ने वये सबै,4,anger,negative,context_only,medium,gossiped everywhere,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",32,किना येसरी टोल बजारमा नारा चलाइस्यो,2,anger,negative,context_only,medium,slogans against me; why,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",38,त्यो दिलमा मलाई नै राज होस वाँसियो,4,anger,negative,context_only,hard,sarcastic king-in-heart,user_v2
+3248,Maisab,"Satyaraj Aacharya, Swaroopraj Aacharya",42,जुन वयेर हजुरले छेउको तारा चलाइस्यो,2,anger,negative,metaphor,medium,you struck the star,user_v2
+3396,Dashain Aayo,Sugam Pokharel,0,दशै आयो खाउँला-पिउँला,2,joy,positive,lexical,easy,festive eat-drink cheer,user_v2
+3396,Dashain Aayo,Sugam Pokharel,1,नयाँ नाना लगाइ हामी पिङ खेलैं न,2,joy,positive,lexical,easy,"new clothes, swing fun",user_v2
+3396,Dashain Aayo,Sugam Pokharel,2,दशै आयो उमङ्ग ल्यायो,2,joy,positive,lexical,easy,उमङ्ग excitement,user_v2
+3396,Dashain Aayo,Sugam Pokharel,3,सारा संसारमा खुशीयाली छायो,2,joy,positive,lexical,easy,खुशीयाली explicit,user_v2
+3396,Dashain Aayo,Sugam Pokharel,4,माथि-माथि-माथि चङ्गा उडाइ मज्जा गरौं न,2,joy,positive,lexical,easy,मज्जा kite fun,user_v2
+3396,Dashain Aayo,Sugam Pokharel,5,रातो टिका अनि जमरा लगाइ आशिस थापैं न,2,joy,positive,context_only,medium,ritual celebration,user_v2
+3396,Dashain Aayo,Sugam Pokharel,6,बर्ष दिनमा आउने यो चाड,2,neutral,neutral,none,easy,factual festival line,user_v2
+3396,Dashain Aayo,Sugam Pokharel,7,"सबै परिवार हुन्छ एकाग्रह, सबै मिलेर",2,joy,positive,context_only,medium,family gathering warmth,user_v2
+3396,Dashain Aayo,Sugam Pokharel,8,"नाँचैं न, गाउं न, रमाइलो गरौं न, हामी पिङ खेलैं न",3,joy,positive,lexical,easy,dance-sing रमाइलो,user_v2
+3396,Dashain Aayo,Sugam Pokharel,9,"रमाइलो गरौं न, नाँचैं न, गाउं न",2,joy,positive,lexical,easy,रमाइलो refrain,user_v2
+3396,Dashain Aayo,Sugam Pokharel,10,पर्देशीएका आफ्नत नि घर फर्की आउछन्,1,joy,positive,context_only,medium,reunion happiness,user_v2
+3396,Dashain Aayo,Sugam Pokharel,11,फर्की आउन नपाउनेहरू उतै दशै मनाउ छन्,2,sadness,negative,context_only,hard,left-behind ache; bittersweet,user_v2
+3396,Dashain Aayo,Sugam Pokharel,12,"हो, पर्देशीएका आफ्नत नि घर फर्की आउछन्",1,joy,positive,context_only,medium,reunion happiness,user_v2
+3396,Dashain Aayo,Sugam Pokharel,14,घर परिवार सबैलाई सम्झेर,1,sadness,mixed,context_only,medium,homesick remembrance,user_v2
+3396,Dashain Aayo,Sugam Pokharel,15,जहाँ भए नि मनाउ यो दशै,1,joy,positive,context_only,medium,consoling celebration,user_v2
+3396,Dashain Aayo,Sugam Pokharel,16,"जहाँ भए नि मनाउ यो चाड, सबै मिलेर",1,joy,positive,context_only,medium,celebrate together,user_v2
+3396,Dashain Aayo,Sugam Pokharel,28,"रमाइलो गरौं न, नाँचैं न, गाउं न, रमाइलो गरौं न, हामी पिङ खेलैं न",1,joy,positive,lexical,easy,रमाइलो run-on refrain,user_v2
+3396,Dashain Aayo,Sugam Pokharel,29,"रमाइलो गरौं न, हामी पिङ खेलैं न, रमाइलो गरौं न",1,joy,positive,lexical,easy,run-on refrain variant,user_v2
+3980,Galli Sadak,VTEN,0,"जो गर्न खोज्छ यहाँ राम्रो काम, त्यही नर्क जान्छ",1,anger,negative,context_only,medium,injustice of good works,user_v2
+3980,Galli Sadak,VTEN,1,मेरो बानी बेहोराले यहाँ सब कुरा फरक पार्छ,1,neutral,neutral,context_only,medium,self-assertion; defiant,user_v2
+3980,Galli Sadak,VTEN,2,"जब हान्न थाल्छु राप, एक्कासि रगत तात्छ",1,anger,negative,metaphor,medium,violence imagery; blood boils,user_v2
+3980,Galli Sadak,VTEN,3,किनकी मेरो कहानीको सुरुआत भयो गल्ली र सडकबाट,1,neutral,neutral,context_only,medium,street origin story,user_v2
+3980,Galli Sadak,VTEN,4,"कसैलाई मद्दत मागेन, लागेँ म फरक बाटोमा",1,neutral,mixed,context_only,medium,took own path; defiant,user_v2
+3980,Galli Sadak,VTEN,5,वान्टेड मा छ रे मेरो नाम पत्रिकाले खबर छापेछ,1,neutral,negative,context_only,medium,wanted; press coverage,user_v2
+3980,Galli Sadak,VTEN,6,त्यसको केही मतलब लागेन (के?),1,neutral,neutral,none,easy,didn't care,user_v2
+3980,Galli Sadak,VTEN,7,हेर्दिन समाचार म,1,neutral,neutral,none,easy,don't watch news,user_v2
+3980,Galli Sadak,VTEN,8,"एनकाउन्टर हान्ने सोचि राछस्, मुजी, खबरदार तँ",1,anger,negative,address,medium,encounter threat; beware,user_v2
+3980,Galli Sadak,VTEN,9,इज्जत गर् भेट्लास् (भेट्लास्) फेरि,1,anger,negative,address,medium,respect-or-else threat,user_v2
+3980,Galli Sadak,VTEN,10,मेरो गाङ छ नेपाल भरि,2,neutral,negative,context_only,medium,gang boast,user_v2
+3980,Galli Sadak,VTEN,11,तँ जस्तो हैन म हिँड्छु सबैलाई राम्रो व्यवहार गरी (सही हो),1,neutral,mixed,context_only,medium,defiant contrast,user_v2
+3980,Galli Sadak,VTEN,12,केटाहरू सब भेज्जा छ नि,1,anger,negative,context_only,medium,accusation of fakeness,user_v2
+3980,Galli Sadak,VTEN,14,"राई, लिम्बू, तामाङ, मगर, गुरुङ, शेर्नेपा, नेवार धरि",1,neutral,neutral,none,easy,ethnic roll call,user_v2
+3980,Galli Sadak,VTEN,15,"मुजी, हेर्, म जाँदिन जेल",1,anger,negative,address,medium,refuse jail; defiant,user_v2
+3980,Galli Sadak,VTEN,16,मलाई खेल्नुछैन त्यो कवाडी सरकारी राजनीतिक खेल,1,anger,negative,context_only,medium,resentment of politics,user_v2
+3980,Galli Sadak,VTEN,17,"हँ, खाते, आफूलाई त्यहाँ राखेर हेर्",1,anger,negative,address,medium,put-yourself-there taunt,user_v2
+3980,Galli Sadak,VTEN,18,मलाई के ल्याङ हान्छस्?,1,anger,negative,address,medium,challenge question,user_v2
+3980,Galli Sadak,VTEN,19,चाहेँ भनेँ उल्टै तँलाई हाल्दीन्छु जेल,1,anger,negative,address,medium,jail threat,user_v2
+4024,Ekkasi,Yabesh Thapa,0,सात समुन्द्र तरी आए तिम्रै छेउमा,1,neutral,mixed,context_only,medium,devotion odyssey; mixed,user_v2
+4024,Ekkasi,Yabesh Thapa,1,यसरी नचिने झै गरी नसताउ न,2,sadness,negative,address,medium,don't-ignore plea,user_v2
+4024,Ekkasi,Yabesh Thapa,2,"माया नभए पनि एकै छिन बस है, सँगै",2,sadness,negative,address,medium,stay-a-moment plea,user_v2
+4024,Ekkasi,Yabesh Thapa,3,यादहरु बिताउन चहिन्न पिरती,2,sadness,mixed,context_only,medium,memories need no love; wistful,user_v2
+4024,Ekkasi,Yabesh Thapa,4,तै पनि मुटु खोजी बस अलि कति,2,sadness,negative,metaphor,medium,heart keeps searching,user_v2
+4024,Ekkasi,Yabesh Thapa,5,"थाहा छ अलि अलि छु म पनि स्वर्थी नै, आफै",2,sadness,negative,context_only,medium,self-blame,user_v2
+4024,Ekkasi,Yabesh Thapa,6,नजानु मलाई छोडी यो भिडमा,3,sadness,negative,address,easy,don't-leave plea,user_v2
+4024,Ekkasi,Yabesh Thapa,7,नजानु मुटु तोडी आज एकै छिनमा,3,sadness,negative,address,easy,don't-break-heart plea,user_v2
+4024,Ekkasi,Yabesh Thapa,8,ए निष्ठुरी सानी सुस्तरी माया मार है,3,sadness,negative,address,medium,cruel-one plea; accusatory,user_v2
+4024,Ekkasi,Yabesh Thapa,9,फेरी दुख्छ यो मुटु बेसरी,3,sadness,negative,lexical,easy,heart hurts,user_v2
+4024,Ekkasi,Yabesh Thapa,10,"छाडी तिमी गए, एक्कासी",3,sadness,negative,lexical,medium,sudden departure,user_v2
+4024,Ekkasi,Yabesh Thapa,11,सात समुन्द्र तरी आए तिम्रै छेउ मा,1,neutral,mixed,context_only,medium,devotion odyssey variant,user_v2

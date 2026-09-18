@@ -10,6 +10,10 @@ artifact rows; songs whose text changed only in script (हे -> Hey) keep thei
 labels because the builder matches labels positionally against the cleaned
 corpus.
 
+v3 folds the gold-standard review (eval/line_mood_review_gold_standard_check.md):
+six line corrections accepted (263:15, 757:2, 1469:0, 1469:13, 1511:19, 3174:14)
+and SOURCE bumped to user_v2.
+
 Usage:
     python scripts/build_line_mood_gold.py
 """
@@ -28,7 +32,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from music_rec.mood_attribution import line_spans
 
 OUT_CSV = PROJECT_ROOT / "eval" / "line_mood_gold.csv"
-SOURCE = "agent_v2"
+SOURCE = "user_v2"
 
 LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
     3235: [
@@ -90,7 +94,7 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
         ("neutral", "neutral", "repetition", "easy", "vocative refrain"),
     ],
     1469: [
-        ("joy", "positive", "address", "medium", "playful address; flirtation"),
+        ("neutral", "neutral", "address", "medium", "playful folk prop and address"),
         ("neutral", "neutral", "context_only", "medium", "teasing risk of attachment"),
         ("neutral", "mixed", "metaphor", "hard", "playful dying hyperbole; ambiguous"),
         ("neutral", "neutral", "context_only", "hard", "folk banter; unclear"),
@@ -103,7 +107,7 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
         ("neutral", "neutral", "context_only", "medium", "red-blouse teasing image"),
         ("neutral", "positive", "context_only", "medium", "love glowing on face"),
         ("neutral", "neutral", "metaphor", "medium", "folk garden image"),
-        ("sadness", "negative", "address", "medium", "weeping-wait plea (tears)"),
+        ("neutral", "neutral", "address", "medium", "teasing reassurance; negated weeping"),
         ("neutral", "neutral", "context_only", "hard", "folk refrain fragment"),
     ],
     4024: [
@@ -188,7 +192,7 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
         ("anger", "negative", "metaphor", "hard", "life as wildfire"),
         ("anger", "negative", "context_only", "hard", "burdened the meeting heart"),
         ("anger", "negative", "context_only", "medium", "lifetime of tears; blame"),
-        ("sadness", "negative", "metaphor", "hard", "another heart weeping (grief)"),
+        ("anger", "negative", "metaphor", "hard", "accusatory betrayal; parallel indictment"),
         ("anger", "negative", "metaphor", "hard", "curse: may you drift"),
         ("anger", "negative", "metaphor", "medium", "who made my heart weep"),
     ],
@@ -205,7 +209,7 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
         ("neutral", "neutral", "address", "medium", "say this; injunction"),
         ("neutral", "negative", "context_only", "medium", "don't know who you are"),
         ("neutral", "positive", "context_only", "medium", "Nepali identity assertion"),
-        ("anger", "negative", "context_only", "medium", "caste critique"),
+        ("neutral", "neutral", "context_only", "medium", "philosophical/didactic maxim"),
         ("neutral", "positive", "context_only", "easy", "heart is greatest"),
         ("sadness", "mixed", "context_only", "medium", "cynical regret of society"),
         ("anger", "negative", "context_only", "medium", "satire: whose Everest?"),
@@ -230,7 +234,7 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
     757: [
         ("joy", "positive", "lexical", "medium", "rain joy imagery (सरर)"),
         ("joy", "positive", "lexical", "easy", "आनन्द explicit"),
-        ("joy", "mixed", "context_only", "medium", "sorrow turned to dream"),
+        ("sadness", "negative", "context_only", "medium", "sorrow turned to dream; nostalgic lament"),
         ("sadness", "negative", "context_only", "medium", "life passed quickly; lament"),
         ("joy", "positive", "context_only", "medium", "city-soaked rain joy"),
         ("joy", "positive", "context_only", "medium", "monsoon return; delight"),
@@ -271,7 +275,7 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
         ("neutral", "positive", "context_only", "easy", "name on leaf"),
         ("neutral", "mixed", "context_only", "medium", "water washed it"),
         ("neutral", "positive", "context_only", "medium", "echoes in melody"),
-        ("neutral", "mixed", "context_only", "hard", "दुःख idiom; ambiguous"),
+        ("sadness", "negative", "context_only", "hard", "grief/suffering in separation"),
         ("sadness", "mixed", "context_only", "medium", "no happiness without you"),
         ("neutral", "positive", "context_only", "medium", "always in your memory"),
         ("sadness", "negative", "context_only", "medium", "if separated in love"),
