@@ -671,9 +671,12 @@ vendored three.js, no build step) at http://127.0.0.1:8000:
   joy/sadness/anger probabilities plus a normalized three-emotion composition.
 - The frontend renders an animated 3D donut (joy green, sadness blue, anger
   red) with orbit/zoom, hover-lift tooltips, click-to-filter that dims other
-  segments, a polarity gauge, the Nepali mood phrase, and lyric lines whose
-  left borders/glows match the contributing emotion — hover a line to light
-  up its arc, click a segment to highlight its lines.
+  segments, a polarity gauge, the Nepali mood phrase, and lyric lines in **soft
+  mode** by default: text color encodes each line's soft emotion and signal
+  strength (pale / mid / saturated ramps per emotion, neutral below 0.18),
+  and a `soft | hard` toggle in the panel head restores the calibrated floor
+  labels. Selecting a donut segment or legend chip fades lines continuously by
+  emotion affinity; hovering a line lights up its arc.
 - Validation (`scripts/check_attribution.py`): 0/8 window-count mismatches
   against the Kaggle-built cache, composition argmax matches gold primary for
   6/8 sampled songs (misses: an anger song read as joy at window level, and

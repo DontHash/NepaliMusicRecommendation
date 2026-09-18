@@ -4,6 +4,13 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const EMOTIONS = ['joy', 'sadness', 'anger'];
 const COLORS = { joy: 0x22c55e, sadness: 0x3b82f6, anger: 0xef4444, neutral: 0x64748b };
 const CSS_COLORS = { joy: '#22c55e', sadness: '#3b82f6', anger: '#ef4444', neutral: '#64748b' };
+const SOFT_COLORS = {
+  joy: { strong: '#22c55e', medium: '#4ade80', light: '#86efac' },
+  sadness: { strong: '#3b82f6', medium: '#60a5fa', light: '#93c5fd' },
+  anger: { strong: '#ef4444', medium: '#f97316', light: '#eab308' },
+};
+const SOFT_TIERS = { strong: 0.62, medium: 0.38, light: 0.18 };
+const MODE_KEY = 'moodMode';
 
 const $ = (id) => document.getElementById(id);
 const canvas = $('scene');
@@ -14,6 +21,7 @@ const loading = $('loading');
 const loadingText = $('loading-text');
 
 let state = {
+  mode: localStorage.getItem(MODE_KEY) === 'hard' ? 'hard' : 'soft',
   payload: null,
   hovered: null,
   selected: null,
@@ -201,8 +209,35 @@ canvas.addEventListener('pointerleave', () => {
   hideTooltip();
 });
 
+function softLabel(probs) {
+  let emotion = 'neutral';
+  let prob = 0;
+  for (const name of EMOTIONS) {
+    const value = Number(probs[name] || 0);
+    if (value > prob) {
+      prob = value;
+      emotion = name;
+    }
+  }
+  if (prob >= SOFT_TIERS.strong) return { emotion, prob, tier: 'strong' };
+  if (prob >= SOFT_TIERS.medium) return { emotion, prob, tier: 'medium' };
+  if (prob >= SOFT_TIERS.light) return { emotion, prob, tier: 'light' };
+  return { emotion: 'neutral', prob, tier: 'none' };
+}
+
+function softColor(soft) {
+  if (soft.tier === 'none' || !SOFT_COLORS[soft.emotion]) return CSS_COLORS.neutral;
+  return SOFT_COLORS[soft.emotion][soft.tier];
+}
+
 function segmentCountLines(emotion) {
   if (!state.payload) return 0;
+  if (state.mode === 'soft') {
+    return state.payload.lines.filter((line) => {
+      const soft = softLabel(line.probs);
+      return soft.emotion === emotion && soft.tier !== 'none';
+    }).length;
+  }
   return state.payload.lines.filter((line) => line.dominant === emotion).length;
 }
 
@@ -225,8 +260,17 @@ function selectEmotion(emotion) {
     chip.classList.toggle('active', chip.dataset.emotion === emotion);
   });
   document.querySelectorAll('#lyrics .line').forEach((line) => {
-    if (!emotion) {
+    if (state.mode === 'soft') {
       line.classList.remove('dimmed', 'active');
+      if (!emotion) {
+        line.style.opacity = '';
+      } else {
+        const affinity = Number(line.dataset[emotion] || 0);
+        line.style.opacity = String(0.2 + 0.8 * Math.min(1, affinity / 0.6));
+      }
+    } else if (!emotion) {
+      line.classList.remove('dimmed', 'active');
+      line.style.opacity = '';
     } else if (line.dataset.emotion === emotion) {
       line.classList.add('active');
       line.classList.remove('dimmed');
@@ -236,7 +280,8 @@ function selectEmotion(emotion) {
     }
   });
   if (emotion) {
-    const first = document.querySelector(`#lyrics .line[data-emotion="${emotion}"]`);
+    const attribute = state.mode === 'soft' ? 'data-soft-emotion' : 'data-emotion';
+    const first = document.querySelector(`#lyrics .line[${attribute}="${emotion}"]`);
     if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
@@ -291,12 +336,13 @@ function renderLegend(payload) {
   legend.innerHTML = '';
   for (const emotion of EMOTIONS) {
     const share = payload.composition[emotion] || 0;
-    const count = payload.lines.filter((line) => line.dominant === emotion).length;
+    const count = segmentCountLines(emotion);
+    const unit = state.mode === 'soft' ? 'colored' : 'lines';
     const chip = document.createElement('button');
     chip.className = 'legend-chip';
     chip.dataset.emotion = emotion;
     chip.innerHTML = `<span class="dot" style="background:${CSS_COLORS[emotion]}"></span>
-      <span>${emotion}</span><span class="pct">${(share * 100).toFixed(0)}% · ${count} lines</span>`;
+      <span>${emotion}</span><span class="pct">${(share * 100).toFixed(0)}% · ${count} ${unit}</span>`;
     chip.addEventListener('click', () =>
       selectEmotion(state.selected === emotion ? null : emotion)
     );
@@ -321,17 +367,35 @@ function renderLyrics(lines) {
   container.innerHTML = '';
   lines.forEach((line) => {
     const div = document.createElement('div');
-    const color = CSS_COLORS[line.dominant] || CSS_COLORS.neutral;
+    const soft = softLabel(line.probs);
+    const hardColor = CSS_COLORS[line.dominant] || CSS_COLORS.neutral;
+    const color = state.mode === 'soft' ? softColor(soft) : hardColor;
     div.className = 'line';
     div.dataset.emotion = line.dominant;
+    div.dataset.softEmotion = soft.emotion;
+    div.dataset.joy = line.probs.joy;
+    div.dataset.sadness = line.probs.sadness;
+    div.dataset.anger = line.probs.anger;
     div.style.setProperty('--c', color);
+    if (state.mode === 'soft' && soft.tier !== 'none') {
+      div.style.color = color;
+    }
     div.textContent = line.text;
     div.addEventListener('mouseenter', (event) => {
-      state.lineHover = line.dominant !== 'neutral' ? line.dominant : null;
       const probs = Object.entries(line.probs)
         .map(([name, value]) => `${name} ${(value * 100).toFixed(0)}%`)
         .join(' · ');
-      showTooltip(event, `<b style="color:${color}">${line.dominant}</b><br><span class="prob">${probs}</span>`);
+      if (state.mode === 'soft') {
+        state.lineHover = soft.tier !== 'none' ? soft.emotion : null;
+        const tier = soft.tier === 'none' ? 'below light tier' : `${soft.tier} signal`;
+        showTooltip(
+          event,
+          `<b style="color:${color}">${soft.emotion}</b> — ${tier}<br><span class="prob">${probs}</span><br><span class="prob">strong label: ${line.dominant}${line.dominant === 'neutral' ? ' (below floor)' : ''}</span>`
+        );
+      } else {
+        state.lineHover = line.dominant !== 'neutral' ? line.dominant : null;
+        showTooltip(event, `<b style="color:${color}">${line.dominant}</b><br><span class="prob">${probs}</span>`);
+      }
     });
     div.addEventListener('mousemove', (event) => {
       tooltip.style.left = `${event.clientX}px`;
@@ -405,6 +469,23 @@ document.querySelectorAll('.mood-chip').forEach((chip) => {
     }
   });
 });
+
+function setMode(mode) {
+  state.mode = mode;
+  localStorage.setItem(MODE_KEY, mode);
+  const button = $('mood-mode');
+  button.textContent = mode;
+  button.title = mode === 'soft'
+    ? 'soft: text colored by emotion strength'
+    : 'hard: calibrated per-line labels';
+  if (state.payload) {
+    renderLyrics(state.payload.lines);
+    renderLegend(state.payload);
+    selectEmotion(state.selected);
+  }
+}
+
+$('mood-mode').addEventListener('click', () => setMode(state.mode === 'soft' ? 'hard' : 'soft'));
 
 // ---------- data loading ----------
 async function loadSong(songId) {
@@ -527,4 +608,5 @@ window.addEventListener('resize', resize);
 resize();
 animate();
 
+setMode(state.mode);
 loadSong(4024);
