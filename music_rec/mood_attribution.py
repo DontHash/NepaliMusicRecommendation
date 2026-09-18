@@ -94,7 +94,12 @@ def dominant_label(probs: np.ndarray, floor: float = LINE_FLOOR) -> str:
 
 
 def probe_predict(embedding: np.ndarray, coef: np.ndarray, intercept: np.ndarray) -> np.ndarray:
-    return 1.0 / (1.0 + np.exp(-(coef @ embedding + intercept)))
+    """Sigmoid of the linear mood probe; accepts one vector or a matrix."""
+    emb = np.asarray(embedding, dtype=np.float32)
+    single = emb.ndim == 1
+    logits = (emb if not single else emb[None, :]) @ coef.T + intercept
+    probs = 1.0 / (1.0 + np.exp(-logits))
+    return probs[0] if single else probs
 
 
 def _prob_matrix(vectors: np.ndarray, probe: dict) -> np.ndarray:
