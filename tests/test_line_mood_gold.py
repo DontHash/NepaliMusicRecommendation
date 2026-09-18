@@ -60,7 +60,7 @@ def test_columns_and_vocabulary(gold: pd.DataFrame):
     assert set(gold["polarity"]) <= POLARITIES
     assert set(gold["cue_type"]) <= CUES
     assert set(gold["difficulty"]) <= DIFFICULTIES
-    assert set(gold["source"]) == {"agent_v1"}
+    assert set(gold["source"]) == {"agent_v2"}
 
 
 def test_rows_unique_per_song_line(gold: pd.DataFrame):
@@ -89,7 +89,7 @@ def test_occurrence_counts(gold: pd.DataFrame, corpus: pd.DataFrame):
 
 
 def test_song_coverage(gold: pd.DataFrame):
-    assert gold["song_id"].nunique() == 18
+    assert gold["song_id"].nunique() == 16
     counts = gold.groupby("song_id").size()
     assert (counts >= 6).all()
-    assert len(gold) >= 250
+    assert len(gold) >= 200

@@ -1,2 +1,4 @@
 song_id,title,artist,reason
 3054,No Peace in Love,SACAR aka Lil Buddha,corpus lyrics belong to a different track (Ecstasy In The Palace); excluded from gold eval pending lyrics re-scrape
+1855,Aakashbandi,LEGITHIPHOP,corpus lyrics are phonetic Devanagari of English rap; source text unrecoverable (quarantined in corpus rebuild v2)
+1860,Katha,Lijal Shrestha,corpus lyrics corrupted (non-Nepali word salad in legacy_932); source text unrecoverable (quarantined in corpus rebuild v2)

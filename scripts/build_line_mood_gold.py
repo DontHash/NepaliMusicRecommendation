@@ -5,6 +5,11 @@ non-empty lines (see eval/line_mood_policy.md for the decision rubric). The
 builder expands each distinct text to its first line_index and records how many
 times it occurs, so repeated refrains are labeled once and stay consistent.
 
+v2 (after the corpus rebuild) drops the quarantined songs (1855, 1860) and the
+artifact rows; songs whose text changed only in script (हे -> Hey) keep their
+labels because the builder matches labels positionally against the cleaned
+corpus.
+
 Usage:
     python scripts/build_line_mood_gold.py
 """
@@ -23,7 +28,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from music_rec.mood_attribution import line_spans
 
 OUT_CSV = PROJECT_ROOT / "eval" / "line_mood_gold.csv"
-SOURCE = "agent_v1"
+SOURCE = "agent_v2"
 
 LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
     3235: [
@@ -35,7 +40,6 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
         ("neutral", "positive", "context_only", "medium", "love-world wish; no happiness"),
     ],
     3396: [
-        ("neutral", "neutral", "artifact", "easy", "scrape artifact header"),
         ("joy", "positive", "lexical", "easy", "festive eat-drink cheer"),
         ("joy", "positive", "lexical", "easy", "new clothes, swing fun"),
         ("joy", "positive", "lexical", "easy", "उमङ्ग excitement"),
@@ -53,7 +57,7 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
         ("joy", "positive", "context_only", "medium", "consoling celebration"),
         ("joy", "positive", "context_only", "medium", "celebrate together"),
         ("joy", "positive", "lexical", "easy", "रमाइलो run-on refrain"),
-        ("joy", "positive", "lexical", "medium", "fun line; junk suffix नएम्बेड"),
+        ("joy", "positive", "lexical", "easy", "run-on refrain variant"),
     ],
     1938: [
         ("joy", "positive", "context_only", "medium", "precious-life gratitude"),
@@ -151,31 +155,6 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
         ("sadness", "negative", "lexical", "easy", "crying alone (रुदै)"),
         ("sadness", "negative", "context_only", "medium", "nightly intoxication"),
     ],
-    1860: [
-        ("neutral", "neutral", "none", "easy", "story narration"),
-        ("neutral", "neutral", "none", "hard", "corrupt OCR line"),
-        ("neutral", "neutral", "none", "hard", "corrupt OCR; love subject"),
-        ("neutral", "neutral", "none", "hard", "was their world"),
-        ("sadness", "negative", "metaphor", "hard", "fire destroying world; OCR"),
-        ("neutral", "neutral", "context_only", "hard", "desired star; setup"),
-        ("neutral", "neutral", "none", "hard", "corrupt OCR"),
-        ("sadness", "negative", "context_only", "hard", "hopes ended"),
-        ("neutral", "neutral", "none", "hard", "corrupt OCR future line"),
-        ("joy", "positive", "context_only", "hard", "hopeful happy times; later dashed"),
-        ("sadness", "negative", "lexical", "hard", "trapped enduring atrocity"),
-        ("sadness", "negative", "context_only", "hard", "fear of society"),
-        ("sadness", "negative", "context_only", "hard", "fleeing in distress"),
-        ("joy", "positive", "context_only", "hard", "dreaming joy for love"),
-        ("sadness", "negative", "context_only", "hard", "foreboding fate"),
-        ("sadness", "negative", "context_only", "hard", "sweet moments never came"),
-        ("sadness", "negative", "context_only", "hard", "time passed; love wanting"),
-        ("sadness", "negative", "context_only", "hard", "no sign of change"),
-        ("sadness", "negative", "metaphor", "hard", "black page of betrayal"),
-        ("sadness", "negative", "context_only", "hard", "helpless; unheard cries"),
-        ("sadness", "negative", "lexical", "hard", "heart pain unsoothed"),
-        ("sadness", "negative", "metaphor", "hard", "living corpse; wounds"),
-        ("sadness", "negative", "metaphor", "hard", "who brings her happiness"),
-    ],
     3980: [
         ("anger", "negative", "context_only", "medium", "injustice of good works"),
         ("neutral", "neutral", "context_only", "medium", "self-assertion; defiant"),
@@ -237,10 +216,8 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
     3248: [
         ("anger", "negative", "metaphor", "medium", "saw-on-wounded-heart accusation"),
         ("anger", "negative", "context_only", "medium", "what a game played on me"),
-        ("neutral", "neutral", "context_only", "hard", "fragment; my own kin"),
         ("anger", "negative", "context_only", "hard", "state kills; corrupt line"),
         ("anger", "negative", "metaphor", "medium", "cruel murderous gaze"),
-        ("neutral", "neutral", "context_only", "hard", "fragment; my own kin"),
         ("anger", "negative", "metaphor", "medium", "saw on wounded heart"),
         ("neutral", "neutral", "context_only", "hard", "fragment; my own kin"),
         ("sadness", "mixed", "metaphor", "hard", "dried springs lament; corrupt"),
@@ -249,10 +226,6 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
         ("anger", "negative", "context_only", "medium", "slogans against me; why"),
         ("anger", "negative", "context_only", "hard", "sarcastic king-in-heart"),
         ("anger", "negative", "metaphor", "medium", "you struck the star"),
-        ("neutral", "neutral", "artifact", "easy", "scrape artifact"),
-        ("neutral", "neutral", "artifact", "easy", "scrape artifact"),
-        ("neutral", "neutral", "artifact", "easy", "scrape artifact"),
-        ("neutral", "neutral", "artifact", "easy", "scrape artifact"),
     ],
     757: [
         ("joy", "positive", "lexical", "medium", "rain joy imagery (सरर)"),
@@ -338,29 +311,6 @@ LABELS: dict[int, list[tuple[str, str, str, str, str]]] = {
         ("neutral", "neutral", "context_only", "medium", "talk about us"),
         ("neutral", "neutral", "context_only", "medium", "whatever my caste"),
         ("neutral", "positive", "context_only", "easy", "it's you fragment"),
-    ],
-    1855: [
-        ("neutral", "neutral", "context_only", "medium", "people circling own world"),
-        ("neutral", "neutral", "context_only", "hard", "corrupt line; own world"),
-        ("neutral", "neutral", "code_switch", "hard", "English; wake-up threat"),
-        ("neutral", "neutral", "code_switch", "hard", "English; pivotal mind"),
-        ("neutral", "neutral", "code_switch", "hard", "English; plans to stay up"),
-        ("neutral", "neutral", "code_switch", "easy", "English; 1 AM bed"),
-        ("neutral", "neutral", "code_switch", "hard", "English; nightly owl"),
-        ("neutral", "mixed", "code_switch", "hard", "English; disturbing vibe"),
-        ("sadness", "negative", "code_switch", "medium", "English: saddening explicit"),
-        ("neutral", "neutral", "code_switch", "hard", "English; transcended"),
-        ("joy", "positive", "code_switch", "medium", "English: bliss explicit"),
-        ("neutral", "negative", "code_switch", "hard", "English; survival struggle"),
-        ("anger", "negative", "code_switch", "medium", "English: release the monster"),
-        ("joy", "positive", "code_switch", "medium", "English: radiating positivity"),
-        ("neutral", "negative", "code_switch", "hard", "English; honest now"),
-        ("neutral", "neutral", "context_only", "hard", "played small games"),
-        ("neutral", "neutral", "context_only", "hard", "couldn't grow big"),
-        ("sadness", "mixed", "context_only", "hard", "regret of not achieving"),
-        ("neutral", "neutral", "filler", "easy", "vocal filler"),
-        ("neutral", "neutral", "filler", "easy", "vocal filler"),
-        ("neutral", "neutral", "filler", "easy", "vocal filler"),
     ],
 }
 
