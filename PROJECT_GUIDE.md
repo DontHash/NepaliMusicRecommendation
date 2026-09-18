@@ -600,6 +600,30 @@ student collapsed onto label priors twice (constant outputs; see
 `mood_gold_report_muril_v2.json`) — documented negative result. NepEMO and
 NEmoSen (public Nepali emotion corpora) are unreleased / request-only.
 
+**Mood Studio web app (Phase C4)**
+
+`scripts/run_web_app.py` launches a local 3D explainability UI (FastAPI +
+vendored three.js, no build step) at http://127.0.0.1:8000:
+
+- `music_rec/mood_attribution.py` probes every cached 48-token window vector
+  of a song (or freshly encoded windows for pasted text), maps windows back to
+  lyric lines via fast-tokenizer character offsets, and aggregates per-line
+  joy/sadness/anger probabilities plus a normalized three-emotion composition.
+- The frontend renders an animated 3D donut (joy green, sadness blue, anger
+  red) with orbit/zoom, hover-lift tooltips, click-to-filter that dims other
+  segments, a polarity gauge, the Nepali mood phrase, and lyric lines whose
+  left borders/glows match the contributing emotion — hover a line to light
+  up its arc, click a segment to highlight its lines.
+- Validation (`scripts/check_attribution.py`): 0/8 window-count mismatches
+  against the Kaggle-built cache, composition argmax matches gold primary for
+  6/8 sampled songs (misses: an anger song read as joy at window level, and
+  the deliberately mixed joy/sadness song Asaar), and text-mode attribution is
+  identical to corpus mode (max share delta 0.0000). Window-level probing is
+  an approximation of the song-level probe; the gold validation bounds it.
+- API: `GET /api/search`, `GET /api/song/{id}`, `POST /api/analyze`
+  (`web_app/server.py`); tests in `tests/test_web_app.py` skip when the
+  gitignored window artifacts are absent.
+
 **Known limits at this stage**
 
 - LRCLIB's artist-only search is unreliable (503/empty); per-candidate
