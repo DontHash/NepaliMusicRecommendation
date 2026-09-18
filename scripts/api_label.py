@@ -91,16 +91,16 @@ SCHEMA = {
 }
 
 
-def load_key() -> str:
+def load_key(var_name: str = "GEMINI_API_KEY") -> str:
     key = None
     if ENV.exists():
         for line in ENV.read_text(encoding="utf-8").splitlines():
-            if line.strip().startswith("GEMINI_API_KEY="):
+            if line.strip().startswith(var_name + "="):
                 key = line.split("=", 1)[1].strip()
     if not key:
-        key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+        key = os.environ.get(var_name) or os.environ.get("GEMINI_API_KEY")
     if not key:
-        sys.exit("no GEMINI_API_KEY in .env or environment")
+        sys.exit(f"no {var_name} in .env or environment")
     return key
 
 
@@ -254,6 +254,9 @@ def main() -> None:
     parser.add_argument("--sleep-between", type=int, default=0)
     parser.add_argument("--break-on-fail", action="store_true")
     parser.add_argument("--max-lyrics-chars", type=int, default=3000)
+    parser.add_argument("--key-var", default="GEMINI_API_KEY")
+    parser.add_argument("--shard-index", type=int, default=0)
+    parser.add_argument("--shard-total", type=int, default=1)
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--run-name", default="")
     parser.add_argument("--keep-few-shot", action="store_true")
@@ -271,6 +274,8 @@ def main() -> None:
         subset = cleaned[cleaned["song_id"].isin(ids)].copy()
 
     subset = subset.sort_values("song_id").reset_index(drop=True)
+    if args.shard_total > 1:
+        subset = subset.iloc[args.shard_index :: args.shard_total].reset_index(drop=True)
     if args.limit:
         subset = subset.head(args.limit)
 
@@ -294,7 +299,7 @@ def main() -> None:
     if not todo:
         print("nothing to do")
     else:
-        key = load_key()
+        key = load_key(args.key_var)
         from google import genai
         from google.genai import types
 
@@ -357,9 +362,16 @@ def main() -> None:
         )
         print(json.dumps({k: v for k, v in report.items() if k != "errors"}, indent=1))
 
-    rows = [done[int(x)] for x in subset["song_id"] if int(x) in done]
-    if rows:
-        out = pd.DataFrame(rows)
+    all_recs: dict[int, dict] = {}
+    if jsonl_path.exists():
+        for line in jsonl_path.read_text(encoding="utf-8").splitlines():
+            try:
+                rec = json.loads(line)
+                all_recs[int(rec["song_id"])] = rec
+            except (json.JSONDecodeError, KeyError, ValueError):
+                continue
+    if all_recs:
+        out = pd.DataFrame([all_recs[k] for k in sorted(all_recs)])
         cols = ["song_id", "positive", "negative", *EMOTIONS, "mood_phrase", "confidence"]
         out = out[cols]
         out.to_csv(out_dir / "labels.csv", index=False, encoding="utf-8")
