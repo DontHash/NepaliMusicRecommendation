@@ -30,7 +30,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-DEFAULT_NOTEBOOK = PROJECT_ROOT / "R_data" / "Notebooks" / "NewTransliterate.ipynb"
+DEFAULT_NOTEBOOK = PROJECT_ROOT / "Notebooks" / "NewTransliterate.ipynb"
 KERNEL_SLUG = "newtransliterate"
 KERNEL_TITLE = "NewTransliterate"
 RESUME_DATASET_SLUG = "translit-resume"

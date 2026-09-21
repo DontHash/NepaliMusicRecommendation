@@ -1,0 +1,100 @@
+# Transliteration policy (v1, legacy gold + review workflow)
+
+Decision rubric for `eval/translit_gold_lines.csv` and
+`eval/translit_gold_words.csv` — the reference sets behind
+`scripts/check_transliteration.py`. It exists so the Roman -> Devanagari
+transliterator is scored against a written standard instead of taste, and so
+the teacher pass (track A1) has a target convention to imitate.
+
+The gold sources are the legacy hand-authored pairs (`TransliterateLL.txt`,
+`Data1.csv`..`Data4.csv`), which the current Aksharantar-trained checkpoint has
+never seen. They are in-domain (song lines, real user-style romanization) and
+therefore the only honest out-of-distribution signal available before the
+teacher pass.
+
+## Units
+
+- One row per **distinct roman line** (`translit_gold_lines.csv`) or **distinct
+  roman word** (`translit_gold_words.csv`). Repeats are collapsed at build time.
+- Scoring is character-level: CER is Levenshtein distance divided by reference
+  characters, micro-averaged over the set. Exact-match is the share of items
+  equal to the reference.
+- References are the *target* transliteration, not a normalization of the
+  model's output.
+
+## Rules
+
+1. **Standard Nepali orthography wins.** Write the form a careful writer would
+   use, as attested in the natively-Devanagari corpus (`script_style_original =
+   devanagari`). `kaha` -> कहाँ, `kahi` -> कहीँ, `sanga` -> सँग, `aaja` -> आज,
+   `door` -> दूर.
+2. **The copula is छ.** Corpus-style `cha`, `chha` and `chh` all map to छ when
+   they spell the verb (`huncha` -> हुन्छ, `garchu` -> गर्छु, `chau` -> छौ,
+   `lauchau` -> लाउँछौं). `cha` is *not* चा; चा only appears inside words where
+   the vowel is really आ (चा in `charcha` -> चर्चा).
+3. **`v` before a vowel is भ in corpus spelling** (`vana` -> भन, `vanne` ->
+   भन्ने, `bhana` -> भन). `b` stays ब (`bata` -> बाट). Do not "correct" the
+   romanization in the reference: transliterate what is written.
+4. **English stays Latin.** The gate (`lyrics_pipeline/transliterator.py`)
+   keeps dictionary English and contraction tails untouched; the gold follows
+   the same convention (`Ho no—no ना ना—ना—ना—ना`). Do not add Devanagari for
+   English words, and do not add Latin for Nepali ones.
+5. **Token boundaries are preserved.** The model is word-level: one roman token
+   produces one Devanagari token. Compounds written as two words
+   (`Timi prati` -> तिमी प्रति) stay two words in the reference even though
+   तिमीप्रति is also correct Nepali; note the alternative in `notes`.
+6. **Punctuation and dashes are copied through** from the roman line
+   (`(बढ्दो छ)`, `ना—ना`). Devanagari danda is not introduced.
+7. **Names use conventional Devanagari**: `bhisma` -> भीष्म, not भिस्मा.
+8. **Variants**: where two spellings are both standard (बर्षा/वर्षा,
+   यहाँ/यहां), the reference picks one and records the other in `notes`. The
+   metric counts the other as an error; that is accepted noise.
+9. **Out of scope**: grammar, word order, meaning, and sentence-level editing.
+   The reference is a transliteration, not a translation.
+
+## Exclusions
+
+- Misaligned legacy rows (roman and gold are different text) — listed in
+  `LINE_EXCLUSIONS` / `WORD_EXCLUSIONS` in `scripts/build_translit_gold.py`.
+- English passthrough pairs (`yeah` -> `yeah`) and numeral conversions
+  (`chaudha` -> १४): not transliteration.
+- Single-character roman tokens (`m`, `j`, `k`): too ambiguous to score.
+- Word pairs whose gold depends on context (`ma` -> म or मा, `pani` -> पनि or
+  पानी). These are exported to `eval/translit_ambiguous_words.csv` for the
+  context-rescoring work (A3) and are **not** scored context-free.
+
+## Metrics and thresholds
+
+`scripts/check_transliteration.py` writes
+`music_rec_artifacts/transliteration_report.json` and fails when a metric
+crosses its threshold (defaults in the script are the A0 baseline plus a small
+margin):
+
+| Metric | Baseline (2026-09, greedy) |
+|---|---|
+| Line CER | 0.1037 |
+| Line exact-match | 9.6% |
+| Word CER | 0.1131 |
+| Word exact-match | 64.5% |
+| Gate cases | 4/4 |
+| Lexicon validity | 84.3% (lower bound, see below) |
+
+Lexicon validity is the share of Devanagari tokens produced for real romanized
+corpus songs that are attested in the natively-Devanagari part of the corpus.
+It is a **lower bound**: valid words missing from the 1,421-song reference set
+(e.g. खेलिरहेको) count as misses. Use it as a relative regression signal.
+
+## Review workflow
+
+1. `python scripts/build_translit_review.py` regenerates
+   `eval/translit_review.csv` + `.md` with the model's current prediction and
+   per-row CER, plus fresh corpus lines for gold v2.
+2. The reviewer fills `user_devanagari` on `new_line` rows, corrects
+   `devanagari` in place on `gold_line`/`gold_word` rows when the legacy label
+   is wrong, and explains in `user_note`.
+3. Accepted corrections move into `scripts/build_translit_gold.py`
+   (`LINE_CORRECTIONS` / `WORD_CORRECTIONS`) and reviewed new lines move into
+   `CORPUS_ADDITIONS`, so the gold CSV stays a build artifact and every change
+   is reproducible from the builder.
+4. Rebuild and re-score: `python scripts/build_translit_gold.py &&
+   python scripts/check_transliteration.py`.

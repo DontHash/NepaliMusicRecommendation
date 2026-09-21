@@ -1,0 +1,230 @@
+{
+  "generated_at": "2026-09-21T09:58:02+00:00",
+  "checkpoint": {
+    "path": "D:\\Code\\ProjectR\\new_char_transformer_best.pt",
+    "found": true,
+    "phase_name": "phase2_noise",
+    "epoch": 10,
+    "best_val_cer": 0.035435833463277715,
+    "params": 4012895
+  },
+  "config": {
+    "decode": "greedy",
+    "beam_size": 5,
+    "limit": 0,
+    "lexicon_songs": 60
+  },
+  "lines": {
+    "n": 208,
+    "cer": 0.1037,
+    "exact_match": 0.0962,
+    "exact": 20,
+    "distance": 796,
+    "reference_chars": 7673,
+    "by_difficulty": {
+      "long": {
+        "n": 51,
+        "cer": 0.0608,
+        "exact_match": 0.0392,
+        "exact": 2,
+        "distance": 248,
+        "reference_chars": 4076
+      },
+      "medium": {
+        "n": 123,
+        "cer": 0.1491,
+        "exact_match": 0.0894,
+        "exact": 11,
+        "distance": 461,
+        "reference_chars": 3092
+      },
+      "short": {
+        "n": 34,
+        "cer": 0.1723,
+        "exact_match": 0.2059,
+        "exact": 7,
+        "distance": 87,
+        "reference_chars": 505
+      }
+    },
+    "worst": [
+      {
+        "prediction": "आजकलतो मै चड्चौ की",
+        "reference": "अच्कल्टो मै छाड्छौं कि",
+        "distance": 10,
+        "cer": 0.4545
+      },
+      {
+        "prediction": "यादामा ना आउ",
+        "reference": "यादमा नआऊ",
+        "distance": 4,
+        "cer": 0.4444
+      },
+      {
+        "prediction": "माची मराउ जलाईमा",
+        "reference": "माछी मारौ जालैमा",
+        "distance": 7,
+        "cer": 0.4375
+      },
+      {
+        "prediction": "हो नो नो ना ना ना ना ना",
+        "reference": "Ho no—no ना ना—ना—ना—ना",
+        "distance": 10,
+        "cer": 0.4348
+      },
+      {
+        "prediction": "हुन्चा की नै हुन्न वना ना",
+        "reference": "हुन्छ कि नाइ हुन्न भनन",
+        "distance": 9,
+        "cer": 0.4091
+      },
+      {
+        "prediction": "तिमी प्रति माया बढ्दोचा",
+        "reference": "तिमीप्रति माया बढ्दो छ (बढ्दो छ)",
+        "distance": 13,
+        "cer": 0.4062
+      },
+      {
+        "prediction": "सिन्दुर लाउचाउ की नै भना ना",
+        "reference": "सिन्दुर लाउँछौं कि नाई भनन",
+        "distance": 10,
+        "cer": 0.3846
+      },
+      {
+        "prediction": "माया गर्चौ की नै वना ना",
+        "reference": "माया गर्छौ कि नाई भनन",
+        "distance": 8,
+        "cer": 0.381
+      },
+      {
+        "prediction": "बारु आइ सताउने गरा",
+        "reference": "बरु आई मलाई सताउने गर",
+        "distance": 8,
+        "cer": 0.381
+      },
+      {
+        "prediction": "Hey मानिस",
+        "reference": "हे मानिस",
+        "distance": 3,
+        "cer": 0.375
+      }
+    ]
+  },
+  "words": {
+    "n": 749,
+    "cer": 0.1131,
+    "exact_match": 0.6449,
+    "exact": 483,
+    "distance": 464,
+    "reference_chars": 4104,
+    "worst": [
+      {
+        "prediction": "चा",
+        "reference": "छ",
+        "distance": 2,
+        "cer": 2.0
+      },
+      {
+        "prediction": "ये",
+        "reference": "ए",
+        "distance": 2,
+        "cer": 2.0
+      },
+      {
+        "prediction": "दिये",
+        "reference": "यो",
+        "distance": 3,
+        "cer": 1.5
+      },
+      {
+        "prediction": "जीजेएनए",
+        "reference": "ग्जन",
+        "distance": 5,
+        "cer": 1.25
+      },
+      {
+        "prediction": "टीआई",
+        "reference": "एकदिन",
+        "distance": 5,
+        "cer": 1.0
+      },
+      {
+        "prediction": "टीआरका",
+        "reference": "त्र्क",
+        "distance": 5,
+        "cer": 1.0
+      },
+      {
+        "prediction": "चाटा",
+        "reference": "ओढाउ",
+        "distance": 4,
+        "cer": 1.0
+      },
+      {
+        "prediction": "को",
+        "reference": "छाता",
+        "distance": 4,
+        "cer": 1.0
+      },
+      {
+        "prediction": "केएसए",
+        "reference": "क्षा",
+        "distance": 4,
+        "cer": 1.0
+      },
+      {
+        "prediction": "sãga",
+        "reference": "सँगा",
+        "distance": 4,
+        "cer": 1.0
+      }
+    ]
+  },
+  "gate": {
+    "cases": [
+      {
+        "input": "I love you baby",
+        "kind": "unchanged",
+        "output": "I love you baby",
+        "passed": true
+      },
+      {
+        "input": "don't you know my name",
+        "kind": "unchanged",
+        "output": "don't you know my name",
+        "passed": true
+      },
+      {
+        "input": "timi lai maya garchu",
+        "kind": "no_roman",
+        "output": "तिमी लाई माया गर्चु",
+        "passed": true
+      },
+      {
+        "input": "I love you bhanne geet",
+        "kind": "mixed",
+        "output": "I love you भन्ने गीत",
+        "passed": true
+      }
+    ],
+    "passed": 4,
+    "total": 4
+  },
+  "lexicon_validity": null,
+  "thresholds": {
+    "max_line_cer": 0.115,
+    "min_line_exact": 0.08,
+    "max_word_cer": 0.18,
+    "min_word_exact": 0.5,
+    "min_lexicon_ratio": 0.82
+  },
+  "checks": {
+    "line_cer": true,
+    "line_exact": true,
+    "word_cer": true,
+    "word_exact": true,
+    "gate": true
+  },
+  "passed": true,
+  "seconds": 6.4
+}

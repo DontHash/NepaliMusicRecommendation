@@ -1,0 +1,24 @@
+roman,golds,n_golds,sources
+barsa,बर्षा | वर्षा,2,Data4.csv
+bhana,भन | भनन,2,Data1.csv Data4.csv
+bhanda,भन्दा | हिजोभन्दा,2,Data1.csv Data4.csv
+bhuli,भुलिदिएँ | भूली,2,Data1.csv Data4.csv
+bibhinna,बिभिन्न | विभिन्न,2,Data1.csv Data4.csv
+bijuli,बिजुली | विजुली,2,Data1.csv Data4.csv
+chau,छौ | छौँ | छौं,3,Data1.csv Data2.csv Data3.csv Data4.csv
+daksin,दक्षिण | दक्षिणी,2,Data4.csv
+deu,देउ | देऊ,2,Data1.csv Data2.csv Data4.csv
+hun,हुन | हुन्,2,Data1.csv Data4.csv
+jati,जति | जाति,2,Data1.csv Data4.csv
+kahile,कहिले | कहिल्यै,2,Data1.csv Data3.csv Data4.csv
+ma,म | मा,2,Data1.csv Data2.csv Data3.csv Data4.csv
+mahattwapurna,महत्त्वपूर्ण | महत्वपूर्ण,2,Data1.csv Data4.csv
+malai,तिमीलाई | मलाई,2,Data1.csv Data2.csv Data3.csv Data4.csv
+mitho,मिठो | मीठो,2,Data1.csv Data2.csv Data4.csv
+na,न | ना,2,Data4.csv
+nabhai,नभइ | नभई,2,Data1.csv Data4.csv
+pani,पनि | पानी,2,Data1.csv Data2.csv Data4.csv
+paniko,पानीका | पानीको,2,Data1.csv Data4.csv
+vihar,बिहार | विहार,2,Data1.csv Data4.csv
+yaha,यहाँ | यहां,2,Data1.csv Data4.csv
+yasko,यसका | यसको,2,Data1.csv Data4.csv
