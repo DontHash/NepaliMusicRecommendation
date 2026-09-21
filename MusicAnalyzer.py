@@ -132,9 +132,11 @@ class MusicAnalyzer:
 
     def _load_embedder(self):
         if self._embed_model is None:
-            from sentence_transformers import SentenceTransformer
+            from music_rec.embeddings import _load_model
 
-            self._embed_model = SentenceTransformer(self.config.embedding_model)
+            self._embed_model = _load_model(
+                self.config.embedding_model, self.config.embedding_device
+            )
         return self._embed_model
 
     def _load_transliterator(self):

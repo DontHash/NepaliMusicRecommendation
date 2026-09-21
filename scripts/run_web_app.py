@@ -7,6 +7,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 import threading
 import webbrowser
@@ -16,7 +17,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-import uvicorn
+os.environ.setdefault("PROJECTR_EMBED_DEVICE", "cpu")
+
+import uvicorn  # noqa: E402
 
 
 def main() -> None:
@@ -27,7 +30,7 @@ def main() -> None:
     args = parser.parse_args()
 
     url = f"http://{args.host}:{args.port}"
-    print(f"[mood-studio] starting at {url}")
+    print(f"[mood-studio] starting at {url} (embedding device: {os.environ.get('PROJECTR_EMBED_DEVICE', 'auto')})")
     if not args.no_browser:
         threading.Timer(1.2, lambda: webbrowser.open(url)).start()
     uvicorn.run("web_app.server:app", host=args.host, port=args.port, app_dir=str(PROJECT_ROOT))

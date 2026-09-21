@@ -155,7 +155,9 @@ class MoodAttributor:
         if self._sent_model is None:
             from .embeddings import _load_model
 
-            self._sent_model = _load_model(self.config.embedding_model)
+            self._sent_model = _load_model(
+                self.config.embedding_model, self.config.embedding_device
+            )
         return self._sent_model
 
     def _load_corpus_artifacts(self) -> None:

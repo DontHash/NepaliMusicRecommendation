@@ -20,11 +20,11 @@ class QueryEncoder:
 
     def _embedder(self):
         if self._embed_model is None:
-            import torch
-            from sentence_transformers import SentenceTransformer
+            from .embeddings import _load_model
 
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-            self._embed_model = SentenceTransformer(self.config.embedding_model, device=device)
+            self._embed_model = _load_model(
+                self.config.embedding_model, self.config.embedding_device
+            )
         return self._embed_model
 
     def _translit(self):

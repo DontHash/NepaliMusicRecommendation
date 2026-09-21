@@ -786,6 +786,13 @@ vendored three.js, no build step) at http://127.0.0.1:8000:
 - API: `GET /api/search`, `GET /api/song/{id}`, `GET /api/song/{id}/neighbors`,
   `GET /api/mood/top`, `POST /api/analyze` (`web_app/server.py`); tests in
   `tests/test_web_app.py` skip when the gitignored window artifacts are absent.
+- Inference device: the web app defaults to **CPU** embedding inference
+  (`PROJECTR_EMBED_DEVICE=cpu`, set by `scripts/run_web_app.py` and
+  `web_app/server.py`; override the env var to use CUDA). Loading mpnet onto the
+  same GPU that renders the three.js scene produced WebGL `CONTEXT_LOST` and an
+  intermittent 500 on `POST /api/analyze` (not reproducible off-GPU). Unhandled
+  errors are logged with a traceback through the app's 500 handler. The first
+  search/analyze after startup pays a one-time CPU model load (~20-30s).
 
 **Known limits at this stage**
 
@@ -813,6 +820,6 @@ vendored three.js, no build step) at http://127.0.0.1:8000:
 
 ---
 
-*Last updated to reflect project state: C5 corpus hygiene rebuild (4,157 songs,
-11 artifact lines, English-preserving gate) + labels v3 + rebuilt embeddings,
-probe, index, and line-gold v2.*
+*Last updated to reflect project state: C6 hybrid lyric retrieval + C7 Studio
+lyric search + C8 mood/free-text eval and fusion specificity gate + C9 web-app
+CPU inference (GPU/WebGL contention fix).*

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -31,6 +32,9 @@ class Config:
     metadata_parquet: Path = field(init=False)
 
     embedding_model: str = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+    embedding_device: str = field(
+        default_factory=lambda: os.environ.get("PROJECTR_EMBED_DEVICE", "auto")
+    )
     sentiment_base_model: str = "google/muril-base-cased"
 
     min_tokens: int = 10

@@ -87,6 +87,10 @@ rec.recommend_by_text("dukha", category="nepali")
 - **Corpus is 942 (-> 932 after cleaning), not 20k.** Code scales unchanged.
 - **CPU-only**: kept muRIL fine-tune but light (2 epochs); embeddings use
   `paraphrase-multilingual-mpnet-base-v2` (no fine-tune needed).
+- **Web app runs embedding inference on CPU** (`PROJECTR_EMBED_DEVICE=cpu`,
+  set by `scripts/run_web_app.py`): sharing the GPU with the browser's WebGL
+  renderer caused context loss and an intermittent `/api/analyze` 500. Override
+  the env var to use CUDA.
 - **ChromaDB skipped**: FAISS + pandas metadata filter is simpler for this scale.
 - **Sentiment truncation**: long lyrics truncated to the LAST 256 tokens
   (conclusions carry emotional weight), per the plan.

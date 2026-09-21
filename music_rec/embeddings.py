@@ -11,6 +11,7 @@ every song were embedded and lyric-snippet queries could not match.
 from __future__ import annotations
 
 import json
+import os
 
 import numpy as np
 import pandas as pd
@@ -18,16 +19,34 @@ import pandas as pd
 from .config import Config
 
 
-def _load_model(model_name: str):
+def resolve_device(preference: str | None = None) -> str:
+    """Resolve the torch device for embedding models.
+
+    ``preference`` wins over ``PROJECTR_EMBED_DEVICE``; ``auto`` (default)
+    picks CUDA when available. The web app sets the env var to ``cpu`` so
+    model inference does not compete with the browser's WebGL rendering on
+    the same GPU.
+    """
+    choice = (preference or os.environ.get("PROJECTR_EMBED_DEVICE") or "auto").lower()
+    if choice in {"cpu", "cuda"}:
+        return choice
+    import torch
+
+    return "cuda" if torch.cuda.is_available() else "cpu"
+
+
+def _load_model(model_name: str, device: str | None = None):
     import torch
     from sentence_transformers import SentenceTransformer
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    if device == "cuda":
+    resolved = resolve_device(device)
+    if resolved == "cuda" and not torch.cuda.is_available():
+        resolved = "cpu"
+    if resolved == "cuda":
         print(f"[embeddings] using GPU: {torch.cuda.get_device_name(0)}")
     else:
         print("[embeddings] using CPU")
-    return SentenceTransformer(model_name, device=device)
+    return SentenceTransformer(model_name, device=resolved)
 
 
 def _encode_simple(

@@ -7,6 +7,7 @@ analysis. Run via ``scripts/run_web_app.py``.
 
 from __future__ import annotations
 
+import logging
 import os
 import threading
 from contextlib import asynccontextmanager
@@ -14,14 +15,18 @@ from pathlib import Path
 
 import pandas as pd
 from fastapi import Depends, FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from music_rec.config import Config
-from music_rec.mood_attribution import MoodAttributor, get_attributor
-from music_rec.mood_neighbors import get_mood_neighbors
-from music_rec.recommender import MusicRecommender
+os.environ.setdefault("PROJECTR_EMBED_DEVICE", "cpu")
+
+from music_rec.config import Config  # noqa: E402
+from music_rec.mood_attribution import MoodAttributor, get_attributor  # noqa: E402
+from music_rec.mood_neighbors import get_mood_neighbors  # noqa: E402
+from music_rec.recommender import MusicRecommender  # noqa: E402
+
+logger = logging.getLogger("web_app")
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -42,6 +47,12 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="ProjectR Mood Studio", version="0.1.0", lifespan=lifespan)
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request, exc):
+    logger.exception("unhandled error: %s %s", request.method, request.url.path)
+    return JSONResponse(status_code=500, content={"detail": "internal error"})
 
 _corpus: pd.DataFrame | None = None
 _payload_cache: dict[int, dict] = {}
