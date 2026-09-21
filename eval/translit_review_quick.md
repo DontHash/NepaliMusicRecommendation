@@ -1,799 +1,781 @@
 # Quick transliteration review
 
-- `new_heldout`: 120 lines held out from teacher training; the draft is
-  pre-filled in `user_devanagari` as a starting point — **edit or delete** what you
-  disagree with. Accepting it blindly makes the gold a copy of the teacher.
-- `legacy_consensus`: 37 legacy rows where the draft and the pipeline
+- `new_heldout`: 120 lines held out from teacher training. The
+  **pipeline** output is pre-filled in `user_devanagari` (a review pass showed
+  it beats the draft here); `draft` is a second opinion and `draft_agrees`
+  marks where the two agree. Edit or delete what you disagree with.
+- `legacy_consensus`: 33 legacy rows where the draft and the pipeline
   agree against the recorded gold (likely legacy errors). Set `user_devanagari` to
   the accepted form, or leave empty to keep the legacy label.
 
-Full kit with all 160 draft disagreements: `eval/translit_review.md`.
+Non-lyric candidates (English-only lines, credit rows) are filtered out of the
+sample. Full kit with all draft disagreements: `eval/translit_review.md`.
 
 ## new_heldout
 
 ### 001
-- roman: `Jamara ra rato tikai ma`
-- draft: जमरा र रातो टीकाै मा
-- model: जमरा र रातो टिकाइ मा
+- roman: `Din ra raatma timrai sapana`
+- model: दिन र रातमा तिम्रै सपना
+- draft: दिन रा रातमा तिमrai सपना (differs)
 
 ### 002
-- roman: `Mero waiyat kura-kani suni`
-- draft: मेरो वाइयात कुरा-कानी सुनी
-- model: मेरो वैयत कुरा-कानी सुनी
+- roman: `Baisa ma phoole Mayako muskanma`
+- model: बैसा मा फुले मायाको मुस्कानमा
+- draft: बैसा मा फूले मायाको मुस्कानमा (differs)
 
 ### 003
-- roman: `bipana le ankha malai bharie diyo`
-- draft: बिपना ले आँखा मलाई भरिए दियो
-- model: बिपना ले आँखा मलाई भरिए दियो
+- roman: `Kasailai Chadi Balidiyou Kasailai Jhari Mero Rang Anek`
+- model: कसैलाई छाडी बालिदियौ कसैलाई झरी मेरो रंग अनेक
+- draft: कसलाई छाडी बलिदियौ कसलाई झरी मेरो रङ्ग अनेक (differs)
 
 ### 004
-- roman: `Pardeshi Hunu Pardaina Timi Runu`
-- draft: पार्देशी हुनु पर्दैन तिमी रुनु
-- model: परदेशी हुनु पर्दैन तिमी रुनु
+- roman: `Jati bhulu bhanda, timilai nai rojcha) - x2`
+- model: जति भुलु भन्दा, तिमीलाई नै रोज्छ) - एक्स2
+- draft: जति भुलु भन्दा, तिमilai नै रोज्छ) - x2 (differs)
 
 ### 005
-- roman: `Hune ho ki hoina`
-- draft: हुने हो कि होइन
-- model: हुने हो कि होइन
+- roman: `Thaha chha timilai`
+- model: थाहा छ तिमीलाई
+- draft: थाह छ तिमीलाई (differs)
 
 ### 006
-- roman: `Sunne lai ta khyala, khyala`
-- draft: सुन्ने लाइ ता ख्याल, ख्याल
-- model: सुन्ने लाइ ता ख्याला, ख्याला
+- roman: `Timi bina ma adhuro`
+- model: तिमी बिना मा अधुरो
+- draft: तिमी बिना म अधुरो (differs)
 
 ### 007
-- roman: `Tenson Linu Chha Ra Kasko`
-- draft: टेन्सन लिनु छ रा कास्को
-- model: टेन्सन लिनु छ रा कस्को
+- roman: `Chuna tyo timro tyo wooth lai`
+- model: चुना त्यो तिम्रो त्यो वुथ लाई
+- draft: चुना त्यो तिम्रो त्यो ओठ लाई (differs)
 
 ### 008
-- roman: `Hidechu hidechu`
-- draft: हिडेचु हिडेचु
-- model: हिडेछु हिडेछु
+- roman: `Samjihnchu Samjihnchu Samjihnchu`
+- model: सम्जिन्छु सम्जिन्छु सम्जिन्छु
+- draft: सम्झिन्छु सम्झिन्छु सम्झिन्छु (differs)
 
 ### 009
-- roman: `Jo Malai Ghrina Garna Samaye Khanaucha`
-- draft: जो मलाई घृणा गर्न समय खानौचा
-- model: जो मलाई घृणा गर्न समये खनाउछ
+- roman: `Ahile Saal Yestai Bho Nana`
+- model: अहिले साल यस्तै भो नाना
+- draft: अहिले साल यस्तै भो नाना (agrees)
 
 ### 010
-- roman: `Chokho Maya Laayera`
-- draft: चोखो माया लाएर
-- model: चोखो माया लाएर
+- roman: `ratri ko andheri bihani ko sunaulo`
+- model: रात्री को अन्धेरी बिहानि को सुनौलो
+- draft: रात्री को अन्धेरी बिहानी को सुनाउलो (differs)
 
 ### 011
-- roman: `Nepali Ko Maan Haseko Herna Chahanchu`
-- draft: नेपाली को मान हासेको हेर्न चाहन्छु
-- model: नेपाली को मान हासेको हेर्न चाहन्छु
+- roman: `Timro sparsha samahalera`
+- model: तिम्रो स्पर्श समाहालेर
+- draft: तिम्रो स्पर्श समाहलेर (differs)
 
 ### 012
-- roman: `Bato Sabai Sajilo Ta`
-- draft: बाटो सबै सजिलो ता
-- model: बाटो सबै सजिलो ता
+- roman: `Maya Ma Rahecha Ke Saro Bisa`
+- model: माया मा रहेछ के सारो बिसा
+- draft: माया मा रहेचा के सारो बिसा (differs)
 
 ### 013
-- roman: `Kehi Barsha Haina Maya`
-- draft: केही वर्ष हाइन माया
-- model: केही बर्ष हैन माया
+- roman: `Kasai Lie Dekhauna Hoina`
+- model: कसै Lie देखाउन होइन
+- draft: कसै लिए देखाउना होइना (differs)
 
 ### 014
-- roman: `Yeklai hunda yad aaunchha jhan`
-- draft: ऐक्लाई हुन्दा याद आउँछ झन
-- model: येकलाई हुन्दा याद आउँछ झन्
+- roman: `K Chaldai Cha Vanana`
+- model: क चल्दै छ भनना
+- draft: के चल्दै छ भनना (differs)
 
 ### 015
-- roman: `Chhutai Basaula`
-- draft: छुट्टै बसौला
-- model: छुटाइ बसौला
+- roman: `Pachhuto ra darle jyanai jana la thyo`
+- model: पछुतो र दरले ज्यानै जान ला थियो
+- draft: पछुतो रा दर्ले ज्यानै जाना ल थ्यो (differs)
 
 ### 016
-- roman: `Mitho mitho dhoon ma koili ko boli ma`
-- draft: मीठो मीठो धून मा कोइली को बोली मा
-- model: मिठो मीठो धुन मा कोइली को बोली मा
+- roman: `Janti liyi aaunu hajur`
+- model: जन्ती लियी आउनु हजुर
+- draft: जन्ती लियी आउनु हजुर (agrees)
 
 ### 017
-- roman: `(Suna Mero Nirmaya`
-- draft: (सुना मेरो निर्मया
-- model: (सुना मेरो निर्मया
+- roman: `Niswartha maya garthey uslai`
+- model: निस्वार्थ माया गर्थे उसलाई
+- draft: निस्वार्थ माया गार्थे उस्लाई (differs)
 
 ### 018
-- roman: `Timro manko kunama`
-- draft: तिम्रो मनको कुनामा
-- model: तिम्रो मनको कुनामा
+- roman: `Rahena ma aafu mai`
+- model: रहेन मा आफू म
+- draft: रहेना म आफू मै (differs)
 
 ### 019
-- roman: `Kina rakheu chokho mutu`
-- draft: किन राखेउ चोखो मुटु
-- model: किन राखेउ चोखो मुटु
+- roman: `Maghi hai mela ma dil basyo`
+- model: माघी है मेला मा दिल बस्यो
+- draft: माघी है मेला मा दिल बस्यो (agrees)
 
 ### 020
-- roman: `Har juni ko saath lai`
-- draft: हर जुनी को साथ लाई
-- model: हर जुनी को साथ लाई
+- roman: `Prem ko yo nagari, yo mero rajdhani`
+- model: प्रेम को यो नगरी, यो मेरो राजधानी
+- draft: प्रेम को यो नगरी, यो मेरो राजधानी (agrees)
 
 ### 021
-- roman: `Hijo ko aasha`
-- draft: हिजो को आशा
-- model: हिजो को आशा
+- roman: `Jhamakkai sanjha paryo`
+- model: झमक्कै साँझ पर्यो
+- draft: झमक्कै साँझ पर्यो (agrees)
 
 ### 022
-- roman: `Sai sai sai`
-- draft: साइ साइ साइ
-- model: साइ साइ साइ
+- roman: `K Ho K Vo Thahai Payeena) - 2`
+- model: क हो क भो थाहै पायीन) - 2
+- draft: के हो के भो थाहाइ पाएना) - 2 (differs)
 
 ### 023
-- roman: `Terae Kaaran Bandhan Ma Thiye Ma`
-- draft: तेरै कारण बन्धन मा थिए मा
-- model: तेरै कारण बन्धन मा थिये मा
+- roman: `Timi Bina Mero Jiwan Ma`
+- model: तिमी बिना मेरो जीवन मा
+- draft: तिमी बिना मेरो जीवन मा (agrees)
 
 ### 024
-- roman: `Ho Sannani Ko Vhijyo Kapaala`
-- draft: हो सन्नानी को भिज्यो कपाल
-- model: हो सन्नानी को भिज्यो कपाला
+- roman: `Timi chau, timro pyaro manche cha`
+- model: तिमी छौ, तिम्रो प्यारो मान्छे छ
+- draft: तिमी छौ, तिम्रो प्यारो मान्छे छ (agrees)
 
 ### 025
-- roman: `Timi matra hau manma basne`
-- draft: तिमी मात्र हाउ मनमा बस्ने
-- model: तिमी मात्र हौ मनमा बस्ने
+- roman: `Badheko Ribbona`
+- model: बढेको रिब्बोना
+- draft: बाधेको रिबोना (differs)
 
 ### 026
-- roman: `Mutu Nai Timro Kasto`
-- draft: मुटु नै तिम्रो कस्तो
-- model: मुटु नै तिम्रो कस्तो
+- roman: `timi timi`
+- model: तिमी तिमी
+- draft: तिमी तिमी (agrees)
 
 ### 027
-- roman: `Herda herdai timro muhar pasina po kahlkhal`
-- draft: हेर्दा हेर्दै तिम्रो मुहार पसिना पो कलकल
-- model: हेर्दा हेर्दै तिम्रो मुहार पसिना पो कहलखाल
+- roman: `Aahai Bholi K k Hola`
+- model: आहै भोली क क होला
+- draft: आहै भोलि के क् होला (differs)
 
 ### 028
-- roman: `Waari paari suskera`
-- draft: वारी पारी सुस्केरा
-- model: वारी पारी सुस्केर
+- roman: `Yaha Chalne Nai Ho Yesta`
+- model: यहा चल्ने नै हो येस्ता
+- draft: याहा चलने नै हो यस्ता (differs)
 
 ### 029
-- roman: `Timi Mai Bhuleko`
-- draft: तिमी मै भुलेको
-- model: तिमी मै भुलेको
+- roman: `Dhuka lai na birsi rakhnu`
+- model: ढुका लाइ ना बिर्सी राख्नु
+- draft: ढुका लाइ ना बिर्सी राख्नु (agrees)
 
 ### 030
-- roman: `Ho dhan dekhai yo chhoriko maya painna`
-- draft: हो धन देखाइ यो छोरीको माया पाइन्न
-- model: हो धन देखाइ यो छोरीको माया पाइन्न
+- roman: `Chahiye Bela Koile pani Feri Saath Diyena`
+- model: चाहिए बेला कोइले पनि फेरी साथ दियेन
+- draft: चाहिएको बेला कोइले पनि फेरी साथ दिएन (differs)
 
 ### 031
-- roman: `Jhan jhan mutu ma aago dankincha`
-- draft: झन झन मुटु मा आगो दन्किन्छ
-- model: झन् झन मुटु म आगो डंकिन्छ
+- roman: `Eh Baba Malai Kasto Karma Diyeu`
+- model: एह बाबा मलाई कस्तो कर्म दियेउ
+- draft: ए बाबा मलाई कस्तो कर्म दियौ (differs)
 
 ### 032
-- roman: `Hmm. hmm`
-- draft: हम्. हम्म
-- model: एचएमएम. एचएमएम
+- roman: `Hera sundari yo mann mero saacho chha`
+- model: हेरा सुन्दरी यो मन्न मेरो साचो छ
+- draft: हेरा सुन्दरी यो मन मेरो साँचो छ (differs)
 
 ### 033
-- roman: `Hope Ta Aaudaina kohi`
-- draft: Hope Ta Aaudaina kohi
-- model: Hope ता आउदैन कोहि
+- roman: `Sworga Jastai Gharko`
+- model: स्वर्ग जस्तै घरको
+- draft: स्वर्ग जस्तै घरको (agrees)
 
 ### 034
-- roman: `Maya gardaichhau ki`
-- draft: माया गर्दैछौ कि
-- model: माया गर्दैछौ कि
+- roman: `Ramro ta maile pani sochekai ho`
+- model: राम्रो ता मैले पनि सोचेकै हो
+- draft: राम्रो त मैले पनि सोचेकै हो (differs)
 
 ### 035
-- roman: `Maan Ko Kura Aaja Nai Kholideu`
-- draft: मान को कुरा आज नै खोलिदेउ
-- model: मान को कुरा आज नै खोलिदेउ
+- roman: `Hey Laaz Namana Aru Ko Odhau Rato Malai Baruko`
+- model: Hey लाज नमाना अरु को ओढाउ रातो मलाई बारुको
+- draft: हे लाज नमाना अरू को ओढाऊ रातो मलाई बारुको (differs)
 
 ### 036
-- roman: `Sambodhan garda gardai gai gayou chodera - 2`
-- draft: सम्बोधन गर्दा गर्दै गई गायौ छोडेर - 2
-- model: सम्बोधन गर्दा गर्दै गाइ गायौ छोडेर - 2
+- roman: `Nepali Music Ko`
+- model: नेपाली Music को
+- draft:  (differs)
 
 ### 037
-- roman: `You Got Me Feeling like`
-- draft: You Got Me Feeling like
-- model: You गोट Me Feeling like
+- roman: `Timilai nai kurda kurdai bitla hai yo jindagi`
+- model: तिमीलाई नै कुर्दा कुर्दै बित्ला है यो जिन्दगी
+- draft: तिमीलाई नै कुर्दै कुर्दै बित्ला है यो जिन्दगी (differs)
 
 ### 038
-- roman: `(Suna mero nirmaya`
-- draft: (सुना मेरो निर्मaya
-- model: (सुना मेरो निर्मया
+- roman: `Timro mannaima`
+- model: तिम्रो मान्नैमा
+- draft: तिम्रो मनमैना (differs)
 
 ### 039
-- roman: `Birano birano`
-- draft: बिरानो बिरानो
-- model: बिरानो बिरानो
+- roman: `Eklai behosima`
+- model: एकलाई बेहोसीमा
+- draft: एकलै बेहोसीमा (differs)
 
 ### 040
-- roman: `Timi Sanga Mero Saino`
-- draft: तिमी सँग मेरो साइनो
-- model: तिमी सँग मेरो साइनो
+- roman: `Aye Jiwan Ma Sanga Ekchin Kura Gara`
+- model: आये जीवन मा सँग एकछिन कुरा गर
+- draft: ऐ जीवन म सँग एकचिन कुरा गर (differs)
 
 ### 041
-- roman: `Paach patak samjhauda maya`
-- draft: पाच पटक सम्झाउदा माया
-- model: पाच पटक सम्झाउदा माया
+- roman: `Mero maana bhitra ka harek khushi hau`
+- model: मेरो माना भित्र का हरेक खुसी हौ
+- draft: मेरो मान भित्र का हरेक खुसी hau (differs)
 
 ### 042
-- roman: `naalaa paani pugchha`
-- draft: नाआला पानी पुग्छ
-- model: नाला पानी पुग्छ
+- roman: `Ae ho ra maya,`
+- model: आए हो र माया,
+- draft: ए हो र माया, (differs)
 
 ### 043
-- roman: `Jiu Kati Jyunarai Laya`
-- draft: जिय कटि ज्युनरै लय
-- model: जिउ कति ज्युनारै लय
+- roman: `Nachdai Aauchan Timi Tirai`
+- model: नाच्दै आउँछन् तिमी तिरै
+- draft: नाच्दै आउँछन् तिमी तिरै (agrees)
 
 ### 044
-- roman: `Mero vawana gahiriyera her ana`
-- draft: मेरो भवना गहिरIYera हेर अना
-- model: मेरो भवाना गहिरिएर her अना
+- roman: `Basi rahenay chu sadhai timrai pratikchiya nai`
+- model: बसी रहेनय छु सधैँ तिम्रै प्रतीक्चीय नै
+- draft: बसी रहने छु सधैँ तिम्रै प्रतिक्रिया नै (differs)
 
 ### 045
-- roman: `Timi Pheri Aau Na`
-- draft: तिमी फेरि आउ ना
-- model: तिमी फेरी आउ ना
+- roman: `Mayalu Timi Hau Ki Khai Kunni`
+- model: मायालु तिमी हाउ कि खै कुन्नी
+- draft: मायालु तिमी हौ कि खै कुन्नी (differs)
 
 ### 046
-- roman: `Feri K Kurale Timro Maan Dukyo`
-- draft: फेरि क कुराले तिम्रो मान दुख्यो
-- model: फेरी क कुराले तिम्रो मान डुक्यो
+- roman: `Sahara Bina Timro Ke Jindagi`
+- model: सहारा बिना तिम्रो के जिन्दगी
+- draft: सहारा बिना तिम्रो के जिन्दगी (agrees)
 
 ### 047
-- roman: `RAJENDRA SHRESTHA`
-- draft: RAJENDRA SHRESTHA
-- model: राजेन्द्र श्रेष्ठ
+- roman: `Jaha jau timi tyahi hune chhu ma`
+- model: जहाँ जाउ तिमी त्यही हुने छु मा
+- draft: जहाँ जाऊँ तिमी त्यहीँ हुने छु म (differs)
 
 ### 048
-- roman: `Jhal jhal yaad aaunchha`
-- draft: झल झल याद आउँछ
-- model: झल झल याद आउँछ
+- roman: `Tairinchau ta wori pari`
+- model: तैरिन्छौ ता वोरी पारी
+- draft: तैरिन्छौ त वरी परी (differs)
 
 ### 049
-- roman: `Maile Saas Fernai Nasake Pani`
-- draft: मैले सास फेर्नै नसके पनि
-- model: मैले सास फेर्नै नसके पनि
+- roman: `Lyrics Hemanta Ghimire`
+- model: Lyrics हेमन्त घिमिरे
+- draft: Lyrics हेमन्त घिमिरे (agrees)
 
 ### 050
-- roman: `Mare Pachi Feri K Kee`
-- draft: मरे पाची फेरि क की
-- model: मरे पछि फेरी क की
+- roman: `Dui Thopa Aanshu Liyera`
+- model: दुई थोपा आँसु लिएर
+- draft: दुई थोपा आँसु लिएर (agrees)
 
 ### 051
-- roman: `Chokho maya launa paye khamla dhindo aato`
-- draft: चोखो माया लाउन पाए खाम्ला ढिँडो आँटो
-- model: चोखो माया लाउन पाए खाम्ला ढिँडो आटो
+- roman: `Yeti saro chha ra`
+- model: येती सारो छ र
+- draft: येति सारो छ र (differs)
 
 ### 052
-- roman: `yeuti bahini le`
-- draft: येउटी बहिनी ले
-- model: यौती बहिनी ले
+- roman: `Timro Samu Aakash Pani`
+- model: तिम्रो सामु आकाश पनि
+- draft: तिम्रो सामु आकाश पनि (agrees)
 
 ### 053
-- roman: `Timro mriga nayan`
-- draft: तिम्रो मृग नयन
-- model: तिम्रो मृग नयन
+- roman: `Mai Saachu Kasari`
+- model: मै साचु कसरी
+- draft: मै साचु कसरी (agrees)
 
 ### 054
-- roman: `Bhailini... Bhailini`
-- draft: भैलिनि... भैलिनि
-- model: भैलिनी... भैलिनी
+- roman: `Ho katai mero naam timle koreko ta hoina ni`
+- model: हो कतै मेरो नाम तिम्ले कोरेको ता होइन नि
+- draft: हो कतै मेरो नाम तिम्ले कोरेको त होइन नि (differs)
 
 ### 055
-- roman: `Jhajhalko Yo Manma Aauchha`
-- draft: झझाल्को यो मनमा आउँछ
-- model: झझलको यो मनमा आउँछ
+- roman: `Manma Yo Bela`
+- model: मनमा यो बेला
+- draft: मनमा यो बेला (agrees)
 
 ### 056
-- roman: `Jun heri parkhi basa timi malai`
-- draft: जुन हेरी पर्खी बास तिमी मलाई
-- model: जुन हेरी पर्खी बास तिमी मलाई
+- roman: `aayau samipai jaba timi nidari ma`
+- model: आयौ समीपै जब तिमी निदारी मा
+- draft: आायौ समिपै जबा तिमी निदारी मा (differs)
 
 ### 057
-- roman: `kata gayou timi`
-- draft: कता गायौ तिमी
-- model: कतै गायौ तिमी
+- roman: `Timi lai nai, sumpidiyen yo mann.`
+- model: तिमी लाइ नै, सुम्पिदियें यो मन्न.
+- draft: तिमी लाइ नै, सुम्पिदियेन यो मन्न। (differs)
 
 ### 058
-- roman: `Cha Swari Ma Kurdai Chu`
-- draft: छ स्वारि मा कुर्दै छु
-- model: छ स्वरी मा कुर्दै छु
+- roman: `Timi navaye aru ko holaaa...`
+- model: तिमी नभए अरु को होला...
+- draft: तिमी नभये अरू को होलाaa... (differs)
 
 ### 059
-- roman: `Timimai Haraauna Khojchhu Ma`
-- draft: तिमिмай हराउन खोज्छु म
-- model: तिमीमै हराउन खोज्छु मा
+- roman: `Chhoralai banune re dherai thulo manchhe`
+- model: छोरालाई बनुने रे धेरै ठूलो मान्छे
+- draft: छोरालाई बानुने रे धेरै ठुलो मान्छे (differs)
 
 ### 060
-- roman: `timro muskan bata ghayel chu ma`
-- draft: तिम्रो मुस्कान बाट घायेल छु म
-- model: तिम्रो मुस्कान बाट घायेल छु मा
+- roman: `Jhuto nai cha timro tyo maya`
+- model: झुटो नै छ तिम्रो त्यो माया
+- draft: झुटो नै छ तिम्रो त्यो माया (agrees)
 
 ### 061
-- roman: `Autai Bana Beglai Maan Nacheko Chha Majura`
-- draft: औटाइ बन बेग्लाई मान नाचेको छ मजुरा
-- model: आउटै बना बेगलाई मान नाचेको छ मजुरा
+- roman: `Chamro mato mathi`
+- model: चाम्रो माटो माथि
+- draft: चम्रो माटो माथि (differs)
 
 ### 062
-- roman: `Yeti bujhi dinu`
-- draft: येती बुझी दिनु
-- model: येती बुझी दिनु
+- roman: `Saanjh Dhaldai Chha`
+- model: साँझ ढल्दै छ
+- draft: साँझ ढल्दै छ (agrees)
 
 ### 063
-- roman: `Ho barsha le vanchha timlai rujhauchhu`
-- draft: हो बर्षा ले भन्छ तिमलाइ रुझाउँछु
-- model: हो बर्ष ले भन्छ तिम्लाई रुझाउछु
+- roman: `Chura dhago pote, lali oothma, lali ootha ma`
+- model: चुरा धागो पोते, लाली ओठमा, लाली ओठ मा
+- draft: चुरा धागो पोते, लाली ओठ्म, लाली ओठा मा (differs)
 
 ### 064
-- roman: `Raksi khutta paltara, jutta talkara`
-- draft: रक्सी खुट्टा पलतारा, जुट्टा तल्कारा
-- model: रक्सी खुट्टा पल्टरा, जुत्ता तलकारा
+- roman: `Yo Dui Aatma Ko Mel Ho`
+- model: यो दुई आत्मा को मेल हो
+- draft: यो दुई आत्मा को मेल हो (agrees)
 
 ### 065
-- roman: `Malai yehi ramna chodideu`
-- draft: मलाई येहि रमना छोडिदेउ
-- model: मलाई येही रम्न छोडिदेउ
+- roman: `Duniyalai Dekhaunu Chaina`
+- model: दुनियालाई देखाउनु छैन
+- draft: दुनियालाई देखाउनु छैन (agrees)
 
 ### 066
-- roman: `Timro man ko kuna ma`
-- draft: तिम्रो मन को कुना म
-- model: तिम्रो मन को कुना मा
+- roman: `Kahile vetum va chha?`
+- model: कहिले भेटम भ छ?
+- draft: कहिले भेटुम वा छ? (differs)
 
 ### 067
-- roman: `Indreni rang ko cha`
-- draft: इन्द्रेणी रंग को छ
-- model: इन्द्रेणी रङ्ग को छ
+- roman: `Kinarai Na Bheti Eh Rakheko`
+- model: किनारै ना भेटी एह राखेको
+- draft: किनारै ना भेटी Eh राखेको (differs)
 
 ### 068
-- roman: `Lukau chhau kina bhanideu`
-- draft: लुकाउ छौ किन भनिदेउ
-- model: लुकाउ छौ किन भनिदेउ
+- roman: `Na lajai dinu`
+- model: ना लजाइ दिनु
+- draft: न लजाई दिनु (differs)
 
 ### 069
-- roman: `Mayako kura ke jiu jyan timrai ho`
-- draft: मायाको कुरा के जिय ज्यान तिम्रै हो
-- model: मायाको कुरा के ज्यू ज्यान तिम्रै हो
+- roman: `Hami Sangae Nai Rachaula`
+- model: हामी संगै नै रचौला
+- draft: हामी सँगै नै रचौला (differs)
 
 ### 070
-- roman: `Ho Ho Ho`
-- draft: हो हो हो
-- model: हो हो हो
+- roman: `Timro naam, timro aawaaj, timro nyano nyano sparsha,`
+- model: तिम्रो नाम, तिम्रो आवाज, तिम्रो न्यानो न्यानो स्पर्श,
+- draft: तिम्रो नाम, तिम्रो आवाज्, तिम्रो न्यानो न्यानो स्पर्श, (differs)
 
 ### 071
-- roman: `Mausam Nai Ho Yesto`
-- draft: मौसम नै हो यस्तो
-- model: मौसम नै हो यस्तो
+- roman: `Bhayo bhane kahaani`
+- model: भयो भने कहानी
+- draft: भयो भने कहानी (agrees)
 
 ### 072
-- roman: `You know I like it I love it one more time just do it`
-- draft: You know I like it I love it one more time just do it
-- model: You know I like it I love it one more time just do it
+- roman: `Hamro naya album back again`
+- model: हाम्रो नया album back again
+- draft:  (differs)
 
 ### 073
-- roman: `Timro lagi kasam tayar chhu ma jeje garna ni`
-- draft: तिम्रो लागि कसम तयार छु म जेजे गर्न नी
-- model: तिम्रो लागि कसम तयार छु म जेजे गर्न नि
+- roman: `Line Producer: Gagan Shrestha`
+- model: Line Producer: गगन श्रेष्ठ
+- draft:  (differs)
 
 ### 074
-- roman: `Dil mero chori lagyo usko ruupa le he..`
-- draft: दिल मेरो चोरी लाग्यो उसको रूप ले हे..
-- model: दिल मेरो छोरी लाग्यो उसको रुपा ले हे..
+- roman: `Manko Khusi Vanda Pani`
+- model: मनको खुसी भन्दा पनि
+- draft: मनको खुसी भन्दा पनि (agrees)
 
 ### 075
-- roman: `Bujhauna khoje, bhani diye`
-- draft: बुझाउन खोजे, भनि दिए
-- model: बुझाउन खोजे, भनी दिए
+- roman: `Kath kahani baba lai halna lyiejo`
+- model: काठ कहानी बाबा लाइ हाल्न ल्यिएजो
+- draft: कथ कहानी बाबा लाइ हल्न ल्यिएजो (differs)
 
 ### 076
-- roman: `Kati Basnu Gharma`
-- draft: कति बस्नु घरमा
-- model: कति बस्नु घरमा
+- roman: `kaha gai metu ma`
+- model: कहाँ गाइ मेटु मा
+- draft: कहाँ गई मेटु म (differs)
 
 ### 077
-- roman: `Sadhai mero sath chan`
-- draft: सधै मेरो साथ छन
-- model: सधै मेरो साथ छान
+- roman: `Timi Aauchau Ki Bhani`
+- model: तिमी आउँछौ कि भनि
+- draft: तिमी आउँछौ कि भनी (differs)
 
 ### 078
-- roman: `Ke birsi diyeu godhuli sajha ko kasam`
-- draft: के बिर्सी दिएउ गोधुली साझा को कसम
-- model: के बिर्सी दियेउ गोधूलि साझ को कसम
+- roman: `Plij navana hai hunna`
+- model: प्लिज नभन है हुन्न
+- draft: Plij नभना है हुन्न (differs)
 
 ### 079
-- roman: `Madal:- Poshan Gharti Magar`
-- draft: Madal:- पोषण घर्ती मगर
-- model: मादल:- पोषण घर्ती मगर
+- roman: `Kaha hunu teti matra ghar bhitrako naatak`
+- model: कहाँ हुनु तेती मात्र घर भित्रको नाटक
+- draft: कहाँ हुनु तेति मात्र घर भित्रको नाटक (differs)
 
 ### 080
-- roman: `Thau kane gana gana chhanta malachwona chhanta shyula chhan`
-- draft: ठाउ काने गाना गाना छान्ता मलाच्वोना छान्ता श्युला छन
-- model: थाउ काने गाना गाना छन्त मालाच्वोना छन्त श्युला छन्
+- roman: `Sunnya Garya Chu Timro`
+- model: सुन्न्या गर्या छु तिम्रो
+- draft: सुन्ऱ्या गर्या छु तिम्रो (differs)
 
 ### 081
-- roman: `uMAAAA Mero Laure`
-- draft: uMAAAA मेरो लाहुरे
-- model: उमाआ मेरो लाउरे
+- roman: `(Uff, Timro dhatne bani le`
+- model: (यूएफएफ, तिम्रो धात्ने बानी ले
+- draft:  (differs)
 
 ### 082
-- roman: `Nabirsa timi hausala`
-- draft: नबिर्स तिमी हौसला
-- model: नबिर्स तिमी हौसला
+- roman: `Jamara Ra Tika Lagai Hidne Sundar Jodi - 2`
+- model: जमरा रा टिका लगाई हिड्ने सुन्दर जोडी - 2
+- draft: जमरा र टीका लगाई हिड्ने सुन्दर जोडी - 2 (differs)
 
 ### 083
-- roman: `Sanibarko Din Bihani Pakha`
-- draft: शनिबारको दिन बिहानि पाखा
-- model: सनिबारको दिन बिहानी पाखा
+- roman: `Ramro aankhama khulchha ramrai sansara`
+- model: राम्रो आँखामा खुल्छ राम्रै संसार
+- draft: राम्रो आँखमा खुल्छ राम्रै संसारा (differs)
 
 ### 084
-- roman: `Pida le polne chati bhari`
-- draft: पीडा ले पोल्ने छाती भरि
-- model: पिडा ले पोल्ने छाती भारि
+- roman: `(Mutu Satau Na Sanu`
+- model: (मुटु सतौ ना सानु
+- draft: (मुटु सटाउ ना सानु (differs)
 
 ### 085
-- roman: `Mero High Vayo Meter 140`
-- draft: मेरो High Vayo Meter 140
-- model: मेरो High भयो मिटर 140
+- roman: `Sagara poudera tarne chhu`
+- model: सागरा पौडेर तर्ने छु
+- draft: सागरै पौडेर तारने छु (differs)
 
 ### 086
-- roman: `Maya garchu vanne mayalu`
-- draft: माया गर्छु भन्ने मायालु
-- model: माया गर्छु भन्ने मायालु
+- roman: `Chema garnu thulo`
+- model: चेमा गर्नु ठूलो
+- draft: क्षेमा गर्नु ठूलो (differs)
 
 ### 087
-- roman: `Din bityo raatai bityo nindra chaina ankhama`
-- draft: दिन बित्यो रातै बित्यो निन्द्रा छैन आँखामा
-- model: दिन बित्यो रातै बित्यो निन्द्रा छैन आँखामा
+- roman: `Mutu Bhitra Oo Basekai Hunchha`
+- model: मुटु भित्र ओ बसेकै हुन्छ
+- draft: मुटु भित्र ओ बसेकै हुन्छ (agrees)
 
 ### 088
-- roman: `Maya maya bhanda bhandai jindagi nai mero bitne ho ki`
-- draft: माया माया भन्दा भन्दै जिन्दगी नै मेरो बित्ने हो की
-- model: माया माया भन्दा भन्दै जिन्दगी नै मेरो बित्ने हो कि
+- roman: `Daiko ghadi haataima larilai`
+- model: दाइको घडी हातैमा लरीलाई
+- draft: दाइको घडी हातैमा लरिलाई (differs)
 
 ### 089
-- roman: `Lukeka bhaawanaa bujhi deau`
-- draft: लुकेका भावना बुझी देउ
-- model: लुकेका भावना बुझी देऔ
+- roman: `Pahile ta sochthe lagyo account matra`
+- model: पहिले ता सोच्थे लाग्यो एकाउन्ट मात्र
+- draft: पहिले त सोच्थे लाग्यो account मात्र (differs)
 
 ### 090
-- roman: `Paraye bhayi dine le`
-- draft: पराई भयी दिने ले
-- model: पराये भयी दिने ले
+- roman: `Gareki Thiye Jatan`
+- model: गरेकी थिये जतन
+- draft: गरेकी थिये जतन (agrees)
 
 ### 091
-- roman: `Na hasnu timi chandrama pani`
-- draft: ना हस्नु तिमी चन्द्रमा पनि
-- model: ना हास्नु तिमी चन्द्रमा पनि
+- roman: `Ma ta euta bhanai matra ho`
+- model: मा त एउटा भनाइ मात्र हो
+- draft: म त एउटा भनाइ मात्र हो (differs)
 
 ### 092
-- roman: `Bina Cewa`
-- draft: बिना चेवा
-- model: बिना सीईवीए
+- roman: `Yi Aankha Bhiji Rakhne Bho Sandhai Nai`
+- model: यी आँखा भिजी राख्ने भो सँधै नै
+- draft: यी आँखा भिजी राख्ने भो सधैं नै (differs)
 
 ### 093
-- roman: `Kai Gayeni Bhetiyena`
-- draft: कै गएनी भेटियेन
-- model: कै गयेनी भेटिएन
+- roman: `Jati tada janchhu ma, uti najik aai dinchha`
+- model: जति टाढा जान्छु मा, उति नजिक आइ दिन्छ
+- draft: जति टाढा जान्छु म, उति नजिक आइ दिन्छ (differs)
 
 ### 094
-- roman: `Khai Ke Bhayo Malai Aajabholi`
-- draft: खै के भयो मलाई आजभोलि
-- model: खै के भयो मलाई आजभोली
+- roman: `Timi Sangai Baki Jindagani Mero`
+- model: तिमी सँगै बाकी जिन्दगानी मेरो
+- draft: तिमी सँगै बाकी जिन्दगानी मेरो (agrees)
 
 ### 095
-- roman: `Tana pani timrai nau manai timrai nau`
-- draft: तना पनि तिम्रै नाउ मनै तिम्रै नाउ
-- model: ताना पनि तिम्रै नौ मनै तिम्रै नौ
+- roman: `Yekchin ko lagi timile sochyau bhane`
+- model: येक्छिन् को लागि तिमीले सोच्यौ भने
+- draft: एकचिन को लागि तिमीले सोच्याउ भने (differs)
 
 ### 096
-- roman: `Pani Daudhae Aepugyou`
-- draft: पानी दौधाए एपugyou
-- model: पनि दौडाए आएपुग्यौ
+- roman: `Samjhi lyauda aashu bahanchha`
+- model: सम्झी ल्याउदा आँसु बहन्छ
+- draft: सम्झी ल्याउदा आँशु बहान्छ (differs)
 
 ### 097
-- roman: `Timi nai surubat, timi nai antya`
-- draft: तिमी नै सुरुवात, तिमी नै अन्त्य
-- model: तिमी नै सुरुबात, तिमी नै अन्त्य
+- roman: `Fulera fulharule dharti sajau aaja X 2`
+- model: फुलेर फूलहरूले धर्ती सजाउ आज एक्स 2
+- draft: फुलेर फुलहरूले धरती सजाउ आज X 2 (differs)
 
 ### 098
-- roman: `Yo desh`
-- draft: यो देश
-- model: यो देश
+- roman: `Kina maan lai chalaunu, kina malai chunu`
+- model: किन मान लाइ चलाउनु, किन मलाई चुनु
+- draft: किन मान लाई चलाउनु, किन मलाई छुणु (differs)
 
 ### 099
-- roman: `harek saajh ekdin`
-- draft: हरेक साँझ एकदिन
-- model: हरेक साझ एकदिन
+- roman: `Kasto hunchha hamro sansar?`
+- model: कस्तो हुन्छ हाम्रो संसार?
+- draft: कस्तो हुन्छ हाम्रो संसार? (agrees)
 
 ### 100
-- roman: `Arkai Ko Nimti`
-- draft: अर्कै को निम्ति
-- model: अर्कै को निम्ति
+- roman: `Uta Phakaayeko Ho Ki`
+- model: उता फकाएको हो कि
+- draft: उता फुकाएको हो की (differs)
 
 ### 101
-- roman: `Kahila kahi timila pani`
-- draft: कहिला कहि तिमीला पनि
-- model: कहिला कही तिमिला पनि
+- roman: `Dina Ra Raat Ek Hune`
+- model: दिना रा रात एक हुने
+- draft: दिना रा रात एक हुने (agrees)
 
 ### 102
-- roman: `Mero party ko X X X, mero chhunab chin-na X X X`
-- draft: मेरो party को X X X, मेरो छुनाब चिन-ना X X X
-- model: मेरो party को एक्स एक्स एक्स, मेरो छुनब छिन-ना एक्स एक्स एक्स
+- roman: `Ho yo jamana paisa ko`
+- model: हो यो जमाना पैसा को
+- draft: हो यो जमाना पैसा को (agrees)
 
 ### 103
-- roman: `Thorai thorai jiune gareko chu`
-- draft: थोरै थोरै जिउने गरेको छु
-- model: थोरै थोरै जिउने गरेको छु
+- roman: `Manaune Sochyachu Hey Rati Ma Sapana`
+- model: मनाउने सोच्याचु Hey राती मा सपना
+- draft: मनाउने सोच्याचु हे रति मा सपना (differs)
 
 ### 104
-- roman: `Mero maya timro maya`
-- draft: मेरो माया तिम्रो माया
-- model: मेरो माया तिम्रो माया
+- roman: `Hami nepali ko pakhuri ma) - 2`
+- model: हामी नेपाली को पाखुरी मा) - 2
+- draft: हामी नेपाली को पखुरी मा) - 2 (differs)
 
 ### 105
-- roman: `Cut his buddy down`
-- draft: Cut his buddy down
-- model: कट हिस बडी down
+- roman: `Khai kasarai aaun, khai kasari aaun maya`
+- model: खै कसरै आउन, खै कसरी आउन माया
+- draft: खै कसरै आउन, खै कसरी आउन माया (agrees)
 
 ### 106
-- roman: `Chhaina ahile tagat yo mero bidho hatma`
-- draft: छैन अहिले तागत यो मेरो बिढो हातमा
-- model: छैन अहिले तागत यो मेरो बिधो हातमा
+- roman: `Bitdai gaye ko jawani lai`
+- model: बित्दै गए को जवानी लाई
+- draft: बित्दै गये को जवानी लाइ (differs)
 
 ### 107
-- roman: `Technology Kada Napade Ni IT`
-- draft: Technology Kada Napade Ni IT
-- model: टेक्नोलोजी काडा नपादे नि IT
+- roman: `Bhayeni balai chaina unlai j hos`
+- model: भयेनी बलाई छैन उनलाई जे होस्
+- draft: भयेनि बालै चैन। उनलाइ ज होस् (differs)
 
 ### 108
-- roman: `bhanchhan school napathaa`
-- draft: भन्छन् school नपाठा
-- model: भन्छन् school नपठा
+- roman: `Paindaina kina jeevan saathi rojeko`
+- model: पाइँदैन किन जीवन साथी रोजेको
+- draft: पाइदैन किन जीवन साथी रोजेको (differs)
 
 ### 109
-- roman: `Ho deuraaliko barpipalma`
-- draft: हो देउरालिको बार्पिपालमा
-- model: हो देउरालीको बरपिपलमा
+- roman: `Nata kara le nai timilai`
+- model: नाटा करा ले नै तिमीलाई
+- draft: नता करा ले नै तिमीलाई (differs)
 
 ### 110
-- roman: `kohi chare jhai`
-- draft: कोहि चारे झै
-- model: कोही चरे झै
+- roman: `Yo Chaati Ma Joon Maan Cha`
+- model: यो छाती मा जुन मान छ
+- draft: यो छाती मा जुन मान छ (agrees)
 
 ### 111
-- roman: `Banauna Ta Ke Sakthera`
-- draft: बनाуна ता के सक्थेरा
-- model: बनाउन ता के सक्थेर
+- roman: `Pyari Roonai Maan Chaina Desha Chodi`
+- model: प्यारी रुनै मान छैन देश छोडी
+- draft: प्यारी रुनाइ मान छैन देश छोडी (differs)
 
 ### 112
-- roman: `Birsidinu hai`
-- draft: बिर्सीदिनु है
-- model: बिर्सिदिनु है
+- roman: `Fallin And Walkin We're Not Exaggeratin`
+- model: फल्लिन And वाल्किन We're Not एक्सागरेटिन
+- draft:  (differs)
 
 ### 113
-- roman: `Baby Gal U Know It True`
-- draft: Baby Gal U Know It True
-- model: Baby गल उ Know It True
+- roman: `Murali dhuna bhuleko chaina`
+- model: मुरली धुना भुलेको छैन
+- draft: मुरली धुन भुलेको छैन (differs)
 
 ### 114
-- roman: `Timlai samjhi timlai samjhi`
-- draft: तिम्लाई सम्झी तिम्लाई सम्झी
-- model: तिमलाई सम्झी तिम्लाई सम्झी
+- roman: `Chin Chin Chin Chin Chin Haath Ko`
+- model: चिन चिन चिन चिन चिन हात को
+- draft: छिन छिन छिन छिन छिन हात को (differs)
 
 ### 115
-- roman: `Najarai ko karauti le retyo mutu rattakai`
-- draft: नजरै को करौती ले रट्यो मुटु रत्तकै
-- model: नजराई को करौटी ले रेट्यो मुटु रत्तकै
+- roman: `U Pyaari Chhe`
+- model: उ प्यारी छे
+- draft: उ प्यारी छे (agrees)
 
 ### 116
-- roman: `Aba chadai aau`
-- draft: अब छडाइ आउ
-- model: अब छदै आउ
+- roman: `Goon mero jaandaina`
+- model: गुन मेरो जाँदैन
+- draft: गुन मेरो जाँदैन (agrees)
 
 ### 117
-- roman: `Sochnu Kina`
-- draft: सोच्नु किन
-- model: सोच्नु किन
+- roman: `Gautam Thapa`
+- model: गौतम थापा
+- draft: गौतम थापा (agrees)
 
 ### 118
-- roman: `Aadhinae Aayeni Timrae Lagi....`
-- draft: आधिनाए आएनी तिम्रै लागि....
-- model: आधिनै आयेनी तिम्रै लागि....
+- roman: `Sandhai Naya Jindagilai`
+- model: सँधै नया जिन्दगीलाई
+- draft: सधैँ नयाँ जिन्दगीलाई (differs)
 
 ### 119
-- roman: `Sarai Nai Ramri Mori`
-- draft: सरै नै राम्री मोरी
-- model: सराइ नै राम्री मोरी
+- roman: `Hasda Ta Jhanai Ni Hurukkai Pareko`
+- model: हास्दा ता झनै नि हुरुक्कै परेको
+- draft: हाँस्दा त झनै नि हुरुक्कै परेको (differs)
 
 ### 120
-- roman: `Ghama banera hera`
-- draft: घाम बनेर हेर
-- model: घाम बनेर हेर
+- roman: `Geet pani timro laagi nai gaaune chhu`
+- model: गीत पनि तिम्रो लागी नै गाउने छु
+- draft: गीत पनि तिम्रो लागि नै गाउने छु (differs)
 
 ## legacy_consensus
 
 ### tl_0105
 - roman: `gham kati ghamailo`
 - gold:  घाम लाग्यो घमाइलो
-- draft: घाम कति घमाइलो
+- model: घाम कति घमाइलो
 
 ### tl_0135
 - roman: `Yadama Na Aau`
 - gold:  यादमा नआऊ
-- draft: यादमा ना आउ
+- model: यादमा ना आउ
+
+### tl_0133
+- roman: `Baru Aai Sataune Gara`
+- gold:  बरु आई मलाई सताउने गर
+- model: बरु आइ सताउने गर
 
 ### tl_0054
 - roman: `Sanjha Pakha Chautari Ma`
 - gold:  साँझपख चौतारीमा
-- draft: साँझ पाखा चौतारी मा
+- model: साँझ पाखा चौतारी मा
+
+### tl_0143
+- roman: `Maan Kholi Dekhaune Gara`
+- gold:  मन खोली मलाई देखाउने गर
+- model: मान खोली देखाउने गर
 
 ### tl_0073
 - roman: `timi kahile narunu`
 - gold:  तिमी कहिल्यै नरुनू
-- draft: तिमी कहिले नरुनु
-
-### tl_0128
-- roman: `maya garchau ki nai vana na`
-- gold:  माया गर्छौ कि नाई भनन
-- draft: माया गर्छौ कि नै भन ना
+- model: तिमी कहिले नरुनु
 
 ### tl_0058
 - roman: `Timilai Nalai Bhachaina`
 - gold:  तिमीलाई न ल्याई भा छैन
-- draft: तिमीलाई नलाई भाछैन
-
-### tl_0114
-- roman: `huncha ki nai hunna vana na`
-- gold:  हुन्छ कि नाइ हुन्न भनन
-- draft: हुन्छ कि नै हुन्न भन ना
+- model: तिमीलाई नलाई भाछैन
 
 ### tl_0055
 - roman: `Budha Pakha Bhet Huda`
 - gold:  बुढापाका भेट हुँदा
-- draft: बुढा पाखा भेट हुदा
+- model: बुढा पाखा भेट हुदा
 
 ### tl_0042
 - roman: `Maski Maski Hidera Jane Le`
 - gold:  मस्कीमस्की हिँडेर जानेले
-- draft: मस्की मस्की हिडेर जाने ले
+- model: मस्की मस्की हिडेर जाने ले
+
+### tl_0059
+- roman: `Tarki Tarki Hidera Jane Le`
+- gold:  तर्कीतर्की हिँडेर जानेले
+- model: तर्की तर्की हिडेर जाने ले
 
 ### tl_0068
 - roman: `sapana le saath dida`
 - gold:  सपनाले साथ दिँदा
-- draft: सपना ले साथ दिदा
+- model: सपना ले साथ दिदा
+
+### tl_0092
+- roman: `Timro maan ho ki dhunga ho`
+- gold:  तिम्रो मन हो कि ढुंगा हो
+- model: तिम्रो मान हो कि ढुङ्गा हो
 
 ### tl_0123
 - roman: `pakhuri ma daam cha ni`
 - gold:  पाखुरीमा दम छ नि
-- draft: पाखुरी मा दाम छ नि
+- model: पाखुरी मा दाम छ नि
 
-### tl_0006
-- roman: `Maile bhuli diye yo sara jamana`
-- gold:  मैले भुलिदिएँ यो सारा जमाना
-- draft: मैले भुली दिए यो सारा जमाना
+### tl_0060
+- roman: `Farki Farki Hasera Herne Le`
+- gold:  फर्कीफर्की हाँसेर हेर्नेले
+- model: फर्की फर्की हासेर हेर्ने ले
 
 ### tl_0139
 - roman: `Manchhe Ke Ke Bhanchhan Malai`
 - gold:  मान्छे के के भन्छन् तिमीलाई
-- draft: मान्छे के के भन्छन् मलाई
+- model: मान्छे के के भन्छन् मलाई
 
-### tl_0017
-- roman: `Bhalai choto hola yaha sabai drishya atauna lai`
-- gold:  भलै छोटो होला यहाँ सबै दृष्य अटाउनलाई
-- draft: भलाई छोटो होला यहाँ सबै दृश्य अटाउन लाई
-
-### tl_0016
-- roman: `Upahar swaroop yo tasbeer maya garne haru lai`
-- gold:  उपहारस्वरूप यो तस्बीर माया गर्नेहरूलाई
-- draft: उपहार स्वरूप यो तस्बीर माया गर्ने हरु लाई
+### tl_0048
+- roman: `Luki Luki Herche Malai`
+- gold:  लुकीलुकी हेर्छे मलाई
+- model: लुकी लुकी हेर्चे मलाई
 
 ### tl_0111
 - roman: `Khola jastai bagau hami`
 - gold:  खोला जस्तै बगौं हामी
-- draft: खोला जस्तै बगाउ हामी
+- model: खोला जस्तै बगाउ हामी
 
 ### tl_0056
 - roman: `Buhari Ko Gharma Khacho Cha`
 - gold:  बुहारीको घरमा खाँचो छ
-- draft: बुहारी को घरमा खाचो छ
+- model: बुहारी को घरमा खाचो छ
 
 ### tl_0034
 - roman: `Khusi chau hami chau jaha`
 - gold:  खुसी छौँ हामी छौँ जहाँ
-- draft: खुसी छौ हामी छौ जहाँ
-
-### tl_0097
-- roman: `Hawahuri sanga`
-- gold:  हावाहुरीसँग
-- draft: हावाहुरी सँग
+- model: खुसी छौ हामी छौ जहाँ
 
 ### tl_0043
 - roman: `Musu Musu Hasera Herne Le`
 - gold:  मुसुमुसु हासेर हेर्नेले
-- draft: मुसु मुसु हासेर हेर्ने ले
+- model: मुसु मुसु हासेर हेर्ने ले
+
+### tl_0102
+- roman: `Timlai sadhai daaki rahancha`
+- gold:  तिमीलाई सधैं डाकी रहन्छ
+- model: तिमलाई सधैँ डाकी रहन्छ
 
 ### tl_0033
 - roman: `Paschatap chaina kunai yaha`
 - gold:  पश्चात्ताप छैन कुनै यहाँ
-- draft: पश्चाताप छैन कुनै यहाँ
+- model: पश्चाताप छैन कुनै यहाँ
 
-### tl_0089
-- roman: `Kahile huri sanga`
-- gold:  कहिले हुरीसँग
-- draft: कहिले हुरी सँग
+### tl_0110
+- roman: `Timi pirati ko chata odau na`
+- gold:  तिमी पिरतीको छाता ओढाउ न
+- model: तिमी पिरती को छाता ओडाउ न
 
 ### tl_0020
 - roman: `Tyo bhanda aru ke nai chahincha`
 - gold:  त्योभन्दा अरू के नै चाहिन्छ
-- draft: त्यो भन्दा अरु के नै चाहिन्छ
-
-### tl_0090
-- roman: `kahile pahiro sanga`
-- gold:  कहिले पहिरोसँग
-- draft: कहिले पहिरो सँग
-
-### tl_0099
-- roman: `suna mero dhadkan`
-- gold:  सुन मेरो धड्कन
-- draft: सुना मेरो धड्कन
+- model: त्यो भन्दा अरु के नै चाहिन्छ
 
 ### tl_0036
 - roman: `Hamro bare kura`
 - gold:  हाम्रोबारे कुरा
-- draft: हाम्रो बारे कुरा
+- model: हाम्रो बारे कुरा
 
 ### tl_0063
 - roman: `timi tadha huda`
 - gold:  तिमी टाढा हुँदा
-- draft: तिमी टाढा हुदा
+- model: तिमी टाढा हुदा
 
 ### tl_0064
 - roman: `dherai dukha lagcha`
 - gold:  धेरै दुःख लाग्छ
-- draft: धेरै दुख लाग्छ
+- model: धेरै दुख लाग्छ
 
 ### tl_0075
 - roman: `timi bichalit nahunu`
 - gold:  तिमी बिचलित नहुनू
-- draft: तिमी बिचलित नहुनु
+- model: तिमी बिचलित नहुनु
 
 ### tl_0204
 - roman: `Yi jadibuti aushadhi banauna prayog garinchha`
 - gold:  यी जडिबुटी औषधी बनाउन प्रयोग गरिन्छ
-- draft: यी जडीबुटी औषधि बनाउन प्रयोग गरिन्छ
+- model: यी जडीबुटी औषधि बनाउन प्रयोग गरिन्छ
+
+### tl_0148
+- roman: `Himalaya parbatiya ra tarai`
+- gold:  हिमालय पर्वतीय र तराई
+- model: हिमालय पर्बतीय र तराई
 
 ### tl_0047
 - roman: `Usko Hamro Bhet Hunda`
 - gold:  उस्को हाम्रो भेट हुँदा
-- draft: उसको हाम्रो भेट हुँदा
-
-### tl_0008
-- roman: `Din duiguna raat chauguna`
-- gold:  दिन दुईगुना, रात चौगुना
-- draft: दिन दुईगुना रात चौगुना
+- model: उसको हाम्रो भेट हुँदा
 
 ### tl_0076
 - roman: `Soche chau timro mero sambandha`
 - gold:  सोचेछौ तिम्रो मेरो सम्बन्ध
-- draft: सोचे छौ तिम्रो मेरो सम्बन्ध
-
-### tl_0098
-- roman: `eklai parnu parne mero jindagi`
-- gold:  एक्लै पर्नुपर्ने मेरो जिन्दगी
-- draft: एक्लै पर्नु पर्ने मेरो जिन्दगी
-
-### tl_0096
-- roman: `eklai bachnu parne mero jindagi`
-- gold:  एक्लै बाँच्नुपर्ने मेरो जिन्दगी
-- draft: एक्लै बाँच्नु पर्ने मेरो जिन्दगी
-
-### tl_0012
-- roman: `Mayako yasto modma hami aaipugyou`
-- gold:  मायाको यस्तो मोडमा हामी आइपुग्यौँ
-- draft: मायाको यस्तो मोडमा हामी आइपुग्यौ
+- model: सोचे छौ तिम्रो मेरो सम्बन्ध
 
 ### tl_0201
 - roman: `Yi rukhaharu niryat gari Nepalko aamdani badhauna sakinchha`
 - gold:  यी रूखहरू निर्यात गरी नेपालको आम्दानी बढाउन सकिन्छ
-- draft: यी रुखहरू निर्यात गरी नेपालको आम्दानी बढाउन सकिन्छ
+- model: यी रुखहरू निर्यात गरी नेपालको आम्दानी बढाउन सकिन्छ

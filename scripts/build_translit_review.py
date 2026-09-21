@@ -47,6 +47,7 @@ QUICK_CSV = PROJECT_ROOT / "eval" / "translit_review_quick.csv"
 QUICK_MD = PROJECT_ROOT / "eval" / "translit_review_quick.md"
 
 ROMAN_WORD_RE = re.compile(r"[A-Za-z]{2,}")
+DEVANAGARI_RE = re.compile(r"[\u0900-\u097F]")
 FIELDNAMES = [
     "kind",
     "ref_id",
@@ -59,6 +60,7 @@ FIELDNAMES = [
     "notes",
     "draft_devanagari",
     "draft_cer",
+    "draft_issue",
     "user_devanagari",
     "user_note",
 ]
@@ -85,10 +87,20 @@ def teacher_romans(path: Path) -> set[str]:
     return romans
 
 
+def is_credit_like(line: str) -> bool:
+    """All-caps short lines are credit/name rows, not lyric lines."""
+    return line.isupper() and len(line.split()) <= 4
+
+
 def sample_corpus_lines(
     transliterator: NepaliTransliterator, count: int, seed: int = 42
 ) -> list[dict]:
-    """Fresh romanized lines held out from the teacher training set."""
+    """Fresh romanized lines held out from the teacher training set.
+
+    Candidates that are not lyric transliterations are skipped: English-only
+    lines (the gate leaves them Latin, so there is nothing to score) and
+    credit-like all-caps rows.
+    """
     gold_romans = {
         normalize(row["roman"])
         for row in csv.DictReader(io.open(GOLD_LINES, encoding="utf-8"))
@@ -109,7 +121,7 @@ def sample_corpus_lines(
                 line = line.strip()
                 if len(ROMAN_WORD_RE.findall(line)) < 2:
                     continue
-                if line in seen or line in excluded:
+                if line in seen or line in excluded or is_credit_like(line):
                     continue
                 seen.add(line)
                 candidates.append(
@@ -120,10 +132,17 @@ def sample_corpus_lines(
                     }
                 )
     rng = random.Random(seed)
-    sample = rng.sample(candidates, min(count, len(candidates)))
-    for row in sample:
-        row["model_pred"] = transliterator.transliterate_text(row["roman"])
+    rng.shuffle(candidates)
+    sample: list[dict] = []
+    for row in candidates:
+        prediction = transliterator.transliterate_text(row["roman"])
+        if not DEVANAGARI_RE.search(prediction):
+            continue
+        row["model_pred"] = prediction
         row["model_cer"] = ""
+        sample.append(row)
+        if len(sample) >= count:
+            break
     return sample
 
 
@@ -146,7 +165,7 @@ def preserve_review(rows: list[dict]) -> int:
         previous = by_key.get((row["kind"], row["ref_id"], row["roman"]))
         if not previous:
             continue
-        for column in ("draft_devanagari", "draft_cer", "user_devanagari", "user_note"):
+        for column in ("draft_devanagari", "draft_cer", "draft_issue", "user_devanagari", "user_note"):
             value = previous.get(column, "")
             if value:
                 row[column] = value
@@ -184,6 +203,7 @@ def main() -> int:
                     "notes": row["notes"],
                     "draft_devanagari": "",
                     "draft_cer": "",
+                    "draft_issue": "",
                     "user_devanagari": "",
                     "user_note": "",
                 }
@@ -206,6 +226,7 @@ def main() -> int:
                 "notes": "",
                 "draft_devanagari": "",
                 "draft_cer": "",
+                    "draft_issue": "",
                 "user_devanagari": "",
                 "user_note": "",
             }
@@ -225,6 +246,7 @@ def main() -> int:
                 "notes": row["song"],
                 "draft_devanagari": "",
                 "draft_cer": "",
+                    "draft_issue": "",
                 "user_devanagari": "",
                 "user_note": "",
             }
@@ -321,9 +343,11 @@ def main() -> int:
 def write_quick_review(new_lines: list[dict], disagreements: list[dict]) -> None:
     """A short list where the human decision actually changes the gold.
 
-    Two strata: the held-out new lines (no legacy baggage; the draft is
-    pre-filled as a starting point) and the legacy rows where the draft and the
-    pipeline agree against the gold (likely legacy errors).
+    Two strata: the held-out new lines (no legacy baggage) and the legacy rows
+    where the draft and the pipeline agree against the gold (likely legacy
+    errors). The pipeline's own output is the proposal because a review pass
+    showed it beating the draft on exactly these lines; the draft is kept as a
+    cross-check column.
     """
     consensus = [
         row
@@ -338,10 +362,11 @@ def write_quick_review(new_lines: list[dict], disagreements: list[dict]) -> None
                 "ref_id": "",
                 "roman": row["roman"],
                 "gold": "",
-                "draft": row["draft_devanagari"],
                 "model": row["model_pred"],
-                "proposal": row["draft_devanagari"],
-                "user_devanagari": row["draft_devanagari"],
+                "draft": row["draft_devanagari"],
+                "draft_agrees": int(row["draft_devanagari"] == row["model_pred"]),
+                "proposal": row["model_pred"],
+                "user_devanagari": row["model_pred"],
                 "user_note": "",
             }
         )
@@ -352,9 +377,10 @@ def write_quick_review(new_lines: list[dict], disagreements: list[dict]) -> None
                 "ref_id": row["ref_id"],
                 "roman": row["roman"],
                 "gold": row["devanagari"],
-                "draft": row["draft_devanagari"],
                 "model": row["model_pred"],
-                "proposal": row["draft_devanagari"],
+                "draft": row["draft_devanagari"],
+                "draft_agrees": 1,
+                "proposal": row["model_pred"],
                 "user_devanagari": "",
                 "user_note": "",
             }
@@ -364,8 +390,9 @@ def write_quick_review(new_lines: list[dict], disagreements: list[dict]) -> None
         "ref_id",
         "roman",
         "gold",
-        "draft",
         "model",
+        "draft",
+        "draft_agrees",
         "proposal",
         "user_devanagari",
         "user_note",
@@ -378,14 +405,16 @@ def write_quick_review(new_lines: list[dict], disagreements: list[dict]) -> None
     parts = [
         "# Quick transliteration review",
         "",
-        f"- `new_heldout`: {len(new_lines)} lines held out from teacher training; the draft is",
-        "  pre-filled in `user_devanagari` as a starting point — **edit or delete** what you",
-        "  disagree with. Accepting it blindly makes the gold a copy of the teacher.",
+        f"- `new_heldout`: {len(new_lines)} lines held out from teacher training. The",
+        "  **pipeline** output is pre-filled in `user_devanagari` (a review pass showed",
+        "  it beats the draft here); `draft` is a second opinion and `draft_agrees`",
+        "  marks where the two agree. Edit or delete what you disagree with.",
         f"- `legacy_consensus`: {len(consensus)} legacy rows where the draft and the pipeline",
         "  agree against the recorded gold (likely legacy errors). Set `user_devanagari` to",
         "  the accepted form, or leave empty to keep the legacy label.",
         "",
-        "Full kit with all 160 draft disagreements: `eval/translit_review.md`.",
+        "Non-lyric candidates (English-only lines, credit rows) are filtered out of the",
+        "sample. Full kit with all draft disagreements: `eval/translit_review.md`.",
         "",
         "## new_heldout",
         "",
@@ -397,8 +426,8 @@ def write_quick_review(new_lines: list[dict], disagreements: list[dict]) -> None
             [
                 f"### {index:03d}",
                 f"- roman: `{row['roman']}`",
-                f"- draft: {row['draft']}",
                 f"- model: {row['model']}",
+                f"- draft: {row['draft']} ({'agrees' if row['draft_agrees'] else 'differs'})",
                 "",
             ]
         )
@@ -411,7 +440,7 @@ def write_quick_review(new_lines: list[dict], disagreements: list[dict]) -> None
                 f"### {row['ref_id']}",
                 f"- roman: `{row['roman']}`",
                 f"- gold:  {row['gold']}",
-                f"- draft: {row['draft']}",
+                f"- model: {row['model']}",
                 "",
             ]
         )

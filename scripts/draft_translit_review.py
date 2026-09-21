@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import math
 import re
@@ -35,6 +36,9 @@ from scripts.api_translit_label import SYSTEM, load_key, label_batch  # noqa: E4
 REVIEW_CSV = PROJECT_ROOT / "eval" / "translit_review.csv"
 DRAFT_CACHE = PROJECT_ROOT / "R_data" / "raw" / "gemini" / "translit_draft_v1" / "drafts.jsonl"
 
+DEVANAGARI_RE = re.compile(r"[\u0900-\u097F]")
+ALLOWED_RE = re.compile(r"[\u0900-\u097F\sA-Za-z0-9,.;:!?\"'()\[\]{}।—–\-&/]")
+
 SCHEMA = {
     "type": "array",
     "items": {
@@ -46,6 +50,20 @@ SCHEMA = {
         "required": ["line_id", "devanagari"],
     },
 }
+
+
+def draft_issue(text: str) -> str:
+    """Flag drafts that are unusable as a second opinion.
+
+    Observed in review: Cyrillic lookalikes (``май`` for मै) and Devanagari
+    mixed with untransliterated Latin inside a word (``एपugyou``).
+    """
+    unexpected = {char for char in text if not ALLOWED_RE.match(char)}
+    if unexpected:
+        return "unexpected-script:" + "".join(sorted(unexpected))[:12]
+    if not DEVANAGARI_RE.search(text):
+        return "no-devanagari"
+    return ""
 
 FEW_SHOT = [
     ("huncha ki nai hunna", "हुन्छ कि नै हुन्न"),
@@ -92,10 +110,11 @@ def main() -> int:
                 continue
 
     targets = []
-    for index, row in enumerate(rows):
+    for row in rows:
         if row["kind"] not in args.kinds:
             continue
-        row_id = f"r{index:04d}"
+        # Content-based key so a re-sampled review sheet still reuses drafts.
+        row_id = row["kind"][:1] + "_" + hashlib.sha1(row["roman"].encode("utf-8")).hexdigest()[:12]
         row["row_id"] = row_id
         if row_id not in done:
             targets.append(row)
@@ -143,15 +162,21 @@ def main() -> int:
                 if args.sleep_between:
                     time.sleep(args.sleep_between)
 
-    drafted = updated = 0
-    for index, row in enumerate(rows):
-        row_id = f"r{index:04d}"
+    drafted = updated = flagged = 0
+    for row in rows:
+        row_id = row["kind"][:1] + "_" + hashlib.sha1(row["roman"].encode("utf-8")).hexdigest()[:12]
         draft = done.get(row_id)
         if not draft:
             continue
+        issue = draft_issue(draft)
+        row["draft_issue"] = issue
+        if issue:
+            flagged += 1
+            draft = ""
         row["draft_devanagari"] = draft
-        drafted += 1
-        if row["kind"] == "gold_line" and row["devanagari"]:
+        if draft:
+            drafted += 1
+        if row["kind"] == "gold_line" and row["devanagari"] and draft:
             distance = levenshtein(draft, row["devanagari"])
             row["draft_cer"] = round(distance / max(len(row["devanagari"]), 1), 4)
             updated += int(draft != row["devanagari"])
@@ -163,7 +188,8 @@ def main() -> int:
         writer.writeheader()
         writer.writerows(rows)
 
-    print(f"drafts written: {drafted} (gold rows where the draft disagrees: {updated})")
+    print(f"drafts written: {drafted} (flagged unusable: {flagged})")
+    print(f"gold rows where the draft disagrees: {updated}")
     print(f"cache -> {DRAFT_CACHE}")
     return 0
 

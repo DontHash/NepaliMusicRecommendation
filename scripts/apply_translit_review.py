@@ -63,6 +63,7 @@ def main() -> int:
     payload = {
         "corpus_additions": additions,
         "line_corrections": corrections,
+        "proposal_source": "pipeline",
         "source": args.review.name,
     }
     args.out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
