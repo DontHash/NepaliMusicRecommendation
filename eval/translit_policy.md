@@ -99,13 +99,28 @@ It is a **lower bound**: valid words missing from the 1,421-song reference set
 
 1. `python scripts/build_translit_review.py` regenerates
    `eval/translit_review.csv` + `.md` with the model's current prediction and
-   per-row CER, plus fresh corpus lines for gold v2.
-2. The reviewer fills `user_devanagari` on `new_line` rows, corrects
-   `devanagari` in place on `gold_line`/`gold_word` rows when the legacy label
-   is wrong, and explains in `user_note`.
-3. Accepted corrections move into `scripts/build_translit_gold.py`
-   (`LINE_CORRECTIONS` / `WORD_CORRECTIONS`) and reviewed new lines move into
-   `CORPUS_ADDITIONS`, so the gold CSV stays a build artifact and every change
-   is reproducible from the builder.
-4. Rebuild and re-score: `python scripts/build_translit_gold.py &&
-   python scripts/check_transliteration.py`.
+   per-row CER. New candidate lines are **held out** from the teacher training
+   set (`R_data/raw/gemini/translit_corpus_v1/labels.jsonl`), so gold v2 scores
+   lines the system was never distilled from. Draft and human columns survive a
+   rebuild.
+2. `python scripts/draft_translit_review.py` fills `draft_devanagari` /
+   `draft_cer` with a second model's opinion. The draft is an **aid, never a
+   label**: it comes from the same model family as the teacher, and on the
+   legacy gold it produced mixed-script output and untransliterated lines. It
+   never sees the legacy label when drafting a gold row, so disagreements are
+   genuine second opinions.
+3. Review `eval/translit_review_quick.csv` (120 held-out lines with the draft
+   pre-filled, plus the 37 legacy rows where the draft and the pipeline agree
+   against the recorded label). Edit or delete what you disagree with; leave
+   `user_devanagari` empty to keep the existing label. Accepting the draft
+   blindly makes the gold a copy of the teacher — the point of the sheet is the
+   human decision.
+4. `python scripts/apply_translit_review.py` writes the accepted rows to
+   `eval/translit_gold_v2.json`, which `scripts/build_translit_gold.py` merges
+   on the next build. Rebuild and re-score:
+   `python scripts/build_translit_gold.py && python scripts/check_transliteration.py`.
+
+The legacy line gold keeps its original convention (editorial punctuation,
+parenthetical repeats, compound spacing). Where that convention conflicts with
+the modern pipeline, the disagreement is a style difference rather than an
+error; gold v2 additions record the modern convention instead.

@@ -85,6 +85,25 @@ WORD_CORRECTIONS: dict[str, str] = {}
 # Reviewed in-domain lines promoted from the review kit (roman, devanagari).
 CORPUS_ADDITIONS: list[tuple[str, str]] = []
 
+# Sidecar written by scripts/apply_translit_review.py from the human-reviewed
+# quick sheet. When present it is merged on top of the in-code tables above.
+GOLD_V2_JSON = PROJECT_ROOT / "eval" / "translit_gold_v2.json"
+
+
+def load_gold_v2() -> tuple[dict[str, str], list[tuple[str, str]]]:
+    if not GOLD_V2_JSON.exists():
+        return {}, []
+    payload = json.loads(GOLD_V2_JSON.read_text(encoding="utf-8"))
+    corrections = {
+        str(roman): str(devanagari)
+        for roman, devanagari in (payload.get("line_corrections") or {}).items()
+    }
+    additions = [
+        (str(roman), str(devanagari))
+        for roman, devanagari in (payload.get("corpus_additions") or [])
+    ]
+    return corrections, additions
+
 
 def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", unicodedata.normalize("NFC", str(text))).strip()
@@ -128,7 +147,12 @@ def difficulty(roman: str) -> str:
     return "long"
 
 
-def build_lines() -> tuple[list[dict], list[tuple[str, str]]]:
+def build_lines(
+    corrections: dict[str, str] | None = None,
+    additions: list[tuple[str, str]] | None = None,
+) -> tuple[list[dict], list[tuple[str, str]]]:
+    corrections = corrections if corrections is not None else LINE_CORRECTIONS
+    additions = additions if additions is not None else CORPUS_ADDITIONS
     if not LINE_SOURCE.exists():
         sys.exit(f"missing line source: {LINE_SOURCE}")
     rows: list[dict] = []
@@ -145,8 +169,8 @@ def build_lines() -> tuple[list[dict], list[tuple[str, str]]]:
             dropped.append((roman, "not a Roman -> Devanagari pair"))
             continue
         notes = ""
-        if roman in LINE_CORRECTIONS:
-            devanagari = LINE_CORRECTIONS[roman]
+        if roman in corrections:
+            devanagari = corrections[roman]
             notes = "review correction"
         rows.append(
             {
@@ -158,7 +182,7 @@ def build_lines() -> tuple[list[dict], list[tuple[str, str]]]:
                 "notes": notes,
             }
         )
-    for roman, devanagari in CORPUS_ADDITIONS:
+    for roman, devanagari in additions:
         if roman in seen:
             continue
         seen.add(roman)
@@ -237,7 +261,11 @@ def write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
 
 
 def main() -> int:
-    lines, line_drops = build_lines()
+    sidecar_corrections, sidecar_additions = load_gold_v2()
+    corrections = {**LINE_CORRECTIONS, **sidecar_corrections}
+    additions = list(CORPUS_ADDITIONS) + sidecar_additions
+
+    lines, line_drops = build_lines(corrections, additions)
     words, ambiguous, word_drops = build_words()
 
     if len(lines) < 150:
