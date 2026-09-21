@@ -84,6 +84,63 @@ def test_ambiguous_words_are_not_scored() -> None:
     assert not (ambiguous & scored)
 
 
+def test_denoise_drops_junk_lines_and_minority_readings(tmp_path) -> None:
+    from scripts.finetune_transliterator import in_domain_pairs
+
+    labels = tmp_path / "labels.csv"
+    labels.write_text(
+        "\n".join(
+            [
+                "line_id,roman,devanagari,confidence,source",
+                # kept: clean line, repeated token with a dominant reading
+                "a1,ma timilai maya garchu,म तिमीलाई माया गर्छु,high,t",
+                "a2,ma timilai maya garchu,म तिमीलाई माया गर्छु,high,t",
+                "a3,ma timilai maya garchu,मा तिमीलाई माया गर्छु,medium,t",
+                # skipped: no Devanagari at all (English/credits)
+                "b1,You know I like it,You know I like it,high,t",
+                # skipped: unexpected script (Cyrillic lookalike)
+                "c1,mero man ma,मेरो मन \u043c\u0430,high,t",
+                # skipped: token counts do not align
+                "d1,timi ra ma,तिमी र,high,t",
+                # kept: single-occurrence long tail
+                "e1,ghamailo,घमाइलो,high,t",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    pairs, stats = in_domain_pairs(labels)
+
+    assert stats["lines_total"] == 7
+    assert stats["lines_skipped_no_devanagari"] == 1
+    assert stats["lines_skipped_unexpected_script"] == 1
+    assert stats["lines_skipped_unaligned"] == 1
+    assert pairs[("ma", "म")] == 2
+    assert ("ma", "मा") not in pairs
+    assert stats["occurrences_dropped_minority"] == 1
+    assert pairs[("ghamailo", "घमाइलो")] == 1
+
+
+def test_denoise_min_dominant_share_drops_split_tokens(tmp_path) -> None:
+    from scripts.finetune_transliterator import in_domain_pairs
+
+    labels = tmp_path / "labels.csv"
+    labels.write_text(
+        "\n".join(
+            [
+                "line_id,roman,devanagari,confidence,source",
+                "a1,ko ghar,को घर,high,t",
+                "a2,ko ghar,का घर,high,t",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    pairs, stats = in_domain_pairs(labels, min_dominant_share=0.9)
+    assert ("ko", "को") not in pairs
+    assert ("ko", "का") not in pairs
+    assert pairs[("ghar", "घर")] == 2
+    assert stats["tokens_dropped_low_share"] >= 1
+
+
 @pytest.fixture(scope="module")
 def transliterator():
     from lyrics_pipeline.transliterator import NepaliTransliterator

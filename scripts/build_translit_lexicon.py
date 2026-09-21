@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import csv
 import io
+import json
 import re
 import sys
 import unicodedata
@@ -165,13 +166,13 @@ def main() -> int:
         "LEXICON = {",
     ]
     for key in sorted(entries):
-        body.append(f'    "{key}": "{entries[key]}",')
+        body.append(f'    {json.dumps(key, ensure_ascii=False)}: {json.dumps(entries[key], ensure_ascii=False)},')
     body.append("}")
     body.append("")
     body.append("AMBIGUOUS = frozenset(")
     body.append("{")
     for key, _, _ in ambiguous:
-        body.append(f'    "{key}",')
+        body.append(f'    {json.dumps(key, ensure_ascii=False)},')
     body.append("}")
     body.append(")")
     body.append("")
@@ -181,7 +182,9 @@ def main() -> int:
         f"'mined_types': {len(counts)}, 'lines': {lines}, 'aligned_lines': {aligned}}}"
     )
     body.append("")
-    OUT_PATH.write_text("\n".join(body), encoding="utf-8")
+    source = "\n".join(body)
+    compile(source, str(OUT_PATH), "exec")
+    OUT_PATH.write_text(source, encoding="utf-8")
 
     print(f"labels: {args.labels}")
     print(f"lines={lines} aligned={aligned} ({aligned / max(lines, 1):.1%}) mined_types={len(counts)}")

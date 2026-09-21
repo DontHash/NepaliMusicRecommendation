@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-09-21T11:35:11+00:00",
+  "generated_at": "2026-09-21T16:53:42+00:00",
   "checkpoint": {
-    "path": "D:\\Code\\ProjectR\\new_char_transformer_best.pt",
+    "path": "D:\\Code\\ProjectR\\new_char_transformer_domain.pt",
     "found": true,
-    "phase_name": "phase2_noise",
-    "epoch": 10,
-    "best_val_cer": 0.035435833463277715,
+    "phase_name": "domain_finetune",
+    "epoch": 3,
+    "best_val_cer": 0.035,
     "params": 4012895
   },
   "config": {
@@ -18,73 +18,55 @@
   },
   "lines": {
     "n": 208,
-    "cer": 0.0837,
-    "exact_match": 0.1875,
-    "exact": 39,
-    "distance": 642,
+    "cer": 0.0747,
+    "exact_match": 0.2115,
+    "exact": 44,
+    "distance": 573,
     "reference_chars": 7673,
     "by_difficulty": {
       "long": {
         "n": 51,
-        "cer": 0.0532,
-        "exact_match": 0.098,
-        "exact": 5,
-        "distance": 217,
+        "cer": 0.0515,
+        "exact_match": 0.1176,
+        "exact": 6,
+        "distance": 210,
         "reference_chars": 4076
       },
       "medium": {
         "n": 123,
-        "cer": 0.1138,
-        "exact_match": 0.1951,
-        "exact": 24,
-        "distance": 352,
+        "cer": 0.0999,
+        "exact_match": 0.2114,
+        "exact": 26,
+        "distance": 309,
         "reference_chars": 3092
       },
       "short": {
         "n": 34,
-        "cer": 0.1446,
-        "exact_match": 0.2941,
-        "exact": 10,
-        "distance": 73,
+        "cer": 0.1069,
+        "exact_match": 0.3529,
+        "exact": 12,
+        "distance": 54,
         "reference_chars": 505
       }
     },
     "worst": [
       {
-        "prediction": "हो नो नो ना ना ना ना न",
+        "prediction": "हो नो नो न न न न न",
         "reference": "Ho no—no ना ना—ना—ना—ना",
-        "distance": 11,
-        "cer": 0.4783
+        "distance": 15,
+        "cer": 0.6522
       },
       {
-        "prediction": "यादामा ना आउ",
-        "reference": "यादमा नआऊ",
-        "distance": 4,
-        "cer": 0.4444
+        "prediction": "न न न न",
+        "reference": "ना—ना ना—ना",
+        "distance": 6,
+        "cer": 0.5455
       },
       {
-        "prediction": "माची मराउ जलाईमा",
-        "reference": "माछी मारौ जालैमा",
-        "distance": 7,
-        "cer": 0.4375
-      },
-      {
-        "prediction": "सम्पति लाइ आयिँदैन",
-        "reference": "सम्पत्तिलाई आइदैन",
-        "distance": 7,
-        "cer": 0.4118
-      },
-      {
-        "prediction": "आजकलतो मै चड्चौ कि",
-        "reference": "अच्कल्टो मै छाड्छौं कि",
-        "distance": 9,
-        "cer": 0.4091
-      },
-      {
-        "prediction": "तिमी प्रति माया बढ्दोचा",
+        "prediction": "तिमी प्रति माया बढ्दोछ",
         "reference": "तिमीप्रति माया बढ्दो छ (बढ्दो छ)",
-        "distance": 13,
-        "cer": 0.4062
+        "distance": 12,
+        "cer": 0.375
       },
       {
         "prediction": "Hey मानिस",
@@ -93,10 +75,10 @@
         "cer": 0.375
       },
       {
-        "prediction": "सुन छाडी ले तिम्लाई वरुला",
-        "reference": "सुनचाँदीले तिमीलाई भरौंला",
-        "distance": 9,
-        "cer": 0.36
+        "prediction": "आजकल्तो मै चढ्छौ कि",
+        "reference": "अच्कल्टो मै छाड्छौं कि",
+        "distance": 8,
+        "cer": 0.3636
       },
       {
         "prediction": "घाम कति घमाइलो",
@@ -105,19 +87,37 @@
         "cer": 0.3529
       },
       {
-        "prediction": "बारु आइ सताउने गर",
-        "reference": "बरु आई मलाई सताउने गर",
-        "distance": 7,
-        "cer": 0.3333
+        "prediction": "प्राय सम्झन्छु म तिमीलाई",
+        "reference": "प्रायः सम्झन्छु म तिमीलाई (तिमीलाई)",
+        "distance": 11,
+        "cer": 0.3143
+      },
+      {
+        "prediction": "ओ निस्थुरी",
+        "reference": "ओ निष्ठूरी",
+        "distance": 3,
+        "cer": 0.3
+      },
+      {
+        "prediction": "सुन छाडी चाहिँदैन",
+        "reference": "सुनचाँदी चाहिंदैन",
+        "distance": 5,
+        "cer": 0.2941
+      },
+      {
+        "prediction": "तिम्रो तडको महि पुगेन मलाई",
+        "reference": "तिम्रो टाढाको म्वाइँ पुगेन मलाई",
+        "distance": 9,
+        "cer": 0.2903
       }
     ]
   },
   "words": {
     "n": 743,
-    "cer": 0.103,
-    "exact_match": 0.6797,
-    "exact": 505,
-    "distance": 420,
+    "cer": 0.0851,
+    "exact_match": 0.7254,
+    "exact": 539,
+    "distance": 347,
     "reference_chars": 4076,
     "worst": [
       {
@@ -145,18 +145,6 @@
         "cer": 1.0
       },
       {
-        "prediction": "चाटा",
-        "reference": "ओढाउ",
-        "distance": 4,
-        "cer": 1.0
-      },
-      {
-        "prediction": "केएसए",
-        "reference": "क्षा",
-        "distance": 4,
-        "cer": 1.0
-      },
-      {
         "prediction": "sãga",
         "reference": "सँगा",
         "distance": 4,
@@ -169,16 +157,28 @@
         "cer": 1.0
       },
       {
-        "prediction": "भाई",
+        "prediction": "भाइ",
         "reference": "भै",
         "distance": 2,
         "cer": 1.0
       },
       {
-        "prediction": "हाउ",
-        "reference": "हौ",
+        "prediction": "तारा",
+        "reference": "तर",
         "distance": 2,
         "cer": 1.0
+      },
+      {
+        "prediction": "ता",
+        "reference": "त",
+        "distance": 1,
+        "cer": 1.0
+      },
+      {
+        "prediction": "महि",
+        "reference": "म्वाइँ",
+        "distance": 5,
+        "cer": 0.8333
       }
     ]
   },
@@ -199,7 +199,7 @@
       {
         "input": "timi lai maya garchu",
         "kind": "no_roman",
-        "output": "तिमी लाइ माया गर्छु",
+        "output": "तिमी लाई माया गर्छु",
         "passed": true
       },
       {
@@ -217,16 +217,28 @@
     "lexicon_types": 28477,
     "sampled_songs": 60,
     "output_tokens": 11266,
-    "in_lexicon": 9535,
-    "in_lexicon_ratio": 0.8464,
+    "in_lexicon": 9603,
+    "in_lexicon_ratio": 0.8524,
     "top_out_of_lexicon": [
+      {
+        "word": "बराइ",
+        "count": 30
+      },
       {
         "word": "बाँस्सै",
         "count": 20
       },
       {
-        "word": "हल्लाईको",
+        "word": "नलौ",
         "count": 18
+      },
+      {
+        "word": "हल्लाइको",
+        "count": 18
+      },
+      {
+        "word": "लई",
+        "count": 17
       },
       {
         "word": "चोरे",
@@ -249,10 +261,6 @@
         "count": 12
       },
       {
-        "word": "ह्यानी",
-        "count": 12
-      },
-      {
         "word": "ओभरट्याक",
         "count": 12
       },
@@ -269,15 +277,19 @@
         "count": 10
       },
       {
-        "word": "दादै",
+        "word": "दाँदै",
         "count": 10
       },
       {
-        "word": "हुन्चाकी",
+        "word": "हुन्चकी",
         "count": 10
       },
       {
-        "word": "दलार",
+        "word": "चाल्यो",
+        "count": 9
+      },
+      {
+        "word": "डलर",
         "count": 8
       },
       {
@@ -287,27 +299,15 @@
       {
         "word": "खेलिरहेको",
         "count": 8
-      },
-      {
-        "word": "सब्जना",
-        "count": 8
-      },
-      {
-        "word": "मुलाई",
-        "count": 8
-      },
-      {
-        "word": "येकलाई",
-        "count": 7
       }
     ]
   },
   "aksharantar": {
     "n": 4101,
-    "cer": 0.0822,
-    "exact_match": 0.6554,
-    "exact": 2688,
-    "distance": 2563,
+    "cer": 0.0845,
+    "exact_match": 0.6472,
+    "exact": 2654,
+    "distance": 2634,
     "reference_chars": 31180,
     "worst": [
       {
@@ -317,14 +317,14 @@
         "cer": 1.6667
       },
       {
-        "prediction": "सव्येर",
-        "reference": "शयर",
-        "distance": 4,
-        "cer": 1.3333
+        "prediction": "वाउसौ",
+        "reference": "वस",
+        "distance": 3,
+        "cer": 1.5
       },
       {
-        "prediction": "ल्यावसन",
-        "reference": "लसन",
+        "prediction": "तेर्रे",
+        "reference": "टेर",
         "distance": 4,
         "cer": 1.3333
       },
@@ -335,30 +335,24 @@
         "cer": 1.3333
       },
       {
-        "prediction": "गड्गे",
-        "reference": "गाज",
-        "distance": 4,
-        "cer": 1.3333
+        "prediction": "ट्यान्डन",
+        "reference": "टंडन",
+        "distance": 5,
+        "cer": 1.25
       }
     ],
     "by_source": {
       "AK-Freq": {
         "n": 2108,
-        "cer": 0.0367,
-        "exact_match": 0.8008,
-        "exact": 1688,
-        "distance": 672,
+        "cer": 0.0376,
+        "exact_match": 0.7936,
+        "exact": 1673,
+        "distance": 689,
         "reference_chars": 18330,
         "worst": [
           {
             "prediction": "तातिया",
             "reference": "तटीय",
-            "distance": 4,
-            "cer": 1.0
-          },
-          {
-            "prediction": "एआईएन",
-            "reference": "आइन्",
             "distance": 4,
             "cer": 1.0
           },
@@ -375,30 +369,36 @@
             "cer": 1.0
           },
           {
-            "prediction": "ड्याग",
-            "reference": "दाग",
-            "distance": 3,
-            "cer": 1.0
+            "prediction": "सुनशिने",
+            "reference": "सनसाइन",
+            "distance": 5,
+            "cer": 0.8333
+          },
+          {
+            "prediction": "खण्डपानी",
+            "reference": "खाँदापनि",
+            "distance": 6,
+            "cer": 0.75
           }
         ]
       },
       "AK-NEF": {
         "n": 817,
-        "cer": 0.1603,
-        "exact_match": 0.4969,
-        "exact": 406,
-        "distance": 837,
+        "cer": 0.1654,
+        "exact_match": 0.4835,
+        "exact": 395,
+        "distance": 864,
         "reference_chars": 5223,
         "worst": [
           {
-            "prediction": "सव्येर",
-            "reference": "शयर",
-            "distance": 4,
-            "cer": 1.3333
+            "prediction": "वाउसौ",
+            "reference": "वस",
+            "distance": 3,
+            "cer": 1.5
           },
           {
-            "prediction": "ल्यावसन",
-            "reference": "लसन",
+            "prediction": "तेर्रे",
+            "reference": "टेर",
             "distance": 4,
             "cer": 1.3333
           },
@@ -424,10 +424,10 @@
       },
       "AK-NEI": {
         "n": 1176,
-        "cer": 0.1382,
-        "exact_match": 0.5051,
-        "exact": 594,
-        "distance": 1054,
+        "cer": 0.1417,
+        "exact_match": 0.4983,
+        "exact": 586,
+        "distance": 1081,
         "reference_chars": 7627,
         "worst": [
           {
@@ -437,27 +437,27 @@
             "cer": 1.6667
           },
           {
-            "prediction": "गड्गे",
-            "reference": "गाज",
-            "distance": 4,
-            "cer": 1.3333
-          },
-          {
             "prediction": "ट्यान्डन",
             "reference": "टंडन",
             "distance": 5,
             "cer": 1.25
           },
           {
-            "prediction": "सीआईपीएलए",
-            "reference": "सिप्ला",
-            "distance": 6,
+            "prediction": "सासनका",
+            "reference": "शशांक",
+            "distance": 5,
             "cer": 1.0
           },
           {
-            "prediction": "ओरिस्सा",
-            "reference": "उडीसा",
-            "distance": 5,
+            "prediction": "तयदे",
+            "reference": "टाइड",
+            "distance": 4,
+            "cer": 1.0
+          },
+          {
+            "prediction": "मच्छ्र",
+            "reference": "मचरा",
+            "distance": 4,
             "cer": 1.0
           }
         ]
@@ -482,5 +482,5 @@
     "aksharantar_cer": true
   },
   "passed": true,
-  "seconds": 19.1
+  "seconds": 16.1
 }

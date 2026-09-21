@@ -48,6 +48,11 @@ DEFAULT_META = PROJECT_ROOT / "music_rec_artifacts" / "transliteration_finetune_
 ROMAN_TOKEN_RE = re.compile(r"[A-Za-z]+")
 DEVANAGARI_RE = re.compile(r"[\u0900-\u097F]")
 WORD_EDGE_PUNCT = ",.;:!?\"'()[]{}।—–-"
+# Characters a clean label may contain. Anything else is corruption picked up
+# from the teacher (Cyrillic lookalikes such as ``ма``, Arabic ``ا``).
+ALLOWED_CHAR_RE = re.compile(
+    r"[\u0900-\u097F\sA-Za-z0-9,.;:!?\"'()\[\]{}।\u2014\u2013&/+-]"
+)
 
 
 def normalize(text: str) -> str:
@@ -63,7 +68,7 @@ def load_vocab(path: Path) -> dict:
         return pickle.load(handle)
 
 
-def build_model(vocab: dict, checkpoint: Path) -> CharTransformer:
+def build_model(vocab: dict, checkpoint: Path, device: torch.device) -> CharTransformer:
     model = CharTransformer(
         vocab["VOCAB_SIZE"],
         vocab["PAD_ID"],
@@ -75,7 +80,7 @@ def build_model(vocab: dict, checkpoint: Path) -> CharTransformer:
     payload = torch.load(checkpoint, map_location="cpu", weights_only=False)
     state = payload["model_state"] if isinstance(payload, dict) and "model_state" in payload else payload
     model.load_state_dict(state)
-    return model
+    return model.to(device)
 
 
 def text_to_ids(text: str, vocab: dict, max_length: int) -> list[int]:
@@ -88,9 +93,34 @@ def text_to_ids(text: str, vocab: dict, max_length: int) -> list[int]:
     return ids[:max_length]
 
 
-def in_domain_pairs(labels_path: Path) -> Counter:
-    """Aligned (roman, Devanagari) word pairs from the teacher labels."""
+def in_domain_pairs(
+    labels_path: Path, min_dominant_share: float = 0.0
+) -> tuple[Counter, dict]:
+    """Aligned (roman, Devanagari) word pairs from the teacher labels, denoised.
+
+    Two filters, measured on the 34k-label run:
+
+    - **Line filters** drop labels that carry no transliteration signal or carry
+      corruption: lines whose Devanagari output is empty (English, credits,
+      chord charts, Hindi) and lines containing characters outside the allowed
+      script set (Cyrillic/Arabic lookalikes).
+    - **Majority vote** keeps, for every roman token seen more than once, only
+      the occurrences that match the dominant reading. Single-occurrence tokens
+      are kept as-is: they are the long tail the model needs to see.
+      ``min_dominant_share`` can additionally drop tokens whose reading is too
+      split to trust (0.0 keeps everything).
+    """
     pairs: Counter = Counter()
+    stats = {
+        "lines_total": 0,
+        "lines_skipped_no_devanagari": 0,
+        "lines_skipped_unexpected_script": 0,
+        "lines_skipped_unaligned": 0,
+        "pairs_raw": 0,
+        "pairs_kept": 0,
+        "tokens_dropped_low_share": 0,
+        "occurrences_dropped_minority": 0,
+    }
     rows: list[dict] = []
     if labels_path.suffix.lower() == ".jsonl":
         with open(labels_path, encoding="utf-8") as handle:
@@ -102,16 +132,46 @@ def in_domain_pairs(labels_path: Path) -> Counter:
     else:
         with open(labels_path, encoding="utf-8", newline="") as handle:
             rows = list(csv.DictReader(handle))
+
+    raw: Counter = Counter()
     for row in rows:
+        stats["lines_total"] += 1
+        devanagari = row.get("devanagari") or ""
+        if not DEVANAGARI_RE.search(devanagari):
+            stats["lines_skipped_no_devanagari"] += 1
+            continue
+        if any(not ALLOWED_CHAR_RE.match(char) for char in devanagari):
+            stats["lines_skipped_unexpected_script"] += 1
+            continue
         roman_tokens = ROMAN_TOKEN_RE.findall(row.get("roman") or "")
-        dev_tokens = [normalize_token(token) for token in (row.get("devanagari") or "").split()]
+        dev_tokens = [normalize_token(token) for token in devanagari.split()]
         dev_tokens = [token for token in dev_tokens if token]
         if len(roman_tokens) != len(dev_tokens):
+            stats["lines_skipped_unaligned"] += 1
             continue
-        for roman, devanagari in zip(roman_tokens, dev_tokens):
-            if DEVANAGARI_RE.search(devanagari):
-                pairs[(roman.lower(), devanagari)] += 1
-    return pairs
+        for roman, devanagari_token in zip(roman_tokens, dev_tokens):
+            if DEVANAGARI_RE.search(devanagari_token):
+                raw[(roman.lower(), devanagari_token)] += 1
+
+    stats["pairs_raw"] = sum(raw.values())
+    readings: dict[str, Counter] = {}
+    for (roman, devanagari), count in raw.items():
+        readings.setdefault(roman, Counter())[devanagari] += count
+    for (roman, devanagari), count in raw.items():
+        options = readings[roman]
+        total = sum(options.values())
+        dominant, dominant_count = options.most_common(1)[0]
+        if total >= 2:
+            if dominant_count / total < min_dominant_share:
+                stats["tokens_dropped_low_share"] += 1
+                stats["occurrences_dropped_minority"] += count
+                continue
+            if devanagari != dominant:
+                stats["occurrences_dropped_minority"] += count
+                continue
+        pairs[(roman, devanagari)] += count
+    stats["pairs_kept"] = sum(pairs.values())
+    return pairs, stats
 
 
 def replay_pairs(path: Path, count: int, seed: int = 42) -> list[tuple[str, str]]:
@@ -135,7 +195,12 @@ def replay_pairs(path: Path, count: int, seed: int = 42) -> list[tuple[str, str]
 
 
 def make_batches(
-    pairs: list[tuple[str, str]], vocab: dict, batch_size: int, shuffle: bool, seed: int
+    pairs: list[tuple[str, str]],
+    vocab: dict,
+    batch_size: int,
+    shuffle: bool,
+    seed: int,
+    device: torch.device | None = None,
 ):
     src_max, tgt_max = vocab["SRC_MAX_LEN"], vocab["TGT_MAX_LEN"]
     order = list(range(len(pairs)))
@@ -153,6 +218,8 @@ def make_batches(
             batch_first=True,
             padding_value=vocab["PAD_ID"],
         )
+        if device is not None:
+            src, tgt = src.to(device), tgt.to(device)
         yield src, tgt
 
 
@@ -185,10 +252,16 @@ def ids_to_text(ids, vocab: dict) -> str:
 
 
 @torch.inference_mode()
-def evaluate(model: CharTransformer, pairs: list[tuple[str, str]], vocab: dict, batch_size: int) -> dict:
+def evaluate(
+    model: CharTransformer,
+    pairs: list[tuple[str, str]],
+    vocab: dict,
+    batch_size: int,
+    device: torch.device | None = None,
+) -> dict:
     model.eval()
     distance = chars = exact = 0
-    for src, tgt in make_batches(pairs, vocab, batch_size, shuffle=False, seed=0):
+    for src, tgt in make_batches(pairs, vocab, batch_size, shuffle=False, seed=0, device=device):
         decoded = model.greedy_decode_batch(src)
         for row, target in zip(decoded, tgt):
             prediction = ids_to_text(row.tolist(), vocab)
@@ -217,6 +290,23 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--replay-pairs", type=int, default=60_000, help="Aksharantar replay cap")
     parser.add_argument("--valid-pairs", type=int, default=2_000)
     parser.add_argument("--max-steps", type=int, default=0, help="stop early (timing probe)")
+    parser.add_argument(
+        "--device",
+        choices=["auto", "cpu", "cuda"],
+        default="auto",
+        help="auto uses CUDA when available (short fine-tunes are fine on the laptop GPU)",
+    )
+    parser.add_argument(
+        "--min-dominant-share",
+        type=float,
+        default=0.0,
+        help="Drop multi-occurrence tokens whose dominant reading is below this share",
+    )
+    parser.add_argument(
+        "--force-save",
+        action="store_true",
+        help="Save every epoch even when the Aksharantar guard does not improve (experiments)",
+    )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--threads", type=int, default=0, help="torch CPU threads (0 = default)")
     return parser.parse_args()
@@ -224,15 +314,24 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    if args.max_steps and args.out == DEFAULT_OUT:
+        sys.exit(
+            "--max-steps is a probe: pass an explicit --out so the installed "
+            "checkpoint cannot be overwritten by a partial run"
+        )
     if args.threads:
         torch.set_num_threads(args.threads)
+    if args.device == "auto":
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    else:
+        device = torch.device(args.device)
     random.seed(args.seed)
     torch.manual_seed(args.seed)
 
     vocab = load_vocab(args.vocab)
-    model = build_model(vocab, args.checkpoint)
+    model = build_model(vocab, args.checkpoint, device)
 
-    in_domain = in_domain_pairs(args.labels)
+    in_domain, denoise = in_domain_pairs(args.labels, args.min_dominant_share)
     domain_pairs = [pair for pair, _ in in_domain.most_common(args.max_pairs)]
     replay = replay_pairs(AKSHARANTAR_DIR / "nep_train.json", args.replay_pairs, args.seed)
     train_pairs = domain_pairs + replay
@@ -247,11 +346,18 @@ def main() -> int:
                 valid_rows.append((normalize(record["english word"]).lower(), normalize(record["native word"])))
     valid_pairs = valid_rows[: args.valid_pairs]
 
+    print(f"device: {device}")
+    print(
+        f"denoise: lines {denoise['lines_total']} -> kept "
+        f"{denoise['lines_total'] - denoise['lines_skipped_no_devanagari'] - denoise['lines_skipped_unexpected_script'] - denoise['lines_skipped_unaligned']}"
+        f" (no-dev {denoise['lines_skipped_no_devanagari']}, script {denoise['lines_skipped_unexpected_script']}, "
+        f"unaligned {denoise['lines_skipped_unaligned']}) | occurrences {denoise['pairs_raw']} -> {denoise['pairs_kept']}"
+    )
     print(
         f"in-domain pairs={len(domain_pairs)} replay={len(replay)} train={len(train_pairs)} "
         f"valid={len(valid_pairs)}"
     )
-    before = evaluate(model, valid_pairs, vocab, args.batch_size) if valid_pairs else None
+    before = evaluate(model, valid_pairs, vocab, args.batch_size, device) if valid_pairs else None
     if before:
         print(f"valid before: cer={before['cer']:.4f} exact={before['exact_match']:.1%}")
 
@@ -277,7 +383,7 @@ def main() -> int:
     for epoch in range(1, args.epochs + 1):
         running = 0.0
         seen = 0
-        for src, tgt in make_batches(train_pairs, vocab, args.batch_size, True, args.seed + epoch):
+        for src, tgt in make_batches(train_pairs, vocab, args.batch_size, True, args.seed + epoch, device):
             memory, src_padding_mask = model.encode(src)
             decoder_input = tgt[:, :-1]
             logits = model.decode_step(
@@ -305,11 +411,12 @@ def main() -> int:
             if args.max_steps and step >= args.max_steps:
                 break
         if valid_pairs:
-            after = evaluate(model, valid_pairs, vocab, args.batch_size)
+            after = evaluate(model, valid_pairs, vocab, args.batch_size, device)
             history.append({"epoch": epoch, "loss": round(running / max(seen, 1), 4), **after})
             print(f"epoch {epoch}: valid cer={after['cer']:.4f} exact={after['exact_match']:.1%}")
-            if after["cer"] <= best:
-                best = after["cer"]
+            if after["cer"] <= best or args.force_save:
+                if after["cer"] <= best:
+                    best = after["cer"]
                 torch.save(
                     {"model_state": {k: v.detach().cpu().clone() for k, v in model.state_dict().items()},
                      "phase_name": "domain_finetune",
@@ -332,9 +439,12 @@ def main() -> int:
     meta = {
         "checkpoint_in": str(args.checkpoint),
         "checkpoint_out": str(args.out),
+        "device": str(device),
         "epochs": args.epochs,
         "lr": args.lr,
         "batch_size": args.batch_size,
+        "min_dominant_share": args.min_dominant_share,
+        "denoise": denoise,
         "in_domain_pairs": len(domain_pairs),
         "replay_pairs": len(replay),
         "valid_before": before,

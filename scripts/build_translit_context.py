@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import re
 import sys
 import unicodedata
@@ -153,25 +154,28 @@ def main() -> int:
     ]
     for key in sorted(ambiguous):
         entries = ", ".join(
-            f'"{form}": {count}' for form, count in ambiguous[key].most_common()
+            f"{json.dumps(form, ensure_ascii=False)}: {count}"
+            for form, count in ambiguous[key].most_common()
         )
-        body.append(f'    "{key}": {{{entries}}},')
+        body.append(f'    {json.dumps(key, ensure_ascii=False)}: {{{entries}}},')
     body.append("}")
     body.append("")
     body.append("BIGRAM: dict[str, dict[str, int]] = {")
     for form in sorted(pruned_bigram):
         entries = ", ".join(
-            f'"{previous}": {count}' for previous, count in pruned_bigram[form].most_common()
+            f"{json.dumps(previous, ensure_ascii=False)}: {count}"
+            for previous, count in pruned_bigram[form].most_common()
         )
-        body.append(f'    "{form}": {{{entries}}},')
+        body.append(f'    {json.dumps(form, ensure_ascii=False)}: {{{entries}}},')
     body.append("}")
     body.append("")
     body.append("FORWARD_BIGRAM: dict[str, dict[str, int]] = {")
     for form in sorted(pruned_forward):
         entries = ", ".join(
-            f'"{following}": {count}' for following, count in pruned_forward[form].most_common()
+            f"{json.dumps(following, ensure_ascii=False)}: {count}"
+            for following, count in pruned_forward[form].most_common()
         )
-        body.append(f'    "{form}": {{{entries}}},')
+        body.append(f'    {json.dumps(form, ensure_ascii=False)}: {{{entries}}},')
     body.append("}")
     body.append("")
     body.append(
@@ -180,7 +184,9 @@ def main() -> int:
         f"'label_lines': {label_lines}, 'corpus_lines': {corpus_lines}}}"
     )
     body.append("")
-    OUT_PATH.write_text("\n".join(body), encoding="utf-8")
+    source = "\n".join(body)
+    compile(source, str(OUT_PATH), "exec")
+    OUT_PATH.write_text(source, encoding="utf-8")
 
     size_kb = OUT_PATH.stat().st_size / 1024
     print(f"teacher lines={label_lines}  corpus lines={corpus_lines}")

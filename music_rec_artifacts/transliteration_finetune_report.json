@@ -1,10 +1,22 @@
 {
   "checkpoint_in": "D:\\Code\\ProjectR\\new_char_transformer_best.pt",
   "checkpoint_out": "D:\\Code\\ProjectR\\new_char_transformer_domain.pt",
+  "device": "cuda",
   "epochs": 3,
   "lr": 0.0001,
   "batch_size": 128,
-  "in_domain_pairs": 23694,
+  "min_dominant_share": 0.0,
+  "denoise": {
+    "lines_total": 34252,
+    "lines_skipped_no_devanagari": 1910,
+    "lines_skipped_unexpected_script": 329,
+    "lines_skipped_unaligned": 3502,
+    "pairs_raw": 137499,
+    "pairs_kept": 117366,
+    "tokens_dropped_low_share": 0,
+    "occurrences_dropped_minority": 20133
+  },
+  "in_domain_pairs": 24299,
   "replay_pairs": 24000,
   "valid_before": {
     "n": 1500,
@@ -13,35 +25,37 @@
   },
   "valid_after": {
     "epoch": 3,
-    "loss": 0.6238,
+    "loss": 0.6211,
     "n": 1500,
-    "cer": 0.036,
-    "exact_match": 0.7787
+    "cer": 0.0361,
+    "exact_match": 0.776
   },
   "history": [
     {
       "epoch": 1,
-      "loss": 0.6542,
+      "loss": 0.6506,
       "n": 1500,
-      "cer": 0.0355,
-      "exact_match": 0.7813
+      "cer": 0.0354,
+      "exact_match": 0.7833
     },
     {
       "epoch": 2,
-      "loss": 0.6315,
+      "loss": 0.6265,
       "n": 1500,
-      "cer": 0.0361,
-      "exact_match": 0.776
+      "cer": 0.0357,
+      "exact_match": 0.778
     },
     {
       "epoch": 3,
-      "loss": 0.6238,
+      "loss": 0.6211,
       "n": 1500,
-      "cer": 0.036,
-      "exact_match": 0.7787
+      "cer": 0.0361,
+      "exact_match": 0.776
     }
   ],
   "best_val_cer": 0.035,
-  "seconds": 649.9,
-  "steps": 1119
+  "seconds": 168.1,
+  "steps": 1134,
+  "promoted": true,
+  "note": "denoised in-domain pairs (majority-vote readings, junk lines filtered), 1:1 Aksharantar replay"
 }

@@ -75,6 +75,10 @@ def resolve(tokens: list[str], romans: list[str | None]) -> list[str]:
     ``tokens`` are the current outputs and ``romans`` the roman key per position
     (``None`` for fixed tokens such as punctuation or non-ambiguous words).
     Returns a new list; positions without candidates are left untouched.
+
+    The reading prior is used as the fallback when neither neighbour has bigram
+    evidence: an evidence gate was tried and scored worse on the line gold, so
+    the resolver deliberately overrides on the majority reading instead.
     """
     resolved = list(tokens)
     for index, roman in enumerate(romans):

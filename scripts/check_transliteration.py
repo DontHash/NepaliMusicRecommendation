@@ -42,7 +42,7 @@ GOLD_WORDS = PROJECT_ROOT / "eval" / "translit_gold_words.csv"
 CORPUS_CSV = PROJECT_ROOT / "CSVs Dataset" / "corpus_final_v2.csv"
 CORPUS_RAW = PROJECT_ROOT / "R_data" / "corpus" / "corpus_raw.csv"
 AKSHARANTAR_DIR = PROJECT_ROOT / "R_data" / "raw" / "aksharantar"
-CHECKPOINT = PROJECT_ROOT / "new_char_transformer_best.pt"
+CHECKPOINT = PROJECT_ROOT / "new_char_transformer_domain.pt"  # mirrors Config.transliterator_checkpoint
 DEFAULT_OUT = PROJECT_ROOT / "music_rec_artifacts" / "transliteration_report.json"
 
 DEV_WORD_RE = re.compile(r"[\u0900-\u097F]+")

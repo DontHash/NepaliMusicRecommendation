@@ -170,8 +170,8 @@ Further cleaning for ML:
 | **Trained in** | `Notebooks/NewTransliterate.ipynb` (Aksharantar) then `scripts/finetune_transliterator.py` (domain fine-tune, local CPU) |
 | **Job** | Roman letters → Devanagari characters |
 | **Architecture** | Small encoder-decoder Transformer (~4M params) |
-| **Training data** | Aksharantar Nepali (2.4M word pairs) + 23.7k in-domain word pairs from 12k teacher-labeled corpus lines, 1:1 replay |
-| **Quality** | Aksharantar valid 3.49% CER; Aksharantar test 8.42% overall (3.7% common words, 16.6%/14.2% named entities); in-domain line gold 7.44% CER / 21.6% exact |
+| **Training data** | Aksharantar Nepali (2.4M word pairs) + 24.3k denoised in-domain word pairs from 34k teacher-labeled corpus lines, 1:1 replay |
+| **Quality** | Aksharantar valid 3.50% CER; test 8.45% overall (3.8% common words, 16.5%/14.2% named entities); in-domain line gold 7.47% CER / 21.1% exact, word gold 8.51% / 72.5% |
 | **Used when** | User types `maya lagcha`; query encoding; cleaning romanized CSV rows |
 
 **Decode pipeline (layered, each switchable for A/B):**

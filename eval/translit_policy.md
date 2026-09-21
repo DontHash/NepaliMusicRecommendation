@@ -70,24 +70,32 @@ teacher pass.
 crosses its threshold (defaults in the script are the A0 baseline plus a small
 margin):
 
-| Metric | Model only (A0) | + lexicon (A2) | + context (A3) |
-|---|---|---|---|
-| Line CER | 0.1037 | 0.0915 | **0.0837** |
-| Line exact-match | 9.6% | 14.9% | **18.8%** |
-| Word CER | 0.1089 | 0.1030 | 0.1030 |
-| Word exact-match | 65.0% | 68.0% | 68.0% |
-| Gate cases | 4/4 | 4/4 | 4/4 |
-| Lexicon validity | 84.3% | 84.8% | 84.6% |
+| Metric | Model only (A0) | + lexicon (A2) | + context (A3) | + fine-tune (A4) | **+ 34k tables (A6)** |
+|---|---|---|---|---|---|
+| Line CER | 0.1037 | 0.0915 | 0.0837 | 0.0779 | **0.0747** |
+| Line exact-match | 9.6% | 14.9% | 18.8% | 21.1% | **21.1%** |
+| Word CER | 0.1089 | 0.1030 | 0.1030 | 0.0930 | **0.0851** |
+| Word exact-match | 65.0% | 68.0% | 68.0% | 69.8% | **72.5%** |
+| Gate cases | 4/4 | 4/4 | 4/4 | 4/4 | 4/4 |
+| Lexicon validity | 84.3% | 84.8% | 84.6% | 84.9% | **85.2%** |
+
+A6 scaled the teacher to the **full romanized corpus** (34,252 lines on Vertex AI,
+`gemini-flash-lite-latest`, zero evaluation-reserved leaks), rebuilt the tables
+(lexicon 2,408 → 4,182 entries; context 497 → 1,534 ambiguous tokens), denoised
+the training pairs (majority-vote readings; junk lines and lookalike-script
+corruption dropped; 137,499 → 117,366 occurrences) and fine-tuned on the RTX
+2050 (~2.8 min). Aksharantar test sits at 0.0845 (guard 0.09).
 
 The decode pipeline is layered, and each layer is switchable for A/B runs:
 
 1. **English gate** — dictionary English and contraction tails stay Latin.
-2. **Lexicon** (`lyrics_pipeline/translit_lexicon.py`, generated) — unambiguous
-   roman tokens resolved by lookup; context-dependent tokens are excluded.
+2. **Lexicon** (`lyrics_pipeline/translit_lexicon.py`, generated) — 4,182
+   unambiguous roman tokens resolved by lookup; context-dependent tokens are
+   excluded.
 3. **Context resolver** (`lyrics_pipeline/context_resolver.py`, tables from
-   `lyrics_pipeline/translit_context.py`) — ambiguous tokens pick their reading
-   from left/right word bigrams over the Devanagari-origin corpus, with the
-   teacher reading prior as backoff.
+   `lyrics_pipeline/translit_context.py`) — 1,534 ambiguous tokens pick their
+   reading from left/right word bigrams over the Devanagari-origin corpus, with
+   the teacher reading prior as backoff.
 4. **Model** — everything else, plus the fallback when the tables miss.
 
 Lexicon validity is the share of Devanagari tokens produced for real romanized
