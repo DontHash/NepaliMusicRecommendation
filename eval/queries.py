@@ -5,13 +5,19 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import re
+import sys
 from pathlib import Path
 
 import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 DEFAULT_CLEANED = PROJECT_ROOT / "music_rec_artifacts" / "cleaned_lyrics.csv"
 DEFAULT_OUT = PROJECT_ROOT / "R_data" / "corpus" / "eval" / "queries.jsonl"
+DEFAULT_HARD_OUT = PROJECT_ROOT / "R_data" / "corpus" / "eval" / "queries_hard.jsonl"
 
 MOOD_QUERIES = [
     ("maya lagcha", "romance"),
@@ -130,6 +136,82 @@ def load_queries(path: Path) -> list[dict]:
         return [json.loads(line) for line in fh if line.strip()]
 
 
+def _reverse_lexicon() -> dict[str, str]:
+    from lyrics_pipeline.translit_lexicon import LEXICON
+
+    reverse: dict[str, str] = {}
+    for roman, devanagari in LEXICON.items():
+        current = reverse.get(devanagari)
+        if current is None or (len(roman), roman) < (len(current), current):
+            reverse[devanagari] = roman
+    return reverse
+
+
+def _drop_middle(tokens: list[str]) -> list[str]:
+    if len(tokens) < 4:
+        return tokens
+    middle = len(tokens) // 2
+    return tokens[:middle] + tokens[middle + 1 :]
+
+
+def _romanize(tokens: list[str], reverse: dict[str, str]) -> list[str]:
+    romanized = []
+    for token in tokens:
+        if re.fullmatch(r"[A-Za-z0-9]+", token):
+            romanized.append(token.lower())
+        elif token in reverse:
+            romanized.append(reverse[token])
+    return romanized
+
+
+def build_hard_queries(
+    cleaned_csv: Path,
+    out_path: Path,
+    *,
+    n_lyric: int = 30,
+    seed: int = 42,
+) -> dict:
+    """Non-verbatim lyric queries (truncated, word-dropped, romanized)."""
+    rng = random.Random(seed)
+    df = pd.read_csv(cleaned_csv, encoding="utf-8").fillna({"artist": "", "title": "", "lyrics": ""})
+    reverse = _reverse_lexicon()
+    lyric_rows = df[df["lyrics"].str.len() >= 300]
+    lyric_pool = lyric_rows.sample(min(n_lyric, len(lyric_rows)), random_state=seed)
+    queries: list[dict] = []
+    for index, row in enumerate(lyric_pool.itertuples(index=False)):
+        lines = [line.strip() for line in str(row.lyrics).splitlines() if len(line.split()) >= 5]
+        if not lines:
+            continue
+        tokens = rng.choice(lines).split()
+        variants = {
+            "trunc": tokens[:4],
+            "drop": _drop_middle(tokens[:6]),
+            "roman": _romanize(tokens[:8], reverse),
+        }
+        for variant, parts in variants.items():
+            if len(parts) < 2:
+                continue
+            queries.append(
+                {
+                    "query_id": f"lyric_{variant}_{index:03d}",
+                    "type": f"lyric_{variant}",
+                    "text": " ".join(parts),
+                    "relevant": [int(row.song_id)],
+                    "meta": {"title": str(row.title), "artist": str(row.artist), "variant": variant},
+                }
+            )
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as fh:
+        for query in queries:
+            fh.write(json.dumps(query, ensure_ascii=False) + "\n")
+
+    counts: dict[str, int] = {}
+    for query in queries:
+        counts[query["type"]] = counts.get(query["type"], 0) + 1
+    return {"queries": len(queries), "by_type": counts, "output": str(out_path)}
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build the evaluation query set.")
     parser.add_argument("--cleaned", type=Path, default=DEFAULT_CLEANED)
@@ -137,12 +219,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--n-artist", type=int, default=40)
     parser.add_argument("--n-lyric", type=int, default=40)
     parser.add_argument("--n-seed", type=int, default=30)
+    parser.add_argument("--hard", action="store_true", help="Build the non-verbatim lyric query set instead")
+    parser.add_argument("--hard-out", type=Path, default=DEFAULT_HARD_OUT)
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    report = build_queries(args.cleaned, args.out, n_artist=args.n_artist, n_lyric=args.n_lyric, n_seed=args.n_seed)
+    if args.hard:
+        report = build_hard_queries(args.cleaned, args.hard_out, n_lyric=args.n_lyric)
+    else:
+        report = build_queries(args.cleaned, args.out, n_artist=args.n_artist, n_lyric=args.n_lyric, n_seed=args.n_seed)
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
 

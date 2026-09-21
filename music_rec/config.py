@@ -47,6 +47,11 @@ class Config:
     final_top_k: int = 10
     mmr_lambda: float = 0.7
     sentiment_weight: float = 0.15
+    lexical_enabled: bool = True
+    lexical_weight: float = 0.65
+    bm25_k1: float = 1.5
+    bm25_b: float = 0.75
+    dedup_enabled: bool = True
     use_window_search: bool = True
     probe_positive_threshold: float = 0.0
     probe_negative_threshold: float = 0.10

@@ -9,7 +9,9 @@ import numpy as np
 import pandas as pd
 
 from .config import Config
+from .dedup import DuplicateCollapser
 from .index import build_index, load_index, normalize, search
+from .lexical import LexicalIndex, fuse_scores
 from .query import QueryEncoder
 from .rerank import mmr_rerank, sentiment_alignment
 from .window_search import WindowIndex
@@ -25,7 +27,12 @@ class Recommendation:
 
 
 class MusicRecommender:
-    def __init__(self, config: Config | None = None, use_features: bool = True):
+    def __init__(
+        self,
+        config: Config | None = None,
+        use_features: bool = True,
+        query_encoder: QueryEncoder | None = None,
+    ):
         self.config = config or Config()
         self.use_features = use_features
         self.songs = pd.read_csv(self.config.cleaned_lyrics_csv, encoding="utf-8")
@@ -59,7 +66,9 @@ class MusicRecommender:
         if self.config.sentiment_scores_csv.exists():
             self.sentiment = pd.read_csv(self.config.sentiment_scores_csv).set_index("song_id")
 
-        self._query_encoder = None
+        self._query_encoder = query_encoder
+        self._lexical = None
+        self._dedup = None
 
     @classmethod
     def load(cls, config: Config | None = None, use_features: bool = True) -> "MusicRecommender":
@@ -70,6 +79,21 @@ class MusicRecommender:
         if self._query_encoder is None:
             self._query_encoder = QueryEncoder(self.config)
         return self._query_encoder
+
+    @property
+    def lexical(self) -> LexicalIndex:
+        if self._lexical is None:
+            lyrics = self.songs["lyrics"].fillna("").astype(str).tolist()
+            self._lexical = LexicalIndex(
+                lyrics, k1=self.config.bm25_k1, b=self.config.bm25_b
+            )
+        return self._lexical
+
+    @property
+    def dedup(self) -> DuplicateCollapser:
+        if self._dedup is None:
+            self._dedup = DuplicateCollapser(self.songs)
+        return self._dedup
 
     def _sent_score(self, song_id: int):
         if self.sentiment is None or song_id not in self.sentiment.index:
@@ -97,7 +121,7 @@ class MusicRecommender:
         exclude_id: int | None,
         artist: str | None,
         category: str | None,
-        window_scores: np.ndarray | None = None,
+        base_scores: np.ndarray | None = None,
     ) -> list[Recommendation]:
         cfg = self.config
         keep_mask = self._filter_mask(artist, category)
@@ -109,19 +133,19 @@ class MusicRecommender:
                 mask_rows = mask_rows[mask_rows != exclude_row]
             if len(mask_rows) == 0:
                 return []
-            if window_scores is not None:
-                sims = window_scores[mask_rows]
+            if base_scores is not None:
+                sims = base_scores[mask_rows]
             else:
                 query_emb = query_vec_index[: self.embeddings.shape[1]]
                 sims = self.embeddings[mask_rows] @ query_emb
             order = np.argsort(-sims)[: cfg.ann_top_k]
             cand_ids = self.song_ids[mask_rows[order]]
             cand_rel = sims[order].astype(np.float64)
-        elif window_scores is not None:
-            order = np.argsort(-window_scores)[: cfg.ann_top_k]
-            order = [row for row in order if np.isfinite(window_scores[row])]
+        elif base_scores is not None:
+            order = np.argsort(-base_scores)[: cfg.ann_top_k]
+            order = [row for row in order if np.isfinite(base_scores[row])]
             cand_ids = self.song_ids[np.asarray(order, dtype=int)]
-            cand_rel = window_scores[order].astype(np.float64)
+            cand_rel = base_scores[order].astype(np.float64)
         else:
             scores, rows = search(self.index, query_vec_index, min(cfg.ann_top_k * 3, len(self.songs)))
             cand_ids, cand_rel = [], []
@@ -145,6 +169,11 @@ class MusicRecommender:
             cand_sent = np.array([self._sent_score(int(s)) or 0.0 for s in cand_ids])
             align = sentiment_alignment(cand_sent, target_sentiment)
             relevance = (1 - cfg.sentiment_weight) * relevance + cfg.sentiment_weight * align
+
+        if cfg.dedup_enabled and len(cand_ids) > 1:
+            keep = self.dedup.keep_mask(cand_ids)
+            cand_ids = cand_ids[keep]
+            relevance = relevance[keep]
 
         diversity_vecs = np.vstack([self.embeddings[self._row_index(int(s))] for s in cand_ids])
         ordered = mmr_rerank(cand_ids, relevance, diversity_vecs, cfg.final_top_k, cfg.mmr_lambda)
@@ -200,8 +229,19 @@ class MusicRecommender:
             query_vec = padded
         else:
             query_vec = emb
-        window_scores = self.window_index.song_scores(emb) if self.window_index is not None else None
-        return self._rank(query_vec, target_sentiment, None, artist, category, window_scores=window_scores)
+        base_scores = self.window_index.song_scores(emb) if self.window_index is not None else None
+        if self.config.lexical_enabled and artist is None:
+            lexical_scores = self.lexical.song_scores(self.query_encoder.normalize_query(text))
+            if lexical_scores.max() > 0:
+                dense_scores = base_scores
+                if dense_scores is None:
+                    dense_scores = self.embeddings @ emb.astype(np.float32)
+                base_scores = fuse_scores(
+                    dense_scores, lexical_scores, self.config.lexical_weight
+                )
+        return self._rank(
+            query_vec, target_sentiment, None, artist, category, base_scores=base_scores
+        )
 
     def normalized_query(self, text: str) -> str:
         return self.query_encoder.normalize_query(text)

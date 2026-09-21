@@ -7,6 +7,11 @@ import unicodedata
 
 _DEV_TOKEN_RE = re.compile(r"[\u0900-\u097F]+|[A-Za-z0-9]+")
 
+_LEGACY_VOWEL_COMPOSITIONS = {
+    "\u093E\u0947": "\u094B",  # ा + े -> ो
+    "\u093E\u0948": "\u094C",  # ा + ै -> ौ
+}
+
 try:  # pragma: no cover - optional dependency
     from indicnlp.tokenize import indic_tokenize
 
@@ -16,8 +21,11 @@ except Exception:  # pragma: no cover
 
 
 def normalize_nfc(text: str) -> str:
-    """Normalize to NFC (canonical composed form) for consistent Devanagari."""
-    return unicodedata.normalize("NFC", text or "")
+    """Normalize to NFC and compose legacy two-part Devanagari vowels."""
+    normalized = unicodedata.normalize("NFC", text or "")
+    for legacy, composed in _LEGACY_VOWEL_COMPOSITIONS.items():
+        normalized = normalized.replace(legacy, composed)
+    return normalized
 
 
 def tokenize(text: str) -> list[str]:
@@ -26,8 +34,10 @@ def tokenize(text: str) -> list[str]:
         return []
     if _HAS_INDIC:
         try:
-            toks = indic_tokenize.trivial_tokenize(text, lang="ne")
-            return [t for t in toks if t.strip() and not _is_punct(t)]
+            toks: list[str] = []
+            for segment in text.split():
+                toks.extend(indic_tokenize.trivial_tokenize(segment, lang="ne"))
+            return [t for t in (tok.strip() for tok in toks) if t and not _is_punct(t)]
         except Exception:
             pass
     return _DEV_TOKEN_RE.findall(text)

@@ -19,10 +19,17 @@ from music_rec.config import Config  # noqa: E402
 DEFAULT_REPORT = PROJECT_ROOT / "music_rec_artifacts" / "eval_v2_report.json"
 
 
-def run_eval(queries_path: Path, report_path: Path, *, ann_top_k: int = 200, top_k: int = 50) -> dict:
+def run_eval(
+    queries_path: Path,
+    report_path: Path,
+    *,
+    ann_top_k: int = 200,
+    top_k: int = 50,
+    config: Config | None = None,
+) -> dict:
     from music_rec.recommender import MusicRecommender
 
-    config = Config()
+    config = config or Config()
     config.ann_top_k = ann_top_k
     config.final_top_k = top_k
     recommender = MusicRecommender.load(config)
@@ -40,7 +47,7 @@ def run_eval(queries_path: Path, report_path: Path, *, ann_top_k: int = 200, top
         ids = [rec.song_id for rec in results]
         rankings[query["query_id"]] = ids
 
-    objective = [query for query in queries if query["type"] in {"artist", "lyric", "seed"}]
+    objective = [query for query in queries if query["type"] != "mood"]
     report = evaluate_rankings(objective, rankings)
     report["meta"] = {
         "queries_path": str(queries_path),
@@ -60,6 +67,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--ann-top-k", type=int, default=200)
     parser.add_argument("--top-k", type=int, default=50)
+    parser.add_argument("--no-lexical", action="store_true", help="Disable lexical fusion (dense-only control)")
+    parser.add_argument("--no-dedup", action="store_true", help="Disable duplicate collapsing")
+    parser.add_argument("--lexical-weight", type=float, default=None, help="Override lexical fusion weight")
     return parser.parse_args()
 
 
@@ -67,7 +77,20 @@ def main() -> None:
     args = parse_args()
     if not args.queries.exists():
         raise SystemExit(f"missing queries file: {args.queries}; run eval/queries.py first")
-    report = run_eval(args.queries, args.report, ann_top_k=args.ann_top_k, top_k=args.top_k)
+    config = Config()
+    if args.no_lexical:
+        config.lexical_enabled = False
+    if args.no_dedup:
+        config.dedup_enabled = False
+    if args.lexical_weight is not None:
+        config.lexical_weight = args.lexical_weight
+    report = run_eval(
+        args.queries,
+        args.report,
+        ann_top_k=args.ann_top_k,
+        top_k=args.top_k,
+        config=config,
+    )
     print(json.dumps(report["summary"], ensure_ascii=False, indent=2))
     print(f"report -> {args.report}")
 

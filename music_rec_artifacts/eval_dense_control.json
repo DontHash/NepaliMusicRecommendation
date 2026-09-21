@@ -9,11 +9,11 @@
       "queries": 40
     },
     "lyric": {
-      "ndcg@10": 0.9223,
-      "recall@10": 0.95,
-      "ndcg@50": 0.9223,
-      "recall@50": 0.95,
-      "mrr": 0.9125,
+      "ndcg@10": 0.2575,
+      "recall@10": 0.35,
+      "ndcg@50": 0.2858,
+      "recall@50": 0.475,
+      "mrr": 0.2353,
       "queries": 40
     },
     "seed": {
@@ -430,61 +430,61 @@
       "query_id": "lyric_000",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.6309,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.6309,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.5
     },
     {
       "query_id": "lyric_001",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_002",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.6309,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.6309,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.5
     },
     {
       "query_id": "lyric_003",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2626,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.0769
     },
     {
       "query_id": "lyric_004",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.208,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.037
     },
     {
       "query_id": "lyric_005",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_006",
@@ -500,31 +500,31 @@
       "query_id": "lyric_007",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.6309,
-      "recall@10": 1.0,
-      "ndcg@50": 0.6309,
-      "recall@50": 1.0,
-      "mrr": 0.5
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_008",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2153,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.0417
     },
     {
       "query_id": "lyric_009",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_010",
@@ -540,21 +540,21 @@
       "query_id": "lyric_011",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.6309,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.6309,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.5
     },
     {
       "query_id": "lyric_012",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.301,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.301,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.1111
     },
     {
       "query_id": "lyric_013",
@@ -580,11 +580,11 @@
       "query_id": "lyric_015",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.0323
     },
     {
       "query_id": "lyric_016",
@@ -600,51 +600,51 @@
       "query_id": "lyric_017",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_018",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_019",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_020",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_021",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_022",
@@ -660,61 +660,61 @@
       "query_id": "lyric_023",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_024",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.3869,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.3869,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.2
     },
     {
       "query_id": "lyric_025",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_026",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_027",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.2891,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.2891,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.1
     },
     {
       "query_id": "lyric_028",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_029",
@@ -730,21 +730,21 @@
       "query_id": "lyric_030",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_031",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
+      "ndcg@10": 0.4307,
       "recall@10": 1.0,
-      "ndcg@50": 1.0,
+      "ndcg@50": 0.4307,
       "recall@50": 1.0,
-      "mrr": 1.0
+      "mrr": 0.25
     },
     {
       "query_id": "lyric_032",
@@ -760,61 +760,61 @@
       "query_id": "lyric_033",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_034",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.6309,
-      "recall@10": 1.0,
-      "ndcg@50": 0.6309,
-      "recall@50": 1.0,
-      "mrr": 0.5
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_035",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_036",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 0.6309,
-      "recall@10": 1.0,
-      "ndcg@50": 0.6309,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2447,
       "recall@50": 1.0,
-      "mrr": 0.5
+      "mrr": 0.0625
     },
     {
       "query_id": "lyric_037",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_038",
       "type": "lyric",
       "relevant": 1,
-      "ndcg@10": 1.0,
-      "recall@10": 1.0,
-      "ndcg@50": 1.0,
-      "recall@50": 1.0,
-      "mrr": 1.0
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
     },
     {
       "query_id": "lyric_039",
@@ -1132,6 +1132,6 @@
     "corpus_size": 4157,
     "ann_top_k": 200,
     "top_k": 50,
-    "generated_at": "2026-09-21T18:39:01.948380+00:00"
+    "generated_at": "2026-09-21T18:24:11.274074+00:00"
   }
 }

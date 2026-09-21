@@ -1,0 +1,1167 @@
+{
+  "summary": {
+    "lyric_trunc": {
+      "ndcg@10": 0.9565,
+      "recall@10": 0.975,
+      "ndcg@50": 0.9617,
+      "recall@50": 1.0,
+      "mrr": 0.9509,
+      "queries": 40
+    },
+    "lyric_drop": {
+      "ndcg@10": 0.9228,
+      "recall@10": 1.0,
+      "ndcg@50": 0.9228,
+      "recall@50": 1.0,
+      "mrr": 0.8967,
+      "queries": 40
+    },
+    "lyric_roman": {
+      "ndcg@10": 0.8261,
+      "recall@10": 0.8788,
+      "ndcg@50": 0.8394,
+      "recall@50": 0.9394,
+      "mrr": 0.8108,
+      "queries": 33
+    }
+  },
+  "per_query": [
+    {
+      "query_id": "lyric_trunc_000",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_drop_000",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 0.5,
+      "recall@10": 1.0,
+      "ndcg@50": 0.5,
+      "recall@50": 1.0,
+      "mrr": 0.3333
+    },
+    {
+      "query_id": "lyric_roman_000",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_trunc_001",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_001",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_001",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_002",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_002",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_003",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_003",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_004",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_004",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_005",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_005",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_006",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_006",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 0.5,
+      "recall@10": 1.0,
+      "ndcg@50": 0.5,
+      "recall@50": 1.0,
+      "mrr": 0.3333
+    },
+    {
+      "query_id": "lyric_roman_006",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_007",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_007",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_007",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "lyric_trunc_008",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_008",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_008",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_009",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_009",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_009",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_010",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_010",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_011",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_011",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_012",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_012",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_012",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 0.5,
+      "recall@10": 1.0,
+      "ndcg@50": 0.5,
+      "recall@50": 1.0,
+      "mrr": 0.3333
+    },
+    {
+      "query_id": "lyric_trunc_013",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_013",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_013",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_014",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_014",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_014",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_015",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_015",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_015",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_016",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_016",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_016",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_017",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_017",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_017",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_018",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.208,
+      "recall@50": 1.0,
+      "mrr": 0.037
+    },
+    {
+      "query_id": "lyric_drop_018",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_roman_018",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2277,
+      "recall@50": 1.0,
+      "mrr": 0.05
+    },
+    {
+      "query_id": "lyric_trunc_019",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_019",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_019",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_020",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_020",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_020",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_021",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_021",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_021",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_022",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_022",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_roman_022",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_trunc_023",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_023",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_023",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_024",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_drop_024",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_024",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_025",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_025",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_roman_025",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_026",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_026",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_026",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_027",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_027",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_027",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_028",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_028",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_028",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "lyric_trunc_029",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_029",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_030",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_030",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_030",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_031",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_031",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_031",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_032",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_032",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_032",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_033",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_033",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_roman_033",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2103,
+      "recall@50": 1.0,
+      "mrr": 0.0385
+    },
+    {
+      "query_id": "lyric_trunc_034",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_034",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_034",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_035",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_035",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_035",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_036",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_036",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_036",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_037",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_037",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 0.3869,
+      "recall@10": 1.0,
+      "ndcg@50": 0.3869,
+      "recall@50": 1.0,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "lyric_roman_037",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 0.5,
+      "recall@10": 1.0,
+      "ndcg@50": 0.5,
+      "recall@50": 1.0,
+      "mrr": 0.3333
+    },
+    {
+      "query_id": "lyric_trunc_038",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_038",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_038",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_trunc_039",
+      "type": "lyric_trunc",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_drop_039",
+      "type": "lyric_drop",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_roman_039",
+      "type": "lyric_roman",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    }
+  ],
+  "meta": {
+    "queries_path": "R_data\\corpus\\eval\\queries_hard.jsonl",
+    "corpus_size": 4157,
+    "ann_top_k": 200,
+    "top_k": 50,
+    "generated_at": "2026-09-21T18:39:57.856759+00:00"
+  }
+}

@@ -19,6 +19,8 @@ Runs fully on **CPU**. Designed to scale to 20k+ songs without code changes.
 | 4. Feature fusion | `features.py` | `feature_matrix.npy` (772-d) |
 | 5. FAISS index | `index.py` | `lyrics.faiss` (IndexFlatIP, cosine) |
 | 6. Query handler | `query.py` | seed / free-text / filtered |
+| 6b. Hybrid retrieval | `lexical.py` | BM25 lexical scores fused with dense scores |
+| 6c. Duplicate collapsing | `dedup.py` | exact-upload duplicates removed from results |
 | 7. Rerank (MMR) | `rerank.py` | top-10 diversified |
 | Eval | `evaluate.py` | `eval_report.json` |
 
@@ -70,6 +72,14 @@ rec.recommend_by_text("dukha", category="nepali")
 
 ## Design notes / deviations from the original plan
 
+- **Hybrid retrieval (2026-09)**: free-text search fuses a BM25 lexical index
+  over the lyrics (plus a contiguous-phrase bonus) with the dense
+  window/embedding scores (`lexical_weight=0.65`), then collapses
+  exact-duplicate uploads. Lyric-line retrieval went from nDCG@10 0.258 /
+  recall@10 0.350 (dense only) to 0.922 / 0.950; the hard non-verbatim subset
+  (`eval/queries.py --hard`) scores 0.923-0.957 for truncated/dropped lines and
+  0.826 for Romanized lines. Near-duplicate collapsing was tried and rejected:
+  on this corpus it merged distinct versions and covers.
 - **Corpus is 942 (-> 932 after cleaning), not 20k.** Code scales unchanged.
 - **CPU-only**: kept muRIL fine-tune but light (2 epochs); embeddings use
   `paraphrase-multilingual-mpnet-base-v2` (no fine-tune needed).

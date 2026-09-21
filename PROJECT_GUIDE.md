@@ -300,15 +300,37 @@ Three ways to ask for recommendations:
 
 | Query type | Example | What happens |
 |------------|---------|--------------|
-| **Free text** | `"maya lagcha"` | Transliterate → embed → search |
+| **Free text** | `"maya lagcha"` | Transliterate → dense + BM25 fusion → rerank |
 | **Seed song** | `song_id=12` | Use that song’s stored vector |
 | **Filtered** | text + `artist="Narayan Gopal"` | Search, then hard-filter by artist |
 
 ---
 
+### Phase 6b — Hybrid retrieval (`lexical.py` + `dedup.py`)
+
+Free-text search fuses two signals per song before reranking:
+
+1. **Dense** — window max-similarity over 48-token lyric windows (falls back to
+   song-level embedding cosine when window artifacts are absent).
+2. **Lexical BM25** — in-memory index over the cleaned lyrics (`k1=1.5`,
+   `b=0.75`) plus a bonus for songs containing the query as a contiguous token
+   phrase. The query is transliterated with the same encoder as the dense path,
+   so Romanized input matches Devanagari lyrics.
+3. **Fusion** — both score arrays are min-max normalized and combined
+   (`lexical_weight=0.65`). The lexical term is skipped when it has no signal
+   (mood-only queries) and when an artist name was auto-detected.
+
+Candidates are then collapsed: songs whose normalized lyrics are exactly equal
+(upload duplicates) keep only the best-ranked member. Near-duplicate
+heuristics (versions, covers) were tried and rejected — on this corpus they
+merged distinct songs.
+
+---
+
 ### Phase 7 — Reranking (`rerank.py`)
 
-ANN gives top **50** by similarity. Reranking picks final **10** using:
+ANN gives top **50** candidates (fused hybrid scores for text queries, ANN for
+seed songs). Reranking picks final **10** using:
 
 1. **Cosine similarity** (primary)
 2. **Sentiment alignment** with query (secondary, weight ~0.15)
@@ -420,6 +442,8 @@ python MusicAnalyzer.py
 | Char transliterator vs big LLM | Small, fast, 3.5% CER; fits phone/edge deployment |
 | mpnet without fine-tune | Good multilingual baseline; saves training time for POC |
 | FAISS instead of ChromaDB | Simpler dependencies; pandas handles metadata filters |
+| BM25 fused with dense scores | Embeddings miss verbatim Nepali lines; lexical alone misses paraphrases |
+| Exact-lyrics dedup only | Near-dup heuristics merged distinct versions/covers on this corpus |
 | Tail truncation for sentiment | Song endings carry emotion |
 | MMR reranking | Users want variety, not 10 clones |
 | 932 songs not 20k | Honest POC size; architecture scales |
@@ -432,8 +456,10 @@ python MusicAnalyzer.py
 2. **No real genre labels** — category is `nepali` vs `romanized`, not rock/pop/etc.
 3. **Sentiment skew** — tweet-trained model + sad lyrics → mostly “negative” labels.
 4. **No audio** — timbre, tempo, instrumentation ignored.
-5. **No ground-truth eval** — we use proxy metrics (diversity, sentiment coherence), not human “was this a good rec?”
+5. **Recommendation quality has no human labels** — retrieval has an objective query set, but "was this a good rec?" still uses proxy metrics (diversity, sentiment coherence).
 6. **Transliteration errors** — rare wrong characters can shift embedding slightly.
+7. **Duplicate uploads remain in the corpus** — only exact-duplicate lyrics are collapsed at ranking time; covers, live versions and Romanized re-uploads still occupy separate result rows.
+8. **Very short lyric queries are ambiguous** — 2-4 common words (e.g. `malai maya`) cannot identify a single song; the hard eval's remaining misses are all of this kind.
 
 ---
 
@@ -570,15 +596,35 @@ python scripts/train_mood_probe.py --pseudo R_data/raw/gemini/corpus_v3/labels_m
 python scripts/run_music_rec.py features
 python scripts/run_music_rec.py index
 python -m eval.run_eval
+python eval/queries.py --hard          # non-verbatim lyric queries (queries_hard.jsonl)
+python -m eval.run_eval --queries R_data/corpus/eval/queries_hard.jsonl --report music_rec_artifacts/eval_v2_hard_report.json
 ```
 
-**Retrieval eval (2026-09 post-rebuild, 4,157 songs, `eval_v2_report.json`)**
+**Retrieval eval (2026-09 hybrid, 4,157 songs, `eval_v2_report.json`)**
 
 | Query type | nDCG@10 | Recall@10 | MRR | Notes |
 |------------|---------|-----------|-----|-------|
-| artist | 0.879 | 0.783 | 0.879 | exact artist-name detection + filter-first ranking |
-| lyric | 0.258 | 0.350 | 0.235 | single-line -> source song; window max-sim retrieval |
-| seed | 0.172 | 0.023 | 0.206 | same-artist relevance; noisiest metric (30 queries) |
+| artist | 0.880 | 0.782 | 0.883 | unchanged; exact artist-name detection + filter-first ranking |
+| lyric | 0.922 | 0.950 | 0.913 | single-line -> source song; BM25 + dense fusion with phrase bonus |
+| seed | 0.156 | 0.024 | 0.188 | unchanged seed path; noisiest metric (30 queries) |
+
+Controls (same runner, `eval_dense_control.json` / `eval_fusion_control.json`):
+dense-only `--no-lexical --no-dedup` reproduces the old lyric nDCG@10 0.258 /
+recall@10 0.350; fusion-only `--no-dedup` matches the final numbers, so exact
+duplicate collapsing removes duplicate result rows without moving the target.
+
+Hard, non-verbatim lyric subset (`eval/queries.py --hard` -> 113 queries built
+from the same targets; `eval_v2_hard_report.json`):
+
+| Variant | Dense nDCG@10 | Hybrid nDCG@10 | Hybrid recall@10 |
+|---------|---------------|----------------|------------------|
+| truncated to 4 tokens | 0.155 | 0.957 | 0.975 |
+| one middle token dropped | 0.207 | 0.923 | 1.000 |
+| Romanized line | 0.148 | 0.826 | 0.879 |
+
+The 4 remaining Roman misses are 2-4 word generic phrases (`malai maya`,
+`timi maya aunu`) that cannot identify one song; dense control lives in
+`eval_v2_hard_dense_control.json`.
 
 History: the original baseline (artist 0.025, lyric 0.0, seed 0.277) was
 measured with a broken harness (lyric source filtered out of rankings; seed
@@ -592,7 +638,13 @@ finally **48-token windows with max-similarity aggregation**
 a query line is ~60% of a 48-token window versus ~23% of a 128-token one. The
 C5 rebuild re-measured 0.258 with the same query set on cleaned text (the
 queries' expected lines changed script for 1,701 songs), while seed rose
-0.111 -> 0.172 and artist stayed level.
+0.111 -> 0.172 and artist stayed level. The hybrid pass then added the BM25
+index (`music_rec/lexical.py`), contiguous-phrase bonus, score fusion and
+exact-upload dedup (`music_rec/dedup.py`), plus two tokenizer fixes (indic
+tokenization glued newlines onto line-final tokens; the transliterator emits
+legacy two-part vowels `ा+े` now composed to `ो`), taking lyric nDCG@10
+0.258 -> 0.922 and recall@10 0.350 -> 0.950; artist and seed paths bypass the
+lexical term and are unchanged.
 
 **Song-mood sentiment (Phase C3)**
 
