@@ -70,14 +70,25 @@ teacher pass.
 crosses its threshold (defaults in the script are the A0 baseline plus a small
 margin):
 
-| Metric | Baseline (2026-09, greedy) |
-|---|---|
-| Line CER | 0.1037 |
-| Line exact-match | 9.6% |
-| Word CER | 0.1131 |
-| Word exact-match | 64.5% |
-| Gate cases | 4/4 |
-| Lexicon validity | 84.3% (lower bound, see below) |
+| Metric | Model only (A0) | + lexicon (A2) | + context (A3) |
+|---|---|---|---|
+| Line CER | 0.1037 | 0.0915 | **0.0837** |
+| Line exact-match | 9.6% | 14.9% | **18.8%** |
+| Word CER | 0.1089 | 0.1030 | 0.1030 |
+| Word exact-match | 65.0% | 68.0% | 68.0% |
+| Gate cases | 4/4 | 4/4 | 4/4 |
+| Lexicon validity | 84.3% | 84.8% | 84.6% |
+
+The decode pipeline is layered, and each layer is switchable for A/B runs:
+
+1. **English gate** — dictionary English and contraction tails stay Latin.
+2. **Lexicon** (`lyrics_pipeline/translit_lexicon.py`, generated) — unambiguous
+   roman tokens resolved by lookup; context-dependent tokens are excluded.
+3. **Context resolver** (`lyrics_pipeline/context_resolver.py`, tables from
+   `lyrics_pipeline/translit_context.py`) — ambiguous tokens pick their reading
+   from left/right word bigrams over the Devanagari-origin corpus, with the
+   teacher reading prior as backoff.
+4. **Model** — everything else, plus the fallback when the tables miss.
 
 Lexicon validity is the share of Devanagari tokens produced for real romanized
 corpus songs that are attested in the natively-Devanagari part of the corpus.

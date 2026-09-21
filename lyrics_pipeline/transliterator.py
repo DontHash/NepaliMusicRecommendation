@@ -13,8 +13,10 @@ import unicodedata
 from collections import OrderedDict
 from pathlib import Path
 
+from .context_resolver import candidate_readings, resolve
 from .english_lexicon import ENGLISH_CONTRACTION_SUFFIXES, ENGLISH_WORDS
 from .patterns import DEVANAGARI_RE, ROMAN_TOKEN_RE
+from .translit_lexicon import LEXICON as TRANSLIT_LEXICON
 
 ENGLISH_FUNCTION_WORDS = frozenset(
     """
@@ -257,11 +259,15 @@ class NepaliTransliterator:
         batch_size: int = 256,
         cache_size: int = 200_000,
         english_gate: bool = True,
+        use_lexicon: bool = True,
+        use_context: bool = True,
     ):
         self.beam_size = beam_size
         self.decode = decode
         self.batch_size = max(batch_size, 1)
         self.english_gate = english_gate
+        self.use_lexicon = use_lexicon
+        self.use_context = use_context
         self.model = None
         self.char_to_id = None
         self.id_to_char = None
@@ -452,7 +458,7 @@ class NepaliTransliterator:
         """Transliterate a list of tokens, batching unknown words together.
 
         Non-roman tokens (Devanagari, digits, punctuation) are returned
-        unchanged. Cached words never touch the model.
+        unchanged. Cached words and lexicon entries never touch the model.
         """
         tokens = list(tokens)
         out: list[str] = [""] * len(tokens)
@@ -465,8 +471,14 @@ class NepaliTransliterator:
             hit = self._cache_get(key)
             if hit is not None:
                 out[i] = hit[1]
-            else:
-                fresh.append((i, key))
+                continue
+            if self.use_lexicon:
+                entry = TRANSLIT_LEXICON.get(key)
+                if entry is not None:
+                    out[i] = entry
+                    self._cache_put(key, ([], entry))
+                    continue
+            fresh.append((i, key))
 
         if not fresh:
             return out
@@ -550,4 +562,34 @@ class NepaliTransliterator:
         converted = self.transliterate_tokens([job[2] for job in roman_jobs])
         for (line_index, part_index, _), result in zip(roman_jobs, converted):
             parts_per_line[line_index][part_index] = result
+        if self.use_context:
+            self._resolve_context(parts_per_line, roman_jobs)
         return "\n".join("".join(parts) for parts in parts_per_line)
+
+    def _resolve_context(
+        self, parts_per_line: list[list[str]], roman_jobs: list[tuple[int, int, str]]
+    ) -> None:
+        """Disambiguate context-dependent tokens per line (in place).
+
+        Whitespace-only parts are separators, not context tokens, so they are
+        skipped when building the sequence the resolver scores against.
+        """
+        roman_at: dict[tuple[int, int], str] = {
+            (line_index, part_index): roman
+            for line_index, part_index, roman in roman_jobs
+        }
+        for line_index, parts in enumerate(parts_per_line):
+            positions: list[int] = []
+            tokens: list[str] = []
+            romans: list[str | None] = []
+            for part_index, part in enumerate(parts):
+                if not part.strip():
+                    continue
+                positions.append(part_index)
+                tokens.append(part)
+                romans.append(roman_at.get((line_index, part_index)))
+            if not any(roman and candidate_readings(roman) for roman in romans):
+                continue
+            resolved = resolve(tokens, romans)
+            for position, value in zip(positions, resolved):
+                parts[position] = value

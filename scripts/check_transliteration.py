@@ -202,6 +202,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--beam-size", type=int, default=5)
     parser.add_argument("--limit", type=int, default=0, help="Only score the first N gold rows")
     parser.add_argument("--no-lexicon", action="store_true", help="Skip the lexicon-validity probe")
+    parser.add_argument(
+        "--no-decode-lexicon",
+        action="store_true",
+        help="Disable the hybrid lexicon lookup during decoding (A/B comparison)",
+    )
+    parser.add_argument(
+        "--no-context",
+        action="store_true",
+        help="Disable line-level context resolution (A/B comparison)",
+    )
     parser.add_argument("--lexicon-songs", type=int, default=60)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--max-line-cer", type=float, default=0.115)
@@ -214,7 +224,12 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    transliterator = NepaliTransliterator(decode=args.decode, beam_size=args.beam_size)
+    transliterator = NepaliTransliterator(
+        decode=args.decode,
+        beam_size=args.beam_size,
+        use_lexicon=not args.no_decode_lexicon,
+        use_context=not args.no_context,
+    )
     if not transliterator.available:
         print("transliterator checkpoint not available; nothing to score")
         return 2
@@ -255,6 +270,8 @@ def main() -> int:
             "beam_size": args.beam_size,
             "limit": args.limit,
             "lexicon_songs": args.lexicon_songs,
+            "decode_lexicon": not args.no_decode_lexicon,
+            "context_resolution": not args.no_context,
         },
         "lines": lines,
         "words": words,

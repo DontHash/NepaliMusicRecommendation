@@ -1,0 +1,197 @@
+{
+  "generated_at": "2026-09-21T10:25:03+00:00",
+  "labels": "R_data\\raw\\gemini\\translit_gold_v2\\labels.csv",
+  "n": 208,
+  "teacher": {
+    "n": 208,
+    "cer": 0.0615,
+    "exact_match": 0.2933,
+    "exact": 61,
+    "distance": 472,
+    "reference_chars": 7673
+  },
+  "model": {
+    "n": 208,
+    "cer": 0.1037,
+    "exact_match": 0.0962,
+    "exact": 20,
+    "distance": 796,
+    "reference_chars": 7673
+  },
+  "teacher_normalized": {
+    "n": 208,
+    "cer": 0.06,
+    "exact_match": 0.3077,
+    "exact": 64,
+    "distance": 460,
+    "reference_chars": 7669
+  },
+  "model_normalized": {
+    "n": 208,
+    "cer": 0.1022,
+    "exact_match": 0.101,
+    "exact": 21,
+    "distance": 784,
+    "reference_chars": 7669
+  },
+  "teacher_vs_model_agreement": {
+    "n": 208,
+    "cer": 0.087,
+    "exact_match": 0.1538,
+    "exact": 32,
+    "distance": 675,
+    "reference_chars": 7759
+  },
+  "teacher_by_difficulty": {
+    "long": {
+      "n": 51,
+      "cer": 0.0491,
+      "exact_match": 0.1569,
+      "exact": 8,
+      "distance": 200,
+      "reference_chars": 4076
+    },
+    "medium": {
+      "n": 123,
+      "cer": 0.0715,
+      "exact_match": 0.2846,
+      "exact": 35,
+      "distance": 221,
+      "reference_chars": 3092
+    },
+    "short": {
+      "n": 34,
+      "cer": 0.101,
+      "exact_match": 0.5294,
+      "exact": 18,
+      "distance": 51,
+      "reference_chars": 505
+    }
+  },
+  "teacher_worst": [
+    {
+      "prediction": "सम्पति लाइ आयिndaina",
+      "reference": "सम्पत्तिलाई आइदैन",
+      "distance": 12,
+      "cer": 0.7059
+    },
+    {
+      "prediction": "सुन चादी चाहइंडaina",
+      "reference": "सुनचाँदी चाहिंदैन",
+      "distance": 8,
+      "cer": 0.4706
+    },
+    {
+      "prediction": "मान्लेले जे जे भन्छ",
+      "reference": "मनले के के भन्छ",
+      "distance": 6,
+      "cer": 0.4
+    },
+    {
+      "prediction": "तिमी प्रति माया बढ्दोछ",
+      "reference": "तिमीप्रति माया बढ्दो छ (बढ्दो छ)",
+      "distance": 12,
+      "cer": 0.375
+    },
+    {
+      "prediction": "घाम कति घमाइलो",
+      "reference": "घाम लाग्यो घमाइलो",
+      "distance": 6,
+      "cer": 0.3529
+    },
+    {
+      "prediction": "बारु आइ सताउने गर",
+      "reference": "बरु आई मलाई सताउने गर",
+      "distance": 7,
+      "cer": 0.3333
+    },
+    {
+      "prediction": "प्राय सम्झन्छु म तिमीलाई",
+      "reference": "प्रायः सम्झन्छु म तिमीलाई (तिमीलाई)",
+      "distance": 11,
+      "cer": 0.3143
+    },
+    {
+      "prediction": "कादा देखी दराइ नभगने गर",
+      "reference": "काँडा देखि डराई नभाग्ने गर",
+      "distance": 7,
+      "cer": 0.2692
+    },
+    {
+      "prediction": "सबै भन्दा अग्लो सगरमाथा अङ्ग्रेजीमा Mount Everest को रूपमा चिनिन्छ",
+      "reference": "सब भन्दा अग्लो सगरमाथा अंग्रेजीमा माउन्ट एभरेष्टको रूपमा चिनिन्छ",
+      "distance": 17,
+      "cer": 0.2656
+    },
+    {
+      "prediction": "हो no no ना ना ना ना ना",
+      "reference": "Ho no—no ना ना—ना—ना—ना",
+      "distance": 6,
+      "cer": 0.2609
+    }
+  ],
+  "model_worst": [
+    {
+      "prediction": "आजकलतो मै चड्चौ की",
+      "reference": "अच्कल्टो मै छाड्छौं कि",
+      "distance": 10,
+      "cer": 0.4545
+    },
+    {
+      "prediction": "यादामा ना आउ",
+      "reference": "यादमा नआऊ",
+      "distance": 4,
+      "cer": 0.4444
+    },
+    {
+      "prediction": "माची मराउ जलाईमा",
+      "reference": "माछी मारौ जालैमा",
+      "distance": 7,
+      "cer": 0.4375
+    },
+    {
+      "prediction": "हो नो नो ना ना ना ना ना",
+      "reference": "Ho no—no ना ना—ना—ना—ना",
+      "distance": 10,
+      "cer": 0.4348
+    },
+    {
+      "prediction": "हुन्चा की नै हुन्न वना ना",
+      "reference": "हुन्छ कि नाइ हुन्न भनन",
+      "distance": 9,
+      "cer": 0.4091
+    },
+    {
+      "prediction": "तिमी प्रति माया बढ्दोचा",
+      "reference": "तिमीप्रति माया बढ्दो छ (बढ्दो छ)",
+      "distance": 13,
+      "cer": 0.4062
+    },
+    {
+      "prediction": "सिन्दुर लाउचाउ की नै भना ना",
+      "reference": "सिन्दुर लाउँछौं कि नाई भनन",
+      "distance": 10,
+      "cer": 0.3846
+    },
+    {
+      "prediction": "माया गर्चौ की नै वना ना",
+      "reference": "माया गर्छौ कि नाई भनन",
+      "distance": 8,
+      "cer": 0.381
+    },
+    {
+      "prediction": "बारु आइ सताउने गरा",
+      "reference": "बरु आई मलाई सताउने गर",
+      "distance": 8,
+      "cer": 0.381
+    },
+    {
+      "prediction": "Hey मानिस",
+      "reference": "हे मानिस",
+      "distance": 3,
+      "cer": 0.375
+    }
+  ],
+  "max_cer": 0.05,
+  "passed": false
+}
