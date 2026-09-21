@@ -143,13 +143,14 @@ class CharTransformer(nn.Module):
         memory = self.transformer.encoder(src_emb, src_key_padding_mask=src_padding_mask)
         return memory, src_padding_mask
 
-    def decode_step(self, tgt, memory, memory_padding_mask=None):
+    def decode_step(self, tgt, memory, memory_padding_mask=None, tgt_padding_mask=None):
         tgt_emb = self.positional_encoding(self.embedding(tgt))
         tgt_mask = self.make_causal_mask(tgt.size(1), tgt.device)
         decoded = self.transformer.decoder(
             tgt=tgt_emb,
             memory=memory,
             tgt_mask=tgt_mask,
+            tgt_key_padding_mask=tgt_padding_mask,
             memory_key_padding_mask=memory_padding_mask,
         )
         return self.output_layer(decoded)
@@ -281,6 +282,7 @@ class NepaliTransliterator:
 
         checkpoint_path = self._resolve_existing(
             checkpoint_path,
+            "new_char_transformer_domain.pt",
             "new_char_transformer_best.pt",
             "char_transformer_442.pt",
             "char_transformer_best.pt",

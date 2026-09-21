@@ -41,6 +41,7 @@ GOLD_LINES = PROJECT_ROOT / "eval" / "translit_gold_lines.csv"
 GOLD_WORDS = PROJECT_ROOT / "eval" / "translit_gold_words.csv"
 CORPUS_CSV = PROJECT_ROOT / "CSVs Dataset" / "corpus_final_v2.csv"
 CORPUS_RAW = PROJECT_ROOT / "R_data" / "corpus" / "corpus_raw.csv"
+AKSHARANTAR_DIR = PROJECT_ROOT / "R_data" / "raw" / "aksharantar"
 CHECKPOINT = PROJECT_ROOT / "new_char_transformer_best.pt"
 DEFAULT_OUT = PROJECT_ROOT / "music_rec_artifacts" / "transliteration_report.json"
 
@@ -196,10 +197,55 @@ def evaluate_lexicon_validity(
     }
 
 
+def evaluate_aksharantar(
+    transliterator: NepaliTransliterator, limit: int = 0
+) -> dict | None:
+    """In-domain reference on the Aksharantar Nepali test split.
+
+    Guards the fine-tune (A4) against catastrophic forgetting: this split is the
+    distribution the shipped checkpoint was trained on, so a domain-adapted model
+    must not fall below the pre-fine-tune score here. Word-level only, matching
+    how the checkpoint was evaluated during training.
+    """
+    path = AKSHARANTAR_DIR / "nep_test.json"
+    if not path.exists():
+        return None
+    rows: list[dict] = []
+    with open(path, encoding="utf-8") as handle:
+        for line in handle:
+            rows.append(json.loads(line))
+    if limit:
+        rows = rows[:limit]
+
+    def score(subset: list[dict]) -> dict:
+        predictions = transliterator.transliterate_tokens(
+            [row["english word"] for row in subset]
+        )
+        pairs = list(zip(predictions, (row["native word"] for row in subset)))
+        report = evaluate_pairs(pairs)
+        report["worst"] = error_rows(pairs, limit=5)
+        return report
+
+    by_source: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        by_source[row.get("source") or "?"].append(row)
+    report = score(rows)
+    report["by_source"] = {
+        source: score(group) for source, group in sorted(by_source.items())
+    }
+    return report
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--decode", choices=["greedy", "beam"], default="greedy")
     parser.add_argument("--beam-size", type=int, default=5)
+    parser.add_argument(
+        "--checkpoint",
+        type=Path,
+        default=CHECKPOINT,
+        help="Checkpoint to score (default: the installed one)",
+    )
     parser.add_argument("--limit", type=int, default=0, help="Only score the first N gold rows")
     parser.add_argument("--no-lexicon", action="store_true", help="Skip the lexicon-validity probe")
     parser.add_argument(
@@ -219,12 +265,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-word-cer", type=float, default=0.18)
     parser.add_argument("--min-word-exact", type=float, default=0.50)
     parser.add_argument("--min-lexicon-ratio", type=float, default=0.82)
+    parser.add_argument(
+        "--max-aksharantar-cer",
+        type=float,
+        default=0.09,
+        help="Forgetting guard on the Aksharantar test split (skipped when absent)",
+    )
+    parser.add_argument("--aksharantar-limit", type=int, default=0)
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     transliterator = NepaliTransliterator(
+        checkpoint_path=args.checkpoint,
         decode=args.decode,
         beam_size=args.beam_size,
         use_lexicon=not args.no_decode_lexicon,
@@ -243,6 +297,7 @@ def main() -> int:
         if args.no_lexicon
         else evaluate_lexicon_validity(transliterator, args.lexicon_songs)
     )
+    aksharantar = evaluate_aksharantar(transliterator, args.aksharantar_limit)
 
     thresholds = {
         "max_line_cer": args.max_line_cer,
@@ -250,6 +305,7 @@ def main() -> int:
         "max_word_cer": args.max_word_cer,
         "min_word_exact": args.min_word_exact,
         "min_lexicon_ratio": args.min_lexicon_ratio,
+        "max_aksharantar_cer": args.max_aksharantar_cer,
     }
     checks = {
         "line_cer": lines["cer"] <= args.max_line_cer,
@@ -260,11 +316,13 @@ def main() -> int:
     }
     if lexicon is not None:
         checks["lexicon_ratio"] = lexicon["in_lexicon_ratio"] >= args.min_lexicon_ratio
+    if aksharantar is not None:
+        checks["aksharantar_cer"] = aksharantar["cer"] <= args.max_aksharantar_cer
     passed = all(checks.values())
 
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "checkpoint": checkpoint_info(CHECKPOINT),
+        "checkpoint": checkpoint_info(args.checkpoint),
         "config": {
             "decode": args.decode,
             "beam_size": args.beam_size,
@@ -277,6 +335,7 @@ def main() -> int:
         "words": words,
         "gate": gate,
         "lexicon_validity": lexicon,
+        "aksharantar": aksharantar,
         "thresholds": thresholds,
         "checks": checks,
         "passed": passed,
@@ -288,7 +347,7 @@ def main() -> int:
     by_difficulty = " ".join(
         f"{name}={group['cer']:.3f}" for name, group in lines["by_difficulty"].items()
     )
-    print(f"checkpoint: {CHECKPOINT.name} (phase={report['checkpoint'].get('phase_name')}, "
+    print(f"checkpoint: {args.checkpoint.name} (phase={report['checkpoint'].get('phase_name')}, "
           f"best_val_cer={report['checkpoint'].get('best_val_cer')})")
     print(f"lines: n={lines['n']} cer={lines['cer']:.4f} exact={lines['exact_match']:.1%} ({by_difficulty})")
     print(f"words: n={words['n']} cer={words['cer']:.4f} exact={words['exact_match']:.1%}")
@@ -298,6 +357,15 @@ def main() -> int:
             f"lexicon: {lexicon['in_lexicon']}/{lexicon['output_tokens']} tokens "
             f"({lexicon['in_lexicon_ratio']:.1%}) in {lexicon['lexicon_types']} attested types "
             "(lower bound)"
+        )
+    if aksharantar is not None:
+        sources = " ".join(
+            f"{name}={group['cer']:.3f}"
+            for name, group in aksharantar["by_source"].items()
+        )
+        print(
+            f"aksharantar test: n={aksharantar['n']} cer={aksharantar['cer']:.4f} "
+            f"exact={aksharantar['exact_match']:.1%} ({sources})"
         )
     failed = [name for name, ok in checks.items() if not ok]
     print(f"thresholds: {'PASS' if passed else 'FAIL ' + ', '.join(failed)}")

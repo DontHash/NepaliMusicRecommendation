@@ -1,0 +1,47 @@
+{
+  "checkpoint_in": "D:\\Code\\ProjectR\\new_char_transformer_best.pt",
+  "checkpoint_out": "D:\\Code\\ProjectR\\new_char_transformer_domain.pt",
+  "epochs": 3,
+  "lr": 0.0001,
+  "batch_size": 128,
+  "in_domain_pairs": 23694,
+  "replay_pairs": 24000,
+  "valid_before": {
+    "n": 1500,
+    "cer": 0.035,
+    "exact_match": 0.7827
+  },
+  "valid_after": {
+    "epoch": 3,
+    "loss": 0.6238,
+    "n": 1500,
+    "cer": 0.036,
+    "exact_match": 0.7787
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 0.6542,
+      "n": 1500,
+      "cer": 0.0355,
+      "exact_match": 0.7813
+    },
+    {
+      "epoch": 2,
+      "loss": 0.6315,
+      "n": 1500,
+      "cer": 0.0361,
+      "exact_match": 0.776
+    },
+    {
+      "epoch": 3,
+      "loss": 0.6238,
+      "n": 1500,
+      "cer": 0.036,
+      "exact_match": 0.7787
+    }
+  ],
+  "best_val_cer": 0.035,
+  "seconds": 649.9,
+  "steps": 1119
+}

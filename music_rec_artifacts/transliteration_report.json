@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T11:20:59+00:00",
+  "generated_at": "2026-09-21T11:35:11+00:00",
   "checkpoint": {
     "path": "D:\\Code\\ProjectR\\new_char_transformer_best.pt",
     "found": true,
@@ -302,12 +302,175 @@
       }
     ]
   },
+  "aksharantar": {
+    "n": 4101,
+    "cer": 0.0822,
+    "exact_match": 0.6554,
+    "exact": 2688,
+    "distance": 2563,
+    "reference_chars": 31180,
+    "worst": [
+      {
+        "prediction": "एएफएफले",
+        "reference": "अफल",
+        "distance": 5,
+        "cer": 1.6667
+      },
+      {
+        "prediction": "सव्येर",
+        "reference": "शयर",
+        "distance": 4,
+        "cer": 1.3333
+      },
+      {
+        "prediction": "ल्यावसन",
+        "reference": "लसन",
+        "distance": 4,
+        "cer": 1.3333
+      },
+      {
+        "prediction": "ताते",
+        "reference": "टेट",
+        "distance": 4,
+        "cer": 1.3333
+      },
+      {
+        "prediction": "गड्गे",
+        "reference": "गाज",
+        "distance": 4,
+        "cer": 1.3333
+      }
+    ],
+    "by_source": {
+      "AK-Freq": {
+        "n": 2108,
+        "cer": 0.0367,
+        "exact_match": 0.8008,
+        "exact": 1688,
+        "distance": 672,
+        "reference_chars": 18330,
+        "worst": [
+          {
+            "prediction": "तातिया",
+            "reference": "तटीय",
+            "distance": 4,
+            "cer": 1.0
+          },
+          {
+            "prediction": "एआईएन",
+            "reference": "आइन्",
+            "distance": 4,
+            "cer": 1.0
+          },
+          {
+            "prediction": "ह्याङ्क",
+            "reference": "हाँक",
+            "distance": 4,
+            "cer": 1.0
+          },
+          {
+            "prediction": "मर्ने",
+            "reference": "मनै",
+            "distance": 3,
+            "cer": 1.0
+          },
+          {
+            "prediction": "ड्याग",
+            "reference": "दाग",
+            "distance": 3,
+            "cer": 1.0
+          }
+        ]
+      },
+      "AK-NEF": {
+        "n": 817,
+        "cer": 0.1603,
+        "exact_match": 0.4969,
+        "exact": 406,
+        "distance": 837,
+        "reference_chars": 5223,
+        "worst": [
+          {
+            "prediction": "सव्येर",
+            "reference": "शयर",
+            "distance": 4,
+            "cer": 1.3333
+          },
+          {
+            "prediction": "ल्यावसन",
+            "reference": "लसन",
+            "distance": 4,
+            "cer": 1.3333
+          },
+          {
+            "prediction": "ताते",
+            "reference": "टेट",
+            "distance": 4,
+            "cer": 1.3333
+          },
+          {
+            "prediction": "अशेविलले",
+            "reference": "आसभिल",
+            "distance": 6,
+            "cer": 1.2
+          },
+          {
+            "prediction": "चेयेन्ने",
+            "reference": "शायान",
+            "distance": 6,
+            "cer": 1.2
+          }
+        ]
+      },
+      "AK-NEI": {
+        "n": 1176,
+        "cer": 0.1382,
+        "exact_match": 0.5051,
+        "exact": 594,
+        "distance": 1054,
+        "reference_chars": 7627,
+        "worst": [
+          {
+            "prediction": "एएफएफले",
+            "reference": "अफल",
+            "distance": 5,
+            "cer": 1.6667
+          },
+          {
+            "prediction": "गड्गे",
+            "reference": "गाज",
+            "distance": 4,
+            "cer": 1.3333
+          },
+          {
+            "prediction": "ट्यान्डन",
+            "reference": "टंडन",
+            "distance": 5,
+            "cer": 1.25
+          },
+          {
+            "prediction": "सीआईपीएलए",
+            "reference": "सिप्ला",
+            "distance": 6,
+            "cer": 1.0
+          },
+          {
+            "prediction": "ओरिस्सा",
+            "reference": "उडीसा",
+            "distance": 5,
+            "cer": 1.0
+          }
+        ]
+      }
+    }
+  },
   "thresholds": {
     "max_line_cer": 0.115,
     "min_line_exact": 0.08,
     "max_word_cer": 0.18,
     "min_word_exact": 0.5,
-    "min_lexicon_ratio": 0.82
+    "min_lexicon_ratio": 0.82,
+    "max_aksharantar_cer": 0.09
   },
   "checks": {
     "line_cer": true,
@@ -315,8 +478,9 @@
     "word_cer": true,
     "word_exact": true,
     "gate": true,
-    "lexicon_ratio": true
+    "lexicon_ratio": true,
+    "aksharantar_cer": true
   },
   "passed": true,
-  "seconds": 12.0
+  "seconds": 19.1
 }
