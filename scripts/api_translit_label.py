@@ -111,15 +111,44 @@ def load_gold_lines() -> list[dict]:
         return list(csv.DictReader(handle))
 
 
-def sample_corpus_lines(sample: int, seed: int = 42, mode: str = "coverage") -> list[dict]:
+def held_out_romans() -> set[str]:
+    """Lines reserved for evaluation: review-sheet held-outs and gold v2.
+
+    These must never be labelled by the teacher, or the gold v2 metric would be
+    measuring memorisation instead of transliteration.
+    """
+    reserved: set[str] = set()
+    review_csv = PROJECT_ROOT / "eval" / "translit_review_quick.csv"
+    if review_csv.exists():
+        with open(review_csv, encoding="utf-8", newline="") as handle:
+            for row in csv.DictReader(handle):
+                if row.get("stratum") == "new_heldout":
+                    reserved.add(normalize(row.get("roman") or ""))
+    sidecar = PROJECT_ROOT / "eval" / "translit_gold_v2.json"
+    if sidecar.exists():
+        payload = json.loads(sidecar.read_text(encoding="utf-8"))
+        for roman, _ in payload.get("corpus_additions") or []:
+            reserved.add(normalize(str(roman)))
+    reserved.discard("")
+    return reserved
+
+
+def sample_corpus_lines(
+    sample: int, seed: int = 42, mode: str = "coverage"
+) -> list[dict]:
     """Deterministic, deduplicated romanized lines; IDs stable across runs.
 
     ``mode="coverage"`` greedily prefers lines that carry roman tokens not yet
     covered by earlier picks (weighted by corpus token frequency), so a small
     teacher budget buys lexicon coverage over the real vocabulary rather than a
     plain random slice. ``mode="random"`` is a seeded uniform sample.
+
+    Lines reserved for evaluation are always excluded: the committed line gold
+    and the held-out review lines that feed gold v2 (labelling them would
+    contaminate the metric).
     """
     gold = {normalize(row["roman"]) for row in load_gold_lines()}
+    excluded = gold | held_out_romans()
     seen: set[str] = set()
     candidates: list[dict] = []
     with open(CORPUS_RAW, encoding="utf-8", newline="") as handle:
@@ -131,7 +160,7 @@ def sample_corpus_lines(sample: int, seed: int = 42, mode: str = "coverage") -> 
             )
             for line in text.splitlines():
                 line = normalize(line)
-                if len(ROMAN_WORD_RE.findall(line)) < 2 or line in seen or line in gold:
+                if len(ROMAN_WORD_RE.findall(line)) < 2 or line in seen or line in excluded:
                     continue
                 seen.add(line)
                 candidates.append(
@@ -310,11 +339,34 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--sleep-between", type=int, default=0)
     parser.add_argument("--break-on-fail", action="store_true")
     parser.add_argument("--key-var", default="GEMINI_API_KEY")
+    parser.add_argument(
+        "--vertex",
+        action="store_true",
+        help="Use Vertex AI through gcloud ADC instead of an API key",
+    )
+    parser.add_argument("--vertex-project", default="gen-lang-client-0379007532")
+    parser.add_argument("--vertex-location", default="global")
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--shard-total", type=int, default=1)
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--run-name", default="")
     return parser.parse_args()
+
+
+def build_client(args: argparse.Namespace):
+    """Vertex client via ADC, or the API-key client used by the key rotation."""
+    from google import genai
+    from google.genai import types
+
+    if args.vertex:
+        return genai.Client(
+            vertexai=True,
+            project=args.vertex_project,
+            location=args.vertex_location,
+            http_options=types.HttpOptions(timeout=180_000),
+        )
+    key = load_key(args.key_var)
+    return genai.Client(api_key=key, http_options=types.HttpOptions(timeout=180_000))
 
 
 def main() -> int:
@@ -350,11 +402,7 @@ def main() -> int:
     print(f"split={args.split} model={args.model} total={len(subset)} done={len(done)} todo={len(todo)}")
 
     if todo:
-        key = load_key(args.key_var)
-        from google import genai
-        from google.genai import types
-
-        client = genai.Client(api_key=key, http_options=types.HttpOptions(timeout=180_000))
+        client = build_client(args)
         block = few_shot_block()
         by_id = {row["line_id"]: row for row in subset}
 
