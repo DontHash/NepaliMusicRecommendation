@@ -519,7 +519,8 @@ searchInput.addEventListener('input', () => {
       for (const item of data.results) {
         const row = document.createElement('div');
         row.className = 'result';
-        row.innerHTML = `<span>${item.title}</span><span class="artist">${item.artist}</span>`;
+        const badge = item.match === 'lyrics' ? '<span class="match">lyrics</span>' : '';
+        row.innerHTML = `<span>${item.title}</span><span class="artist">${item.artist}</span>${badge}`;
         row.addEventListener('click', () => {
           resultsBox.classList.add('hidden');
           searchInput.value = item.title;

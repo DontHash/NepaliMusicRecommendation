@@ -68,6 +68,18 @@ header {
 }
 .result:hover { background: rgba(59, 130, 246, 0.12); }
 .result .artist { color: var(--muted); }
+.result .match {
+  align-self: center;
+  margin-left: auto;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  color: rgba(147, 197, 253, 0.95);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
 
 button {
   cursor: pointer;

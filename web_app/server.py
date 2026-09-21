@@ -7,10 +7,13 @@ analysis. Run via ``scripts/run_web_app.py``.
 
 from __future__ import annotations
 
+import os
+import threading
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 import pandas as pd
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -18,15 +21,32 @@ from pydantic import BaseModel
 from music_rec.config import Config
 from music_rec.mood_attribution import MoodAttributor, get_attributor
 from music_rec.mood_neighbors import get_mood_neighbors
+from music_rec.recommender import MusicRecommender
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
-app = FastAPI(title="ProjectR Mood Studio", version="0.1.0")
+
+def _warm_recommender() -> None:
+    try:
+        get_recommender()
+    except Exception as error:  # pragma: no cover - warmup is best-effort
+        print(f"[mood-studio] recommender warmup failed: {error}")
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    if os.environ.get("PROJECTR_NO_WARMUP") != "1":
+        threading.Thread(target=_warm_recommender, daemon=True).start()
+    yield
+
+
+app = FastAPI(title="ProjectR Mood Studio", version="0.1.0", lifespan=lifespan)
 
 _corpus: pd.DataFrame | None = None
 _payload_cache: dict[int, dict] = {}
 _translit_helper = None
+_recommender: MusicRecommender | None = None
 
 
 def _load_corpus() -> pd.DataFrame:
@@ -41,16 +61,32 @@ def _attributor() -> MoodAttributor:
     return get_attributor()
 
 
+class _UnavailableRecommender:
+    def __init__(self, error: Exception):
+        self.error = error
+
+    def recommend_by_text(self, text: str):
+        raise RuntimeError(f"recommender unavailable: {self.error}")
+
+
+def get_recommender() -> MusicRecommender:
+    global _recommender
+    if _recommender is None:
+        try:
+            config = Config()
+            config.use_window_search = False
+            _recommender = MusicRecommender.load(config)
+        except Exception as error:  # pragma: no cover - artifacts missing
+            _recommender = _UnavailableRecommender(error)
+    return _recommender
+
+
 class AnalyzeRequest(BaseModel):
     text: str
     transliterate: bool = True
 
 
-@app.get("/api/search")
-def search(q: str = "", limit: int = 12):
-    query = q.strip().lower()
-    if not query:
-        return {"results": []}
+def _title_artist_hits(query: str, limit: int) -> list[dict]:
     frame = _load_corpus()
     titles = frame["title"].str.lower()
     artists = frame["artist"].str.lower()
@@ -58,12 +94,60 @@ def search(q: str = "", limit: int = 12):
     hits = frame.loc[mask].copy()
     hits["_starts"] = hits["title"].str.lower().str.startswith(query)
     hits = hits.sort_values(["_starts", "title"], ascending=[False, True]).head(limit)
-    return {
-        "results": [
-            {"song_id": int(row.song_id), "title": str(row.title), "artist": str(row.artist)}
-            for row in hits.itertuples()
-        ]
-    }
+    results = []
+    for row in hits.itertuples():
+        title = str(row.title)
+        results.append(
+            {
+                "song_id": int(row.song_id),
+                "title": title,
+                "artist": str(row.artist),
+                "match": "title" if query in title.lower() else "artist",
+            }
+        )
+    return results
+
+
+def _lyric_hits(recommender, text: str, limit: int, seen: set[int]) -> list[dict]:
+    if limit <= 0:
+        return []
+    try:
+        recommendations = recommender.recommend_by_text(text)
+    except Exception as error:  # pragma: no cover - backend optional
+        print(f"[mood-studio] lyric search unavailable: {error}")
+        return []
+    results = []
+    for rec in recommendations:
+        if rec.song_id in seen:
+            continue
+        seen.add(rec.song_id)
+        results.append(
+            {
+                "song_id": int(rec.song_id),
+                "title": str(rec.title),
+                "artist": str(rec.artist),
+                "match": "lyrics",
+                "score": float(rec.score),
+            }
+        )
+        if len(results) >= limit:
+            break
+    return results
+
+
+@app.get("/api/search")
+def search(
+    q: str = "",
+    limit: int = 12,
+    recommender: MusicRecommender = Depends(get_recommender),
+):
+    query = q.strip().lower()
+    if not query:
+        return {"results": []}
+    results = _title_artist_hits(query, limit)
+    seen = {item["song_id"] for item in results}
+    results.extend(_lyric_hits(recommender, q.strip(), limit - len(results), seen))
+    return {"results": results}
 
 
 @app.get("/api/song/{song_id}")
