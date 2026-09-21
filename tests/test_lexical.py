@@ -44,6 +44,32 @@ def test_contiguous_phrase_outranks_scattered_tokens():
     assert scores[1] > scores[0]
 
 
+def _specificity_index() -> LexicalIndex:
+    docs = ["माया लाग्छ"] * 30 + ["बतास भनी", "sad song", "तिमीलाई माया लाग्छ"]
+    return LexicalIndex(docs)
+
+
+def test_should_fuse_gates_common_two_token_keywords():
+    index = _specificity_index()
+    assert index.should_fuse("माया लाग्छ") is False
+    assert index.should_fuse("माया") is False
+
+
+def test_should_fuse_allows_rare_devanagari_pairs():
+    index = _specificity_index()
+    assert index.should_fuse("बतास भनी") is True
+
+
+def test_should_fuse_rejects_short_english_keywords():
+    index = _specificity_index()
+    assert index.should_fuse("sad song") is False
+
+
+def test_should_fuse_allows_three_token_queries():
+    index = _specificity_index()
+    assert index.should_fuse("तिमीलाई माया लाग्छ") is True
+
+
 def test_fusion_prefers_lexical_winner_when_weight_is_high():
     dense = np.array([1.0, 0.0, 0.0])
     lexical = np.array([0.0, 2.0, 0.0])

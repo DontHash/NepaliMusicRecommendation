@@ -49,6 +49,8 @@ class Config:
     sentiment_weight: float = 0.15
     lexical_enabled: bool = True
     lexical_weight: float = 0.65
+    lexical_min_tokens: int = 3
+    lexical_short_idf: float = 2.5
     bm25_k1: float = 1.5
     bm25_b: float = 0.75
     dedup_enabled: bool = True

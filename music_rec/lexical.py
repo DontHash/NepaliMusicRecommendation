@@ -7,6 +7,7 @@ signals are combined per song before reranking.
 
 from __future__ import annotations
 
+import re
 from collections import Counter
 from typing import Sequence
 
@@ -18,6 +19,10 @@ from .tokenization import tokenize
 DEFAULT_K1 = 1.5
 DEFAULT_B = 0.75
 DEFAULT_PHRASE_CANDIDATES = 2000
+DEFAULT_MIN_TOKENS = 3
+DEFAULT_SHORT_IDF = 2.5
+
+_DEVANAGARI_RE = re.compile(r"[\u0900-\u097F]")
 
 
 class LexicalIndex:
@@ -62,6 +67,33 @@ class LexicalIndex:
         if self._csc is None:
             self._csc = self._matrix.tocsc()
         return self._csc
+
+    def should_fuse(
+        self,
+        query: str,
+        *,
+        min_tokens: int = DEFAULT_MIN_TOKENS,
+        short_idf: float = DEFAULT_SHORT_IDF,
+    ) -> bool:
+        """Whether a query is specific enough for lexical fusion.
+
+        Short keyword queries (mood searches like ``dukha`` or ``maya lagcha``)
+        stay dense-only: matching the literal word finds songs that mention it,
+        not songs that feel it. A two-token query fuses only when both tokens
+        are rare and Devanagari, i.e. a romanized lyric fragment rather than a
+        short English keyword pair such as ``sad song``.
+        """
+        if self._matrix is None:
+            return False
+        vocab = self._vectorizer.vocabulary_
+        tokens = [token for token in tokenize(query or "") if token in vocab]
+        if len(tokens) < 2:
+            return False
+        if len(tokens) >= min_tokens:
+            return True
+        if not any(_DEVANAGARI_RE.search(token) for token in tokens):
+            return False
+        return float(min(self._idf[vocab[token]] for token in tokens)) >= short_idf
 
     def _phrase_rows(self, query_ids: np.ndarray, candidates: np.ndarray) -> np.ndarray:
         size = len(query_ids)

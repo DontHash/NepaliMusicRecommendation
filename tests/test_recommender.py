@@ -9,7 +9,7 @@ from music_rec.config import Config
 from music_rec.recommender import MusicRecommender
 
 
-def _make_recommender(tmp_path, songs):
+def _make_recommender(tmp_path, songs, vectors=None, encoder=None):
     config = Config()
     config.artifacts_dir = tmp_path
     config.cleaned_lyrics_csv = tmp_path / "cleaned_lyrics.csv"
@@ -21,10 +21,13 @@ def _make_recommender(tmp_path, songs):
     config.window_owners_npy = tmp_path / "window_owners.npy"
 
     pd.DataFrame(songs).to_csv(config.cleaned_lyrics_csv, index=False, encoding="utf-8")
-    rng = np.random.default_rng(0)
-    vectors = rng.normal(size=(len(songs), 8)).astype(np.float32)
-    np.save(config.embeddings_npy, vectors)
-    return MusicRecommender(config, use_features=False, query_encoder=_FakeEncoder())
+    if vectors is None:
+        rng = np.random.default_rng(0)
+        vectors = rng.normal(size=(len(songs), 8)).astype(np.float32)
+    np.save(config.embeddings_npy, np.asarray(vectors, dtype=np.float32))
+    return MusicRecommender(
+        config, use_features=False, query_encoder=encoder or _FakeEncoder()
+    )
 
 
 class _FakeEncoder:
@@ -35,6 +38,14 @@ class _FakeEncoder:
 
     def encode_text(self, text: str) -> np.ndarray:
         return np.full(8, 0.125, dtype=np.float32)
+
+
+class _FixedEncoder(_FakeEncoder):
+    def __init__(self, vector):
+        self.vector = np.asarray(vector, dtype=np.float32)
+
+    def encode_text(self, text: str) -> np.ndarray:
+        return self.vector.copy()
 
 
 def test_artist_intent_detection(tmp_path):
@@ -93,3 +104,25 @@ def test_duplicate_upload_is_collapsed_in_results(tmp_path):
     results = rec.recommend_by_text("तिमी मेरो साथ नहुँदा")
     assert len(results) == 1
     assert results[0].song_id in {0, 1}
+
+
+def test_short_keyword_query_skips_lexical_fusion(tmp_path):
+    songs = [
+        {"song_id": 0, "title": "Lexical", "artist": "X", "category": "nepali", "lyrics": "माया लाग्छ तिमीलाई", "token_count": 3},
+        {"song_id": 1, "title": "Dense", "artist": "Y", "category": "nepali", "lyrics": "असम्बन्धित शब्दहरू", "token_count": 2},
+    ]
+    vectors = np.array([[0.0, 1.0], [1.0, 0.0]], dtype=np.float32)
+    rec = _make_recommender(tmp_path, songs, vectors=vectors, encoder=_FixedEncoder([1.0, 0.0]))
+    results = rec.recommend_by_text("माया लाग्छ")
+    assert results[0].song_id == 1
+
+
+def test_lyric_line_query_uses_lexical_fusion(tmp_path):
+    songs = [
+        {"song_id": 0, "title": "Lexical", "artist": "X", "category": "nepali", "lyrics": "माया लाग्छ तिमीलाई", "token_count": 3},
+        {"song_id": 1, "title": "Dense", "artist": "Y", "category": "nepali", "lyrics": "असम्बन्धित शब्दहरू", "token_count": 2},
+    ]
+    vectors = np.array([[0.0, 1.0], [1.0, 0.0]], dtype=np.float32)
+    rec = _make_recommender(tmp_path, songs, vectors=vectors, encoder=_FixedEncoder([1.0, 0.0]))
+    results = rec.recommend_by_text("माया लाग्छ तिमीलाई")
+    assert results[0].song_id == 0

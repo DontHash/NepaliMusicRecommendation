@@ -230,8 +230,14 @@ class MusicRecommender:
         else:
             query_vec = emb
         base_scores = self.window_index.song_scores(emb) if self.window_index is not None else None
-        if self.config.lexical_enabled and artist is None:
-            lexical_scores = self.lexical.song_scores(self.query_encoder.normalize_query(text))
+        normalized = self.query_encoder.normalize_query(text)
+        lexical_applies = self.config.lexical_enabled and artist is None and self.lexical.should_fuse(
+            normalized,
+            min_tokens=self.config.lexical_min_tokens,
+            short_idf=self.config.lexical_short_idf,
+        )
+        if lexical_applies:
+            lexical_scores = self.lexical.song_scores(normalized)
             if lexical_scores.max() > 0:
                 dense_scores = base_scores
                 if dense_scores is None:

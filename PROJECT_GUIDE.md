@@ -320,6 +320,12 @@ Free-text search fuses two signals per song before reranking:
    (`lexical_weight=0.65`). The lexical term is skipped when it has no signal
    (mood-only queries) and when an artist name was auto-detected.
 
+Lexical fusion is gated by query specificity: 1-2 token keyword queries (mood
+searches like `dukha` or `maya lagcha`) stay dense-only, and two-token queries
+fuse only when both tokens are rare Devanagari words (a lyric fragment), never
+for short English keyword pairs such as `sad song`. This protects mood search —
+see the mood retrieval eval below for the measurement that motivated the gate.
+
 Candidates are then collapsed: songs whose normalized lyrics are exactly equal
 (upload duplicates) keep only the best-ranked member. Near-duplicate
 heuristics (versions, covers) were tried and rejected — on this corpus they
@@ -598,6 +604,7 @@ python scripts/run_music_rec.py index
 python -m eval.run_eval
 python eval/queries.py --hard          # non-verbatim lyric queries (queries_hard.jsonl)
 python -m eval.run_eval --queries R_data/corpus/eval/queries_hard.jsonl --report music_rec_artifacts/eval_v2_hard_report.json
+python -m eval.mood_retrieval_eval     # mood/free-text retrieval vs weak + human labels
 ```
 
 **Retrieval eval (2026-09 hybrid, 4,157 songs, `eval_v2_report.json`)**
@@ -625,6 +632,25 @@ from the same targets; `eval_v2_hard_report.json`):
 The 4 remaining Roman misses are 2-4 word generic phrases (`malai maya`,
 `timi maya aunu`) that cannot identify one song; dense control lives in
 `eval_v2_hard_dense_control.json`.
+
+**Mood/free-text eval (2026-09, `eval_mood_retrieval_report.json`)**
+
+The 15 mood queries have no per-song relevance judgments, so
+`eval/mood_retrieval_eval.py` scores them with two layers: weak full-corpus
+Gemini labels (`R_data/raw/gemini/corpus_v3/labels_merged.csv`, precision@10)
+and 147 human-reviewed songs (`eval/mood_gold.csv`, hit@10). Hybrid and
+dense-only rankings are both scored:
+
+| Ranking | precision@10 | gold hit@10 |
+|---------|--------------|-------------|
+| dense only | 0.709 | 0.273 |
+| hybrid (gated) | 0.700 | 0.273 |
+
+Only `desh bhakti` differs (0.80 -> 0.70 precision, gold unchanged). The first
+ungated hybrid run scored 0.545 / 0.000 — the specificity gate exists because
+of that measurement. Caveats: weak labels are LLM-generated and the human gold
+set is small (sadness 60 / joy 50 / anger 21 songs), so treat these as
+directional regression checks, not absolute quality.
 
 History: the original baseline (artist 0.025, lyric 0.0, seed 0.277) was
 measured with a broken harness (lyric source filtered out of rankings; seed
