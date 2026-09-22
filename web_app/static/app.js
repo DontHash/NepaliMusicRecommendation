@@ -504,39 +504,83 @@ async function loadSong(songId) {
 }
 
 let searchTimer = null;
+let warmTimer = null;
+
+function clearWarmRefresh() {
+  if (warmTimer) {
+    clearTimeout(warmTimer);
+    warmTimer = null;
+  }
+}
+
+function scheduleWarmRefresh(query, attempt = 0) {
+  clearWarmRefresh();
+  if (attempt >= 40) return;
+  warmTimer = setTimeout(async () => {
+    try {
+      const status = await (await fetch('/api/status')).json();
+      if (status.model_ready) {
+        if (searchInput.value.trim() === query && !resultsBox.classList.contains('hidden')) {
+          runSearch(query);
+        }
+        return;
+      }
+    } catch {
+      /* keep polling */
+    }
+    scheduleWarmRefresh(query, attempt + 1);
+  }, 1500);
+}
+
+async function runSearch(query) {
+  try {
+    const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+    const data = await response.json();
+    resultsBox.innerHTML = '';
+    for (const item of data.results) {
+      const row = document.createElement('div');
+      row.className = 'result';
+      const badge = item.match === 'lyrics' ? '<span class="match">lyrics</span>' : '';
+      row.innerHTML = `<span>${item.title}</span><span class="artist">${item.artist}</span>${badge}`;
+      row.addEventListener('click', () => {
+        resultsBox.classList.add('hidden');
+        clearWarmRefresh();
+        searchInput.value = item.title;
+        loadSong(item.song_id);
+      });
+      resultsBox.appendChild(row);
+    }
+    if (data.warming) {
+      const note = document.createElement('div');
+      note.className = 'warm-note';
+      note.textContent = 'Semantic ranking is warming up — text matches shown, refreshing…';
+      resultsBox.appendChild(note);
+      scheduleWarmRefresh(query);
+    } else {
+      clearWarmRefresh();
+    }
+    resultsBox.classList.toggle('hidden', data.results.length === 0 && !data.warming);
+  } catch {
+    resultsBox.classList.add('hidden');
+  }
+}
+
 searchInput.addEventListener('input', () => {
   clearTimeout(searchTimer);
+  clearWarmRefresh();
   const query = searchInput.value.trim();
   if (query.length < 2) {
     resultsBox.classList.add('hidden');
     return;
   }
-  searchTimer = setTimeout(async () => {
-    try {
-      const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-      const data = await response.json();
-      resultsBox.innerHTML = '';
-      for (const item of data.results) {
-        const row = document.createElement('div');
-        row.className = 'result';
-        const badge = item.match === 'lyrics' ? '<span class="match">lyrics</span>' : '';
-        row.innerHTML = `<span>${item.title}</span><span class="artist">${item.artist}</span>${badge}`;
-        row.addEventListener('click', () => {
-          resultsBox.classList.add('hidden');
-          searchInput.value = item.title;
-          loadSong(item.song_id);
-        });
-        resultsBox.appendChild(row);
-      }
-      resultsBox.classList.toggle('hidden', data.results.length === 0);
-    } catch {
-      resultsBox.classList.add('hidden');
-    }
-  }, 180);
+  searchTimer = setTimeout(() => runSearch(query), 180);
 });
 
 document.addEventListener('click', (event) => {
-  if (!event.target.closest('.search-wrap')) resultsBox.classList.add('hidden');
+  if (!event.target.closest('.search-wrap')) {
+    resultsBox.classList.add('hidden');
+    clearWarmRefresh();
+  }
 });
 
 $('paste-toggle').addEventListener('click', () => $('paste-modal').classList.remove('hidden'));

@@ -126,3 +126,23 @@ def test_lyric_line_query_uses_lexical_fusion(tmp_path):
     rec = _make_recommender(tmp_path, songs, vectors=vectors, encoder=_FixedEncoder([1.0, 0.0]))
     results = rec.recommend_by_text("माया लाग्छ तिमीलाई")
     assert results[0].song_id == 0
+
+
+def test_recommend_by_lexical_ignores_dense_scores(tmp_path):
+    songs = [
+        {"song_id": 0, "title": "Lexical", "artist": "X", "category": "nepali", "lyrics": "माया लाग्छ तिमीलाई", "token_count": 3},
+        {"song_id": 1, "title": "Dense", "artist": "Y", "category": "nepali", "lyrics": "असम्बन्धित शब्दहरू", "token_count": 2},
+    ]
+    vectors = np.array([[0.0, 1.0], [1.0, 0.0]], dtype=np.float32)
+    rec = _make_recommender(tmp_path, songs, vectors=vectors, encoder=_FixedEncoder([1.0, 0.0]))
+    results = rec.recommend_by_lexical("माया लाग्छ तिमीलाई")
+    assert results
+    assert results[0].song_id == 0
+
+
+def test_recommend_by_lexical_returns_empty_for_generic_keywords(tmp_path):
+    songs = [
+        {"song_id": 0, "title": "Lexical", "artist": "X", "category": "nepali", "lyrics": "माया लाग्छ तिमीलाई", "token_count": 3},
+    ]
+    rec = _make_recommender(tmp_path, songs)
+    assert rec.recommend_by_lexical("माया लाग्छ") == []

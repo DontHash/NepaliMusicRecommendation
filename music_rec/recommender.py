@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import threading
 from dataclasses import dataclass
 
 import numpy as np
@@ -68,7 +69,9 @@ class MusicRecommender:
 
         self._query_encoder = query_encoder
         self._lexical = None
+        self._lexical_lock = threading.Lock()
         self._dedup = None
+        self._dedup_lock = threading.Lock()
 
     @classmethod
     def load(cls, config: Config | None = None, use_features: bool = True) -> "MusicRecommender":
@@ -83,16 +86,20 @@ class MusicRecommender:
     @property
     def lexical(self) -> LexicalIndex:
         if self._lexical is None:
-            lyrics = self.songs["lyrics"].fillna("").astype(str).tolist()
-            self._lexical = LexicalIndex(
-                lyrics, k1=self.config.bm25_k1, b=self.config.bm25_b
-            )
+            with self._lexical_lock:
+                if self._lexical is None:
+                    lyrics = self.songs["lyrics"].fillna("").astype(str).tolist()
+                    self._lexical = LexicalIndex(
+                        lyrics, k1=self.config.bm25_k1, b=self.config.bm25_b
+                    )
         return self._lexical
 
     @property
     def dedup(self) -> DuplicateCollapser:
         if self._dedup is None:
-            self._dedup = DuplicateCollapser(self.songs)
+            with self._dedup_lock:
+                if self._dedup is None:
+                    self._dedup = DuplicateCollapser(self.songs)
         return self._dedup
 
     def _sent_score(self, song_id: int):
@@ -116,7 +123,7 @@ class MusicRecommender:
 
     def _rank(
         self,
-        query_vec_index: np.ndarray,
+        query_vec_index: np.ndarray | None,
         target_sentiment: float | None,
         exclude_id: int | None,
         artist: str | None,
@@ -248,6 +255,20 @@ class MusicRecommender:
         return self._rank(
             query_vec, target_sentiment, None, artist, category, base_scores=base_scores
         )
+
+    def recommend_by_lexical(self, text: str) -> list[Recommendation]:
+        """Rank by lexical scores only, for use while the dense model is cold."""
+        normalized = self.query_encoder.normalize_query(text)
+        if not self.lexical.should_fuse(
+            normalized,
+            min_tokens=self.config.lexical_min_tokens,
+            short_idf=self.config.lexical_short_idf,
+        ):
+            return []
+        lexical_scores = self.lexical.song_scores(normalized)
+        if lexical_scores.max() <= 0:
+            return []
+        return self._rank(None, None, None, None, None, base_scores=lexical_scores)
 
     def normalized_query(self, text: str) -> str:
         return self.query_encoder.normalize_query(text)

@@ -24,14 +24,32 @@ client = TestClient(app)
 class FakeRecommender:
     def __init__(self, hits=None):
         self.hits = list(hits or [])
+        self.text_calls = 0
+        self.lexical_calls = 0
 
     def recommend_by_text(self, text: str):
+        self.text_calls += 1
+        return list(self.hits)
+
+    def recommend_by_lexical(self, text: str):
+        self.lexical_calls += 1
         return list(self.hits)
 
 
 class BrokenRecommender:
     def recommend_by_text(self, text: str):
         raise RuntimeError("lyric backend down")
+
+    def recommend_by_lexical(self, text: str):
+        raise RuntimeError("lyric backend down")
+
+
+@pytest.fixture(autouse=True)
+def backend_state(monkeypatch):
+    from web_app import server
+
+    monkeypatch.setattr(server, "_ensure_backend_loading", lambda: None)
+    monkeypatch.setattr(server, "text_encoder_ready", lambda config: True)
 
 
 @pytest.fixture
@@ -88,9 +106,49 @@ def test_search_survives_lyric_backend_failure(recommender_override):
     assert 4024 in ids
 
 
+def test_search_uses_lexical_while_model_is_cold(recommender_override, monkeypatch):
+    from web_app import server
+
+    fake = recommender_override(
+        FakeRecommender(
+            [SimpleNamespace(song_id=2512, title="Mohabbat", artist="X", score=0.9)]
+        )
+    )
+    monkeypatch.setattr(server, "text_encoder_ready", lambda config: False)
+    payload = client.get("/api/search", params={"q": "Ekkasi"}).json()
+    assert payload["warming"] is True
+    assert any(item["song_id"] == 2512 for item in payload["results"])
+    assert fake.lexical_calls == 1
+    assert fake.text_calls == 0
+
+
+def test_search_uses_hybrid_when_model_is_ready(recommender_override):
+    fake = recommender_override(
+        FakeRecommender(
+            [SimpleNamespace(song_id=2512, title="Mohabbat", artist="X", score=0.9)]
+        )
+    )
+    payload = client.get("/api/search", params={"q": "Ekkasi"}).json()
+    assert payload["warming"] is False
+    assert fake.text_calls == 1
+    assert fake.lexical_calls == 0
+
+
+def test_status_reports_model_readiness(monkeypatch):
+    from web_app import server
+
+    monkeypatch.setattr(server, "text_encoder_ready", lambda config: False)
+    assert client.get("/api/status").json() == {"model_ready": False}
+    monkeypatch.setattr(server, "text_encoder_ready", lambda config: True)
+    assert client.get("/api/status").json() == {"model_ready": True}
+
+
 def test_search_empty_query(recommender_override):
     recommender_override(FakeRecommender())
-    assert client.get("/api/search", params={"q": "  "}).json() == {"results": []}
+    assert client.get("/api/search", params={"q": "  "}).json() == {
+        "results": [],
+        "warming": False,
+    }
 
 
 def test_warm_backend_preloads_model_then_lexical(monkeypatch):

@@ -80,6 +80,13 @@ header {
   text-transform: uppercase;
   white-space: nowrap;
 }
+.warm-note {
+  padding: 8px 14px;
+  border-top: 1px solid var(--glass-border);
+  color: var(--muted);
+  font-size: 11.5px;
+  font-style: italic;
+}
 
 button {
   cursor: pointer;

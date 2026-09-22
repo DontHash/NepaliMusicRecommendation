@@ -77,6 +77,11 @@ def shared_model_ready(model_name: str, device: str | None = None) -> bool:
     return (model_name, resolve_device(device)) in _SHARED_MODELS
 
 
+def text_encoder_ready(config: Config) -> bool:
+    """Whether the active query-text encoder is loaded and can encode now."""
+    return shared_model_ready(config.embedding_model, config.embedding_device)
+
+
 def reset_shared_models() -> None:
     with _SHARED_MODELS_LOCK:
         _SHARED_MODELS.clear()

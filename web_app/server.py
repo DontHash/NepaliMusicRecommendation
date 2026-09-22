@@ -22,7 +22,7 @@ from pydantic import BaseModel
 os.environ.setdefault("PROJECTR_EMBED_DEVICE", "cpu")
 
 from music_rec.config import Config  # noqa: E402
-from music_rec.embeddings import get_shared_model  # noqa: E402
+from music_rec.embeddings import get_shared_model, text_encoder_ready  # noqa: E402
 from music_rec.mood_attribution import MoodAttributor, get_attributor  # noqa: E402
 from music_rec.mood_neighbors import get_mood_neighbors  # noqa: E402
 from music_rec.recommender import MusicRecommender  # noqa: E402
@@ -47,7 +47,7 @@ def _warm_backend() -> None:
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     if os.environ.get("PROJECTR_NO_WARMUP") != "1":
-        threading.Thread(target=_warm_backend, daemon=True).start()
+        _ensure_backend_loading()
     yield
 
 
@@ -63,6 +63,17 @@ _corpus: pd.DataFrame | None = None
 _payload_cache: dict[int, dict] = {}
 _translit_helper = None
 _recommender: MusicRecommender | None = None
+_loading_lock = threading.Lock()
+_loading = False
+
+
+def _ensure_backend_loading() -> None:
+    global _loading
+    with _loading_lock:
+        if _loading:
+            return
+        _loading = True
+    threading.Thread(target=_warm_backend, daemon=True).start()
 
 
 def _load_corpus() -> pd.DataFrame:
@@ -124,11 +135,14 @@ def _title_artist_hits(query: str, limit: int) -> list[dict]:
     return results
 
 
-def _lyric_hits(recommender, text: str, limit: int, seen: set[int]) -> list[dict]:
+def _lyric_hits(recommender, text: str, limit: int, seen: set[int], *, lexical_only: bool = False) -> list[dict]:
     if limit <= 0:
         return []
     try:
-        recommendations = recommender.recommend_by_text(text)
+        if lexical_only:
+            recommendations = recommender.recommend_by_lexical(text)
+        else:
+            recommendations = recommender.recommend_by_text(text)
     except Exception as error:  # pragma: no cover - backend optional
         print(f"[mood-studio] lyric search unavailable: {error}")
         return []
@@ -159,11 +173,27 @@ def search(
 ):
     query = q.strip().lower()
     if not query:
-        return {"results": []}
+        return {"results": [], "warming": False}
     results = _title_artist_hits(query, limit)
     seen = {item["song_id"] for item in results}
-    results.extend(_lyric_hits(recommender, q.strip(), limit - len(results), seen))
-    return {"results": results}
+    warming = False
+    if len(results) < limit:
+        if text_encoder_ready(Config()):
+            results.extend(_lyric_hits(recommender, q.strip(), limit - len(results), seen))
+        else:
+            _ensure_backend_loading()
+            results.extend(
+                _lyric_hits(
+                    recommender, q.strip(), limit - len(results), seen, lexical_only=True
+                )
+            )
+            warming = True
+    return {"results": results, "warming": warming}
+
+
+@app.get("/api/status")
+def status():
+    return {"model_ready": text_encoder_ready(Config())}
 
 
 @app.get("/api/song/{song_id}")
