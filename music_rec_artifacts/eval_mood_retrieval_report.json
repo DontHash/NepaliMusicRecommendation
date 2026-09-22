@@ -3,7 +3,7 @@
     "summary": {
       "queries": 15,
       "mapped": 11,
-      "precision@10": 0.7,
+      "precision@10": 0.7091,
       "gold_hit@10": 0.2727
     },
     "by_label": {
@@ -16,7 +16,7 @@
       },
       "positive": {
         "queries": 7,
-        "precision@10": 0.7,
+        "precision@10": 0.7143,
         "weak_base_rate": 0.5598,
         "gold_hit@10": 0.0,
         "gold_base_rate": 0.0
@@ -75,7 +75,7 @@
         "text": "desh bhakti",
         "theme": "patriotic",
         "label": "positive",
-        "precision@10": 0.7,
+        "precision@10": 0.8,
         "weak_base_rate": 0.5598,
         "gold_hit@10": 0.0,
         "gold_base_rate": 0.0
@@ -339,6 +339,6 @@
     "gold_path": "D:\\Code\\ProjectR\\eval\\mood_gold.csv",
     "corpus_size": 4157,
     "top_k": 10,
-    "generated_at": "2026-09-22T04:43:48.189231+00:00"
+    "generated_at": "2026-09-22T06:24:10.155000+00:00"
   }
 }

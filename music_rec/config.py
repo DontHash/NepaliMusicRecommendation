@@ -59,6 +59,11 @@ class Config:
     lexical_weight: float = 0.65
     lexical_min_tokens: int = 3
     lexical_short_idf: float = 2.5
+    lexical_fuzzy_enabled: bool = True
+    lexical_fuzzy_max_df: int = 10
+    lexical_fuzzy_threshold: float = 70.0
+    lexical_fuzzy_weight: float = 0.8
+    lexical_fuzzy_max_candidates: int = 3
     bm25_k1: float = 1.5
     bm25_b: float = 0.75
     dedup_enabled: bool = True

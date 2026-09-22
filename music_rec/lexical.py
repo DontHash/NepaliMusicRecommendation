@@ -8,10 +8,12 @@ signals are combined per song before reranking.
 from __future__ import annotations
 
 import re
+import unicodedata
 from collections import Counter
 from typing import Sequence
 
 import numpy as np
+from rapidfuzz import fuzz
 from sklearn.feature_extraction.text import CountVectorizer
 
 from .tokenization import tokenize
@@ -21,8 +23,25 @@ DEFAULT_B = 0.75
 DEFAULT_PHRASE_CANDIDATES = 2000
 DEFAULT_MIN_TOKENS = 3
 DEFAULT_SHORT_IDF = 2.5
+DEFAULT_FUZZY_MAX_DF = 10
+DEFAULT_FUZZY_THRESHOLD = 70.0
+DEFAULT_FUZZY_WEIGHT = 0.8
+DEFAULT_FUZZY_MAX_CANDIDATES = 3
+DEFAULT_FUZZY_MIN_LENGTH = 3
+_FUZZY_NGRAM_SIZES = (2, 3)
+_FUZZY_POOL = 200
 
 _DEVANAGARI_RE = re.compile(r"[\u0900-\u097F]")
+
+
+def _skeleton(token: str) -> str:
+    """Drop combining marks (matras) so vowel-only spelling differences match."""
+    text = unicodedata.normalize("NFC", token)
+    return "".join(
+        ch
+        for ch in text
+        if not unicodedata.category(ch).startswith("M") and ch not in "\u200c\u200d"
+    )
 
 
 class LexicalIndex:
@@ -34,10 +53,20 @@ class LexicalIndex:
         b: float = DEFAULT_B,
         min_df: int = 1,
         phrase_candidates: int = DEFAULT_PHRASE_CANDIDATES,
+        fuzzy_enabled: bool = True,
+        fuzzy_max_df: int = DEFAULT_FUZZY_MAX_DF,
+        fuzzy_threshold: float = DEFAULT_FUZZY_THRESHOLD,
+        fuzzy_weight: float = DEFAULT_FUZZY_WEIGHT,
+        fuzzy_max_candidates: int = DEFAULT_FUZZY_MAX_CANDIDATES,
     ):
         self.k1 = float(k1)
         self.b = float(b)
         self.phrase_candidates = int(phrase_candidates)
+        self.fuzzy_enabled = bool(fuzzy_enabled)
+        self.fuzzy_max_df = int(fuzzy_max_df)
+        self.fuzzy_threshold = float(fuzzy_threshold)
+        self.fuzzy_weight = float(fuzzy_weight)
+        self.fuzzy_max_candidates = int(fuzzy_max_candidates)
         texts = [str(text or "") for text in lyrics]
         docs = [tokenize(text) for text in texts]
         self.n_songs = len(docs)
@@ -47,14 +76,15 @@ class LexicalIndex:
         if self._matrix is None:
             self._idf = np.zeros(0, dtype=np.float32)
             self._doc_len = np.zeros(0, dtype=np.float32)
+            self._df_counts = np.zeros(0, dtype=np.int32)
             self.avgdl = 0.0
             self._doc_token_ids: list[np.ndarray] = []
         else:
             self._doc_len = np.asarray(self._matrix.sum(axis=1)).ravel().astype(np.float32)
             self.avgdl = float(self._doc_len.mean())
-            df_counts = np.asarray((self._matrix > 0).sum(axis=0)).ravel()
+            self._df_counts = np.asarray((self._matrix > 0).sum(axis=0)).ravel().astype(np.int32)
             self._idf = np.log(
-                (self.n_songs - df_counts + 0.5) / (df_counts + 0.5) + 1.0
+                (self.n_songs - self._df_counts + 0.5) / (self._df_counts + 0.5) + 1.0
             ).astype(np.float32)
             vocab = self._vectorizer.vocabulary_
             self._doc_token_ids = [
@@ -62,6 +92,57 @@ class LexicalIndex:
                 for doc in docs
             ]
         self._csc = None
+        self._tokens_by_id = self._build_tokens_by_id()
+        self._fuzzy_ngrams = self._build_fuzzy_ngrams()
+
+    def _build_tokens_by_id(self) -> list[str]:
+        if self._matrix is None:
+            return []
+        tokens = [""] * len(self._vectorizer.vocabulary_)
+        for token, column in self._vectorizer.vocabulary_.items():
+            tokens[column] = token
+        return tokens
+
+    def _build_fuzzy_ngrams(self) -> dict[str, list[int]]:
+        if not self.fuzzy_enabled:
+            return {}
+        index: dict[str, list[int]] = {}
+        for token_id, token in enumerate(self._tokens_by_id):
+            for size in _FUZZY_NGRAM_SIZES:
+                for start in range(len(token) - size + 1):
+                    index.setdefault(token[start : start + size], []).append(token_id)
+        return index
+
+    def _fuzzy_expansions(self, token: str) -> list[tuple[int, float]]:
+        """Near-neighbour vocabulary tokens for an unseen or rare query token.
+
+        Only tokens that are OOV or rare are expanded, and rare query tokens
+        only expand to rare candidates: common tokens are exact-matched and
+        expanding them would dilute ranking with broad low-idf boosts.
+        """
+        if not self.fuzzy_enabled or len(token) < DEFAULT_FUZZY_MIN_LENGTH:
+            return []
+        shared: Counter[int] = Counter()
+        for size in _FUZZY_NGRAM_SIZES:
+            for start in range(len(token) - size + 1):
+                for token_id in self._fuzzy_ngrams.get(token[start : start + size], ()):
+                    shared[token_id] += 1
+        if not shared:
+            return []
+        pool = sorted(shared.items(), key=lambda item: -item[1])[:_FUZZY_POOL]
+        scored: list[tuple[int, float]] = []
+        for token_id, _ in pool:
+            candidate = self._tokens_by_id[token_id]
+            if candidate == token:
+                continue
+            ratio = max(
+                float(fuzz.ratio(token, candidate)),
+                float(fuzz.ratio(_skeleton(token), _skeleton(candidate))),
+            )
+            if ratio >= self.fuzzy_threshold:
+                scored.append((token_id, ratio / 100.0 * self.fuzzy_weight))
+        scored.sort(key=lambda item: -item[1])
+        return scored[: self.fuzzy_max_candidates]
 
     def _postings(self):
         if self._csc is None:
@@ -115,11 +196,27 @@ class LexicalIndex:
         if self._matrix is None:
             return scores
         vocab = self._vectorizer.vocabulary_
-        query_ids = [vocab[token] for token in tokenize(query or "") if token in vocab]
-        if not query_ids:
+        tokens = tokenize(query or "")
+        query_ids = [vocab[token] for token in tokens if token in vocab]
+        weights: Counter[int] = Counter(query_ids)
+        if self.fuzzy_enabled:
+            for token in tokens:
+                column = vocab.get(token)
+                if column is not None and self._df_counts[column] > self.fuzzy_max_df:
+                    continue
+                for candidate, weight in self._fuzzy_expansions(token):
+                    if candidate == column:
+                        continue
+                    if (
+                        column is not None
+                        and self._df_counts[candidate] > self.fuzzy_max_df
+                    ):
+                        continue
+                    weights[candidate] += weight
+        if not weights:
             return scores
         postings = self._postings()
-        for column_index, query_freq in Counter(query_ids).items():
+        for column_index, query_freq in weights.items():
             column = postings[:, column_index]
             rows = column.indices
             if rows.size == 0:

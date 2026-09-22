@@ -77,13 +77,16 @@ rec.recommend_by_text("dukha", category="nepali")
   window/embedding scores (`lexical_weight=0.65`), then collapses
   exact-duplicate uploads. Fusion is gated by query specificity: 1-2 token mood
   keywords stay dense-only; two-token queries fuse only when both tokens are
-  rare Devanagari words (lyric fragments). Lyric-line retrieval went from
-  nDCG@10 0.258 / recall@10 0.350 (dense only) to 0.922 / 0.950; the hard
-  non-verbatim subset (`eval/queries.py --hard`) scores 0.923-0.957 for
-  truncated/dropped lines and 0.826 for Romanized lines. Mood/free-text
-  retrieval is measured separately (`eval/mood_retrieval_eval.py`) and matches
-  the dense-only baseline. Near-duplicate collapsing was tried and rejected:
-  on this corpus it merged distinct versions and covers.
+  rare Devanagari words (lyric fragments). Unseen or rare query tokens also
+  expand to near-neighbour vocabulary tokens (character n-grams + ratio on the
+  consonant skeleton) so spelling variants and transliterator slips still
+  retrieve. Lyric-line retrieval went from nDCG@10 0.258 / recall@10 0.350
+  (dense only) to 0.922 / 0.950; the hard non-verbatim subset
+  (`eval/queries.py --hard`) scores 0.932-0.957 for truncated/dropped lines
+  and 0.826 for Romanized lines. Mood/free-text retrieval is measured
+  separately (`eval/mood_retrieval_eval.py`) and matches the dense-only
+  baseline. Near-duplicate collapsing was tried and rejected: on this corpus it
+  merged distinct versions and covers.
 - **Corpus is 942 (-> 932 after cleaning), not 20k.** Code scales unchanged.
 - **CPU-only**: kept muRIL fine-tune but light (2 epochs); embeddings use
   `paraphrase-multilingual-mpnet-base-v2` (no fine-tune needed).

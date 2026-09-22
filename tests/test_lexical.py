@@ -70,6 +70,33 @@ def test_should_fuse_allows_three_token_queries():
     assert index.should_fuse("तिमीलाई माया लाग्छ") is True
 
 
+def test_rare_typo_token_matches_spelling_variant():
+    index = LexicalIndex(["हात्ने"])
+    assert index.song_scores("हट्ने")[0] > 0
+
+
+def test_oov_token_expands_to_vocabulary_spelling():
+    index = LexicalIndex(["तिम्लाई"])
+    assert index.song_scores("त्म्लाई")[0] > 0
+
+
+def test_common_query_tokens_do_not_expand():
+    docs = ["माया"] * 20 + ["मायालु"]
+    index = LexicalIndex(docs)
+    scores = index.song_scores("माया")
+    assert scores[20] == 0
+
+
+def test_short_tokens_do_not_expand():
+    index = LexicalIndex(["ना"])
+    assert index.song_scores("न")[0] == 0
+
+
+def test_fuzzy_expansion_can_be_disabled():
+    index = LexicalIndex(["हात्ने"], fuzzy_enabled=False)
+    assert index.song_scores("हट्ने")[0] == 0
+
+
 def test_fusion_prefers_lexical_winner_when_weight_is_high():
     dense = np.array([1.0, 0.0, 0.0])
     lexical = np.array([0.0, 2.0, 0.0])

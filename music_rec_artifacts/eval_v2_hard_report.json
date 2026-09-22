@@ -9,19 +9,19 @@
       "queries": 40
     },
     "lyric_drop": {
-      "ndcg@10": 0.9228,
+      "ndcg@10": 0.932,
       "recall@10": 1.0,
-      "ndcg@50": 0.9228,
+      "ndcg@50": 0.932,
       "recall@50": 1.0,
-      "mrr": 0.8967,
+      "mrr": 0.9092,
       "queries": 40
     },
     "lyric_roman": {
       "ndcg@10": 0.8261,
       "recall@10": 0.8788,
-      "ndcg@50": 0.8394,
+      "ndcg@50": 0.8393,
       "recall@50": 0.9394,
-      "mrr": 0.8108,
+      "mrr": 0.8107,
       "queries": 33
     }
   },
@@ -512,9 +512,9 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.208,
+      "ndcg@50": 0.2058,
       "recall@50": 1.0,
-      "mrr": 0.037
+      "mrr": 0.0357
     },
     {
       "query_id": "lyric_drop_018",
@@ -532,9 +532,9 @@
       "relevant": 1,
       "ndcg@10": 0.0,
       "recall@10": 0.0,
-      "ndcg@50": 0.2277,
+      "ndcg@50": 0.2242,
       "recall@50": 1.0,
-      "mrr": 0.05
+      "mrr": 0.0476
     },
     {
       "query_id": "lyric_trunc_019",
@@ -640,11 +640,11 @@
       "query_id": "lyric_drop_022",
       "type": "lyric_drop",
       "relevant": 1,
-      "ndcg@10": 0.6309,
+      "ndcg@10": 1.0,
       "recall@10": 1.0,
-      "ndcg@50": 0.6309,
+      "ndcg@50": 1.0,
       "recall@50": 1.0,
-      "mrr": 0.5
+      "mrr": 1.0
     },
     {
       "query_id": "lyric_roman_022",
@@ -1162,6 +1162,6 @@
     "corpus_size": 4157,
     "ann_top_k": 200,
     "top_k": 50,
-    "generated_at": "2026-09-22T04:43:34.104626+00:00"
+    "generated_at": "2026-09-22T06:23:45.266751+00:00"
   }
 }

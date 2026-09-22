@@ -315,7 +315,12 @@ Free-text search fuses two signals per song before reranking:
 2. **Lexical BM25** — in-memory index over the cleaned lyrics (`k1=1.5`,
    `b=0.75`) plus a bonus for songs containing the query as a contiguous token
    phrase. The query is transliterated with the same encoder as the dense path,
-   so Romanized input matches Devanagari lyrics.
+   so Romanized input matches Devanagari lyrics. Unseen or rare query tokens
+   are also matched against near-neighbour vocabulary tokens (shared character
+   n-grams, then `max(raw, consonant-skeleton) ratio >= 70`, weight 0.8, up to
+   3 candidates; rare tokens only expand to rare candidates) so spelling
+   variants and transliterator slips like `त्म्लाई -> तिम्लाई` still retrieve;
+   common tokens are never expanded.
 3. **Fusion** — both score arrays are min-max normalized and combined
    (`lexical_weight=0.65`). The lexical term is skipped when it has no signal
    (mood-only queries) and when an artist name was auto-detected.
@@ -628,7 +633,7 @@ from the same targets; `eval_v2_hard_report.json`):
 | Variant | Dense nDCG@10 | Hybrid nDCG@10 | Hybrid recall@10 |
 |---------|---------------|----------------|------------------|
 | truncated to 4 tokens | 0.155 | 0.957 | 0.975 |
-| one middle token dropped | 0.207 | 0.923 | 1.000 |
+| one middle token dropped | 0.207 | 0.932 | 1.000 |
 | Romanized line | 0.148 | 0.826 | 0.879 |
 
 The 4 remaining Roman misses are 2-4 word generic phrases (`malai maya`,
@@ -646,12 +651,12 @@ dense-only rankings are both scored:
 | Ranking | precision@10 | gold hit@10 |
 |---------|--------------|-------------|
 | dense only | 0.709 | 0.273 |
-| hybrid (gated) | 0.700 | 0.273 |
+| hybrid (gated) | 0.709 | 0.273 |
 
-Only `desh bhakti` differs (0.80 -> 0.70 precision, gold unchanged). The first
-ungated hybrid run scored 0.545 / 0.000 — the specificity gate exists because
-of that measurement. Caveats: weak labels are LLM-generated and the human gold
-set is small (sadness 60 / joy 50 / anger 21 songs), so treat these as
+The first ungated hybrid run scored 0.545 / 0.000 — the specificity gate exists
+because of that measurement; fuzzy token expansion later lifted the gated hybrid
+back to exact dense parity. Caveats: weak labels are LLM-generated and the human
+gold set is small (sadness 60 / joy 50 / anger 21 songs), so treat these as
 directional regression checks, not absolute quality.
 
 History: the original baseline (artist 0.025, lyric 0.0, seed 0.277) was
@@ -840,4 +845,6 @@ vendored three.js, no build step) at http://127.0.0.1:8000:
 *Last updated to reflect project state: C6 hybrid lyric retrieval + C7 Studio
 lyric search + C8 mood/free-text eval and fusion specificity gate + C9 web-app
 CPU inference (GPU/WebGL contention fix) + C10 shared embedding model and
-backend warmup + C11 warm-aware lexical-first search + C12 ONNX query encoder.*
+backend warmup + C11 warm-aware lexical-first search + C12 ONNX query encoder +
+C13 search diagnostics (visible failure states, no-cache static) + C14 fuzzy
+token expansion.*

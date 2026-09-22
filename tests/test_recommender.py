@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import os
+
 import numpy as np
 import pandas as pd
+import pytest
 
 from music_rec.config import Config
 from music_rec.recommender import MusicRecommender
@@ -146,3 +149,26 @@ def test_recommend_by_lexical_returns_empty_for_generic_keywords(tmp_path):
     ]
     rec = _make_recommender(tmp_path, songs)
     assert rec.recommend_by_lexical("माया लाग्छ") == []
+
+
+def test_recommender_passes_fuzzy_config_to_lexical(tmp_path):
+    songs = [
+        {"song_id": 0, "title": "A", "artist": "X", "category": "nepali", "lyrics": "हात्ने", "token_count": 1},
+    ]
+    rec = _make_recommender(tmp_path, songs)
+    rec.config.lexical_fuzzy_enabled = False
+    assert rec.lexical.fuzzy_enabled is False
+
+
+@pytest.mark.skipif(
+    os.environ.get("PROJECTR_SLOW_TESTS") != "1", reason="loads the embedding model"
+)
+def test_romanized_typo_line_finds_behos():
+    config = Config()
+    if not config.cleaned_lyrics_csv.exists():
+        pytest.skip("corpus artifacts not built")
+    rec = MusicRecommender.load(config)
+    results = rec.recommend_by_text(
+        "Aankhai na hatne timro muhar Nachau nachau lagcha tmlai dekhera"
+    )
+    assert 3537 in [r.song_id for r in results[:3]]

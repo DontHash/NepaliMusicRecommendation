@@ -90,7 +90,14 @@ class MusicRecommender:
                 if self._lexical is None:
                     lyrics = self.songs["lyrics"].fillna("").astype(str).tolist()
                     self._lexical = LexicalIndex(
-                        lyrics, k1=self.config.bm25_k1, b=self.config.bm25_b
+                        lyrics,
+                        k1=self.config.bm25_k1,
+                        b=self.config.bm25_b,
+                        fuzzy_enabled=self.config.lexical_fuzzy_enabled,
+                        fuzzy_max_df=self.config.lexical_fuzzy_max_df,
+                        fuzzy_threshold=self.config.lexical_fuzzy_threshold,
+                        fuzzy_weight=self.config.lexical_fuzzy_weight,
+                        fuzzy_max_candidates=self.config.lexical_fuzzy_max_candidates,
                     )
         return self._lexical
 
