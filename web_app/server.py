@@ -55,6 +55,14 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title="ProjectR Mood Studio", version="0.1.0", lifespan=lifespan)
 
 
+@app.middleware("http")
+async def static_no_cache(request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/static/"):
+        response.headers["Cache-Control"] = "no-cache"
+    return response
+
+
 @app.exception_handler(Exception)
 async def unhandled_exception_handler(request, exc):
     logger.exception("unhandled error: %s %s", request.method, request.url.path)
@@ -145,7 +153,7 @@ def _lyric_hits(recommender, text: str, limit: int, seen: set[int], *, lexical_o
         else:
             recommendations = recommender.recommend_by_text(text)
     except Exception as error:  # pragma: no cover - backend optional
-        print(f"[mood-studio] lyric search unavailable: {error}")
+        print(f"[mood-studio] lyric search unavailable for {text!r}: {error}")
         return []
     results = []
     for rec in recommendations:
@@ -189,6 +197,8 @@ def search(
                 )
             )
             warming = True
+    if not results:
+        print(f"[mood-studio] search empty: q={q!r} warming={warming}")
     return {"results": results, "warming": warming}
 
 

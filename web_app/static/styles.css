@@ -80,12 +80,16 @@ header {
   text-transform: uppercase;
   white-space: nowrap;
 }
-.warm-note {
+.search-note {
   padding: 8px 14px;
   border-top: 1px solid var(--glass-border);
   color: var(--muted);
   font-size: 11.5px;
   font-style: italic;
+}
+.search-note.error {
+  color: rgba(252, 165, 165, 0.95);
+  font-style: normal;
 }
 
 button {

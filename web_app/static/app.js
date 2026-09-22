@@ -532,12 +532,21 @@ function scheduleWarmRefresh(query, attempt = 0) {
   }, 1500);
 }
 
+function appendNote(text, isError = false) {
+  const note = document.createElement('div');
+  note.className = isError ? 'search-note error' : 'search-note';
+  note.textContent = text;
+  resultsBox.appendChild(note);
+}
+
 async function runSearch(query) {
   try {
     const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
+    const items = Array.isArray(data.results) ? data.results : [];
     resultsBox.innerHTML = '';
-    for (const item of data.results) {
+    for (const item of items) {
       const row = document.createElement('div');
       row.className = 'result';
       const badge = item.match === 'lyrics' ? '<span class="match">lyrics</span>' : '';
@@ -551,17 +560,23 @@ async function runSearch(query) {
       resultsBox.appendChild(row);
     }
     if (data.warming) {
-      const note = document.createElement('div');
-      note.className = 'warm-note';
-      note.textContent = 'Semantic ranking is warming up — text matches shown, refreshing…';
-      resultsBox.appendChild(note);
+      appendNote('Semantic ranking is warming up — text matches shown, refreshing…');
       scheduleWarmRefresh(query);
     } else {
       clearWarmRefresh();
+      if (items.length === 0) {
+        appendNote(`No matches for “${query}”.`);
+      }
     }
-    resultsBox.classList.toggle('hidden', data.results.length === 0 && !data.warming);
-  } catch {
-    resultsBox.classList.add('hidden');
+    resultsBox.classList.remove('hidden');
+  } catch (error) {
+    const detail =
+      error && error.message && error.message.startsWith('HTTP')
+        ? error.message
+        : 'server unreachable';
+    resultsBox.innerHTML = '';
+    appendNote(`Search failed (${detail}) — the server may be restarting; retry in a moment.`, true);
+    resultsBox.classList.remove('hidden');
   }
 }
 

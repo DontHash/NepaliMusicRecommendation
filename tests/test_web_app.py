@@ -143,6 +143,18 @@ def test_status_reports_model_readiness(monkeypatch):
     assert client.get("/api/status").json() == {"model_ready": True}
 
 
+def test_static_assets_are_not_cached():
+    response = client.get("/static/app.js")
+    assert response.status_code == 200
+    assert response.headers["cache-control"] == "no-cache"
+
+
+def test_search_reports_empty_results_shape(recommender_override):
+    recommender_override(FakeRecommender())
+    payload = client.get("/api/search", params={"q": "zzzqqq"}).json()
+    assert payload == {"results": [], "warming": False}
+
+
 def test_search_empty_query(recommender_override):
     recommender_override(FakeRecommender())
     assert client.get("/api/search", params={"q": "  "}).json() == {
