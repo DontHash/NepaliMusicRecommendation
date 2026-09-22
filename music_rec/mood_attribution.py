@@ -128,6 +128,21 @@ class MoodAttributor:
         self._window_owners = None
         self._ids: list[int] = []
         self._row_of_song: dict[int, int] = {}
+        self._typo_map = None
+
+    def _typo(self):
+        if self._typo_map is None:
+            from .typo_map import load_typo_map
+
+            self._typo_map = load_typo_map(
+                self.config.corpus_typo_map_csv,
+                enabled=self.config.corpus_typo_map_enabled,
+            )
+        return self._typo_map
+
+    def display_text(self, text: str) -> str:
+        """Apply the reviewed typo map to text shown in the UI."""
+        return self._typo().apply_text(text)
 
     def _load_probe(self) -> dict:
         if self._probe is None:
@@ -247,7 +262,7 @@ class MoodAttributor:
             lines.append(
                 {
                     "index": index,
-                    "text": text[start:end],
+                    "text": self.display_text(text[start:end]),
                     "probs": {e: round(float(p), 4) for e, p in zip(EMOTIONS, probs)},
                     "dominant": dominant_label(calibrated),
                 }

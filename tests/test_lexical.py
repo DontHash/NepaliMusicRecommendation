@@ -97,6 +97,40 @@ def test_fuzzy_expansion_can_be_disabled():
     assert index.song_scores("हट्ने")[0] == 0
 
 
+def test_typo_map_canonicalizes_corpus_and_query():
+    from music_rec.typo_map import TypoMap
+
+    typo_map = TypoMap(tokens={"हात्ने": "हट्ने"})
+    index = LexicalIndex(["हात्ने कस्तो मुहार"], typo_map=typo_map)
+    assert index.song_scores("हट्ने कस्तो मुहार")[0] > 0
+
+
+def test_typo_map_phrase_applies_to_corpus():
+    from music_rec.typo_map import TypoMap
+
+    typo_map = TypoMap(
+        phrases=(
+            (
+                ("अखै", "ना", "हात्ने", "कस्तो", "मुहार"),
+                ("आँखै", "न", "हट्ने", "तिम्रो", "मुहार"),
+            ),
+        )
+    )
+    index = LexicalIndex(["अखै ना हात्ने कस्तो मुहार"], typo_map=typo_map)
+    assert index.song_scores("आँखै न हट्ने तिम्रो मुहार")[0] > 0
+
+
+def test_common_corpus_tokens_are_not_mapped():
+    from music_rec.typo_map import TypoMap
+
+    docs = ["साथी"] * 20 + ["हात्ने"]
+    typo_map = TypoMap(tokens={"साथी": "मित्र", "हात्ने": "हट्ने"})
+    index = LexicalIndex(docs, typo_map=typo_map)
+    scores = index.song_scores("साथी")
+    assert scores[0] > 0
+    assert not index.song_scores("मित्र").any()
+
+
 def test_fusion_prefers_lexical_winner_when_weight_is_high():
     dense = np.array([1.0, 0.0, 0.0])
     lexical = np.array([0.0, 2.0, 0.0])

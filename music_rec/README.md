@@ -94,6 +94,12 @@ rec.recommend_by_text("dukha", category="nepali")
   set by `scripts/run_web_app.py`): sharing the GPU with the browser's WebGL
   renderer caused context loss and an intermittent `/api/analyze` 500. Override
   the env var to use CUDA.
+- **Reviewed typo map (`eval/corpus_typo_map.csv`)**: scraped source typos are
+  canonicalized at lexical-index build time (token and phrase entries, applied
+  to rare corpus tokens and rare/OOV query tokens only) and when the Studio
+  renders lyric lines, so search and display use the intended spelling without
+  re-embedding, retraining the probe, or rebuilding gold/eval sets. Add rows to
+  the CSV to fix a reported typo; `music_rec/typo_map.py` loads them.
 - **ONNX query encoder**: with `music_rec_artifacts/embedding_onnx/model.onnx`
   present, free-text queries encode through ONNX Runtime (~2.4s load, ~0.02s per
   query on CPU vs ~14s / ~0.2s for torch). Export once with

@@ -15,6 +15,7 @@ from .index import build_index, load_index, normalize, search
 from .lexical import LexicalIndex, fuse_scores
 from .query import QueryEncoder
 from .rerank import mmr_rerank, sentiment_alignment
+from .typo_map import load_typo_map
 from .window_search import WindowIndex
 
 
@@ -89,6 +90,10 @@ class MusicRecommender:
             with self._lexical_lock:
                 if self._lexical is None:
                     lyrics = self.songs["lyrics"].fillna("").astype(str).tolist()
+                    typo_map = load_typo_map(
+                        self.config.corpus_typo_map_csv,
+                        enabled=self.config.corpus_typo_map_enabled,
+                    )
                     self._lexical = LexicalIndex(
                         lyrics,
                         k1=self.config.bm25_k1,
@@ -98,6 +103,7 @@ class MusicRecommender:
                         fuzzy_threshold=self.config.lexical_fuzzy_threshold,
                         fuzzy_weight=self.config.lexical_fuzzy_weight,
                         fuzzy_max_candidates=self.config.lexical_fuzzy_max_candidates,
+                        typo_map=typo_map,
                     )
         return self._lexical
 

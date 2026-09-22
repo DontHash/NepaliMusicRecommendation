@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+import pandas as pd
 import numpy as np
 
+from music_rec.config import Config
 from music_rec.mood_attribution import (
     LINE_BIAS,
+    MoodAttributor,
     aggregate_lines,
     composition_from_lines,
     dominant_label,
@@ -65,3 +68,30 @@ def test_line_bias_calibration_shifts_labels():
     demoted = np.array([0.10, 0.60, 0.05], dtype=np.float32)
     assert dominant_label(demoted) == "sadness"
     assert dominant_label(demoted + bias) == "neutral"
+
+
+def test_display_text_applies_typo_map(tmp_path):
+    map_path = tmp_path / "typo_map.csv"
+    pd.DataFrame(
+        [
+            {
+                "kind": "phrase",
+                "typo": "अखै ना हात्ने कस्तो मुहार",
+                "canonical": "आँखै न हट्ने तिम्रो मुहार",
+                "note": "",
+                "source": "test",
+                "confidence": "high",
+            }
+        ]
+    ).to_csv(map_path, index=False, encoding="utf-8")
+    config = Config()
+    config.corpus_typo_map_csv = map_path
+    attributor = MoodAttributor(config)
+    assert attributor.display_text("अखै ना हात्ने कस्तो मुहार सुन") == "आँखै न हट्ने तिम्रो मुहार सुन"
+
+
+def test_display_text_without_map_is_passthrough(tmp_path):
+    config = Config()
+    config.corpus_typo_map_csv = tmp_path / "missing.csv"
+    attributor = MoodAttributor(config)
+    assert attributor.display_text("अखै ना हात्ने") == "अखै ना हात्ने"

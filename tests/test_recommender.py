@@ -160,6 +160,19 @@ def test_recommender_passes_fuzzy_config_to_lexical(tmp_path):
     assert rec.lexical.fuzzy_enabled is False
 
 
+def test_recommender_loads_typo_map_from_config(tmp_path):
+    songs = [
+        {"song_id": 0, "title": "A", "artist": "X", "category": "nepali", "lyrics": "अखै ना हात्ने कस्तो मुहार", "token_count": 5},
+    ]
+    rec = _make_recommender(tmp_path, songs)
+    map_path = tmp_path / "typo_map.csv"
+    pd.DataFrame(
+        [{"kind": "token", "typo": "अखै", "canonical": "आँखै", "note": "", "source": "test", "confidence": "high"}]
+    ).to_csv(map_path, index=False, encoding="utf-8")
+    rec.config.corpus_typo_map_csv = map_path
+    assert rec.lexical.typo_map.tokens == {"अखै": "आँखै"}
+
+
 @pytest.mark.skipif(
     os.environ.get("PROJECTR_SLOW_TESTS") != "1", reason="loads the embedding model"
 )

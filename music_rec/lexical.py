@@ -17,6 +17,7 @@ from rapidfuzz import fuzz
 from sklearn.feature_extraction.text import CountVectorizer
 
 from .tokenization import tokenize
+from .typo_map import TypoMap
 
 DEFAULT_K1 = 1.5
 DEFAULT_B = 0.75
@@ -58,6 +59,7 @@ class LexicalIndex:
         fuzzy_threshold: float = DEFAULT_FUZZY_THRESHOLD,
         fuzzy_weight: float = DEFAULT_FUZZY_WEIGHT,
         fuzzy_max_candidates: int = DEFAULT_FUZZY_MAX_CANDIDATES,
+        typo_map: TypoMap | None = None,
     ):
         self.k1 = float(k1)
         self.b = float(b)
@@ -67,8 +69,11 @@ class LexicalIndex:
         self.fuzzy_threshold = float(fuzzy_threshold)
         self.fuzzy_weight = float(fuzzy_weight)
         self.fuzzy_max_candidates = int(fuzzy_max_candidates)
+        self.typo_map = typo_map or TypoMap()
         texts = [str(text or "") for text in lyrics]
-        docs = [tokenize(text) for text in texts]
+        raw_docs = [tokenize(text) for text in texts]
+        raw_counts = Counter(token for doc in raw_docs for token in set(doc))
+        docs = [self._map_doc(doc, raw_counts) for doc in raw_docs]
         self.n_songs = len(docs)
         self._vectorizer = CountVectorizer(analyzer=lambda tokens: tokens, min_df=min_df, dtype=np.float32)
         matrix = self._vectorizer.fit_transform(docs) if docs else None
@@ -94,6 +99,40 @@ class LexicalIndex:
         self._csc = None
         self._tokens_by_id = self._build_tokens_by_id()
         self._fuzzy_ngrams = self._build_fuzzy_ngrams()
+
+    def _map_doc(self, doc: list[str], raw_counts: Counter) -> list[str]:
+        """Apply reviewed typo mappings to a corpus document.
+
+        Phrase entries always apply (they are long and specific); token entries
+        only apply to tokens that are rare in the raw corpus, so the map can
+        never rewrite common vocabulary.
+        """
+        if not self.typo_map.enabled:
+            return doc
+        mapped = self.typo_map.apply_phrases(doc)
+        return [
+            self.typo_map.tokens.get(token, token)
+            if raw_counts.get(token, 0) <= self.fuzzy_max_df
+            else token
+            for token in mapped
+        ]
+
+    def _query_tokens(self, query: str) -> list[str]:
+        """Tokenize a query and apply typo mappings under the same rarity rule."""
+        tokens = tokenize(query or "")
+        if not self.typo_map.enabled:
+            return tokens
+        mapped = self.typo_map.apply_phrases(tokens)
+        vocab = self._vectorizer.vocabulary_
+        result = []
+        for token in mapped:
+            column = vocab.get(token)
+            if token in self.typo_map.tokens and (
+                column is None or self._df_counts[column] <= self.fuzzy_max_df
+            ):
+                token = self.typo_map.tokens[token]
+            result.append(token)
+        return result
 
     def _build_tokens_by_id(self) -> list[str]:
         if self._matrix is None:
@@ -167,7 +206,7 @@ class LexicalIndex:
         if self._matrix is None:
             return False
         vocab = self._vectorizer.vocabulary_
-        tokens = [token for token in tokenize(query or "") if token in vocab]
+        tokens = [token for token in self._query_tokens(query) if token in vocab]
         if len(tokens) < 2:
             return False
         if len(tokens) >= min_tokens:
@@ -196,7 +235,7 @@ class LexicalIndex:
         if self._matrix is None:
             return scores
         vocab = self._vectorizer.vocabulary_
-        tokens = tokenize(query or "")
+        tokens = self._query_tokens(query)
         query_ids = [vocab[token] for token in tokens if token in vocab]
         weights: Counter[int] = Counter(query_ids)
         if self.fuzzy_enabled:

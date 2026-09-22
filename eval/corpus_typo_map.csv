@@ -1,0 +1,6 @@
+kind,typo,canonical,note,source,confidence
+phrase,अखै ना हात्ने कस्तो मुहार,आँखै न हट्ने तिम्रो मुहार,"Behos (3537) scraped line; reported by a user searching the romanized lyric",report,high
+phrase,आख्खै नहट्ने कस्तो मुहार,आँखै न हट्ने तिम्रो मुहार,"Behos (3537) variant line",report,high
+token,हात्ने,हट्ने,"corpus typo for हट्ने (rare)",report,high
+token,अखै,आँखै,"corpus typo for आँखै (rare)",report,high
+token,आख्खै,आँखै,"corpus typo for आँखै (rare)",report,high

@@ -320,7 +320,13 @@ Free-text search fuses two signals per song before reranking:
    n-grams, then `max(raw, consonant-skeleton) ratio >= 70`, weight 0.8, up to
    3 candidates; rare tokens only expand to rare candidates) so spelling
    variants and transliterator slips like `त्म्लाई -> तिम्लाई` still retrieve;
-   common tokens are never expanded.
+   common tokens are never expanded. A reviewed typo map
+   (`eval/corpus_typo_map.csv` via `music_rec/typo_map.py`) additionally
+   canonicalizes known scraped spelling errors before BM25: token and phrase
+   entries (longest phrase wins), applied to rare corpus tokens and rare/OOV
+   query tokens only, so common vocabulary is never rewritten. The same map
+   rewrites lyric text in the Studio payloads, so the UI shows the intended
+   spelling without touching the stored corpus, embeddings or probe.
 3. **Fusion** — both score arrays are min-max normalized and combined
    (`lexical_weight=0.65`). The lexical term is skipped when it has no signal
    (mood-only queries) and when an artist name was auto-detected.
@@ -836,6 +842,10 @@ vendored three.js, no build step) at http://127.0.0.1:8000:
   the cleaner's metadata rules do not classify; the English gate keeps such prose
   in Latin script instead of mangling it. `R_data/raw/gemini/corpus_v2` labels are
   superseded for 703 songs by `corpus_v3/labels_merged.csv`.
+- Scraped spelling errors (e.g. Behos's `अखै ना हात्ने कस्तो मुहार`) are handled
+  by the reviewed typo map (`eval/corpus_typo_map.csv`), which fixes search and
+  display without a corpus rebuild; add new rows there when a typo is reported.
+  Artifact-ish lines above are not spelling errors and are out of its scope.
 - `sentiment_scores.csv` now holds the mood probe's outputs (not the legacy Kaggle
   muRIL distill); `MusicAnalyzer` and the recommender read it directly, which is
   what keeps parity at 25/25.
@@ -847,4 +857,4 @@ lyric search + C8 mood/free-text eval and fusion specificity gate + C9 web-app
 CPU inference (GPU/WebGL contention fix) + C10 shared embedding model and
 backend warmup + C11 warm-aware lexical-first search + C12 ONNX query encoder +
 C13 search diagnostics (visible failure states, no-cache static) + C14 fuzzy
-token expansion.*
+token expansion + C15 reviewed corpus typo map (search + display).*

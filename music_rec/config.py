@@ -20,6 +20,8 @@ class Config:
 
     cleaned_lyrics_csv: Path = field(init=False)
     audit_report_json: Path = field(init=False)
+    corpus_typo_map_csv: Path = field(init=False)
+    corpus_typo_map_enabled: bool = True
     embeddings_npy: Path = field(init=False)
     embedding_ids_json: Path = field(init=False)
     embedding_onnx_dir: Path = field(init=False)
@@ -75,6 +77,7 @@ class Config:
         self.artifacts_dir.mkdir(parents=True, exist_ok=True)
         self.cleaned_lyrics_csv = self.artifacts_dir / "cleaned_lyrics.csv"
         self.audit_report_json = self.artifacts_dir / "audit_report.json"
+        self.corpus_typo_map_csv = PROJECT_ROOT / "eval" / "corpus_typo_map.csv"
         self.embeddings_npy = self.artifacts_dir / "embeddings.npy"
         self.embedding_ids_json = self.artifacts_dir / "embedding_ids.json"
         self.embedding_onnx_dir = self.artifacts_dir / "embedding_onnx"
