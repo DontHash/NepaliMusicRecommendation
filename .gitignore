@@ -58,6 +58,9 @@ music_rec_artifacts/sentiment_model/
 music_rec_artifacts/window_vectors.npy
 music_rec_artifacts/window_owners.npy
 
+# ONNX query encoder (~1.1GB; regenerate via scripts/export_embedding_onnx.py)
+music_rec_artifacts/embedding_onnx/
+
 # Regenerable probe candidate (canonical copy is sentiment_scores.csv)
 music_rec_artifacts/sentiment_scores_probe.csv
 

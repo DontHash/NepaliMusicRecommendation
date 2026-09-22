@@ -22,6 +22,7 @@ class Config:
     audit_report_json: Path = field(init=False)
     embeddings_npy: Path = field(init=False)
     embedding_ids_json: Path = field(init=False)
+    embedding_onnx_dir: Path = field(init=False)
     window_vectors_npy: Path = field(init=False)
     window_owners_npy: Path = field(init=False)
     sentiment_scores_csv: Path = field(init=False)
@@ -34,6 +35,9 @@ class Config:
     embedding_model: str = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
     embedding_device: str = field(
         default_factory=lambda: os.environ.get("PROJECTR_EMBED_DEVICE", "auto")
+    )
+    embedding_backend: str = field(
+        default_factory=lambda: os.environ.get("PROJECTR_EMBED_BACKEND", "auto")
     )
     sentiment_base_model: str = "google/muril-base-cased"
 
@@ -68,6 +72,7 @@ class Config:
         self.audit_report_json = self.artifacts_dir / "audit_report.json"
         self.embeddings_npy = self.artifacts_dir / "embeddings.npy"
         self.embedding_ids_json = self.artifacts_dir / "embedding_ids.json"
+        self.embedding_onnx_dir = self.artifacts_dir / "embedding_onnx"
         self.window_vectors_npy = self.artifacts_dir / "window_vectors.npy"
         self.window_owners_npy = self.artifacts_dir / "window_owners.npy"
         self.sentiment_scores_csv = self.artifacts_dir / "sentiment_scores.csv"

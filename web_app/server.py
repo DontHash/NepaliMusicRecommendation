@@ -22,7 +22,7 @@ from pydantic import BaseModel
 os.environ.setdefault("PROJECTR_EMBED_DEVICE", "cpu")
 
 from music_rec.config import Config  # noqa: E402
-from music_rec.embeddings import get_shared_model, text_encoder_ready  # noqa: E402
+from music_rec.embeddings import get_shared_model, get_text_encoder, text_encoder_ready  # noqa: E402
 from music_rec.mood_attribution import MoodAttributor, get_attributor  # noqa: E402
 from music_rec.mood_neighbors import get_mood_neighbors  # noqa: E402
 from music_rec.recommender import MusicRecommender  # noqa: E402
@@ -37,9 +37,10 @@ def _warm_backend() -> None:
     try:
         config = Config()
         recommender = get_recommender()
-        model = get_shared_model(config.embedding_model, config.embedding_device)
+        encoder = get_text_encoder(config)
+        get_shared_model(config.embedding_model, config.embedding_device)
         recommender.lexical
-        model.encode(["warmup"], convert_to_numpy=True, show_progress_bar=False)
+        encoder.encode(["warmup"], convert_to_numpy=True, show_progress_bar=False)
     except Exception as error:  # pragma: no cover - warmup is best-effort
         print(f"[mood-studio] backend warmup failed: {error}")
 

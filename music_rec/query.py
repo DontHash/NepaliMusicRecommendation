@@ -20,11 +20,9 @@ class QueryEncoder:
 
     def _embedder(self):
         if self._embed_model is None:
-            from .embeddings import get_shared_model
+            from .embeddings import get_text_encoder
 
-            self._embed_model = get_shared_model(
-                self.config.embedding_model, self.config.embedding_device
-            )
+            self._embed_model = get_text_encoder(self.config)
         return self._embed_model
 
     def _translit(self):

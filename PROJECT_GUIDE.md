@@ -605,6 +605,8 @@ python -m eval.run_eval
 python eval/queries.py --hard          # non-verbatim lyric queries (queries_hard.jsonl)
 python -m eval.run_eval --queries R_data/corpus/eval/queries_hard.jsonl --report music_rec_artifacts/eval_v2_hard_report.json
 python -m eval.mood_retrieval_eval     # mood/free-text retrieval vs weak + human labels
+python scripts/export_embedding_onnx.py  # one-time ONNX query encoder (~1.1GB, gitignored)
+python scripts/check_onnx_parity.py      # cosine gate vs torch (min 0.9999)
 ```
 
 **Retrieval eval (2026-09 hybrid, 4,157 songs, `eval_v2_report.json`)**
@@ -791,8 +793,20 @@ vendored three.js, no build step) at http://127.0.0.1:8000:
   `web_app/server.py`; override the env var to use CUDA). Loading mpnet onto the
   same GPU that renders the three.js scene produced WebGL `CONTEXT_LOST` and an
   intermittent 500 on `POST /api/analyze` (not reproducible off-GPU). Unhandled
-  errors are logged with a traceback through the app's 500 handler. The first
-  search/analyze after startup pays a one-time CPU model load (~20-30s).
+  errors are logged with a traceback through the app's 500 handler.
+- Query encoding backend: when `music_rec_artifacts/embedding_onnx/model.onnx`
+  exists, `PROJECTR_EMBED_BACKEND=auto` (default) loads it through ONNX Runtime
+  — ~2.4s load and ~0.02s per query on CPU versus ~14s and ~0.2s for torch,
+  because it skips the ~9s `transformers` import. The artifact is exported once
+  with `scripts/export_embedding_onnx.py` (gitignored, ~1.1GB) and gated by
+  `scripts/check_onnx_parity.py` (min cosine vs torch 1.000000 on 24 varied
+  texts); all retrieval evals re-ran unchanged on it. `PROJECTR_EMBED_BACKEND=torch`
+  forces the torch path, `onnx` falls back with a warning when the artifact is
+  missing. Startup warmup preloads the active encoder, the shared torch model
+  (mood attribution/pasted-text analysis) and the lexical index in a background
+  thread, so `GET /api/status` flips to ready in ~5-7s and the first search
+  returns hybrid results without the cold-start wait (a search before that
+  returns lexical matches plus a warming note and auto-refreshes).
 
 **Known limits at this stage**
 
@@ -809,6 +823,9 @@ vendored three.js, no build step) at http://127.0.0.1:8000:
 - Window artifacts (`window_vectors.npy`, ~200MB) are gitignored; regenerate via
   `scripts/kaggle_embeddings.py run`. Embedding is Kaggle-first (local GPU
   avoided for thermals); `music_rec/embeddings.py` keeps a CPU chunked fallback.
+  The ONNX query encoder (`music_rec_artifacts/embedding_onnx/`, ~1.1GB) is also
+  gitignored; regenerate with `scripts/export_embedding_onnx.py` and re-run
+  `scripts/check_onnx_parity.py` before trusting it.
 - Residual corpus noise after C5: 11 artifact-ish lines across 10 songs (chord
   charts written as `सी#एम`, stray "video" prose) and some English blog prose that
   the cleaner's metadata rules do not classify; the English gate keeps such prose
@@ -822,4 +839,5 @@ vendored three.js, no build step) at http://127.0.0.1:8000:
 
 *Last updated to reflect project state: C6 hybrid lyric retrieval + C7 Studio
 lyric search + C8 mood/free-text eval and fusion specificity gate + C9 web-app
-CPU inference (GPU/WebGL contention fix).*
+CPU inference (GPU/WebGL contention fix) + C10 shared embedding model and
+backend warmup + C11 warm-aware lexical-first search + C12 ONNX query encoder.*

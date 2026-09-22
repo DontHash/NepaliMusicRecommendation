@@ -91,6 +91,12 @@ rec.recommend_by_text("dukha", category="nepali")
   set by `scripts/run_web_app.py`): sharing the GPU with the browser's WebGL
   renderer caused context loss and an intermittent `/api/analyze` 500. Override
   the env var to use CUDA.
+- **ONNX query encoder**: with `music_rec_artifacts/embedding_onnx/model.onnx`
+  present, free-text queries encode through ONNX Runtime (~2.4s load, ~0.02s per
+  query on CPU vs ~14s / ~0.2s for torch). Export once with
+  `scripts/export_embedding_onnx.py` and validate with
+  `scripts/check_onnx_parity.py` (min cosine vs torch 1.000000); the retrieval
+  evals are unchanged on it. `PROJECTR_EMBED_BACKEND=torch` forces torch.
 - **ChromaDB skipped**: FAISS + pandas metadata filter is simpler for this scale.
 - **Sentiment truncation**: long lyrics truncated to the LAST 256 tokens
   (conclusions carry emotional weight), per the plan.

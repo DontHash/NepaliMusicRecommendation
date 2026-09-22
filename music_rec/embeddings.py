@@ -21,6 +21,8 @@ from .config import Config
 
 _SHARED_MODELS: dict[tuple[str, str], object] = {}
 _SHARED_MODELS_LOCK = threading.Lock()
+_TEXT_ENCODERS: dict[tuple[str, str], object] = {}
+_TEXT_ENCODERS_LOCK = threading.Lock()
 
 
 def resolve_device(preference: str | None = None) -> str:
@@ -77,14 +79,65 @@ def shared_model_ready(model_name: str, device: str | None = None) -> bool:
     return (model_name, resolve_device(device)) in _SHARED_MODELS
 
 
+def _onnx_artifact_available(config: Config) -> bool:
+    model_path = config.embedding_onnx_dir / "model.onnx"
+    tokenizer_path = config.embedding_onnx_dir / "tokenizer.json"
+    if not (model_path.exists() and tokenizer_path.exists()):
+        return False
+    import importlib.util
+
+    return (
+        importlib.util.find_spec("onnxruntime") is not None
+        and importlib.util.find_spec("tokenizers") is not None
+    )
+
+
+def _load_onnx_encoder(config: Config):
+    from .onnx_encoder import OnnxEncoder
+
+    return OnnxEncoder(
+        config.embedding_onnx_dir / "model.onnx",
+        config.embedding_onnx_dir / "tokenizer.json",
+    )
+
+
+def get_text_encoder(config: Config):
+    """Return the encoder used for short query text.
+
+    ``auto`` prefers the ONNX artifact (skips the ~9s transformers import on
+    first query) and falls back to the shared torch model. ``torch`` forces
+    the torch path; ``onnx`` falls back with a warning when the artifact is
+    missing.
+    """
+    backend = (config.embedding_backend or "auto").lower()
+    if backend in {"auto", "onnx"} and _onnx_artifact_available(config):
+        key = ("onnx", str(config.embedding_onnx_dir))
+        cached = _TEXT_ENCODERS.get(key)
+        if cached is None:
+            with _TEXT_ENCODERS_LOCK:
+                cached = _TEXT_ENCODERS.get(key)
+                if cached is None:
+                    cached = _load_onnx_encoder(config)
+                    _TEXT_ENCODERS[key] = cached
+        return cached
+    if backend == "onnx":
+        print("[embeddings] ONNX artifact unavailable; falling back to torch")
+    return get_shared_model(config.embedding_model, config.embedding_device)
+
+
 def text_encoder_ready(config: Config) -> bool:
     """Whether the active query-text encoder is loaded and can encode now."""
+    backend = (config.embedding_backend or "auto").lower()
+    if backend in {"auto", "onnx"} and _onnx_artifact_available(config):
+        return ("onnx", str(config.embedding_onnx_dir)) in _TEXT_ENCODERS
     return shared_model_ready(config.embedding_model, config.embedding_device)
 
 
 def reset_shared_models() -> None:
     with _SHARED_MODELS_LOCK:
         _SHARED_MODELS.clear()
+    with _TEXT_ENCODERS_LOCK:
+        _TEXT_ENCODERS.clear()
 
 
 def _encode_simple(

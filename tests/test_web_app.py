@@ -169,13 +169,18 @@ def test_warm_backend_preloads_model_then_lexical(monkeypatch):
 
     monkeypatch.setattr(server, "get_recommender", lambda: FakeRec())
 
+    def fake_text_encoder(config):
+        events.append("encoder")
+        return FakeModel()
+
     def fake_shared_model(*args, **kwargs):
         events.append("model")
         return FakeModel()
 
+    monkeypatch.setattr(server, "get_text_encoder", fake_text_encoder)
     monkeypatch.setattr(server, "get_shared_model", fake_shared_model)
     server._warm_backend()
-    assert events == ["model", "lexical", "encode"]
+    assert events == ["encoder", "model", "lexical", "encode"]
 
 
 def test_song_payload_shape():
