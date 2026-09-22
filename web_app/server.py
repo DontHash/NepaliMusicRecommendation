@@ -22,6 +22,7 @@ from pydantic import BaseModel
 os.environ.setdefault("PROJECTR_EMBED_DEVICE", "cpu")
 
 from music_rec.config import Config  # noqa: E402
+from music_rec.embeddings import get_shared_model  # noqa: E402
 from music_rec.mood_attribution import MoodAttributor, get_attributor  # noqa: E402
 from music_rec.mood_neighbors import get_mood_neighbors  # noqa: E402
 from music_rec.recommender import MusicRecommender  # noqa: E402
@@ -32,17 +33,21 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 
-def _warm_recommender() -> None:
+def _warm_backend() -> None:
     try:
-        get_recommender()
+        config = Config()
+        recommender = get_recommender()
+        model = get_shared_model(config.embedding_model, config.embedding_device)
+        recommender.lexical
+        model.encode(["warmup"], convert_to_numpy=True, show_progress_bar=False)
     except Exception as error:  # pragma: no cover - warmup is best-effort
-        print(f"[mood-studio] recommender warmup failed: {error}")
+        print(f"[mood-studio] backend warmup failed: {error}")
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     if os.environ.get("PROJECTR_NO_WARMUP") != "1":
-        threading.Thread(target=_warm_recommender, daemon=True).start()
+        threading.Thread(target=_warm_backend, daemon=True).start()
     yield
 
 

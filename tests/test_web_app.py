@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 from types import SimpleNamespace
 
+import numpy as np
 import pytest
 from fastapi.testclient import TestClient
 
@@ -90,6 +91,33 @@ def test_search_survives_lyric_backend_failure(recommender_override):
 def test_search_empty_query(recommender_override):
     recommender_override(FakeRecommender())
     assert client.get("/api/search", params={"q": "  "}).json() == {"results": []}
+
+
+def test_warm_backend_preloads_model_then_lexical(monkeypatch):
+    from web_app import server
+
+    events: list[str] = []
+
+    class FakeModel:
+        def encode(self, texts, **kwargs):
+            events.append("encode")
+            return np.zeros((1, 8), dtype=np.float32)
+
+    class FakeRec:
+        @property
+        def lexical(self):
+            events.append("lexical")
+            return object()
+
+    monkeypatch.setattr(server, "get_recommender", lambda: FakeRec())
+
+    def fake_shared_model(*args, **kwargs):
+        events.append("model")
+        return FakeModel()
+
+    monkeypatch.setattr(server, "get_shared_model", fake_shared_model)
+    server._warm_backend()
+    assert events == ["model", "lexical", "encode"]
 
 
 def test_song_payload_shape():

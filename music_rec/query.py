@@ -20,9 +20,9 @@ class QueryEncoder:
 
     def _embedder(self):
         if self._embed_model is None:
-            from .embeddings import _load_model
+            from .embeddings import get_shared_model
 
-            self._embed_model = _load_model(
+            self._embed_model = get_shared_model(
                 self.config.embedding_model, self.config.embedding_device
             )
         return self._embed_model

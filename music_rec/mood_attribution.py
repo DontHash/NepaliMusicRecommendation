@@ -153,9 +153,9 @@ class MoodAttributor:
 
     def _load_sentence_model(self):
         if self._sent_model is None:
-            from .embeddings import _load_model
+            from .embeddings import get_shared_model
 
-            self._sent_model = _load_model(
+            self._sent_model = get_shared_model(
                 self.config.embedding_model, self.config.embedding_device
             )
         return self._sent_model

@@ -12,11 +12,15 @@ from __future__ import annotations
 
 import json
 import os
+import threading
 
 import numpy as np
 import pandas as pd
 
 from .config import Config
+
+_SHARED_MODELS: dict[tuple[str, str], object] = {}
+_SHARED_MODELS_LOCK = threading.Lock()
 
 
 def resolve_device(preference: str | None = None) -> str:
@@ -47,6 +51,35 @@ def _load_model(model_name: str, device: str | None = None):
     else:
         print("[embeddings] using CPU")
     return SentenceTransformer(model_name, device=resolved)
+
+
+def get_shared_model(model_name: str, device: str | None = None):
+    """Return a process-wide singleton SentenceTransformer.
+
+    Query encoding, mood attribution and single-lyric analysis all need the
+    same mpnet model; sharing one instance avoids duplicate ~1GB copies and
+    repeated multi-second loads.
+    """
+    resolved = resolve_device(device)
+    key = (model_name, resolved)
+    cached = _SHARED_MODELS.get(key)
+    if cached is not None:
+        return cached
+    with _SHARED_MODELS_LOCK:
+        cached = _SHARED_MODELS.get(key)
+        if cached is None:
+            cached = _load_model(model_name, resolved)
+            _SHARED_MODELS[key] = cached
+    return cached
+
+
+def shared_model_ready(model_name: str, device: str | None = None) -> bool:
+    return (model_name, resolve_device(device)) in _SHARED_MODELS
+
+
+def reset_shared_models() -> None:
+    with _SHARED_MODELS_LOCK:
+        _SHARED_MODELS.clear()
 
 
 def _encode_simple(
