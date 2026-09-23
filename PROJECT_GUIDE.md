@@ -727,7 +727,10 @@ mood-search feature. `MusicAnalyzer.py` now runs this probe at runtime (same
 chunked-encoder recipe; verified by `scripts/check_probe_parity.py` — 25/25
 label agreement, cosine 1.0 vs stored embeddings) and reports the in-scope
 emotions joy/sadness/anger; the muRIL path (`music_rec/sentiment.py` +
-`sentiment_model_dir`) is legacy and kept for reference only.
+`sentiment_model_dir`) is legacy. Its local checkpoint was pruned during the
+2026-09 storage cleanup (~915MB); rebuild with `python scripts/run_music_rec.py
+sentiment` or the Kaggle job in `music_rec/KAGGLE.md` if the legacy comparison
+is needed.
 
 The previous probe was trained on Qwen2.5-7B-Instruct (4-bit, Kaggle)
 pseudo-labels (~1,900 songs); it was replaced because the Qwen teacher
