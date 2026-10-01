@@ -1,0 +1,26 @@
+{
+  "schema_version": "1",
+  "generated_at": "2026-10-01T13:58:24.888383+00:00",
+  "git_sha": "8110a94",
+  "tracks": 3650,
+  "with_fetched_lyrics": 90,
+  "verdicts": {
+    "metadata_candidate": 2005,
+    "no_lyrics": 460,
+    "metadata_only": 1096,
+    "new_lyrics": 57,
+    "lyrics_ambiguous_linked": 8,
+    "new_lyrics_non_nepali": 14,
+    "lyrics_confirmed": 9,
+    "new_lyrics_too_short": 1
+  },
+  "linked_existing_songs": 530,
+  "new_songs": 57,
+  "new_songs_tokens_median": 132,
+  "thresholds": {
+    "confirm_sim": 68.0,
+    "confirm_sim_metadata": 55.0,
+    "ambiguous_sim": 45.0,
+    "nepali_min_ratio": 0.4
+  }
+}

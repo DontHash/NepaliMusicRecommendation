@@ -1,0 +1,13 @@
+{
+  "audio_files": 3663,
+  "unique_tracks": 3650,
+  "match_buckets_tracks": {
+    "weak": 1711,
+    "none": 589,
+    "strong": 1096,
+    "probable": 254
+  },
+  "tracks_with_candidate": 3179,
+  "collection_root": "C:\\Users\\praka\\Downloads\\Nepali Music Collection",
+  "corpus_songs": 4157
+}
