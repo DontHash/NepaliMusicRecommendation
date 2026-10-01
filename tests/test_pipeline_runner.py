@@ -172,6 +172,23 @@ def test_asset_log_written_per_run(tmp_path: Path):
     assert log_path.exists()
 
 
+def test_runner_emits_metrics_jsonl(tmp_path: Path):
+    from pipelines.metrics import read_metrics
+
+    calls: dict = {}
+    pipeline = build(tmp_path, [make_asset("a", calls, outputs=("a.out",))])
+    result = pipeline.run()
+
+    records = read_metrics(tmp_path / "state" / "metrics.jsonl")
+    assert [record["kind"] for record in records] == ["asset", "run"]
+    assert records[0]["asset"] == "a" and records[0]["status"] == "ok"
+    assert records[0]["run_id"] == result["run_id"]
+    assert records[1]["status"] == "ok" and records[1]["assets"] == 1
+
+    pipeline.run(dry_run=True)  # dry runs emit nothing
+    assert len(read_metrics(tmp_path / "state" / "metrics.jsonl")) == 2
+
+
 def test_unknown_dependency_cycle_and_unknown_selection_raise(tmp_path: Path):
     with pytest.raises(ValueError, match="unknown asset"):
         build(tmp_path, [make_asset("a", {}, deps=("ghost",))])

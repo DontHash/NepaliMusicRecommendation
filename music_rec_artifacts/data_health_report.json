@@ -1,0 +1,287 @@
+{
+  "generated_at": "2026-10-01T17:02:42.045451+00:00",
+  "status": "green",
+  "failed": [],
+  "stale": [],
+  "strict": false,
+  "fail_on_stale": false,
+  "datasets": {
+    "cleaned_lyrics": {
+      "dataset": "cleaned_lyrics",
+      "path": "D:\\Code\\ProjectR\\music_rec_artifacts\\versions\\20261001T164815Z-7093631\\music_rec_artifacts\\cleaned_lyrics.csv",
+      "exists": true,
+      "bytes": 10809932,
+      "age_days": 0.05,
+      "stale": false,
+      "metrics": {
+        "rows": 4211,
+        "duplicate_lyrics_share": 0.002849679411066255,
+        "empty_artist_share": 0.0047494656851104254,
+        "empty_title_share": 0.00023747328425552126,
+        "avg_tokens": 152.3828069342199,
+        "min_tokens": 17
+      },
+      "rows": 4211,
+      "contract": "pass",
+      "budgets": [
+        {
+          "metric": "rows",
+          "value": 4211.0,
+          "min": 4000,
+          "max": null,
+          "passed": true
+        },
+        {
+          "metric": "duplicate_lyrics_share",
+          "value": 0.0028,
+          "min": null,
+          "max": 0.02,
+          "passed": true
+        },
+        {
+          "metric": "empty_artist_share",
+          "value": 0.0047,
+          "min": null,
+          "max": 0.02,
+          "passed": true
+        },
+        {
+          "metric": "empty_title_share",
+          "value": 0.0002,
+          "min": null,
+          "max": 0.005,
+          "passed": true
+        },
+        {
+          "metric": "avg_tokens",
+          "value": 152.3828,
+          "min": 50.0,
+          "max": null,
+          "passed": true
+        },
+        {
+          "metric": "min_tokens",
+          "value": 17.0,
+          "min": 10,
+          "max": null,
+          "passed": true
+        }
+      ],
+      "status": "green"
+    },
+    "corpus_rows": {
+      "dataset": "corpus_rows",
+      "path": "D:\\Code\\ProjectR\\CSVs Dataset\\corpus_final_v3.csv",
+      "exists": true,
+      "bytes": 11134981,
+      "age_days": 0.05,
+      "stale": false,
+      "metrics": {
+        "rows": 4239,
+        "sources": 13
+      },
+      "rows": 4239,
+      "contract": "pass",
+      "budgets": [
+        {
+          "metric": "rows",
+          "value": 4239.0,
+          "min": 4000,
+          "max": null,
+          "passed": true
+        },
+        {
+          "metric": "sources",
+          "value": 13.0,
+          "min": 5,
+          "max": null,
+          "passed": true
+        }
+      ],
+      "status": "green"
+    },
+    "sentiment_scores": {
+      "dataset": "sentiment_scores",
+      "path": "D:\\Code\\ProjectR\\music_rec_artifacts\\versions\\20261001T164815Z-7093631\\music_rec_artifacts\\sentiment_scores.csv",
+      "exists": true,
+      "bytes": 434152,
+      "age_days": 0.04,
+      "stale": false,
+      "metrics": {
+        "rows": 4211
+      },
+      "rows": 4211,
+      "contract": "pass",
+      "budgets": [
+        {
+          "metric": "rows",
+          "value": 4211.0,
+          "min": 4000,
+          "max": null,
+          "passed": true
+        },
+        {
+          "metric": "coverage",
+          "value": 1.0,
+          "min": 0.999,
+          "max": null,
+          "passed": true
+        }
+      ],
+      "status": "green"
+    },
+    "audio_tracks": {
+      "dataset": "audio_tracks",
+      "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_tracks.csv",
+      "exists": true,
+      "bytes": 743461,
+      "age_days": 0.19,
+      "stale": false,
+      "metrics": {
+        "rows": 3650
+      },
+      "rows": 3650,
+      "contract": "pass",
+      "budgets": [
+        {
+          "metric": "rows",
+          "value": 3650.0,
+          "min": 3000,
+          "max": null,
+          "passed": true
+        }
+      ],
+      "status": "green"
+    },
+    "audio_manifest": {
+      "dataset": "audio_manifest",
+      "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_manifest.csv",
+      "exists": true,
+      "bytes": 992919,
+      "age_days": 0.19,
+      "stale": false,
+      "metrics": {
+        "rows": 3663
+      },
+      "rows": 3663,
+      "contract": "pass",
+      "budgets": [],
+      "status": "green"
+    },
+    "audio_track_matches": {
+      "dataset": "audio_track_matches",
+      "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_track_matches.csv",
+      "exists": true,
+      "bytes": 826647,
+      "age_days": 0.03,
+      "stale": false,
+      "metrics": {
+        "rows": 3650,
+        "matched_share": 0.32054794520547947
+      },
+      "rows": 3650,
+      "contract": "pass",
+      "budgets": [
+        {
+          "metric": "rows",
+          "value": 3650.0,
+          "min": 3000,
+          "max": null,
+          "passed": true
+        },
+        {
+          "metric": "matched_share",
+          "value": 0.3205,
+          "min": 0.2,
+          "max": null,
+          "passed": true
+        }
+      ],
+      "status": "green"
+    },
+    "audio_file_map": {
+      "dataset": "audio_file_map",
+      "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_file_map.csv",
+      "exists": true,
+      "bytes": 796579,
+      "age_days": 0.03,
+      "stale": false,
+      "metrics": {
+        "rows": 3663
+      },
+      "rows": 3663,
+      "contract": "pass",
+      "budgets": [
+        {
+          "metric": "rows",
+          "value": 3663.0,
+          "min": 3000,
+          "max": null,
+          "passed": true
+        }
+      ],
+      "status": "green"
+    },
+    "audio_new_songs": {
+      "dataset": "audio_new_songs",
+      "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_new_songs_v2.csv",
+      "exists": true,
+      "bytes": 126571,
+      "age_days": 0.13,
+      "stale": false,
+      "metrics": {
+        "rows": 57
+      },
+      "rows": 57,
+      "contract": "pass",
+      "budgets": [
+        {
+          "metric": "rows",
+          "value": 57.0,
+          "min": 10,
+          "max": null,
+          "passed": true
+        }
+      ],
+      "status": "green"
+    },
+    "mood_labels": {
+      "dataset": "mood_labels",
+      "path": "D:\\Code\\ProjectR\\R_data\\raw\\gemini\\corpus_v3\\labels_merged.csv",
+      "exists": true,
+      "bytes": 461077,
+      "age_days": 13.16,
+      "stale": false,
+      "metrics": {
+        "rows": 4011
+      },
+      "rows": 4011,
+      "contract": "pass",
+      "budgets": [
+        {
+          "metric": "rows",
+          "value": 4011.0,
+          "min": 3000,
+          "max": null,
+          "passed": true
+        }
+      ],
+      "status": "green"
+    }
+  },
+  "artifacts": {
+    "status": "pass",
+    "path": "D:\\Code\\ProjectR\\music_rec_artifacts\\artifact_manifest.json",
+    "version": null,
+    "git_sha": "aac4dfdfc87a7709416fbe72c3b5ff8bad5ec498",
+    "errors": [],
+    "warnings": 0,
+    "checks_passed": 8,
+    "checks": 8
+  },
+  "events": {
+    "status": "absent",
+    "path": "D:\\Code\\ProjectR\\R_data\\state\\events.sqlite"
+  },
+  "history_path": "D:\\Code\\ProjectR\\R_data\\state\\health_history.jsonl"
+}

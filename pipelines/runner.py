@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Iterable, Iterator, Sequence
 
 from pipelines.core import PROJECT_ROOT, Asset, RunContext
+from pipelines.metrics import MetricsWriter
 from pipelines.state import RunStore, utcnow
 
 STATUS_OK = "ok"
@@ -54,6 +55,7 @@ class Pipeline:
                         f"asset {asset.name!r} depends on unknown asset {dependency!r}")
         self.order = self._topological_order()
         self.state = RunStore(self.state_dir / "runs.sqlite")
+        self.metrics = MetricsWriter(self.state_dir / "metrics.jsonl")
 
     # -- graph ---------------------------------------------------------------
     def _topological_order(self) -> list[str]:
@@ -177,13 +179,18 @@ class Pipeline:
             statuses[name] = status
             records.append({"asset": name, "status": status, "duration_s": duration,
                             "message": message, "metadata": metadata})
+            self.metrics.emit("asset", run_id=run_id, asset=name, status=status,
+                              duration_s=duration, message=message)
 
         run_status = (STATUS_FAILED if any(status in TERMINAL_FAILURES
                                            for status in statuses.values()) else STATUS_OK)
+        run_duration = round(time.perf_counter() - run_started, 3)
         self.state.finish_run(run_id, run_status)
+        self.metrics.emit("run", run_id=run_id, status=run_status,
+                          assets=len(records), duration_s=run_duration,
+                          select=list(select or []))
         return {"dry_run": False, "run_id": run_id, "status": run_status,
-                "assets": records,
-                "duration_s": round(time.perf_counter() - run_started, 3)}
+                "assets": records, "duration_s": run_duration}
 
     def _execute(self, asset: Asset, run_id: int,
                  retries: int | None) -> tuple[str, str, dict]:
