@@ -41,8 +41,29 @@ tests and the production validation on every push that touches a dataset.
    (quarantine, merge mapping, duplicate candidates) and referenced from the
    commit that applies them.
 
+## Serving artifact manifest (DE2)
+
+`music_rec_artifacts/artifact_manifest.json` pins the serving set: canonical
+SHA-256 and size for every artifact, row counts / shapes / dtypes, the schema
+version each dataset was validated against, the provenance inputs, and the
+config knobs used to build it. Text files are hashed with CRLF normalised to
+LF, so the same manifest verifies on Windows and Linux checkouts.
+
+```bash
+python scripts/build_artifact_manifest.py   # rebuild after any artifact change
+python scripts/verify_artifacts.py          # CI gate: hashes + consistency
+```
+
+Verify re-measures every file and re-runs the cross-artifact checks (song rows
+agree across lyrics/ids/embeddings/probe/index, window owners stay in range,
+audio vector counts agree, feature/probe/index dimensions line up). Missing
+optional artifacts — the window and audio vectors are large regenerable files
+not kept in git — warn; hash, schema-version or consistency drift fails.
+Rebuild the manifest in the same commit as any artifact change.
+
 ## Roadmap
 
-`docs/DATA_ENGINEERING_PLAN.md` tracks the phases. DE1 (this module) is the
-contract layer; DE2 adds versioned publishing, DE3 orchestration, DE4 queue and
-identity, DE5 monitoring, DE6 incremental/streaming.
+`docs/DATA_ENGINEERING_PLAN.md` tracks the phases. DE1 is the contract layer;
+DE2 is in progress (manifest + verify landed, pointer-based versioned publish
+next); then DE3 orchestration, DE4 queue and identity, DE5 monitoring, DE6
+incremental/streaming.

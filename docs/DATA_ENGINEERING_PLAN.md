@@ -58,6 +58,7 @@ DATA PLANE
 ## 4. Phases
 
 ### DE0 — Closure & baseline  *(1 commit)*
+**Status:** done — `bcaf88d` (chunking fix), `b2b409b` (scale layer), `d8b9fa4` (corpus v3 + refresh).
 **Goal:** land the in-flight corpus v3 merge + local artifact refresh + scale layer
 so the platform work starts from a clean, reproducible baseline.
 **Deliverables:** corpus v3 committed; probe retrained on v3 labels; embeddings/windows
@@ -68,6 +69,7 @@ green, `git status` clean.
 **Commits:** `A9` merge/refresh, `A10` scale layer.
 
 ### DE1 — Schemas & data contracts  *(2 commits)*
+**Status:** done — `aac4dfd` (9 schemas, validator, CI gate, 9/9 datasets valid).
 **Goal:** every dataset has one declared schema and machine-validated rows.
 **Workstreams:**
 - `data_engineering/schemas.py`: canonical schemas (candidates, corpus rows, labels,
@@ -83,6 +85,7 @@ tests cover each schema; docs list schema versions.
 validating existing data (expected: the gappy-id/title-empty class of issue).
 
 ### DE2 — Versioned publish & artifact manifest  *(2–3 commits)*
+**Status:** in progress — DE2a (manifest + verify + CI gate) landed; DE2b pointer publish, DE2c rollback next.
 **Goal:** atomic, rollbackable artifact sets with full provenance.
 **Workstreams:**
 - `data_engineering/artifacts.py`: build manifest (path, SHA-256, size, rows, dims,
@@ -177,7 +180,7 @@ spike doc.
 
 ## 7. Immediate order of work
 
-1. DE0 closure (current turn): A9 + A10 commits.
-2. DE1a/DE1b (schemas + validator + CI) — next commits.
-3. DE2 (publish/manifest) — unblocks safe rebuilds and rollback.
+1. DE0 closure — done (`bcaf88d`, `b2b409b`, `d8b9fa4`).
+2. DE1a/DE1b (schemas + validator + CI) — done (`aac4dfd`).
+3. DE2 (manifest + verify) — DE2a landed; DE2b pointer publish, DE2c rollback.
 4. DE3 (runner) — replaces manual sequencing; the rest becomes routine.

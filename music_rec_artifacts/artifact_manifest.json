@@ -1,0 +1,302 @@
+{
+  "format_version": 1,
+  "name": "projectr-serving",
+  "generated_at": "2026-10-01T16:27:04.825233+00:00",
+  "git_sha": "aac4dfdfc87a7709416fbe72c3b5ff8bad5ec498",
+  "config": {
+    "embedding_model": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+    "embed_window_tokens": 48,
+    "embed_window_stride": 24,
+    "min_tokens": 10
+  },
+  "config_hash": "9061a9f4ddbcc9df94ded1bdf2140666f18b64b57799bfffd7978ce7180979ec",
+  "inputs": [
+    {
+      "name": "corpus_source",
+      "path": "CSVs Dataset/corpus_final_v3.csv",
+      "text_normalized": true,
+      "bytes": 11134981,
+      "sha256": "a97b95035672af8684a367d3e6370e7291d36edf968ac7ef3a9195ba2069922d"
+    },
+    {
+      "name": "mood_labels",
+      "path": "R_data/raw/gemini/corpus_v3/labels_merged.csv",
+      "text_normalized": true,
+      "bytes": 461077,
+      "sha256": "1d386da5950783cdd01be8813211de48a06b1b2955a955ee88c3e4d7350dd2de"
+    },
+    {
+      "name": "audio_new_songs",
+      "path": "R_data/audio/audio_new_songs_v2.csv",
+      "text_normalized": true,
+      "bytes": 126571,
+      "sha256": "d5d44e19dd21d272f8f109b391a03e6999ac9286432cc532b0d3f93d96728788"
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "cleaned_lyrics",
+      "path": "music_rec_artifacts/cleaned_lyrics.csv",
+      "kind": "csv",
+      "text_normalized": true,
+      "required": true,
+      "bytes": 10809932,
+      "sha256": "1edd1854e751f8a03ff4418da0a94c3da1e6efeb7da689670427beb1e4bac964",
+      "schema": "cleaned_lyrics",
+      "schema_version": 1,
+      "rows": 4211,
+      "id_digest": "ee6c011b4afb70b5d9069e99cc89dcfbfa1b17a69e08556aef2dd3b5490a8634"
+    },
+    {
+      "name": "embedding_ids",
+      "path": "music_rec_artifacts/embedding_ids.json",
+      "kind": "json",
+      "text_normalized": true,
+      "required": true,
+      "bytes": 24158,
+      "sha256": "6fabfbc028db1a13f2735fe7367ffdfd7a8fd2488a360d1a0697908f307806a8",
+      "schema": null,
+      "schema_version": null,
+      "rows": 4211,
+      "id_digest": "ee6c011b4afb70b5d9069e99cc89dcfbfa1b17a69e08556aef2dd3b5490a8634"
+    },
+    {
+      "name": "embeddings",
+      "path": "music_rec_artifacts/embeddings.npy",
+      "kind": "npy",
+      "text_normalized": false,
+      "required": true,
+      "bytes": 12936320,
+      "sha256": "fe66f7f3df5f13c3e4b0fb36fd46d7fa9e56a5ab5bd5eb78215e366dbbff2837",
+      "schema": null,
+      "schema_version": null,
+      "shape": [
+        4211,
+        768
+      ],
+      "dtype": "float32",
+      "rows": 4211
+    },
+    {
+      "name": "feature_meta",
+      "path": "music_rec_artifacts/feature_meta.json",
+      "kind": "json",
+      "text_normalized": true,
+      "required": true,
+      "bytes": 132,
+      "sha256": "b9990f280e4c0ecba1857f7489986944afa9fdc658a9b42ff274f3fab1f517db",
+      "schema": null,
+      "schema_version": null,
+      "keys": [
+        "embedding_dim",
+        "feature_dim",
+        "has_sentiment",
+        "metadata_weight",
+        "sentiment_weight"
+      ],
+      "values": {
+        "embedding_dim": 768,
+        "feature_dim": 772,
+        "has_sentiment": true,
+        "sentiment_weight": 0.3,
+        "metadata_weight": 0.2
+      }
+    },
+    {
+      "name": "feature_matrix",
+      "path": "music_rec_artifacts/feature_matrix.npy",
+      "kind": "npy",
+      "text_normalized": false,
+      "required": true,
+      "bytes": 13003696,
+      "sha256": "42f83546b3e529dd62def498eccfca4b03f3090d8cdd5b54f66ce802a95cce6d",
+      "schema": null,
+      "schema_version": null,
+      "shape": [
+        4211,
+        772
+      ],
+      "dtype": "float32",
+      "rows": 4211
+    },
+    {
+      "name": "lyrics_index",
+      "path": "music_rec_artifacts/lyrics.faiss",
+      "kind": "faiss",
+      "text_normalized": false,
+      "required": true,
+      "bytes": 13003613,
+      "sha256": "afe627a496697f44b2cbebc2b488e9cfe37fe0ed08fbac519c80813744874907",
+      "schema": null,
+      "schema_version": null,
+      "ntotal": 4211,
+      "rows": 4211,
+      "dimension": 772
+    },
+    {
+      "name": "mood_probe",
+      "path": "music_rec_artifacts/mood_probe.npz",
+      "kind": "npz",
+      "text_normalized": false,
+      "required": true,
+      "bytes": 22568,
+      "sha256": "dd48fae491d0a26f5fbd59f8b68554893df858f13d6d2480db9d31492d8bc7ed",
+      "schema": null,
+      "schema_version": null,
+      "arrays": {
+        "coef": [
+          7,
+          768
+        ],
+        "intercept": [
+          7
+        ],
+        "labels": [
+          7
+        ]
+      }
+    },
+    {
+      "name": "mood_vectors",
+      "path": "music_rec_artifacts/mood_vectors.csv",
+      "kind": "csv",
+      "text_normalized": true,
+      "required": true,
+      "bytes": 136436,
+      "sha256": "01952b99f244c607d4e1d62ee269df04c928dbfcf22ce1d57ab6b3816ed6e698",
+      "schema": null,
+      "schema_version": null,
+      "rows": 4211
+    },
+    {
+      "name": "sentiment_scores",
+      "path": "music_rec_artifacts/sentiment_scores.csv",
+      "kind": "csv",
+      "text_normalized": true,
+      "required": true,
+      "bytes": 434152,
+      "sha256": "0991538595dda1f180a9deffe0cb5f7937fd545872505021087721c6dcc6ea67",
+      "schema": "sentiment_scores",
+      "schema_version": 1,
+      "rows": 4211
+    },
+    {
+      "name": "window_vectors",
+      "path": "music_rec_artifacts/window_vectors.npy",
+      "kind": "npy",
+      "text_normalized": false,
+      "required": false,
+      "bytes": 192580736,
+      "sha256": "3431f0332535ea4b9f4dcaeeebea0d7c2eff1ae21bed20ad911210b9c763bca7",
+      "schema": null,
+      "schema_version": null,
+      "shape": [
+        62689,
+        768
+      ],
+      "dtype": "float32",
+      "rows": 62689
+    },
+    {
+      "name": "window_owners",
+      "path": "music_rec_artifacts/window_owners.npy",
+      "kind": "npy",
+      "text_normalized": false,
+      "required": false,
+      "bytes": 250884,
+      "sha256": "2553ca9799cde410cb7bdab8f673048abd07532ea1f25496f5e1b679b8f60e6c",
+      "schema": null,
+      "schema_version": null,
+      "shape": [
+        62689
+      ],
+      "dtype": "int32",
+      "rows": 62689,
+      "min": 0,
+      "max": 4210
+    },
+    {
+      "name": "audio_embeddings",
+      "path": "R_data/audio/audio_embeddings.npy",
+      "kind": "npy",
+      "text_normalized": false,
+      "required": false,
+      "bytes": 7475328,
+      "sha256": "77b4b1aef965cbf17cbd32db833a752ebad2157822e469aa2b6c88cd361ecdf1",
+      "schema": null,
+      "schema_version": null,
+      "shape": [
+        3650,
+        512
+      ],
+      "dtype": "float32",
+      "rows": 3650
+    },
+    {
+      "name": "audio_embedding_keys",
+      "path": "R_data/audio/audio_embedding_keys.csv",
+      "kind": "csv",
+      "text_normalized": true,
+      "required": true,
+      "bytes": 520839,
+      "sha256": "f66e91ea87fe940ad9202d7644d11233d2f968813a502fb70876b3c30b58a9ef",
+      "schema": null,
+      "schema_version": null,
+      "rows": 3650
+    },
+    {
+      "name": "audio_track_matches",
+      "path": "R_data/audio/audio_track_matches.csv",
+      "kind": "csv",
+      "text_normalized": true,
+      "required": true,
+      "bytes": 826647,
+      "sha256": "37b02f56eba66f1b224cf803b9daad188c39a321410c7b3a0629c7c118b20ee0",
+      "schema": "audio_track_matches",
+      "schema_version": 1,
+      "rows": 3650
+    }
+  ],
+  "checks": [
+    {
+      "check": "song_rows_match",
+      "passed": true,
+      "detail": "cleaned_lyrics=4211; embedding_ids=4211; embeddings=4211; sentiment_scores=4211; mood_vectors=4211; feature_matrix=4211; lyrics_index=4211"
+    },
+    {
+      "check": "corpus_embedding_id_order",
+      "passed": true,
+      "detail": "cleaned_lyrics=ee6c011b4afb70b5d9069e99cc89dcfbfa1b17a69e08556aef2dd3b5490a8634; embedding_ids=ee6c011b4afb70b5d9069e99cc89dcfbfa1b17a69e08556aef2dd3b5490a8634"
+    },
+    {
+      "check": "window_rows_match",
+      "passed": true,
+      "detail": "window_vectors=62689; window_owners=62689"
+    },
+    {
+      "check": "audio_rows_match",
+      "passed": true,
+      "detail": "audio_embedding_keys=3650; audio_track_matches=3650; audio_embeddings=3650"
+    },
+    {
+      "check": "window_owner_range",
+      "passed": true,
+      "detail": "max owner 4210 < 4211 songs"
+    },
+    {
+      "check": "feature_layout_match",
+      "passed": true,
+      "detail": "ok"
+    },
+    {
+      "check": "index_dimension_match",
+      "passed": true,
+      "detail": "faiss dim 772 vs feature width 772"
+    },
+    {
+      "check": "probe_width_match",
+      "passed": true,
+      "detail": "probe widths {'coef': 768} vs embedding width 768"
+    }
+  ]
+}
