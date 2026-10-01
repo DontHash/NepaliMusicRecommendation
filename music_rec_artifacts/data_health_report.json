@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-01T17:02:42.045451+00:00",
+  "generated_at": "2026-10-01T17:07:51.393935+00:00",
   "status": "green",
   "failed": [],
   "stale": [],
@@ -11,7 +11,7 @@
       "path": "D:\\Code\\ProjectR\\music_rec_artifacts\\versions\\20261001T164815Z-7093631\\music_rec_artifacts\\cleaned_lyrics.csv",
       "exists": true,
       "bytes": 10809932,
-      "age_days": 0.05,
+      "age_days": 0.06,
       "stale": false,
       "metrics": {
         "rows": 4211,
@@ -22,6 +22,7 @@
         "min_tokens": 17
       },
       "rows": 4211,
+      "delta_rows": 0,
       "contract": "pass",
       "budgets": [
         {
@@ -74,13 +75,14 @@
       "path": "D:\\Code\\ProjectR\\CSVs Dataset\\corpus_final_v3.csv",
       "exists": true,
       "bytes": 11134981,
-      "age_days": 0.05,
+      "age_days": 0.06,
       "stale": false,
       "metrics": {
         "rows": 4239,
         "sources": 13
       },
       "rows": 4239,
+      "delta_rows": 0,
       "contract": "pass",
       "budgets": [
         {
@@ -111,6 +113,7 @@
         "rows": 4211
       },
       "rows": 4211,
+      "delta_rows": 0,
       "contract": "pass",
       "budgets": [
         {
@@ -141,6 +144,7 @@
         "rows": 3650
       },
       "rows": 3650,
+      "delta_rows": 0,
       "contract": "pass",
       "budgets": [
         {
@@ -164,6 +168,7 @@
         "rows": 3663
       },
       "rows": 3663,
+      "delta_rows": 0,
       "contract": "pass",
       "budgets": [],
       "status": "green"
@@ -173,13 +178,14 @@
       "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_track_matches.csv",
       "exists": true,
       "bytes": 826647,
-      "age_days": 0.03,
+      "age_days": 0.04,
       "stale": false,
       "metrics": {
         "rows": 3650,
         "matched_share": 0.32054794520547947
       },
       "rows": 3650,
+      "delta_rows": 0,
       "contract": "pass",
       "budgets": [
         {
@@ -204,12 +210,13 @@
       "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_file_map.csv",
       "exists": true,
       "bytes": 796579,
-      "age_days": 0.03,
+      "age_days": 0.04,
       "stale": false,
       "metrics": {
         "rows": 3663
       },
       "rows": 3663,
+      "delta_rows": 0,
       "contract": "pass",
       "budgets": [
         {
@@ -233,6 +240,7 @@
         "rows": 57
       },
       "rows": 57,
+      "delta_rows": 0,
       "contract": "pass",
       "budgets": [
         {
@@ -250,12 +258,13 @@
       "path": "D:\\Code\\ProjectR\\R_data\\raw\\gemini\\corpus_v3\\labels_merged.csv",
       "exists": true,
       "bytes": 461077,
-      "age_days": 13.16,
+      "age_days": 13.17,
       "stale": false,
       "metrics": {
         "rows": 4011
       },
       "rows": 4011,
+      "delta_rows": 0,
       "contract": "pass",
       "budgets": [
         {
@@ -280,8 +289,12 @@
     "checks": 8
   },
   "events": {
-    "status": "absent",
-    "path": "D:\\Code\\ProjectR\\R_data\\state\\events.sqlite"
+    "status": "present",
+    "path": "D:\\Code\\ProjectR\\R_data\\state\\events.sqlite",
+    "rows": 2,
+    "last_24h": 2,
+    "last_ts": "2026-10-01T17:07:49.925917+00:00",
+    "age_hours": 0.0
   },
   "history_path": "D:\\Code\\ProjectR\\R_data\\state\\health_history.jsonl"
 }

@@ -147,6 +147,16 @@ build. The web app exposes Prometheus text at `GET /metrics` (pipeline
 counters, latest asset durations, dataset rows/age, health status, event
 counters and the published artifact version).
 
+## Events feed (DE6)
+
+`POST /api/events` accepts `{"events": [...]}` (1–200 per batch). Each row is
+validated (allowed types, field types/ranges, timestamp window, metadata size),
+inserted in one transaction into `R_data/state/events.sqlite` (override
+`PROJECTR_EVENTS_DB`), and retained for 90 days — `python -m web_app.events
+prune` also runs at server startup. `GET /metrics` and the data-health report
+expose event counts and freshness per feed. No PII is expected: session ids are
+client-random and only the documented fields are stored.
+
 ## Roadmap
 
 `docs/DATA_ENGINEERING_PLAN.md` tracks the phases. DE1 (contracts), DE2

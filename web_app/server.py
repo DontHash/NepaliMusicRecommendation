@@ -46,8 +46,24 @@ def _warm_backend() -> None:
         print(f"[mood-studio] backend warmup failed: {error}")
 
 
+def _prune_events_once() -> None:
+    if os.environ.get("PROJECTR_NO_EVENT_PRUNE") == "1":
+        return
+    try:
+        from web_app import events as events_module
+
+        connection = events_module.open_db()
+        try:
+            events_module.prune_events(connection)
+        finally:
+            connection.close()
+    except Exception as error:  # pragma: no cover - operational best-effort
+        print(f"[events] startup prune skipped: {error}")
+
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    _prune_events_once()
     if os.environ.get("PROJECTR_NO_WARMUP") != "1":
         _ensure_backend_loading()
     yield
@@ -125,6 +141,10 @@ def get_recommender() -> MusicRecommender:
 class AnalyzeRequest(BaseModel):
     text: str
     transliterate: bool = True
+
+
+class EventsRequest(BaseModel):
+    events: list[dict]
 
 
 def _title_artist_hits(query: str, limit: int) -> list[dict]:
@@ -208,6 +228,26 @@ def search(
 @app.get("/api/status")
 def status():
     return {"model_ready": text_encoder_ready(Config())}
+
+
+@app.post("/api/events")
+def submit_events(request: EventsRequest):
+    from web_app import events as events_module
+
+    payloads = request.events or []
+    if not payloads:
+        raise HTTPException(status_code=400, detail="events must not be empty")
+    if len(payloads) > events_module.MAX_BATCH:
+        raise HTTPException(status_code=400,
+                            detail=f"batch too large (max {events_module.MAX_BATCH})")
+    connection = events_module.open_db()
+    try:
+        result = events_module.insert_events(connection, payloads)
+    finally:
+        connection.close()
+    if result["accepted"] == 0:
+        return JSONResponse(status_code=400, content=result)
+    return result
 
 
 _metrics_cache: dict = {"at": 0.0, "text": ""}

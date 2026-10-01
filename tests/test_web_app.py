@@ -159,6 +159,24 @@ def test_metrics_endpoint_returns_prometheus_text(monkeypatch, tmp_path):
     assert "projectr_build_info" in response.text
 
 
+def test_events_endpoint_accepts_batch(monkeypatch, tmp_path):
+    monkeypatch.setenv("PROJECTR_EVENTS_DB", str(tmp_path / "events.sqlite"))
+    response = client.post("/api/events", json={"events": [
+        {"event_type": "impression", "song_id": 4024},
+        {"event_type": "click", "song_id": 4024, "rank": 1},
+        {"event_type": "bogus"},
+    ]})
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["accepted"] == 2
+    assert len(payload["rejected"]) == 1 and payload["rejected"][0]["index"] == 2
+
+
+def test_events_endpoint_rejects_empty_batch(monkeypatch, tmp_path):
+    monkeypatch.setenv("PROJECTR_EVENTS_DB", str(tmp_path / "events.sqlite"))
+    assert client.post("/api/events", json={"events": []}).status_code == 400
+
+
 def test_static_assets_are_not_cached():
     response = client.get("/static/app.js")
     assert response.status_code == 200
