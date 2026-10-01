@@ -3,13 +3,21 @@
 Dense embeddings are weak at verbatim line recall on Nepali lyrics; a lexical
 index built from the same cleaned corpus recovers near-exact queries. The two
 signals are combined per song before reranking.
+
+The built index can be persisted (``save``/``load``) keyed by a corpus digest so
+serving processes skip the multi-second BM25/fuzzy rebuild and invalidate the
+cache automatically when the corpus changes.
 """
 
 from __future__ import annotations
 
+import hashlib
+import os
+import pickle
 import re
 import unicodedata
 from collections import Counter
+from pathlib import Path
 from typing import Sequence
 
 import numpy as np
@@ -33,6 +41,24 @@ _FUZZY_NGRAM_SIZES = (2, 3)
 _FUZZY_POOL = 200
 
 _DEVANAGARI_RE = re.compile(r"[\u0900-\u097F]")
+
+CACHE_VERSION = 1
+
+
+def corpus_digest(texts: Sequence[str]) -> str:
+    """Stable digest of the corpus text, used to validate a cached index."""
+    digest = hashlib.sha256()
+    for text in texts:
+        digest.update(str(text or "").encode("utf-8"))
+        digest.update(b"\x00")
+    return digest.hexdigest()[:16]
+
+
+class _Vocabulary:
+    """Lightweight stand-in for CountVectorizer.vocabulary_ after cache load."""
+
+    def __init__(self, vocabulary: dict[str, int]):
+        self.vocabulary_ = vocabulary
 
 
 def _skeleton(token: str) -> str:
@@ -151,6 +177,74 @@ class LexicalIndex:
                 for start in range(len(token) - size + 1):
                     index.setdefault(token[start : start + size], []).append(token_id)
         return index
+
+    # --- persistence ----------------------------------------------------------
+
+    def save(self, path, *, digest: str):
+        """Persist the built index; validated against a corpus digest on load."""
+        state = {
+            "version": CACHE_VERSION,
+            "digest": digest,
+            "k1": self.k1,
+            "b": self.b,
+            "phrase_candidates": self.phrase_candidates,
+            "n_songs": self.n_songs,
+            "avgdl": self.avgdl,
+            "fuzzy_enabled": self.fuzzy_enabled,
+            "fuzzy_max_df": self.fuzzy_max_df,
+            "fuzzy_threshold": self.fuzzy_threshold,
+            "fuzzy_weight": self.fuzzy_weight,
+            "fuzzy_max_candidates": self.fuzzy_max_candidates,
+            "vocabulary": dict(self._vectorizer.vocabulary_),
+            "matrix": self._matrix,
+            "idf": self._idf,
+            "doc_len": self._doc_len,
+            "df_counts": self._df_counts,
+            "doc_token_ids": self._doc_token_ids,
+            "tokens_by_id": self._tokens_by_id,
+            "typo_map": self.typo_map,
+        }
+        tmp = path.with_name(path.name + ".tmp")
+        with open(tmp, "wb") as handle:
+            pickle.dump(state, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        os.replace(tmp, path)
+        return path
+
+    @classmethod
+    def load(cls, path, *, digest: str, expected_version: int = CACHE_VERSION):
+        """Load a cached index, or return None on missing/corrupt/stale cache."""
+        path = Path(path)
+        if not path.exists():
+            return None
+        try:
+            with open(path, "rb") as handle:
+                state = pickle.load(handle)
+        except Exception:  # noqa: BLE001 - a broken cache must never break serving
+            return None
+        if state.get("version") != expected_version or state.get("digest") != digest:
+            return None
+        obj = cls.__new__(cls)
+        obj.k1 = state["k1"]
+        obj.b = state["b"]
+        obj.phrase_candidates = state["phrase_candidates"]
+        obj.n_songs = state["n_songs"]
+        obj.avgdl = state["avgdl"]
+        obj.fuzzy_enabled = state["fuzzy_enabled"]
+        obj.fuzzy_max_df = state["fuzzy_max_df"]
+        obj.fuzzy_threshold = state["fuzzy_threshold"]
+        obj.fuzzy_weight = state["fuzzy_weight"]
+        obj.fuzzy_max_candidates = state["fuzzy_max_candidates"]
+        obj.typo_map = state["typo_map"]
+        obj._idf = state["idf"]
+        obj._doc_len = state["doc_len"]
+        obj._df_counts = state["df_counts"]
+        obj._doc_token_ids = state["doc_token_ids"]
+        obj._matrix = state["matrix"]
+        obj._tokens_by_id = state["tokens_by_id"]
+        obj._vectorizer = _Vocabulary(state["vocabulary"])
+        obj._csc = None
+        obj._fuzzy_ngrams = obj._build_fuzzy_ngrams() if obj.fuzzy_enabled else {}
+        return obj
 
     def _fuzzy_expansions(self, token: str) -> list[tuple[int, float]]:
         """Near-neighbour vocabulary tokens for an unseen or rare query token.

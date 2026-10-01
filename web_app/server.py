@@ -89,7 +89,11 @@ def _load_corpus() -> pd.DataFrame:
     global _corpus
     if _corpus is None:
         frame = pd.read_csv(Config().cleaned_lyrics_csv, encoding="utf-8").fillna("")
-        _corpus = frame[["song_id", "title", "artist"]]
+        frame = frame[["song_id", "title", "artist"]].copy()
+        # Precompute lowercase columns once instead of lowercasing the corpus per request.
+        frame["_title_lower"] = frame["title"].str.lower()
+        frame["_artist_lower"] = frame["artist"].str.lower()
+        _corpus = frame
     return _corpus
 
 
@@ -124,11 +128,9 @@ class AnalyzeRequest(BaseModel):
 
 def _title_artist_hits(query: str, limit: int) -> list[dict]:
     frame = _load_corpus()
-    titles = frame["title"].str.lower()
-    artists = frame["artist"].str.lower()
-    mask = titles.str.contains(query, regex=False) | artists.str.contains(query, regex=False)
+    mask = frame["_title_lower"].str.contains(query, regex=False) | frame["_artist_lower"].str.contains(query, regex=False)
     hits = frame.loc[mask].copy()
-    hits["_starts"] = hits["title"].str.lower().str.startswith(query)
+    hits["_starts"] = hits["_title_lower"].str.startswith(query)
     hits = hits.sort_values(["_starts", "title"], ascending=[False, True]).head(limit)
     results = []
     for row in hits.itertuples():

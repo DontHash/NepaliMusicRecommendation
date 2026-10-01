@@ -54,8 +54,30 @@ def main():
         from music_rec.index import build_index
 
         vecs_path = cfg.feature_matrix_npy if cfg.feature_matrix_npy.exists() else cfg.embeddings_npy
-        build_index(np.load(vecs_path), cfg.faiss_index_path)
-        print(f"[index] built from {Path(vecs_path).name} -> {cfg.faiss_index_path.name}")
+        index = build_index(
+            np.load(vecs_path),
+            cfg.faiss_index_path,
+            index_type=cfg.index_type,
+            hnsw_m=cfg.index_hnsw_m,
+            ef_construction=cfg.index_ef_construction,
+            ef_search=cfg.index_ef_search,
+        )
+        print(f"[index] built {type(index).__name__} from {Path(vecs_path).name} -> {cfg.faiss_index_path.name}")
+        if cfg.window_vectors_npy.exists() and cfg.window_owners_npy.exists():
+            from music_rec.window_search import ann_enabled, build_window_index
+
+            n_windows = int(np.load(cfg.window_owners_npy).shape[0])
+            if ann_enabled(cfg.window_ann, n_windows, cfg.window_ann_threshold):
+                build_window_index(
+                    cfg.window_vectors_npy,
+                    cfg.window_index_path,
+                    hnsw_m=cfg.index_hnsw_m,
+                    ef_construction=cfg.index_ef_construction,
+                    ef_search=cfg.index_ef_search,
+                )
+                print(f"[index] window ANN built ({n_windows} windows) -> {cfg.window_index_path.name}")
+            else:
+                print(f"[index] window ANN off at {n_windows} windows (threshold {cfg.window_ann_threshold})")
 
     def do_eval():
         from music_rec.evaluate import evaluate

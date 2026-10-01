@@ -12,7 +12,7 @@ import pandas as pd
 from .config import Config
 from .dedup import DuplicateCollapser
 from .index import build_index, load_index, normalize, search
-from .lexical import LexicalIndex, fuse_scores
+from .lexical import LexicalIndex, corpus_digest, fuse_scores
 from .query import QueryEncoder
 from .rerank import mmr_rerank, sentiment_alignment
 from .typo_map import load_typo_map
@@ -61,7 +61,13 @@ class MusicRecommender:
             and self.config.window_owners_npy.exists()
         ):
             self.window_index = WindowIndex.load(
-                self.config.window_vectors_npy, self.config.window_owners_npy, len(self.songs)
+                self.config.window_vectors_npy,
+                self.config.window_owners_npy,
+                len(self.songs),
+                index_path=self.config.window_index_path,
+                ann_top_k=self.config.window_ann_top_k,
+                ann_mode=self.config.window_ann,
+                ann_threshold=self.config.window_ann_threshold,
             )
 
         self.sentiment = None
@@ -74,7 +80,10 @@ class MusicRecommender:
                 from .audio_index import AudioIndex
 
                 self.audio_index = AudioIndex.load(self.config)
-            except Exception:  # noqa: BLE001 - audio is an optional signal
+            except Exception as error:  # noqa: BLE001 - audio is an optional signal
+                import logging
+
+                logging.getLogger(__name__).warning("audio index unavailable: %s", error)
                 self.audio_index = None
 
         self._query_encoder = query_encoder
@@ -99,21 +108,38 @@ class MusicRecommender:
             with self._lexical_lock:
                 if self._lexical is None:
                     lyrics = self.songs["lyrics"].fillna("").astype(str).tolist()
-                    typo_map = load_typo_map(
-                        self.config.corpus_typo_map_csv,
-                        enabled=self.config.corpus_typo_map_enabled,
-                    )
-                    self._lexical = LexicalIndex(
-                        lyrics,
-                        k1=self.config.bm25_k1,
-                        b=self.config.bm25_b,
-                        fuzzy_enabled=self.config.lexical_fuzzy_enabled,
-                        fuzzy_max_df=self.config.lexical_fuzzy_max_df,
-                        fuzzy_threshold=self.config.lexical_fuzzy_threshold,
-                        fuzzy_weight=self.config.lexical_fuzzy_weight,
-                        fuzzy_max_candidates=self.config.lexical_fuzzy_max_candidates,
-                        typo_map=typo_map,
-                    )
+                    cached = None
+                    if self.config.lexical_cache_enabled:
+                        cached = LexicalIndex.load(
+                            self.config.lexical_cache_path,
+                            digest=corpus_digest(lyrics),
+                        )
+                    if cached is not None:
+                        self._lexical = cached
+                    else:
+                        typo_map = load_typo_map(
+                            self.config.corpus_typo_map_csv,
+                            enabled=self.config.corpus_typo_map_enabled,
+                        )
+                        self._lexical = LexicalIndex(
+                            lyrics,
+                            k1=self.config.bm25_k1,
+                            b=self.config.bm25_b,
+                            fuzzy_enabled=self.config.lexical_fuzzy_enabled,
+                            fuzzy_max_df=self.config.lexical_fuzzy_max_df,
+                            fuzzy_threshold=self.config.lexical_fuzzy_threshold,
+                            fuzzy_weight=self.config.lexical_fuzzy_weight,
+                            fuzzy_max_candidates=self.config.lexical_fuzzy_max_candidates,
+                            typo_map=typo_map,
+                        )
+                        if self.config.lexical_cache_enabled:
+                            try:
+                                self._lexical.save(
+                                    self.config.lexical_cache_path,
+                                    digest=corpus_digest(lyrics),
+                                )
+                            except OSError:
+                                pass
         return self._lexical
 
     @property

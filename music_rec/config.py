@@ -37,6 +37,8 @@ class Config:
     audio_embeddings_npy: Path = field(init=False)
     audio_embedding_keys_csv: Path = field(init=False)
     audio_track_matches_csv: Path = field(init=False)
+    window_index_path: Path = field(init=False)
+    lexical_cache_path: Path = field(init=False)
 
     embedding_model: str = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
     embedding_device: str = field(
@@ -79,6 +81,21 @@ class Config:
     audio_enabled: bool = True
     audio_weight: float = 0.5
 
+    # --- scale knobs ---------------------------------------------------------
+    # auto: exact IndexFlatIP below 50k vectors, HNSW above (PROJECTR_INDEX).
+    index_type: str = field(default_factory=lambda: os.environ.get("PROJECTR_INDEX", "auto"))
+    index_hnsw_m: int = 32
+    index_ef_construction: int = 200
+    index_ef_search: int = 64
+    # window ANN switches on only where exact matmul stops fitting (PROJECTR_WINDOW_ANN).
+    window_ann: str = field(default_factory=lambda: os.environ.get("PROJECTR_WINDOW_ANN", "auto"))
+    window_ann_threshold: int = 250_000
+    window_ann_top_k: int = 2000
+    # Persisted sparse lexical index (avoids the per-process BM25 rebuild).
+    lexical_cache_enabled: bool = True
+    # Bounded query-embedding cache (repeat queries skip the encoder).
+    query_cache_size: int = 512
+
     def __post_init__(self):
         self.artifacts_dir.mkdir(parents=True, exist_ok=True)
         self.cleaned_lyrics_csv = self.artifacts_dir / "cleaned_lyrics.csv"
@@ -99,3 +116,5 @@ class Config:
         self.audio_embeddings_npy = self.audio_dir / "audio_embeddings.npy"
         self.audio_embedding_keys_csv = self.audio_dir / "audio_embedding_keys.csv"
         self.audio_track_matches_csv = self.audio_dir / "audio_track_matches.csv"
+        self.window_index_path = self.artifacts_dir / "window_index.faiss"
+        self.lexical_cache_path = self.artifacts_dir / "lexical_cache.pkl"

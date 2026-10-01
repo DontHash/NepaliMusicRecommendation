@@ -101,3 +101,8 @@ music_rec_artifacts/backup_*/
 R_data/audio/audio_lyrics.jsonl
 R_data/audio/audio_embeddings.npy
 R_data/audio/*.tmp
+
+# --- Scalable serving caches (regenerable from the corpus) ---
+music_rec_artifacts/lexical_cache.pkl
+music_rec_artifacts/window_index.faiss
+music_rec_artifacts/_parity_*.faiss
