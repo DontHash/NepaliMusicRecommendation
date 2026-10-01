@@ -161,9 +161,42 @@ def _encode_simple(
     return matrix, np.arange(len(texts), dtype=np.int32)
 
 
+def _special_ids(tokenizer) -> list[int]:
+    """Special tokens this tokenizer adds around a single sequence."""
+    try:
+        return list(tokenizer.encode(""))
+    except Exception:  # noqa: BLE001 - tokenizer-specific quirks
+        return []
+
+
+def _with_specials(specials: list[int], chunk: list[int]) -> list[int]:
+    """Wrap a content window in the tokenizer's special tokens."""
+    if not specials:
+        return list(chunk)
+    if len(specials) == 1:
+        return list(chunk) + list(specials)
+    return [specials[0], *chunk, *specials[1:]]
+
+
+def _windows_from_content(content: list[int], *, max_length: int, stride: int, n_special: int) -> list[list[int]]:
+    """HF-style overflow windows (transformers>=5 sometimes returns only 2)."""
+    window_content = max(1, max_length - n_special)
+    step = max(1, window_content - stride)
+    windows: list[list[int]] = []
+    start = 0
+    while start < len(content):
+        windows.append(content[start : start + window_content])
+        if start + window_content >= len(content):
+            break
+        start += step
+    return windows
+
+
 def _tokenize_windows(
     tokenizer, text: str, max_len: int, stride: int
 ) -> tuple[list[list[int]], list[list[int]]]:
+    import warnings
+
     encoded = tokenizer(
         text,
         max_length=max_len,
@@ -172,7 +205,19 @@ def _tokenize_windows(
         return_overflowing_tokens=True,
         padding=False,
     )
-    return encoded["input_ids"], encoded["attention_mask"]
+    ids_list = [list(ids) for ids in encoded["input_ids"]]
+    mask_list = [list(mask) for mask in encoded["attention_mask"]]
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        content = tokenizer(text, add_special_tokens=False)["input_ids"]
+    specials = _special_ids(tokenizer)
+    expected = _windows_from_content(content, max_length=max_len, stride=stride, n_special=len(specials))
+    # Guard: some transformers 5.x builds return only 2 windows for long texts.
+    if len(ids_list) < len(expected):
+        ids_list = [_with_specials(specials, chunk) for chunk in expected]
+        mask_list = [[1] * len(ids) for ids in ids_list]
+    return ids_list, mask_list
 
 
 def _embedding_dim(model) -> int:
