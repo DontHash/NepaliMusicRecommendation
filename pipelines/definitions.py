@@ -90,6 +90,17 @@ def _publish(context: RunContext) -> dict:
             "bytes": result["bytes"]}
 
 
+def _corpus_append(context: RunContext) -> dict:
+    from music_rec.incremental import append_new_songs
+
+    report = append_new_songs(
+        context.config,
+        report_path=context.project_root / "R_data" / "audio" / "text_artifacts_update_report.json",
+    )
+    return {"status": report["status"], "new_songs": report.get("new_songs", 0),
+            "songs_after": report.get("songs_after", 0)}
+
+
 # --- script-backed actions ---------------------------------------------------
 
 _mood_probe = script_action(
@@ -105,7 +116,6 @@ _audio_dataset_lines = script_action("scripts/audio/build_dataset_lines.py")
 _audio_embeddings = script_action("scripts/audio/embed_audio.py")
 _audio_similarity = script_action("scripts/audio/analyze_audio_similarity.py")
 _corpus_v3 = script_action("scripts/audio/merge_into_corpus.py")
-_corpus_refresh = script_action("scripts/audio/update_text_artifacts.py")
 
 
 def build_pipeline(*, project_root: Path = PROJECT_ROOT, state_dir: Path | None = None,
@@ -177,9 +187,9 @@ def build_pipeline(*, project_root: Path = PROJECT_ROOT, state_dir: Path | None 
               outputs=("CSVs Dataset/corpus_final_v3.csv",
                        "R_data/audio/merge_report_v3.json"),
               description="merge audio-derived lines into the corpus"),
-        Asset("corpus.refresh", action=_corpus_refresh, deps=("corpus.v3", "corpus.embed"),
+        Asset("corpus.refresh", action=_corpus_append, deps=("corpus.v3", "corpus.embed"),
               outputs=("R_data/audio/text_artifacts_update_report.json",),
-              description="append new songs to embeddings/probe/features/index"),
+              description="append new songs to embeddings/probe/features/index (incremental)"),
         Asset("publish.artifacts", action=_publish,
               deps=("features", "index.songs", "index.windows", "mood.vectors",
                     "corpus.refresh"),
