@@ -32,8 +32,13 @@ CSV_FIELDS = [
     "duration_s",
     "album",
     "preview_url",
+    "isrc",
     "fetched_at",
 ]
+
+# Metadata fields a duplicate group can contribute to the surviving lyric row.
+MERGE_FIELDS = ("album", "duration_s", "preview_url", "isrc", "source_url")
+MAX_MERGE_DECISIONS = 100
 
 
 def _category(script: str) -> str:
@@ -79,9 +84,11 @@ def compact(conn, output: Path, *, keep_snapshots: int = KEEP_SNAPSHOTS) -> dict
     for row in accepted:
         groups[f"{fold(row['artist'])}|{fold(row['title'])}"].append(row)
     kept = []
+    merge_decisions: list[dict] = []
+    fields_filled = {field: 0 for field in MERGE_FIELDS}
     for members in groups.values():
+        script_rank = {"devanagari": 0, "mixed": 1, "romanized": 2, "unknown": 3}
         if len(members) > 1:
-            script_rank = {"devanagari": 0, "mixed": 1, "romanized": 2, "unknown": 3}
             members.sort(
                 key=lambda r: (
                     priority(r["source"]),
@@ -91,8 +98,41 @@ def compact(conn, output: Path, *, keep_snapshots: int = KEEP_SNAPSHOTS) -> dict
                 )
             )
             report["dropped_near_duplicate"] += len(members) - 1
-        kept.append(members[0])
+        # Keep the best lyrics but pool metadata from the siblings instead of
+        # dropping it (survivorship by the same rank order).
+        winner = dict(members[0])
+        winner_extra = json.loads(winner["extra_json"]) if winner["extra_json"] else {}
+        winner["source_url"] = winner["source_url"] or winner_extra.get("url", "")
+        dropped_ids: list[int] = []
+        filled: dict[str, int] = {}
+        for sibling in members[1:]:
+            dropped_ids.append(sibling["id"])
+            sibling_extra = json.loads(sibling["extra_json"]) if sibling["extra_json"] else {}
+            values = {
+                "album": sibling["album"],
+                "duration_s": sibling["duration_s"],
+                "preview_url": sibling["preview_url"],
+                "isrc": sibling["isrc"],
+                "source_url": sibling["source_url"] or sibling_extra.get("url", ""),
+            }
+            for field in MERGE_FIELDS:
+                if not winner.get(field) and values[field]:
+                    winner[field] = values[field]
+                    fields_filled[field] += 1
+                    filled[field] = sibling["id"]
+        kept.append(winner)
+        if filled:
+            merge_decisions.append({
+                "artist": winner["artist"],
+                "title": winner["title"],
+                "kept_id": winner["id"],
+                "dropped_ids": dropped_ids,
+                "filled": filled,
+            })
     report["kept"] = len(kept)
+    report["merged_groups"] = len(merge_decisions)
+    report["fields_filled"] = fields_filled
+    report["merge_decisions"] = merge_decisions[:MAX_MERGE_DECISIONS]
     kept.sort(key=lambda r: (fold(r["artist"]), fold(r["title"])))
 
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -116,6 +156,7 @@ def compact(conn, output: Path, *, keep_snapshots: int = KEEP_SNAPSHOTS) -> dict
                     "duration_s": row["duration_s"] or "",
                     "album": row["album"] or "",
                     "preview_url": row["preview_url"] or "",
+                    "isrc": row["isrc"] or "",
                     "fetched_at": row["fetched_at"] or "",
                 }
             )
