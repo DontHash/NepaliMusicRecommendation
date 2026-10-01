@@ -1,0 +1,70 @@
+{
+  "gold_size": 147,
+  "scores_path": "music_rec_artifacts\\sentiment_scores.csv",
+  "models": [
+    {
+      "model": "always_negative",
+      "positive": {
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "support": 77
+      },
+      "negative": {
+        "f1": 0.7217,
+        "precision": 0.5646,
+        "recall": 1.0,
+        "support": 83
+      },
+      "relaxed_accuracy": 0.5646
+    },
+    {
+      "model": "sentiment_scores.csv",
+      "positive": {
+        "f1": 0.7337,
+        "precision": 0.6739,
+        "recall": 0.8052,
+        "support": 77
+      },
+      "negative": {
+        "f1": 0.7342,
+        "precision": 0.7733,
+        "recall": 0.6988,
+        "support": 83
+      },
+      "relaxed_accuracy": 0.7891,
+      "emotions": {
+        "joy": {
+          "f1": 0.6526,
+          "precision": 0.6889,
+          "recall": 0.62,
+          "support": 50
+        },
+        "sadness": {
+          "f1": 0.6866,
+          "precision": 0.7541,
+          "recall": 0.6301,
+          "support": 73
+        },
+        "anger": {
+          "f1": 0.3704,
+          "precision": 1.0,
+          "recall": 0.2273,
+          "support": 22
+        },
+        "fear": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 2
+        },
+        "depression": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 0
+        }
+      }
+    }
+  ]
+}

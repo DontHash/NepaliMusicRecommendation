@@ -1,0 +1,344 @@
+{
+  "hybrid": {
+    "summary": {
+      "queries": 15,
+      "mapped": 11,
+      "precision@10": 0.7,
+      "gold_hit@10": 0.2727
+    },
+    "by_label": {
+      "joy": {
+        "queries": 2,
+        "precision@10": 0.6,
+        "weak_base_rate": 0.3593,
+        "gold_hit@10": 1.0,
+        "gold_base_rate": 0.1126
+      },
+      "positive": {
+        "queries": 7,
+        "precision@10": 0.7,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      "sadness": {
+        "queries": 2,
+        "precision@10": 0.8,
+        "weak_base_rate": 0.4424,
+        "gold_hit@10": 0.5,
+        "gold_base_rate": 0.1604
+      }
+    },
+    "per_query": [
+      {
+        "query_id": "mood_000",
+        "text": "maya lagcha",
+        "theme": "romance",
+        "label": "positive",
+        "precision@10": 0.8,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_001",
+        "text": "prem",
+        "theme": "romance",
+        "label": "positive",
+        "precision@10": 0.6,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_002",
+        "text": "dukha",
+        "theme": "sadness",
+        "label": "sadness",
+        "precision@10": 0.9,
+        "weak_base_rate": 0.4424,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.1604
+      },
+      {
+        "query_id": "mood_003",
+        "text": "sad song",
+        "theme": "sadness",
+        "label": "sadness",
+        "precision@10": 0.7,
+        "weak_base_rate": 0.4424,
+        "gold_hit@10": 1.0,
+        "gold_base_rate": 0.1604
+      },
+      {
+        "query_id": "mood_004",
+        "text": "desh bhakti",
+        "theme": "patriotic",
+        "label": "positive",
+        "precision@10": 0.7,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_005",
+        "text": "nepal",
+        "theme": "patriotic",
+        "label": "positive",
+        "precision@10": 0.7,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_006",
+        "text": "khusi",
+        "theme": "joy",
+        "label": "joy",
+        "precision@10": 0.6,
+        "weak_base_rate": 0.3593,
+        "gold_hit@10": 1.0,
+        "gold_base_rate": 0.1126
+      },
+      {
+        "query_id": "mood_007",
+        "text": "party song",
+        "theme": "party",
+        "label": "joy",
+        "precision@10": 0.6,
+        "weak_base_rate": 0.3593,
+        "gold_hit@10": 1.0,
+        "gold_base_rate": 0.1126
+      },
+      {
+        "query_id": "mood_008",
+        "text": "jindagi",
+        "theme": "life",
+        "label": null
+      },
+      {
+        "query_id": "mood_009",
+        "text": "sapana",
+        "theme": "dream",
+        "label": null
+      },
+      {
+        "query_id": "mood_010",
+        "text": "माया",
+        "theme": "romance-dev",
+        "label": "positive",
+        "precision@10": 0.7,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_011",
+        "text": "दुख",
+        "theme": "sadness-dev",
+        "label": null
+      },
+      {
+        "query_id": "mood_012",
+        "text": "देश",
+        "theme": "patriotic-dev",
+        "label": null
+      },
+      {
+        "query_id": "mood_013",
+        "text": "आमा",
+        "theme": "family",
+        "label": "positive",
+        "precision@10": 0.6,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_014",
+        "text": "साथी",
+        "theme": "friendship",
+        "label": "positive",
+        "precision@10": 0.8,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      }
+    ]
+  },
+  "dense_only": {
+    "summary": {
+      "queries": 15,
+      "mapped": 11,
+      "precision@10": 0.7091,
+      "gold_hit@10": 0.2727
+    },
+    "by_label": {
+      "joy": {
+        "queries": 2,
+        "precision@10": 0.6,
+        "weak_base_rate": 0.3593,
+        "gold_hit@10": 1.0,
+        "gold_base_rate": 0.1126
+      },
+      "positive": {
+        "queries": 7,
+        "precision@10": 0.7143,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      "sadness": {
+        "queries": 2,
+        "precision@10": 0.8,
+        "weak_base_rate": 0.4424,
+        "gold_hit@10": 0.5,
+        "gold_base_rate": 0.1604
+      }
+    },
+    "per_query": [
+      {
+        "query_id": "mood_000",
+        "text": "maya lagcha",
+        "theme": "romance",
+        "label": "positive",
+        "precision@10": 0.8,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_001",
+        "text": "prem",
+        "theme": "romance",
+        "label": "positive",
+        "precision@10": 0.6,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_002",
+        "text": "dukha",
+        "theme": "sadness",
+        "label": "sadness",
+        "precision@10": 0.9,
+        "weak_base_rate": 0.4424,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.1604
+      },
+      {
+        "query_id": "mood_003",
+        "text": "sad song",
+        "theme": "sadness",
+        "label": "sadness",
+        "precision@10": 0.7,
+        "weak_base_rate": 0.4424,
+        "gold_hit@10": 1.0,
+        "gold_base_rate": 0.1604
+      },
+      {
+        "query_id": "mood_004",
+        "text": "desh bhakti",
+        "theme": "patriotic",
+        "label": "positive",
+        "precision@10": 0.8,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_005",
+        "text": "nepal",
+        "theme": "patriotic",
+        "label": "positive",
+        "precision@10": 0.7,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_006",
+        "text": "khusi",
+        "theme": "joy",
+        "label": "joy",
+        "precision@10": 0.6,
+        "weak_base_rate": 0.3593,
+        "gold_hit@10": 1.0,
+        "gold_base_rate": 0.1126
+      },
+      {
+        "query_id": "mood_007",
+        "text": "party song",
+        "theme": "party",
+        "label": "joy",
+        "precision@10": 0.6,
+        "weak_base_rate": 0.3593,
+        "gold_hit@10": 1.0,
+        "gold_base_rate": 0.1126
+      },
+      {
+        "query_id": "mood_008",
+        "text": "jindagi",
+        "theme": "life",
+        "label": null
+      },
+      {
+        "query_id": "mood_009",
+        "text": "sapana",
+        "theme": "dream",
+        "label": null
+      },
+      {
+        "query_id": "mood_010",
+        "text": "माया",
+        "theme": "romance-dev",
+        "label": "positive",
+        "precision@10": 0.7,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_011",
+        "text": "दुख",
+        "theme": "sadness-dev",
+        "label": null
+      },
+      {
+        "query_id": "mood_012",
+        "text": "देश",
+        "theme": "patriotic-dev",
+        "label": null
+      },
+      {
+        "query_id": "mood_013",
+        "text": "आमा",
+        "theme": "family",
+        "label": "positive",
+        "precision@10": 0.6,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      },
+      {
+        "query_id": "mood_014",
+        "text": "साथी",
+        "theme": "friendship",
+        "label": "positive",
+        "precision@10": 0.8,
+        "weak_base_rate": 0.5526,
+        "gold_hit@10": 0.0,
+        "gold_base_rate": 0.0
+      }
+    ]
+  },
+  "meta": {
+    "queries_path": "D:\\Code\\ProjectR\\R_data\\corpus\\eval\\queries.jsonl",
+    "weak_labels_path": "D:\\Code\\ProjectR\\R_data\\raw\\gemini\\corpus_v3\\labels_merged.csv",
+    "gold_path": "D:\\Code\\ProjectR\\eval\\mood_gold.csv",
+    "corpus_size": 4211,
+    "top_k": 10,
+    "generated_at": "2026-10-01T16:12:30.581562+00:00"
+  }
+}

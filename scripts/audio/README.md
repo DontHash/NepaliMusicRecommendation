@@ -14,6 +14,8 @@ builds CLAP audio embeddings so audio becomes a first-class retrieval signal.
 | 5 | `query_audio.py` | embeddings | text→audio / audio→audio search |
 | 6 | `analyze_audio_similarity.py` | embeddings | `audio_duplicate_candidates.csv`, `audio_similarity_report.json` |
 | 7 | `eval_audio_seed.py` | recommender + embeddings | `eval_audio_seed_report.json` (text vs audio vs fused, paired bootstrap CIs) |
+| 8 | `merge_into_corpus.py` | `audio_new_songs_v2.csv` + corpus | `corpus_final_v3.csv`, cleaned_lyrics append, `merge_report_v3.json` (idempotent; duplicate rows pre-dropped and mapped) |
+| 9 | `update_text_artifacts.py` | new corpus tail | appends embeddings/windows/probe scores, rebuilds features+index (existing rows untouched) |
 
 ```bash
 python scripts/audio/build_manifest.py

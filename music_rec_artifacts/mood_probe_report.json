@@ -2,26 +2,26 @@
   "songs_in_train_pool": 4010,
   "labels": {},
   "holdout_emotion_f1": {
-    "joy": 0.6715,
-    "sadness": 0.7423,
+    "joy": 0.6738,
+    "sadness": 0.7413,
     "anger": 0.1127,
     "fear": 0.0,
     "depression": 0.0
   },
   "holdout_f1": {
-    "joy": 0.6715,
-    "sadness": 0.7423,
+    "joy": 0.6738,
+    "sadness": 0.7413,
     "anger": 0.1127,
     "fear": 0.0,
     "depression": 0.0,
     "positive": 0.7924,
     "negative": 0.7891
   },
-  "holdout_macro_f1": 0.444,
+  "holdout_macro_f1": 0.4442,
   "sentiment_distribution": {
-    "positive": 2288,
-    "negative": 1620,
-    "neutral": 249
+    "positive": 2315,
+    "negative": 1645,
+    "neutral": 251
   },
   "gold": {
     "relaxed_accuracy": 0.7891,

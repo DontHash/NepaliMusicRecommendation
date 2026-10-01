@@ -26,6 +26,17 @@ def normalize_rows(matrix: np.ndarray) -> np.ndarray:
     return matrix / np.clip(norms, 1e-8, None)
 
 
+def _parse_song_id(raw) -> int | None:
+    """Tolerant id parse: CSV round-trips through pandas produce '1746.0'."""
+    text = str(raw or "").strip()
+    if not text or text.lower() in {"nan", "none"}:
+        return None
+    try:
+        return int(float(text))
+    except ValueError:
+        return None
+
+
 class AudioIndex:
     def __init__(self, vectors, track_keys, song_of_track):
         self.vectors = normalize_rows(np.asarray(vectors, dtype=np.float32))
@@ -64,8 +75,7 @@ class AudioIndex:
             return None
         song_of_track: list[int | None] = []
         for key in keys:
-            raw = (matches.get(key, {}).get("match_song_id") or "").strip()
-            song_of_track.append(int(raw) if raw else None)
+            song_of_track.append(_parse_song_id(matches.get(key, {}).get("match_song_id")))
         return cls(vectors, keys, song_of_track)
 
     @classmethod

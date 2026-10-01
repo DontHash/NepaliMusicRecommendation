@@ -1,0 +1,1137 @@
+{
+  "summary": {
+    "artist": {
+      "ndcg@10": 0.8775,
+      "recall@10": 0.781,
+      "ndcg@50": 0.9195,
+      "recall@50": 0.9981,
+      "mrr": 0.8833,
+      "queries": 40
+    },
+    "lyric": {
+      "ndcg@10": 0.9223,
+      "recall@10": 0.95,
+      "ndcg@50": 0.9223,
+      "recall@50": 0.95,
+      "mrr": 0.9125,
+      "queries": 40
+    },
+    "seed": {
+      "ndcg@10": 0.1558,
+      "recall@10": 0.024,
+      "ndcg@50": 0.2408,
+      "recall@50": 0.0762,
+      "mrr": 0.1879,
+      "queries": 30
+    }
+  },
+  "per_query": [
+    {
+      "query_id": "artist_000",
+      "type": "artist",
+      "relevant": 14,
+      "ndcg@10": 0.552,
+      "recall@10": 0.4286,
+      "ndcg@50": 0.8101,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "artist_001",
+      "type": "artist",
+      "relevant": 32,
+      "ndcg@10": 0.89,
+      "recall@10": 0.2812,
+      "ndcg@50": 0.9683,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_002",
+      "type": "artist",
+      "relevant": 7,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_003",
+      "type": "artist",
+      "relevant": 7,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_004",
+      "type": "artist",
+      "relevant": 8,
+      "ndcg@10": 0.9783,
+      "recall@10": 1.0,
+      "ndcg@50": 0.9783,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_005",
+      "type": "artist",
+      "relevant": 12,
+      "ndcg@10": 0.7137,
+      "recall@10": 0.6667,
+      "ndcg@50": 0.8424,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "artist_006",
+      "type": "artist",
+      "relevant": 15,
+      "ndcg@10": 0.8268,
+      "recall@10": 0.5333,
+      "ndcg@50": 0.9377,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_007",
+      "type": "artist",
+      "relevant": 3,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_008",
+      "type": "artist",
+      "relevant": 16,
+      "ndcg@10": 0.9266,
+      "recall@10": 0.5625,
+      "ndcg@50": 0.9847,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_009",
+      "type": "artist",
+      "relevant": 4,
+      "ndcg@10": 0.9268,
+      "recall@10": 1.0,
+      "ndcg@50": 0.9268,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_010",
+      "type": "artist",
+      "relevant": 30,
+      "ndcg@10": 0.8572,
+      "recall@10": 0.2667,
+      "ndcg@50": 0.9693,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_011",
+      "type": "artist",
+      "relevant": 30,
+      "ndcg@10": 0.5085,
+      "recall@10": 0.1667,
+      "ndcg@50": 0.8298,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_012",
+      "type": "artist",
+      "relevant": 15,
+      "ndcg@10": 1.0,
+      "recall@10": 0.6667,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_013",
+      "type": "artist",
+      "relevant": 8,
+      "ndcg@10": 0.5259,
+      "recall@10": 0.75,
+      "ndcg@50": 0.6649,
+      "recall@50": 1.0,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "artist_014",
+      "type": "artist",
+      "relevant": 8,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_015",
+      "type": "artist",
+      "relevant": 3,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_016",
+      "type": "artist",
+      "relevant": 32,
+      "ndcg@10": 1.0,
+      "recall@10": 0.3125,
+      "ndcg@50": 0.9958,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_017",
+      "type": "artist",
+      "relevant": 3,
+      "ndcg@10": 0.6797,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6797,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "artist_018",
+      "type": "artist",
+      "relevant": 9,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_019",
+      "type": "artist",
+      "relevant": 4,
+      "ndcg@10": 0.5079,
+      "recall@10": 0.5,
+      "ndcg@50": 0.6998,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_020",
+      "type": "artist",
+      "relevant": 8,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_021",
+      "type": "artist",
+      "relevant": 3,
+      "ndcg@10": 0.5257,
+      "recall@10": 1.0,
+      "ndcg@50": 0.5257,
+      "recall@50": 1.0,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "artist_022",
+      "type": "artist",
+      "relevant": 7,
+      "ndcg@10": 0.8118,
+      "recall@10": 1.0,
+      "ndcg@50": 0.8118,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "artist_023",
+      "type": "artist",
+      "relevant": 53,
+      "ndcg@10": 1.0,
+      "recall@10": 0.1887,
+      "ndcg@50": 0.9993,
+      "recall@50": 0.9245,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_024",
+      "type": "artist",
+      "relevant": 10,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_025",
+      "type": "artist",
+      "relevant": 5,
+      "ndcg@10": 0.6747,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6747,
+      "recall@50": 1.0,
+      "mrr": 0.3333
+    },
+    {
+      "query_id": "artist_026",
+      "type": "artist",
+      "relevant": 10,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_027",
+      "type": "artist",
+      "relevant": 8,
+      "ndcg@10": 0.8202,
+      "recall@10": 1.0,
+      "ndcg@50": 0.8202,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "artist_028",
+      "type": "artist",
+      "relevant": 5,
+      "ndcg@10": 0.5774,
+      "recall@10": 0.6,
+      "ndcg@50": 0.749,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_029",
+      "type": "artist",
+      "relevant": 4,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_030",
+      "type": "artist",
+      "relevant": 15,
+      "ndcg@10": 0.9052,
+      "recall@10": 0.6,
+      "ndcg@50": 0.9616,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_031",
+      "type": "artist",
+      "relevant": 5,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_032",
+      "type": "artist",
+      "relevant": 5,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_033",
+      "type": "artist",
+      "relevant": 7,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_034",
+      "type": "artist",
+      "relevant": 25,
+      "ndcg@10": 0.89,
+      "recall@10": 0.36,
+      "ndcg@50": 0.9556,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_035",
+      "type": "artist",
+      "relevant": 3,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_036",
+      "type": "artist",
+      "relevant": 3,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_037",
+      "type": "artist",
+      "relevant": 13,
+      "ndcg@10": 1.0,
+      "recall@10": 0.7692,
+      "ndcg@50": 0.9957,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_038",
+      "type": "artist",
+      "relevant": 4,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "artist_039",
+      "type": "artist",
+      "relevant": 17,
+      "ndcg@10": 1.0,
+      "recall@10": 0.5882,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_000",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_001",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_002",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_003",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_004",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_005",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_006",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_007",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_008",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_009",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_010",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "lyric_011",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_012",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_013",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_014",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_015",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_016",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_017",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_018",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_019",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_020",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_021",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_022",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_023",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_024",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_025",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_026",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_027",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_028",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_029",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_030",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_031",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_032",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_033",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_034",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_035",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_036",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 0.6309,
+      "recall@10": 1.0,
+      "ndcg@50": 0.6309,
+      "recall@50": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "lyric_037",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_038",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 1.0,
+      "recall@10": 1.0,
+      "ndcg@50": 1.0,
+      "recall@50": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "lyric_039",
+      "type": "lyric",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_000",
+      "type": "seed",
+      "relevant": 25,
+      "ndcg@10": 0.2044,
+      "recall@10": 0.04,
+      "ndcg@50": 0.3419,
+      "recall@50": 0.08,
+      "mrr": 0.1429
+    },
+    {
+      "query_id": "seed_001",
+      "type": "seed",
+      "relevant": 50,
+      "ndcg@10": 0.6131,
+      "recall@10": 0.02,
+      "ndcg@50": 0.7788,
+      "recall@50": 0.04,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "seed_002",
+      "type": "seed",
+      "relevant": 25,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.1966,
+      "recall@50": 0.04,
+      "mrr": 0.0303
+    },
+    {
+      "query_id": "seed_003",
+      "type": "seed",
+      "relevant": 41,
+      "ndcg@10": 0.3869,
+      "recall@10": 0.0244,
+      "ndcg@50": 0.5021,
+      "recall@50": 0.0488,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "seed_004",
+      "type": "seed",
+      "relevant": 2,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_005",
+      "type": "seed",
+      "relevant": 27,
+      "ndcg@10": 0.5273,
+      "recall@10": 0.1111,
+      "ndcg@50": 0.6068,
+      "recall@50": 0.1481,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "seed_006",
+      "type": "seed",
+      "relevant": 8,
+      "ndcg@10": 0.6309,
+      "recall@10": 0.125,
+      "ndcg@50": 0.6309,
+      "recall@50": 0.125,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "seed_007",
+      "type": "seed",
+      "relevant": 9,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_008",
+      "type": "seed",
+      "relevant": 106,
+      "ndcg@10": 0.5087,
+      "recall@10": 0.0189,
+      "ndcg@50": 0.739,
+      "recall@50": 0.0472,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "seed_009",
+      "type": "seed",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_010",
+      "type": "seed",
+      "relevant": 25,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_011",
+      "type": "seed",
+      "relevant": 9,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.1934,
+      "recall@50": 0.1111,
+      "mrr": 0.0286
+    },
+    {
+      "query_id": "seed_012",
+      "type": "seed",
+      "relevant": 12,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_013",
+      "type": "seed",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_014",
+      "type": "seed",
+      "relevant": 6,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.256,
+      "recall@50": 0.1667,
+      "mrr": 0.0714
+    },
+    {
+      "query_id": "seed_015",
+      "type": "seed",
+      "relevant": 7,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_016",
+      "type": "seed",
+      "relevant": 52,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.2173,
+      "recall@50": 0.0385,
+      "mrr": 0.0208
+    },
+    {
+      "query_id": "seed_017",
+      "type": "seed",
+      "relevant": 22,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_018",
+      "type": "seed",
+      "relevant": 9,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.3317,
+      "recall@50": 0.3333,
+      "mrr": 0.0909
+    },
+    {
+      "query_id": "seed_019",
+      "type": "seed",
+      "relevant": 3,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_020",
+      "type": "seed",
+      "relevant": 6,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.1821,
+      "recall@50": 0.1667,
+      "mrr": 0.0227
+    },
+    {
+      "query_id": "seed_021",
+      "type": "seed",
+      "relevant": 53,
+      "ndcg@10": 0.3296,
+      "recall@10": 0.0377,
+      "ndcg@50": 0.4528,
+      "recall@50": 0.0566,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "seed_022",
+      "type": "seed",
+      "relevant": 33,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_023",
+      "type": "seed",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_024",
+      "type": "seed",
+      "relevant": 4,
+      "ndcg@10": 0.4307,
+      "recall@10": 0.25,
+      "ndcg@50": 0.4307,
+      "recall@50": 0.25,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "seed_025",
+      "type": "seed",
+      "relevant": 19,
+      "ndcg@10": 0.4307,
+      "recall@10": 0.0526,
+      "ndcg@50": 0.4307,
+      "recall@50": 0.0526,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "seed_026",
+      "type": "seed",
+      "relevant": 25,
+      "ndcg@10": 0.6131,
+      "recall@10": 0.04,
+      "ndcg@50": 0.7407,
+      "recall@50": 0.08,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "seed_027",
+      "type": "seed",
+      "relevant": 1,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "seed_028",
+      "type": "seed",
+      "relevant": 2,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.1934,
+      "recall@50": 0.5,
+      "mrr": 0.0286
+    },
+    {
+      "query_id": "seed_029",
+      "type": "seed",
+      "relevant": 8,
+      "ndcg@10": 0.0,
+      "recall@10": 0.0,
+      "ndcg@50": 0.0,
+      "recall@50": 0.0,
+      "mrr": 0.0
+    }
+  ],
+  "meta": {
+    "queries_path": "D:\\Code\\ProjectR\\R_data\\corpus\\eval\\queries.jsonl",
+    "corpus_size": 4211,
+    "ann_top_k": 200,
+    "top_k": 50,
+    "generated_at": "2026-10-01T16:11:45.742975+00:00"
+  }
+}

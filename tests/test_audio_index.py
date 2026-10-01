@@ -35,6 +35,17 @@ def test_missing_artifacts_return_none(tmp_path):
     assert index is None
 
 
+def test_from_files_parses_pandas_float_ids(tmp_path):
+    """CSV round-trips through pandas write ids as '1746.0'; parsing must cope."""
+    vectors = [[1.0, 0.0], [0.0, 1.0]]
+    keys = ["a|one", "b|two"]
+    matches = {"a|one": "1746.0", "b|two": ""}
+    index = AudioIndex.from_files(*_write_audio_artifacts(tmp_path, vectors, keys, matches))
+    assert index is not None
+    assert index.song_ids == [1746]
+    assert index.song_for_track("b|two") is None
+
+
 def test_audio_index_mapping_and_scores(tmp_path):
     vectors = [[1.0, 0.0], [0.9, 0.1], [0.0, 1.0], [0.0, -1.0]]
     keys = ["a|one", "b|two", "c|three", "d|four"]
