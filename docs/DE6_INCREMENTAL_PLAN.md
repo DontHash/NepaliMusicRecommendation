@@ -1,6 +1,6 @@
 # DE6 — Incremental & streaming plan
 
-Status: in progress. Phase DE6 of `docs/DATA_ENGINEERING_PLAN.md`.
+Status: done — DE6a `5737399` (incremental append + watermark), DE6b `82fcbae` (events API + store + health feed), DE6c (`docs/DE6_STREAMING_SPIKE.md`). Phase DE6 of `docs/DATA_ENGINEERING_PLAN.md`.
 
 ## 1. Goal
 

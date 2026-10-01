@@ -143,6 +143,7 @@ auto-recover; identity report lists merge candidates with decisions recorded.
 **Commits:** `DE5a` metrics+health, `DE5b` alert thresholds + docs.
 
 ### DE6 — Incremental & streaming  *(2+ commits)*
+**Status:** done — DE6a `5737399` (incremental append + watermark), DE6b `82fcbae` (events API + store + health feed), DE6c (streaming spike, `docs/DE6_STREAMING_SPIKE.md`).
 **Goal:** stop full rebuilds for new data; start the feedback loop.
 **Workstreams:**
 - Watermarked incremental append path for corpus/labels/audio (the audio updater is
@@ -184,6 +185,13 @@ spike doc.
 ## 7. Immediate order of work
 
 1. DE0 closure — done (`bcaf88d`, `b2b409b`, `d8b9fa4`).
-2. DE1a/DE1b (schemas + validator + CI) — done (`aac4dfd`).
+2. DE1 (schemas + validator + CI) — done (`aac4dfd`).
 3. DE2 (manifest, publish, rollback) — done (`96595d8`, `7330101`, rollback commit).
-4. DE4 (queue lease/DLQ + identity) — done (`0106343`, `f914f05`, LSH review commit); DE5 monitoring next.
+4. DE3 (runner) — done (`7093631`, graph/CLI commit).
+5. DE4 (queue lease/DLQ + identity) — done (`0106343`, `f914f05`, LSH review commit).
+6. DE5 (metrics + data health + `/metrics`) — done (`af874e2`, `10e2629`).
+7. DE6 (incremental append + events + streaming spike) — done (`5737399`, `82fcbae`, spike commit).
+
+All planned phases are complete. The remaining work is volume-triggered:
+streaming (see `docs/DE6_STREAMING_SPIKE.md` thresholds), queue partitioning,
+and the DE5 quality budgets extended as new feeds appear.

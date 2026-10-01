@@ -160,5 +160,6 @@ client-random and only the documented fields are stored.
 ## Roadmap
 
 `docs/DATA_ENGINEERING_PLAN.md` tracks the phases. DE1 (contracts), DE2
-(versioned publish), DE3 (runner) and DE4 (queue + identity) are done; DE5
-monitoring/quality budgets and DE6 incremental/streaming are next.
+(versioned publish), DE3 (runner), DE4 (queue + identity), DE5 (monitoring +
+health) and DE6 (incremental + events) are done; `docs/DE6_STREAMING_SPIKE.md`
+covers the volume-triggered streaming migration.
