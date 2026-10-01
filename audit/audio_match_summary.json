@@ -1,0 +1,14 @@
+{
+  "audio_files": 3663,
+  "corpus_songs": 4157,
+  "audio_buckets": {
+    "weak": 715,
+    "none": 1063,
+    "probable": 1459,
+    "strong": 426
+  },
+  "corpus_strong_covered": 329,
+  "corpus_probable_covered": 454,
+  "corpus_weak_or_better_covered": 865,
+  "audio_strong_matches": 426
+}

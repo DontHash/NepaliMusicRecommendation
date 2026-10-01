@@ -1,0 +1,133 @@
+{
+  "index_rows": 5523,
+  "index_rows_joined_to_disk": 3667,
+  "matched_audio_hours": 236.7,
+  "audio_files_on_disk": 3663,
+  "strong_files": 282,
+  "probable_files_75_88": 3327,
+  "known_artist_other_titles": 4,
+  "unmatched_or_non_nepali": 50,
+  "corpus_songs_with_strong_audio": 247,
+  "top_source_queries": [
+    [
+      "Sajjan",
+      179
+    ],
+    [
+      "channel:OSRDigital",
+      168
+    ],
+    [
+      "nepali",
+      161
+    ],
+    [
+      "Yam Baral",
+      152
+    ],
+    [
+      "Melina Rai",
+      142
+    ],
+    [
+      "Kunti Moktan",
+      131
+    ],
+    [
+      "Deepak Limbu",
+      128
+    ],
+    [
+      "Narayan Gopal",
+      104
+    ],
+    [
+      "Sanjeev Singh",
+      95
+    ],
+    [
+      "Nabin K Bhattarai",
+      84
+    ],
+    [
+      "Prakash Shrestha",
+      77
+    ],
+    [
+      "Shiv Shankar",
+      76
+    ],
+    [
+      "teej song",
+      74
+    ],
+    [
+      "Anju Panta",
+      73
+    ],
+    [
+      "Pramod Kharel",
+      70
+    ],
+    [
+      "Rajesh Payal Rai",
+      70
+    ],
+    [
+      "Kandara",
+      64
+    ],
+    [
+      "Ram Krishna Dhakal",
+      64
+    ],
+    [
+      "Sugam Pokharel",
+      63
+    ],
+    [
+      "Aidray Nepali rap",
+      56
+    ],
+    [
+      "Lil Buddha",
+      55
+    ],
+    [
+      "Kutumba",
+      54
+    ],
+    [
+      "Resham Firiri",
+      49
+    ],
+    [
+      "G-BOB Nepali rap",
+      43
+    ],
+    [
+      "Yama Buddha",
+      43
+    ],
+    [
+      "Kumar Basnet",
+      43
+    ],
+    [
+      "Salaijo",
+      37
+    ],
+    [
+      "Sabin Rai",
+      36
+    ],
+    [
+      "Nima Rumba",
+      34
+    ],
+    [
+      "nepali song",
+      32
+    ]
+  ]
+}
