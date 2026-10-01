@@ -1,6 +1,6 @@
 # DE3 — Orchestration plan (asset graph + runner)
 
-Status: in progress. Phase DE3 of `docs/DATA_ENGINEERING_PLAN.md`.
+Status: done — DE3a `7093631` (runner core: graph, resume, history), DE3b (ProjectR graph + CLI + docs). Phase DE3 of `docs/DATA_ENGINEERING_PLAN.md`.
 
 ## 1. Goal
 

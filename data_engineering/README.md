@@ -93,6 +93,24 @@ Rollback is an atomic pointer swap against a retained version (nothing is
 copied or moved); `--verify` hash-checks the target first. Retention keeps the
 newest `--keep` versions (default 3) and never prunes the current one.
 
+## Pipeline runner (DE3)
+
+```bash
+python scripts/pipeline.py graph
+python scripts/pipeline.py run --select features --force
+python scripts/pipeline.py run --select publish.artifacts
+python scripts/pipeline.py run --select corpus.v3 --downstream --dry-run
+python scripts/pipeline.py history --limit 5
+```
+
+Assets materialize from their declared outputs: a re-run skips steps whose
+outputs already exist (`--force` re-runs them, `--backfill` forces the selection
+and its descendants). Runs are recorded in `R_data/state/runs.sqlite` with
+per-asset status, duration and metadata; stdout/stderr tee to
+`R_data/state/logs/<run_id>/<asset>.log`. The graph (names, deps, outputs) is
+defined in `pipelines/definitions.py`; design and semantics in
+`docs/DE3_ORCHESTRATION_PLAN.md`.
+
 ## Roadmap
 
 `docs/DATA_ENGINEERING_PLAN.md` tracks the phases. DE1 is the contract layer;

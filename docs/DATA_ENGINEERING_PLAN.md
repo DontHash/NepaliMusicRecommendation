@@ -102,6 +102,7 @@ rollback demonstrated in tests; predecessor version retained.
 `DE2c` rollback docs/tests.
 
 ### DE3 — Orchestration (asset graph)  *(2 commits)*
+**Status:** done — DE3a `7093631` (runner core), DE3b (ProjectR graph + CLI).
 **Goal:** replace the 7-step manual sequence with a dependency-aware runner with
 run history and backfills; keep it a thin adapter so Dagster/Prefect can replace it.
 **Workstreams:**
@@ -183,4 +184,4 @@ spike doc.
 1. DE0 closure — done (`bcaf88d`, `b2b409b`, `d8b9fa4`).
 2. DE1a/DE1b (schemas + validator + CI) — done (`aac4dfd`).
 3. DE2 (manifest, publish, rollback) — done (`96595d8`, `7330101`, rollback commit).
-4. DE3 (runner) — replaces manual sequencing; the rest becomes routine.
+4. DE3 (runner) — done (`7093631` + graph/CLI commit); DE4 queue/identity next.
