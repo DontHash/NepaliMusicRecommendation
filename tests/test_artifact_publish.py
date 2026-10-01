@@ -11,8 +11,10 @@ from _artifact_fixtures import FAKE_ARTIFACTS, fake_tree
 from data_engineering.artifacts import verify_manifest
 from data_engineering.publish import (
     list_versions,
+    previous_version,
     publish_artifacts,
     read_pointer,
+    rollback_artifacts,
     version_dir_for,
 )
 
@@ -146,3 +148,56 @@ def test_force_staging_disables_pointer(tmp_path: Path, monkeypatch):
     force_staging()
     config = Config()
     assert config.artifact_source == "staging"
+
+
+def test_previous_version_and_rollback(tmp_path: Path, monkeypatch):
+    fake_tree(tmp_path)
+    pointer = _pointer_path(tmp_path)
+    _publish(tmp_path, "v1", keep=5)
+    _publish(tmp_path, "v2", keep=5)
+
+    assert previous_version(pointer) == "v1"
+    result = rollback_artifacts(pointer, "v1")
+    assert result["previous"] == "v2"
+    document = read_pointer(pointer)
+    assert document["version"] == "v1"
+    assert document["rolled_back_from"] == "v2"
+    assert version_dir_for(pointer, "v2").exists()  # predecessor retained
+
+    # the undo target now flips back to v2
+    assert previous_version(pointer) == "v2"
+
+    # serving resolution follows the pointer
+    monkeypatch.delenv("PROJECTR_ARTIFACTS_DISABLE", raising=False)
+    monkeypatch.setenv("PROJECTR_ARTIFACTS_POINTER", str(pointer))
+    from music_rec.config import Config
+
+    config = Config()
+    assert config.artifact_version == "v1"
+    assert config.cleaned_lyrics_csv == \
+        version_dir_for(pointer, "v1") / "art" / "cleaned_lyrics.csv"
+
+
+def test_rollback_missing_version_raises(tmp_path: Path):
+    fake_tree(tmp_path)
+    pointer = _pointer_path(tmp_path)
+    _publish(tmp_path, "v1")
+    with pytest.raises(FileNotFoundError, match="nope"):
+        rollback_artifacts(pointer, "nope")
+
+
+def test_rollback_verify_detects_tampered_target(tmp_path: Path):
+    fake_tree(tmp_path)
+    pointer = _pointer_path(tmp_path)
+    _publish(tmp_path, "v1", keep=5)
+    _publish(tmp_path, "v2", keep=5)
+
+    tampered = version_dir_for(pointer, "v1") / "art" / "embeddings.npy"
+    tampered.write_bytes(b"not the published vectors")
+    with pytest.raises(ValueError, match="failed verification"):
+        rollback_artifacts(pointer, "v1", verify=True)
+    assert read_pointer(pointer)["version"] == "v2"
+
+    # without verification the swap is instant (hash check is opt-in)
+    rollback_artifacts(pointer, "v1")
+    assert read_pointer(pointer)["version"] == "v1"

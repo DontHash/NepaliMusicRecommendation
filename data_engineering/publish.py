@@ -197,3 +197,53 @@ def prune_versions(pointer_path: Path, *, keep: int = DEFAULT_KEEP,
             shutil.rmtree(item["path"], ignore_errors=True)
         pruned.append(item["version"])
     return pruned
+
+
+def previous_version(pointer_path: Path, *, current: str | None = None) -> str | None:
+    """Newest version that is not the pointer's current one (undo target)."""
+    versions = list_versions(pointer_path)
+    current = current or (read_pointer(pointer_path) or {}).get("version")
+    for item in versions:
+        if item["version"] != current:
+            return item["version"]
+    return None
+
+
+def rollback_artifacts(pointer_path: Path, target_version: str, *,
+                       verify: bool = False) -> dict:
+    """Point serving back at a retained version (no data movement).
+
+    With ``verify=True`` the target version is hash-verified first, which takes
+    as long as reading the set; the default only checks that the version
+    directory and its manifest exist.
+    """
+    destination = version_dir_for(pointer_path, target_version)
+    manifest_path = destination / "manifest.json"
+    if not manifest_path.exists():
+        raise FileNotFoundError(f"version {target_version!r} not found at {destination}")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+    if verify:
+        report = verify_manifest(destination, {**manifest, "inputs": []})
+        if not report["passed"]:
+            raise ValueError("rollback target failed verification: "
+                             + "; ".join(report["errors"]))
+
+    current = (read_pointer(pointer_path) or {}).get("version")
+    pointer = {
+        "version": target_version,
+        "published_at": manifest.get("published_at"),
+        "manifest": f"{VERSIONS_DIRNAME}/{target_version}/manifest.json",
+        "manifest_sha256": sha256_file(manifest_path, text=True),
+        "artifacts": sum(1 for entry in manifest.get("artifacts", [])
+                         if not entry.get("missing")),
+        "pointer_updated_at": datetime.now(timezone.utc).isoformat(),
+        "rolled_back_from": current,
+    }
+    write_pointer(pointer_path, pointer)
+    return {
+        "version": target_version,
+        "previous": current,
+        "destination": str(destination),
+        "pointer": str(pointer_path),
+    }

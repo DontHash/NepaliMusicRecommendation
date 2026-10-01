@@ -335,7 +335,11 @@ def verify_manifest(root: Path, manifest: dict, *, check_hashes: bool = True) ->
             text=entry.get("text_normalized", False), schema=entry.get("schema"),
             required=entry.get("required", True),
         )
-        current = describe(path, artifact, compute_hash=check_hashes)
+        try:
+            current = describe(path, artifact, compute_hash=check_hashes)
+        except Exception as exc:  # corrupted file must fail, not crash verification
+            errors.append(f"artifact {entry['name']} unreadable: {exc}")
+            continue
         current_entries.append(current)
         for key, expected in entry.items():
             if key == "note":

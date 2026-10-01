@@ -85,7 +85,7 @@ tests cover each schema; docs list schema versions.
 validating existing data (expected: the gappy-id/title-empty class of issue).
 
 ### DE2 — Versioned publish & artifact manifest  *(2–3 commits)*
-**Status:** in progress — DE2a + DE2b landed (manifest, verify, versioned publish, pointer resolution); DE2c rollback next.
+**Status:** done — DE2a `96595d8` (manifest + verify + CI gate), DE2b `7330101` (versioned publish + pointer resolution), DE2c rollback + docs (last commit of the phase).
 **Goal:** atomic, rollbackable artifact sets with full provenance.
 **Workstreams:**
 - `data_engineering/artifacts.py`: build manifest (path, SHA-256, size, rows, dims,
@@ -182,5 +182,5 @@ spike doc.
 
 1. DE0 closure — done (`bcaf88d`, `b2b409b`, `d8b9fa4`).
 2. DE1a/DE1b (schemas + validator + CI) — done (`aac4dfd`).
-3. DE2 (manifest + verify) — DE2a landed; DE2b pointer publish, DE2c rollback.
+3. DE2 (manifest, publish, rollback) — done (`96595d8`, `7330101`, rollback commit).
 4. DE3 (runner) — replaces manual sequencing; the rest becomes routine.

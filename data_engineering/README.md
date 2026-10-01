@@ -81,8 +81,17 @@ corpus rebuilds/merges, the incremental updater) call
 published version.
 
 Versions and `current.json` are deploy state and gitignored; a fresh checkout
-serves from the staging layout until its first publish. Rollback and retention
-are covered by `scripts/rollback_artifacts.py`.
+serves from the staging layout until its first publish. Roll back with:
+
+```bash
+python scripts/rollback_artifacts.py --list           # versions + current
+python scripts/rollback_artifacts.py --previous       # newest non-current
+python scripts/rollback_artifacts.py --to <version> --verify
+```
+
+Rollback is an atomic pointer swap against a retained version (nothing is
+copied or moved); `--verify` hash-checks the target first. Retention keeps the
+newest `--keep` versions (default 3) and never prunes the current one.
 
 ## Roadmap
 
