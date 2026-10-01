@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -86,41 +87,50 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-attempts", type=int, default=3)
     parser.add_argument("--retry-missed", action="store_true", help="Requeue previously missed candidates")
     parser.add_argument("--delay", type=float, default=0.0, help="Sleep seconds between candidates")
+    parser.add_argument("--worker-id", default=None,
+                        help="Lease owner name (default fetch-<pid>); use one per parallel worker")
+    parser.add_argument("--lease-seconds", type=int, default=900,
+                        help="How long a claim stays reserved before it is recoverable")
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+    owner = args.worker_id or f"fetch-{os.getpid()}"
     conn = state.open_db(args.db)
     state.init_db(conn)
     if args.retry_missed:
         count = state.requeue(conn, status="missed", reset_attempts=True)
         print(f"requeued {count} missed candidates")
-    batch = state.next_batch(conn, limit=args.limit or None, status="new", max_attempts=args.max_attempts)
-    print(f"candidates to fetch: {len(batch)}")
+    swept = state.sweep_exhausted(conn, max_attempts=args.max_attempts)
+    if swept:
+        print(f"swept {swept} attempt-exhausted candidates to dead (export with queue_admin.py dlq)")
+    batch = state.claim_batch(conn, owner, limit=args.limit or None,
+                              status="new", max_attempts=args.max_attempts,
+                              lease_seconds=args.lease_seconds)
+    print(f"candidates to fetch: {len(batch)} (worker {owner})")
     client = CachedHttp()
     stats = {"processed": 0, "hits": 0, "misses": 0, "rejected": 0, "by_stage": {}, "reject_reasons": {}}
     for index, row in enumerate(batch, start=1):
         try:
-            state.mark_fetching(conn, [row["id"]])
             hit, attempts, _latency = fetch_candidate(client, row, stages=tuple(args.stages))
             for stage, outcome in attempts:
                 state.record_attempt(conn, row["id"], stage, outcome)
             if hit is not None:
                 ok, reason = acceptable(hit)
                 if ok:
-                    state.save_lyrics(conn, row["id"], hit)
+                    state.save_lyrics(conn, row["id"], hit, owner=owner)
                     stats["hits"] += 1
                     stats["by_stage"][hit.stage] = stats["by_stage"].get(hit.stage, 0) + 1
                 else:
-                    state.mark_status(conn, row["id"], "missed", reason)
+                    state.mark_status(conn, row["id"], "missed", reason, owner=owner)
                     stats["rejected"] += 1
                     stats["reject_reasons"][reason] = stats["reject_reasons"].get(reason, 0) + 1
             else:
-                state.mark_status(conn, row["id"], "missed", "all_stages_missed")
+                state.mark_status(conn, row["id"], "missed", "all_stages_missed", owner=owner)
                 stats["misses"] += 1
         except Exception as exc:
-            state.mark_status(conn, row["id"], "new", f"error:{type(exc).__name__}")
+            state.mark_status(conn, row["id"], "new", f"error:{type(exc).__name__}", owner=owner)
             state.record_attempt(conn, row["id"], "pipeline", "error", error_class=type(exc).__name__)
         stats["processed"] += 1
         if index % 25 == 0 or index == len(batch):

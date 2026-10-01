@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import csv
 import json
+import os
 import sqlite3
 from pathlib import Path
 
@@ -24,6 +26,8 @@ CREATE TABLE IF NOT EXISTS candidates (
     status TEXT NOT NULL DEFAULT 'new',
     attempt_count INTEGER NOT NULL DEFAULT 0,
     last_error TEXT,
+    lease_owner TEXT,
+    lease_expires_at TEXT,
     extra_json TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -58,6 +62,10 @@ CREATE TABLE IF NOT EXISTS pages (
     title TEXT,
     artist TEXT,
     candidate_id INTEGER,
+    attempt_count INTEGER NOT NULL DEFAULT 0,
+    last_error TEXT,
+    lease_owner TEXT,
+    lease_expires_at TEXT,
     discovered_at TEXT NOT NULL DEFAULT (datetime('now')),
     fetched_at TEXT
 );
@@ -85,6 +93,33 @@ def open_db(path: Path | str) -> sqlite3.Connection:
 
 def init_db(conn: sqlite3.Connection) -> None:
     conn.executescript(SCHEMA)
+    _ensure_columns(conn)
+    conn.commit()
+
+
+# Columns introduced after a store was first created; init_db migrates old DBs.
+COLUMN_MIGRATIONS: dict[str, dict[str, str]] = {
+    "candidates": {
+        "lease_owner": "TEXT",
+        "lease_expires_at": "TEXT",
+    },
+    "pages": {
+        "attempt_count": "INTEGER NOT NULL DEFAULT 0",
+        "last_error": "TEXT",
+        "lease_owner": "TEXT",
+        "lease_expires_at": "TEXT",
+    },
+}
+
+
+def _ensure_columns(conn: sqlite3.Connection) -> None:
+    for table, columns in COLUMN_MIGRATIONS.items():
+        existing = {row["name"] for row in conn.execute(f"PRAGMA table_info({table})")}
+        if not existing:  # table absent: SCHEMA just created it with all columns
+            continue
+        for name, definition in columns.items():
+            if name not in existing:
+                conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {definition}")
     conn.commit()
 
 
@@ -171,26 +206,84 @@ def record_attempt(
     conn.commit()
 
 
-def mark_fetching(conn: sqlite3.Connection, candidate_ids: list[int]) -> None:
+def mark_fetching(conn: sqlite3.Connection, candidate_ids: list[int], *,
+                  owner: str | None = None, lease_seconds: int = 900) -> None:
+    """Legacy helper: stamp a lease on already-selected ids (claim_batch is atomic)."""
+    owner = owner or f"pid-{os.getpid()}"
+    lease = f"+{int(lease_seconds)} seconds"
     conn.executemany(
-        "UPDATE candidates SET status='fetching', attempt_count=attempt_count+1, updated_at=datetime('now') WHERE id=?",
-        [(cid,) for cid in candidate_ids],
+        "UPDATE candidates SET status='fetching', attempt_count=attempt_count+1, "
+        "lease_owner=?, lease_expires_at=datetime('now', ?), updated_at=datetime('now') WHERE id=?",
+        [(owner, lease, cid) for cid in candidate_ids],
     )
     conn.commit()
 
 
-def reset_orphaned(conn: sqlite3.Connection) -> int:
-    cur = conn.execute("UPDATE candidates SET status='new', updated_at=datetime('now') WHERE status='fetching'")
+def claim_batch(conn: sqlite3.Connection, owner: str, limit: int | None = None, *,
+                status: str = "new", max_attempts: int = 3,
+                lease_seconds: int = 900) -> list[sqlite3.Row]:
+    """Atomically claim candidates and stamp them with a lease.
+
+    One UPDATE ... RETURNING inside BEGIN IMMEDIATE, so two workers can never
+    receive the same candidate. Attempts are counted at claim time.
+    """
+    conn.execute("BEGIN IMMEDIATE")
+    try:
+        rows = conn.execute(
+            """
+            UPDATE candidates
+               SET status='fetching',
+                   attempt_count=attempt_count+1,
+                   lease_owner=?,
+                   lease_expires_at=datetime('now', ?),
+                   updated_at=datetime('now')
+             WHERE id IN (
+                   SELECT id FROM candidates
+                    WHERE status=? AND attempt_count<?
+                    ORDER BY id
+                    LIMIT ?
+             )
+            RETURNING *
+            """,
+            (owner, f"+{int(lease_seconds)} seconds", status, max_attempts,
+             -1 if limit is None else int(limit)),
+        ).fetchall()
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    return rows
+
+
+def reset_orphaned(conn: sqlite3.Connection, *, force: bool = False) -> int:
+    """Recover interrupted work: only expired/NULL leases unless force=True."""
+    clause = ("" if force else
+              " AND (lease_expires_at IS NULL OR lease_expires_at <= datetime('now'))")
+    cur = conn.execute(
+        "UPDATE candidates SET status='new', lease_owner=NULL, lease_expires_at=NULL, "
+        "updated_at=datetime('now') WHERE status='fetching'" + clause
+    )
     conn.commit()
     return cur.rowcount
 
 
-def mark_status(conn: sqlite3.Connection, candidate_id: int, status: str, error: str | None = None) -> None:
-    conn.execute(
-        "UPDATE candidates SET status=?, last_error=?, updated_at=datetime('now') WHERE id=?",
-        (status, error, candidate_id),
-    )
+def mark_status(conn: sqlite3.Connection, candidate_id: int, status: str,
+                error: str | None = None, *, owner: str | None = None) -> int:
+    """Finish a candidate; with owner set, another worker's live lease is respected."""
+    if owner is None:
+        cur = conn.execute(
+            "UPDATE candidates SET status=?, last_error=?, lease_owner=NULL, "
+            "lease_expires_at=NULL, updated_at=datetime('now') WHERE id=?",
+            (status, error, candidate_id),
+        )
+    else:
+        cur = conn.execute(
+            "UPDATE candidates SET status=?, last_error=?, lease_owner=NULL, "
+            "lease_expires_at=NULL, updated_at=datetime('now') WHERE id=? AND lease_owner=?",
+            (status, error, candidate_id, owner),
+        )
     conn.commit()
+    return cur.rowcount
 
 
 def requeue(conn: sqlite3.Connection, status: str = "missed", reset_attempts: bool = False) -> int:
@@ -200,7 +293,48 @@ def requeue(conn: sqlite3.Connection, status: str = "missed", reset_attempts: bo
     return cur.rowcount
 
 
-def save_lyrics(conn: sqlite3.Connection, candidate_id: int, hit: LyricsHit) -> None:
+def sweep_exhausted(conn: sqlite3.Connection, *, status: str = "new",
+                    max_attempts: int = 3) -> int:
+    """Move attempt-exhausted candidates to the dead-letter status."""
+    cur = conn.execute(
+        "UPDATE candidates SET status='dead', "
+        "last_error=COALESCE(last_error, 'attempt_budget_exhausted'), "
+        "lease_owner=NULL, lease_expires_at=NULL, updated_at=datetime('now') "
+        "WHERE status=? AND attempt_count>=?",
+        (status, max_attempts),
+    )
+    conn.commit()
+    return cur.rowcount
+
+
+def dead_letters(conn: sqlite3.Connection, limit: int | None = None) -> list[sqlite3.Row]:
+    query = "SELECT * FROM candidates WHERE status='dead' ORDER BY id"
+    params: list = []
+    if limit:
+        query += " LIMIT ?"
+        params.append(limit)
+    return conn.execute(query, params).fetchall()
+
+
+def export_dead_letters(conn: sqlite3.Connection, path: Path | str) -> int:
+    """Write the candidate DLQ to CSV; returns the number of rows."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fields = ["id", "source", "source_id", "artist", "title", "album", "duration_s",
+              "isrc", "attempt_count", "last_error", "updated_at"]
+    rows = dead_letters(conn)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with open(tmp, "w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({field: row[field] for field in fields})
+    os.replace(tmp, path)
+    return len(rows)
+
+
+def save_lyrics(conn: sqlite3.Connection, candidate_id: int, hit: LyricsHit, *,
+                owner: str | None = None) -> None:
     conn.execute(
         """
         INSERT INTO lyrics(candidate_id, stage, source_url, lyrics, synced, script, lyrics_sha256)
@@ -224,7 +358,7 @@ def save_lyrics(conn: sqlite3.Connection, candidate_id: int, hit: LyricsHit) -> 
             hit.sha256,
         ),
     )
-    mark_status(conn, candidate_id, "done")
+    mark_status(conn, candidate_id, "done", owner=owner)
 
 
 def next_batch(conn: sqlite3.Connection, limit: int | None = None, status: str = "new", max_attempts: int = 3) -> list[sqlite3.Row]:
@@ -320,12 +454,84 @@ def mark_page(
         """
         UPDATE pages SET status=?, candidate_id=COALESCE(?, candidate_id),
                title=COALESCE(?, title), artist=COALESCE(?, artist),
+               lease_owner=NULL, lease_expires_at=NULL,
                fetched_at=datetime('now')
         WHERE url=?
         """,
         (status, candidate_id, title, artist, url),
     )
     conn.commit()
+
+
+def claim_pages(conn: sqlite3.Connection, owner: str, domain: str | None = None,
+                limit: int | None = None, *, status: str = "new",
+                max_attempts: int = 3, lease_seconds: int = 900) -> list[sqlite3.Row]:
+    """Atomically claim pages and stamp them with a lease (same contract as claim_batch)."""
+    filters = ["status=?", "attempt_count<?"]
+    params: list = [status, max_attempts]
+    if domain:
+        filters.append("domain=?")
+        params.append(domain)
+    where = " AND ".join(filters)
+    conn.execute("BEGIN IMMEDIATE")
+    try:
+        rows = conn.execute(
+            f"""
+            UPDATE pages
+               SET status='fetching', attempt_count=attempt_count+1,
+                   lease_owner=?, lease_expires_at=datetime('now', ?)
+             WHERE url IN (
+                   SELECT url FROM pages WHERE {where} ORDER BY url LIMIT ?
+             )
+            RETURNING *
+            """,
+            (owner, f"+{int(lease_seconds)} seconds", *params,
+             -1 if limit is None else int(limit)),
+        ).fetchall()
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    return rows
+
+
+def retry_page(conn: sqlite3.Connection, url: str, error: str, *,
+               max_attempts: int = 3) -> str:
+    """Return a failed page to 'new' until its budget is spent, then 'dead'."""
+    row = conn.execute("SELECT attempt_count FROM pages WHERE url=?", (url,)).fetchone()
+    attempts = row["attempt_count"] if row else 0
+    next_status = "new" if attempts < max_attempts else "dead"
+    conn.execute(
+        "UPDATE pages SET status=?, last_error=?, lease_owner=NULL, lease_expires_at=NULL "
+        "WHERE url=?",
+        (next_status, error, url),
+    )
+    conn.commit()
+    return next_status
+
+
+def reset_orphaned_pages(conn: sqlite3.Connection, *, force: bool = False) -> int:
+    clause = ("" if force else
+              " AND (lease_expires_at IS NULL OR lease_expires_at <= datetime('now'))")
+    cur = conn.execute(
+        "UPDATE pages SET status='new', lease_owner=NULL, lease_expires_at=NULL "
+        "WHERE status='fetching'" + clause
+    )
+    conn.commit()
+    return cur.rowcount
+
+
+def sweep_exhausted_pages(conn: sqlite3.Connection, *, status: str = "new",
+                          max_attempts: int = 3) -> int:
+    cur = conn.execute(
+        "UPDATE pages SET status='dead', "
+        "last_error=COALESCE(last_error, 'attempt_budget_exhausted'), "
+        "lease_owner=NULL, lease_expires_at=NULL "
+        "WHERE status=? AND attempt_count>=?",
+        (status, max_attempts),
+    )
+    conn.commit()
+    return cur.rowcount
 
 
 def update_candidate_meta(conn: sqlite3.Connection, candidate_id: int, *, artist: str | None = None, title: str | None = None) -> bool:

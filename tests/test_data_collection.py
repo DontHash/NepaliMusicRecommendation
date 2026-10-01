@@ -119,7 +119,7 @@ def test_state_enqueue_dedupe_and_resume(tmp_path):
     assert (added, dupes) == (1, 1)
     batch = state.next_batch(conn)
     assert len(batch) == 1
-    state.mark_fetching(conn, [batch[0]["id"]])
+    state.mark_fetching(conn, [batch[0]["id"]], lease_seconds=0)
     assert state.stats(conn)["candidates"]["fetching"] == 1
     assert state.reset_orphaned(conn) == 1
     assert state.stats(conn)["candidates"]["new"] == 1

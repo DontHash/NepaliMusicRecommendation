@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -47,6 +48,9 @@ def crawl_site(
     delay: float = 2.0,
 ) -> dict:
     domain = module.DOMAIN
+    owner = f"crawl-{domain}-{os.getpid()}"
+    state.reset_orphaned_pages(conn)
+    state.sweep_exhausted_pages(conn)
     stats = {
         "site": domain,
         "discovered": 0,
@@ -66,7 +70,7 @@ def crawl_site(
         urls = module.discover(client, max_pages=max_pages)
     stats["discovered"] = len(urls)
     stats["new_pages"] = state.register_pages(conn, urls, domain=domain)
-    rows = state.next_pages(conn, domain=domain, limit=limit or None, status="new")
+    rows = state.claim_pages(conn, owner, domain=domain, limit=limit or None, status="new")
     print(f"[{domain}] discovered={len(urls)} new_pages={stats['new_pages']} to_process={len(rows)}")
     for index, row in enumerate(rows, start=1):
         url = row["url"]
@@ -74,12 +78,12 @@ def crawl_site(
         if not html:
             html = client.get_text(f"site_{domain}", url)
         if not html:
-            state.mark_page(conn, url, "fetch_failed")
+            state.retry_page(conn, url, "fetch_failed")
             stats["fetch_failed"] += 1
             continue
         page = module.parse(html, url)
         if page is None or not page.lyrics:
-            state.mark_page(conn, url, "parse_failed")
+            state.retry_page(conn, url, "parse_failed")
             stats["parse_failed"] += 1
             continue
         hit = LyricsHit(
