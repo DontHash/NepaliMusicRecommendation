@@ -1,6 +1,6 @@
 # DE5 — Monitoring & quality observability plan
 
-Status: in progress. Phase DE5 of `docs/DATA_ENGINEERING_PLAN.md`.
+Status: done — DE5a `af874e2` (metrics stream + data health), DE5b (`/metrics` endpoint + CI health gate). Phase DE5 of `docs/DATA_ENGINEERING_PLAN.md`.
 
 ## 1. Goal
 

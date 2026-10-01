@@ -131,6 +131,22 @@ artist|title group but pools sibling metadata (album/duration/preview/ISRC)
 into the winner, and `review_duplicates` writes a MinHash/LSH review queue with
 suggested actions and pending decisions.
 
+## Monitoring & health (DE5)
+
+```bash
+python scripts/data_health.py                    # green/red quality + freshness report
+python scripts/data_health.py --strict --fail-on-stale
+```
+
+`R_data/state/metrics.jsonl` records every asset and run the pipeline runner
+executes; `R_data/state/health_history.jsonl` keeps row-count snapshots for
+deltas. Quality budgets (rows, duplicate-lyrics share, artist/title coverage,
+audio match share, sentiment coverage) and freshness live in
+`data_engineering/health.py` and run in CI, so a corpus regression fails the
+build. The web app exposes Prometheus text at `GET /metrics` (pipeline
+counters, latest asset durations, dataset rows/age, health status, event
+counters and the published artifact version).
+
 ## Roadmap
 
 `docs/DATA_ENGINEERING_PLAN.md` tracks the phases. DE1 (contracts), DE2

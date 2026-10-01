@@ -10,12 +10,13 @@ from __future__ import annotations
 import logging
 import os
 import threading
+import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 import pandas as pd
 from fastapi import Depends, FastAPI, HTTPException
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -207,6 +208,36 @@ def search(
 @app.get("/api/status")
 def status():
     return {"model_ready": text_encoder_ready(Config())}
+
+
+_metrics_cache: dict = {"at": 0.0, "text": ""}
+_metrics_lock = threading.Lock()
+
+
+def _metrics_paths() -> dict:
+    state_dir = PROJECT_ROOT / "R_data" / "state"
+    return {
+        "runs_db": state_dir / "runs.sqlite",
+        "metrics_jsonl": state_dir / "metrics.jsonl",
+        "health_report": Config().artifacts_dir / "data_health_report.json",
+        "events_db": Path(os.environ.get("PROJECTR_EVENTS_DB", state_dir / "events.sqlite")),
+        "artifacts_pointer": Config().artifacts_dir / "current.json",
+    }
+
+
+@app.get("/metrics", response_class=PlainTextResponse)
+def metrics():
+    from web_app.metrics import render_metrics
+
+    now = time.time()
+    with _metrics_lock:
+        if now - _metrics_cache["at"] < 15.0 and _metrics_cache["text"]:
+            return _metrics_cache["text"]
+    text = render_metrics(**_metrics_paths())
+    with _metrics_lock:
+        _metrics_cache["at"] = now
+        _metrics_cache["text"] = text
+    return text
 
 
 @app.get("/api/song/{song_id}")

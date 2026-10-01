@@ -131,6 +131,7 @@ auto-recover; identity report lists merge candidates with decisions recorded.
 **Commits:** `DE4a` lease/DLQ, `DE4b` best-version merge, `DE4c` identity+LSH review.
 
 ### DE5 — Monitoring & quality observability  *(1–2 commits)*
+**Status:** done — DE5a `af874e2` (metrics stream + data health), DE5b (`/metrics` + CI gate).
 **Goal:** know when data drifts or a rebuild fails, without reading logs.
 **Workstreams:**
 - Structured run/asset metrics (duration, rows in/out, dropped counts, error rate)

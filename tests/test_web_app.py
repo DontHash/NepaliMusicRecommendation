@@ -143,6 +143,22 @@ def test_status_reports_model_readiness(monkeypatch):
     assert client.get("/api/status").json() == {"model_ready": True}
 
 
+def test_metrics_endpoint_returns_prometheus_text(monkeypatch, tmp_path):
+    from web_app import server
+
+    monkeypatch.setattr(server, "_metrics_cache", {"at": 0.0, "text": ""})
+    monkeypatch.setattr(server, "_metrics_paths", lambda: {
+        "runs_db": tmp_path / "none.sqlite",
+        "metrics_jsonl": tmp_path / "none.jsonl",
+        "health_report": tmp_path / "none.json",
+        "events_db": tmp_path / "none.sqlite",
+        "artifacts_pointer": tmp_path / "none.json",
+    })
+    response = client.get("/metrics")
+    assert response.status_code == 200
+    assert "projectr_build_info" in response.text
+
+
 def test_static_assets_are_not_cached():
     response = client.get("/static/app.js")
     assert response.status_code == 200
