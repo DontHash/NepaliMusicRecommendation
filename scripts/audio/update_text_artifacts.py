@@ -38,10 +38,11 @@ def main() -> None:
     import numpy as np
     import pandas as pd
 
-    from music_rec.config import Config
+    from music_rec.config import Config, force_staging
     from music_rec.embeddings import _encode_chunked, _load_model
     from music_rec.index import build_index
 
+    force_staging()  # incremental updater always reads/writes the staging layout
     music = Config()
     df = pd.read_csv(music.cleaned_lyrics_csv, encoding="utf-8").fillna("")
     embeddings = np.load(music.embeddings_npy)

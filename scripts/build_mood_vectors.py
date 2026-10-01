@@ -19,8 +19,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from music_rec.config import Config
+from music_rec.config import Config, force_staging
 from music_rec.mood_attribution import EMOTIONS
+
+force_staging()  # offline builder always reads/writes the staging layout
 
 
 def main() -> int:

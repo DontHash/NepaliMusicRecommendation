@@ -31,8 +31,10 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from lyrics_pipeline.pipeline import LyricsCleaningPipeline  # noqa: E402
 from lyrics_pipeline.transliterator import NepaliTransliterator  # noqa: E402
-from music_rec.config import Config  # noqa: E402
+from music_rec.config import Config, force_staging  # noqa: E402
 from music_rec.tokenization import normalize_nfc, token_count  # noqa: E402
+
+force_staging()  # corpus rebuild always reads/writes the staging layout
 from scripts.audit_corpus_quality import KNOWN_BAD  # noqa: E402
 
 V2_COLUMNS = [

@@ -106,3 +106,8 @@ R_data/audio/*.tmp
 music_rec_artifacts/lexical_cache.pkl
 music_rec_artifacts/window_index.faiss
 music_rec_artifacts/_parity_*.faiss
+
+# --- Published artifact versions (local/deploy state, regenerable) ---
+music_rec_artifacts/versions/
+music_rec_artifacts/current.json
+music_rec_artifacts/current.json.tmp

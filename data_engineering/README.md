@@ -61,6 +61,29 @@ optional artifacts — the window and audio vectors are large regenerable files
 not kept in git — warn; hash, schema-version or consistency drift fails.
 Rebuild the manifest in the same commit as any artifact change.
 
+## Versioned publish (DE2)
+
+```bash
+python scripts/publish_artifacts.py            # snapshot staging, flip the pointer
+python scripts/publish_artifacts.py --list     # versions + which one is current
+python scripts/publish_artifacts.py --dry-run  # build/check the manifest only
+python scripts/publish_artifacts.py --keep 3   # retention (default 3 versions)
+```
+
+Publishing snapshots the staging set into
+`music_rec_artifacts/versions/<version-id>/` (the copy is verified against its
+own manifest before it becomes visible), then swaps `music_rec_artifacts/
+current.json` with a single atomic replace. Serving resolves artifact paths
+through the pointer — a reader sees the old version or the new one, never a
+half-written set. Offline producers (`run_music_rec.py`, probe training,
+corpus rebuilds/merges, the incremental updater) call
+`music_rec.config.force_staging()` so their reads and writes never touch a
+published version.
+
+Versions and `current.json` are deploy state and gitignored; a fresh checkout
+serves from the staging layout until its first publish. Rollback and retention
+are covered by `scripts/rollback_artifacts.py`.
+
 ## Roadmap
 
 `docs/DATA_ENGINEERING_PLAN.md` tracks the phases. DE1 is the contract layer;

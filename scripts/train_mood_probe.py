@@ -26,7 +26,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from music_rec.config import Config
+from music_rec.config import Config, force_staging
+
+force_staging()  # offline trainer always reads/writes the staging layout
 
 LABELS = ("joy", "sadness", "anger", "fear", "depression", "positive", "negative")
 EMOTIONS = LABELS[:5]

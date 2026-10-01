@@ -2,11 +2,37 @@
 
 from __future__ import annotations
 
+import json
+import logging
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+logger = logging.getLogger(__name__)
+
+# Serving attributes resolved through a published version manifest.
+# Offline producers must call force_staging() and write the staging layout.
+ARTIFACT_ATTR_NAMES: dict[str, str] = {
+    "cleaned_lyrics_csv": "cleaned_lyrics",
+    "embedding_ids_json": "embedding_ids",
+    "embeddings_npy": "embeddings",
+    "window_vectors_npy": "window_vectors",
+    "window_owners_npy": "window_owners",
+    "sentiment_scores_csv": "sentiment_scores",
+    "mood_probe_npz": "mood_probe",
+    "feature_matrix_npy": "feature_matrix",
+    "faiss_index_path": "lyrics_index",
+    "audio_embeddings_npy": "audio_embeddings",
+    "audio_embedding_keys_csv": "audio_embedding_keys",
+    "audio_track_matches_csv": "audio_track_matches",
+}
+
+
+def force_staging() -> None:
+    """Offline producers read and write the staging layout, never a published set."""
+    os.environ["PROJECTR_ARTIFACTS_DISABLE"] = "1"
 
 
 @dataclass
@@ -118,3 +144,36 @@ class Config:
         self.audio_track_matches_csv = self.audio_dir / "audio_track_matches.csv"
         self.window_index_path = self.artifacts_dir / "window_index.faiss"
         self.lexical_cache_path = self.artifacts_dir / "lexical_cache.pkl"
+        self.artifact_source = "staging"
+        self.artifact_version: str | None = None
+        self._resolve_published_artifacts()
+
+    def _resolve_published_artifacts(self) -> None:
+        """Re-point serving artifact attributes at the published version, if any.
+
+        The pointer (``PROJECTR_ARTIFACTS_POINTER`` or ``<artifacts>/current.json``)
+        names a version directory whose manifest maps artifact names to paths.
+        Missing/invalid pointers fall back to the staging layout, so a fresh
+        checkout works before its first publish. ``PROJECTR_ARTIFACTS_DISABLE=1``
+        forces staging (offline producers use force_staging()).
+        """
+        if os.environ.get("PROJECTR_ARTIFACTS_DISABLE") == "1":
+            return
+        pointer_path = Path(os.environ.get(
+            "PROJECTR_ARTIFACTS_POINTER", self.artifacts_dir / "current.json"))
+        try:
+            pointer = json.loads(pointer_path.read_text(encoding="utf-8"))
+            version = str(pointer["version"])
+            version_dir = pointer_path.parent / "versions" / version
+            manifest = json.loads((version_dir / "manifest.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError, KeyError):
+            return
+        relative_paths = {entry["name"]: entry["path"] for entry in manifest.get("artifacts", [])
+                          if not entry.get("missing") and "path" in entry}
+        for attribute, name in ARTIFACT_ATTR_NAMES.items():
+            relative = relative_paths.get(name)
+            if relative:
+                setattr(self, attribute, version_dir / relative)
+        self.artifact_source = f"published:{version}"
+        self.artifact_version = version
+        logger.info("serving artifacts from published version %s", version)

@@ -85,7 +85,7 @@ tests cover each schema; docs list schema versions.
 validating existing data (expected: the gappy-id/title-empty class of issue).
 
 ### DE2 — Versioned publish & artifact manifest  *(2–3 commits)*
-**Status:** in progress — DE2a (manifest + verify + CI gate) landed; DE2b pointer publish, DE2c rollback next.
+**Status:** in progress — DE2a + DE2b landed (manifest, verify, versioned publish, pointer resolution); DE2c rollback next.
 **Goal:** atomic, rollbackable artifact sets with full provenance.
 **Workstreams:**
 - `data_engineering/artifacts.py`: build manifest (path, SHA-256, size, rows, dims,

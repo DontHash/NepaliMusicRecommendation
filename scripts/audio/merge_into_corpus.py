@@ -36,6 +36,9 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from scripts.audio import config, utils  # noqa: E402
+from music_rec.config import force_staging  # noqa: E402
+
+force_staging()  # merge always reads/writes the staging layout
 
 V2_COLUMNS = [
     "category", "title_clean", "artist_clean", "lyrics_devanagari", "line_count",
