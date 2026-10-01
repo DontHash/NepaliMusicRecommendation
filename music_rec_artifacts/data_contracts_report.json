@@ -1,0 +1,89 @@
+{
+  "generated_at": "2026-10-01T16:14:47.048526+00:00",
+  "strict": false,
+  "datasets": 9,
+  "failed": 0,
+  "results": [
+    {
+      "dataset": "cleaned_lyrics",
+      "schema_version": 1,
+      "rows": 4211,
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "path": "D:\\Code\\ProjectR\\music_rec_artifacts\\cleaned_lyrics.csv"
+    },
+    {
+      "dataset": "corpus_rows",
+      "schema_version": 1,
+      "rows": 4239,
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "path": "D:\\Code\\ProjectR\\CSVs Dataset\\corpus_final_v3.csv"
+    },
+    {
+      "dataset": "sentiment_scores",
+      "schema_version": 1,
+      "rows": 4211,
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "path": "D:\\Code\\ProjectR\\music_rec_artifacts\\sentiment_scores.csv"
+    },
+    {
+      "dataset": "audio_tracks",
+      "schema_version": 1,
+      "rows": 3650,
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_tracks.csv"
+    },
+    {
+      "dataset": "audio_manifest",
+      "schema_version": 1,
+      "rows": 3663,
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_manifest.csv"
+    },
+    {
+      "dataset": "audio_track_matches",
+      "schema_version": 1,
+      "rows": 3650,
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_track_matches.csv"
+    },
+    {
+      "dataset": "audio_file_map",
+      "schema_version": 1,
+      "rows": 3663,
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_file_map.csv"
+    },
+    {
+      "dataset": "audio_new_songs",
+      "schema_version": 1,
+      "rows": 57,
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "path": "D:\\Code\\ProjectR\\R_data\\audio\\audio_new_songs_v2.csv"
+    },
+    {
+      "dataset": "mood_labels",
+      "schema_version": 1,
+      "rows": 4011,
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "path": "D:\\Code\\ProjectR\\R_data\\raw\\gemini\\corpus_v3\\labels_merged.csv"
+    }
+  ]
+}

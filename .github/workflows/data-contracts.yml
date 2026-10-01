@@ -1,0 +1,37 @@
+name: data-contracts
+
+on:
+  push:
+    paths:
+      - "data_engineering/**"
+      - "scripts/validate_datasets.py"
+      - "tests/test_data_contracts.py"
+      - "music_rec_artifacts/cleaned_lyrics.csv"
+      - "music_rec_artifacts/sentiment_scores.csv"
+      - "CSVs Dataset/corpus_final_*.csv"
+      - "R_data/audio/*.csv"
+      - ".github/workflows/data-contracts.yml"
+  pull_request:
+    paths:
+      - "data_engineering/**"
+      - "scripts/validate_datasets.py"
+      - "tests/test_data_contracts.py"
+      - "music_rec_artifacts/cleaned_lyrics.csv"
+      - "music_rec_artifacts/sentiment_scores.csv"
+      - "CSVs Dataset/corpus_final_*.csv"
+      - "R_data/audio/*.csv"
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install test dependencies
+        run: python -m pip install --quiet pytest pandas numpy
+      - name: Contract tests
+        run: python -m pytest tests/test_data_contracts.py -q
+      - name: Validate committed production datasets
+        run: python scripts/validate_datasets.py
