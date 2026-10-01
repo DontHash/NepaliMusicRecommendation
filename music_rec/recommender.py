@@ -68,6 +68,15 @@ class MusicRecommender:
         if self.config.sentiment_scores_csv.exists():
             self.sentiment = pd.read_csv(self.config.sentiment_scores_csv).set_index("song_id")
 
+        self.audio_index = None
+        if self.config.audio_enabled:
+            try:
+                from .audio_index import AudioIndex
+
+                self.audio_index = AudioIndex.load(self.config)
+            except Exception:  # noqa: BLE001 - audio is an optional signal
+                self.audio_index = None
+
         self._query_encoder = query_encoder
         self._lexical = None
         self._lexical_lock = threading.Lock()
@@ -162,8 +171,11 @@ class MusicRecommender:
             cand_ids = self.song_ids[mask_rows[order]]
             cand_rel = sims[order].astype(np.float64)
         elif base_scores is not None:
-            order = np.argsort(-base_scores)[: cfg.ann_top_k]
-            order = [row for row in order if np.isfinite(base_scores[row])]
+            order = np.argsort(-base_scores)[: cfg.ann_top_k * 2]
+            order = [
+                row for row in order
+                if np.isfinite(base_scores[row]) and keep_mask[row] and row != exclude_row
+            ][: cfg.ann_top_k]
             cand_ids = self.song_ids[np.asarray(order, dtype=int)]
             cand_rel = base_scores[order].astype(np.float64)
         else:
@@ -218,7 +230,54 @@ class MusicRecommender:
     ) -> list[Recommendation]:
         row_idx = self._row_index(song_id)
         query_vec = self.index_vectors[row_idx]
-        return self._rank(query_vec, self._sent_score(song_id), song_id, artist, category)
+        blended = self._audio_blended_scores(song_id, row_idx)
+        if blended is None:
+            return self._rank(query_vec, self._sent_score(song_id), song_id, artist, category)
+        return self._rank(None, self._sent_score(song_id), song_id, artist, category, base_scores=blended)
+
+    def _audio_blended_scores(self, song_id: int, row_idx: int) -> np.ndarray | None:
+        """Text scores blended with audio similarity to the seed song (if any).
+
+        Rows without audio keep their text score, so the fusion never penalises
+        songs outside the audio collection.
+        """
+        if self.audio_index is None or self.config.audio_weight <= 0:
+            return None
+        audio_ids, audio_scores = self.audio_index.scores_for_song(song_id)
+        if not len(audio_ids):
+            return None
+        text_scores = self.embeddings @ self.embeddings[row_idx]
+        audio_map = {int(sid): float(score) for sid, score in zip(audio_ids, audio_scores)}
+        return self.audio_index.blend_rows(
+            text_scores, self.song_ids, audio_map, self.config.audio_weight
+        )
+
+    def has_audio(self, song_id: int) -> bool:
+        return self.audio_index is not None and self.audio_index.has_audio(song_id)
+
+    def recommend_by_audio(
+        self,
+        track: str,
+        artist: str | None = None,
+        category: str | None = None,
+    ) -> list[Recommendation]:
+        """Audio-only similarity: rank corpus songs that sound like ``track``.
+
+        ``track`` is a track key from ``R_data/audio/audio_embedding_keys.csv``
+        (``artist|title``, normalized).
+        """
+        if self.audio_index is None:
+            raise RuntimeError("audio index unavailable; run scripts/audio/embed_audio.py")
+        audio_ids, audio_scores = self.audio_index.scores_for_track(track)
+        if not len(audio_ids):
+            raise KeyError(f"no audio track for {track!r}")
+        base = np.full(len(self.songs), -np.inf, dtype=np.float32)
+        for song_id, score in zip(audio_ids, audio_scores):
+            row = self.row_of_song.get(int(song_id))
+            if row is not None:
+                base[row] = float(score)
+        exclude_id = self.audio_index.song_for_track(track)
+        return self._rank(None, None, exclude_id, artist, category, base_scores=base)
 
     def _maybe_artist_filter(self, text: str) -> str | None:
         query = text.strip().casefold()

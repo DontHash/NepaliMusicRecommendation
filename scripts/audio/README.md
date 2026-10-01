@@ -13,6 +13,7 @@ builds CLAP audio embeddings so audio becomes a first-class retrieval signal.
 | 4 | `embed_audio.py` | tracks + ffmpeg (`imageio-ffmpeg`) | `audio_embeddings.npy` (CLAP 512-d, L2-normalised), `audio_embedding_keys.csv` |
 | 5 | `query_audio.py` | embeddings | text→audio / audio→audio search |
 | 6 | `analyze_audio_similarity.py` | embeddings | `audio_duplicate_candidates.csv`, `audio_similarity_report.json` |
+| 7 | `eval_audio_seed.py` | recommender + embeddings | `eval_audio_seed_report.json` (text vs audio vs fused, paired bootstrap CIs) |
 
 ```bash
 python scripts/audio/build_manifest.py
@@ -21,7 +22,33 @@ python scripts/audio/fetch_lyrics.py --min-artist-score 85           # targeted 
 python scripts/audio/build_dataset_lines.py
 python scripts/audio/embed_audio.py                                  # resumable
 python scripts/audio/query_audio.py --text "sad acoustic guitar"
+python scripts/audio/analyze_audio_similarity.py
+python scripts/audio/eval_audio_seed.py --all-covered
 ```
+
+## Recommender integration
+
+- `MusicRecommender` loads the audio index automatically (`Config.audio_enabled`);
+  when artifacts are absent it silently stays text-only.
+- `recommend_by_song(song_id)` fuses audio similarity into the seed ranking
+  (`Config.audio_weight`, default 0.5); songs without audio keep their text score
+  so they are never penalised.
+- `recommend_by_audio(track_key)` returns corpus songs that *sound* like a track
+  (`artist|title` key from `audio_embedding_keys.csv`); it raises if no audio
+  index is loaded.
+- Measured on 368 same-artist seed queries over the 520 audio-covered songs
+  (`eval_audio_seed.py --all-covered`):
+
+  | ranking | nDCG@10 | Recall@10 |
+  |---|---|---|
+  | text-only | 0.1833 | 0.0723 |
+  | audio-only (CLAP) | 0.2436 | 0.0879 |
+  | fused w=0.5 | **0.2527** | 0.0963 |
+
+  Paired bootstrap (2,000 resamples): fused@0.5 − text = +0.0694, 95% CI
+  [0.0362, 0.1019]; weights 0.3/0.5/0.7 all positive and CI-separated from zero.
+  Caveat: same-artist relevance proxy on the audio-covered subset, not a human
+  judgment pool.
 
 ## Input contract (generalizable to any library)
 

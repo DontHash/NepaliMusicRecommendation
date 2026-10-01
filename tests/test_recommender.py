@@ -22,6 +22,7 @@ def _make_recommender(tmp_path, songs, vectors=None, encoder=None):
     config.sentiment_scores_csv = tmp_path / "sentiment_scores.csv"
     config.window_vectors_npy = tmp_path / "window_vectors.npy"
     config.window_owners_npy = tmp_path / "window_owners.npy"
+    config.audio_enabled = False  # audio fusion is tested in tests/test_audio_index.py
 
     pd.DataFrame(songs).to_csv(config.cleaned_lyrics_csv, index=False, encoding="utf-8")
     if vectors is None:

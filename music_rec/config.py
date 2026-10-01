@@ -33,6 +33,10 @@ class Config:
     feature_matrix_npy: Path = field(init=False)
     faiss_index_path: Path = field(init=False)
     metadata_parquet: Path = field(init=False)
+    audio_dir: Path = field(init=False)
+    audio_embeddings_npy: Path = field(init=False)
+    audio_embedding_keys_csv: Path = field(init=False)
+    audio_track_matches_csv: Path = field(init=False)
 
     embedding_model: str = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
     embedding_device: str = field(
@@ -72,6 +76,8 @@ class Config:
     use_window_search: bool = True
     probe_positive_threshold: float = 0.0
     probe_negative_threshold: float = 0.10
+    audio_enabled: bool = True
+    audio_weight: float = 0.5
 
     def __post_init__(self):
         self.artifacts_dir.mkdir(parents=True, exist_ok=True)
@@ -89,3 +95,7 @@ class Config:
         self.feature_matrix_npy = self.artifacts_dir / "feature_matrix.npy"
         self.faiss_index_path = self.artifacts_dir / "lyrics.faiss"
         self.metadata_parquet = self.artifacts_dir / "song_metadata.csv"
+        self.audio_dir = PROJECT_ROOT / "R_data" / "audio"
+        self.audio_embeddings_npy = self.audio_dir / "audio_embeddings.npy"
+        self.audio_embedding_keys_csv = self.audio_dir / "audio_embedding_keys.csv"
+        self.audio_track_matches_csv = self.audio_dir / "audio_track_matches.csv"
