@@ -111,9 +111,28 @@ per-asset status, duration and metadata; stdout/stderr tee to
 defined in `pipelines/definitions.py`; design and semantics in
 `docs/DE3_ORCHESTRATION_PLAN.md`.
 
+## Collection queue & identity (DE4)
+
+```bash
+python -m data_collection.queue_admin status
+python -m data_collection.queue_admin sweep --max-attempts 3
+python -m data_collection.queue_admin dlq
+python -m data_collection.queue_admin requeue --status dead --reset-attempts
+python -m data_collection.review_duplicates
+```
+
+Workers claim with `state.claim_batch(conn, owner, ...)` / `claim_pages(...)`:
+one atomic `UPDATE ... RETURNING` inside `BEGIN IMMEDIATE`, stamped with an
+owner and an expiring lease — another worker can neither claim nor finish the
+same row. `reset_orphaned()` recovers only expired/NULL leases
+(`queue_admin reset-orphans --all` is the admin sweep), and exhausted attempts
+become `dead` and export to the DLQ CSV. Compaction keeps the best lyrics per
+artist|title group but pools sibling metadata (album/duration/preview/ISRC)
+into the winner, and `review_duplicates` writes a MinHash/LSH review queue with
+suggested actions and pending decisions.
+
 ## Roadmap
 
-`docs/DATA_ENGINEERING_PLAN.md` tracks the phases. DE1 is the contract layer;
-DE2 is in progress (manifest + verify landed, pointer-based versioned publish
-next); then DE3 orchestration, DE4 queue and identity, DE5 monitoring, DE6
-incremental/streaming.
+`docs/DATA_ENGINEERING_PLAN.md` tracks the phases. DE1 (contracts), DE2
+(versioned publish), DE3 (runner) and DE4 (queue + identity) are done; DE5
+monitoring/quality budgets and DE6 incremental/streaming are next.

@@ -1,6 +1,6 @@
 # DE4 — Queue robustness & identity plan
 
-Status: in progress. Phase DE4 of `docs/DATA_ENGINEERING_PLAN.md`.
+Status: done — DE4a `0106343` (lease/DLQ), DE4b `f914f05` (best-version merge + ISRC), DE4c (LSH review). Phase DE4 of `docs/DATA_ENGINEERING_PLAN.md`.
 
 ## 1. Goal
 

@@ -118,6 +118,7 @@ clean checkout; interrupted runs resume; history row per asset execution.
 **Commits:** `DE3a` graph+runner+tests, `DE3b` wrap all phases + docs.
 
 ### DE4 — Queue robustness & identity  *(2–3 commits)*
+**Status:** done — DE4a lease/DLQ (`0106343`), DE4b best-version merge + ISRC (`f914f05`), DE4c LSH review.
 **Goal:** horizontal-safe ingestion and canonical music identity.
 **Workstreams:**
 - Atomic claim/lease (`UPDATE ... RETURNING` semantics in SQLite transaction), lease
@@ -184,4 +185,4 @@ spike doc.
 1. DE0 closure — done (`bcaf88d`, `b2b409b`, `d8b9fa4`).
 2. DE1a/DE1b (schemas + validator + CI) — done (`aac4dfd`).
 3. DE2 (manifest, publish, rollback) — done (`96595d8`, `7330101`, rollback commit).
-4. DE3 (runner) — done (`7093631` + graph/CLI commit); DE4 queue/identity next.
+4. DE4 (queue lease/DLQ + identity) — done (`0106343`, `f914f05`, LSH review commit); DE5 monitoring next.
